@@ -28,5 +28,4 @@
 *.snm
 *.nav
 *.tdo
-docs/**/report.pdf
-
+/docs/**/report.pdf

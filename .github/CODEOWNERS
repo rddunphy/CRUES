@@ -1,0 +1,2 @@
+# Specify directory/file followed by @user to require code reviews from
+# designated users before merging.
