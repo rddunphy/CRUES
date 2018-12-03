@@ -1,0 +1,9 @@
+{
+    "files": [
+        "chapters/01_introduction",
+        "chapters/02_background",
+        "chapters/04_project_management",
+        "chapters/03_design",
+        "chapters/05_conclusion"
+    ]
+}

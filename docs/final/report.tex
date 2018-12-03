@@ -1,4 +1,4 @@
-\documentclass[12pt, fleqn]{article}
+\documentclass[12pt, fleqn]{report}
 \usepackage[british,UKenglish]{babel}
 \usepackage[utf8]{inputenc}
 
@@ -38,7 +38,7 @@
 \usepackage{graphicx}
 \usepackage{pgfplotstable}
 \usepackage{subcaption}
-\graphicspath{{img/}} % Sets root directory for image files
+\graphicspath{{../img/}} % Sets root directory for image files
 \pgfplotsset{compat=1.6}
 
 % Maths packages
@@ -102,27 +102,29 @@
     \hypersetup{pageanchor=false}
     \pagenumbering{alph}
     \include{chapters/000_alternate_titlepage}
-    \pagenumbering{arabic}
+    \pagenumbering{roman}
     \include{chapters/00b_abstract}
-    % \include{chapters/00c_acknowledgements}
-    \hypersetup{pageanchor=true}
+    \include{chapters/00c_acknowledgements}
 
-    \pagestyle{plain}
+    \hypersetup{pageanchor=true}
+    \setcounter{page}{3}
     \tableofcontents{}
+    \listoffigures{}
+    \listoftables{}
     \clearpage{}
 
-    \pagestyle{fancy}
+    \pagenumbering{arabic}
+
     \include{chapters/01_introduction}
     \include{chapters/02_background}
     \include{chapters/03_design}
-    \include{chapters/04_project_management}
     \include{chapters/05_conclusion}
 
     \pagestyle{plain}
     \bibliographystyle{ieeetr}
     \bibliography{references}
 
-    % \appendix{}
-    % \include{chapters/a_appendix}
+    \appendix{}
+    \include{chapters/a_appendix}
 
 \end{document}
