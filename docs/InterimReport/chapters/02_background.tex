@@ -1,0 +1,134 @@
+% !TEX root = ../report.tex
+
+\section{Background}\label{background}
+\thispagestyle{plain}
+
+This section will explore each of the broad topics in general detail, laying
+the basis for the discussion of specific choices in each of the topics in Chapter~\ref{design}.
+
+\subsection{Co-operative robotics}\label{background/coop} % other supermarkets are available
+
+Co-operative robotics has varied definitions across different papers. One such
+definition, which generalises co-operative behaviour in robotics, describes it as ``joint
+collaborative behaviour that is directed toward some goal in which there is a
+common interest or reward''~\cite{barnes1991behaviour}. This description fits the
+objectives of this study more appropriately than the specific term swarm robotics, which
+has a number of additional requirements, including
+that problem solving should be distributed across the swarm~\cite{sahin04}.
+This definition does not apply to this project, as the robots designed
+here are capable of operating autonomously and will be able to solve certain tasks
+individually. In this case, collaboration is used to deliver a performance improvement.
+For this reason, the more general term of co-operative robotics will
+be used throughout. The aim is to reduce the time taken or increase performance of the system over
+a single-robot system~\cite{premvuti1990consideration}. Additionally, by creating a decentralised
+and distributed system across a number of homogeneous agents, agent redundancy is introduced which
+can improve the completion rate of tasks, especially in potentially volatile
+environments~\cite{beckers1994local, parker95}.
+
+Co-operative robotics goes beyond the idea
+of collaborative robotics in requiring an additional aspect of intelligence in
+the communication and coordination of the individual agents~\cite{cao1995cooperative}.
+
+
+\subsection{SLAM}\label{background/slam}
+
+An essential skill for mobile robots navigating unknown environments is being
+able to build a map of the environment whilst simultaneously identifying its own
+position. This is especially true in the absence of external referencing systems
+such as GPS.\@ This is known as the Simultaneous Localisation And Mapping (SLAM)
+problem and has been one of the most extensively researched topics in mobile
+robotics over the last two decades~\cite{grisetti2010tutorial}. As the robot's
+estimate of its position is affected by both the previous state's uncertainty
+and the any errors in the current measurement, uncertainties in the readings compound
+over time. To rectify this, a map with distinctive landmarks can reduce its
+localisation error by revisiting these known areas. This is known as loop closure.
+
+SLAM implementations rely on sensor fusion algorithms which take in readings from an
+array of sensors and calculates a estimated state changed based on the probability
+or error for each sensor. This effectively allows errors between multiple sensors
+to be cancelled out, resulting in more reliable estimates. A typical approach is to
+use sensor fusion to combine odometry readings from wheel encoders with acceleration
+information obtained from an inertial measurement unit (IMU) to correct for errors
+caused by wheels slipping and sensor imperfections.
+
+There are a large variety of solutions to suit various system requirements, which
+fall into the two categories of filtering and smoothing. Filtering
+involves creating a state estimation where the state of the system consists of
+the current robot position and the map. The estimate is augmented and improved
+by considering the new measurements as they become available. Some popular
+approaches to filtering are techniques such as Kalman filters, particle filters
+and information filters. This technique is known as online SLAM where only the most
+recent pose (the robot's position and orientation) is recovered with previous poses
+marginalised out. Smoothing approaches involve a full estimate of the trajectory of
+the robot from all available
+measurements. These typically use least-square error minimisation techniques and are
+used to address the problem known as the full SLAM problem. Full SLAM involves
+attempting to map the entire path.
+
+The state of the system is known as $x_k$ and
+this can be defined as a function which uses the previous state to determine the next
+state. As the model can not be perfectly accurate, there will be uncertainty in the
+readings and so this must be taken into account by the model. As a result, $x_k$,
+which is known as the motion model, is defined as
+\begin{equation}
+x_{k} = f(x_{k-1}, q_{k-1})\,,
+\end{equation}
+where $q_{k-1}$ is the randomness introduced to the system. As such, this can
+also be represented by the probability distribution
+\begin{equation}
+x_{k} \sim p(x_{k} | x_{k-1})\,.
+\end{equation}
+Both of these imply that the state is stochastic and depends on the previous
+state. The probability distribution helps emphasise that the current state is
+drawn from a distribution of possible states based on the previous state. Given that a perfect sensor is not possible, the current state will also have noise
+in the reading. This is known as the measurement model and can be defined as
+\begin{equation}
+y_{k} = h(x_{k}, r_{k})\,,
+\end{equation}
+where $r$ represents the uncertainty that is present in the model of the sensor. As
+before this can be expressed as an uncertainty model:
+\begin{equation}
+y_{k} \sim p(y_{k} | y_{k-1})\,.
+\end{equation}
+It is assumed that the motion and measurement models are Markovian in that
+the current state only depends on the previous state. The measurement model only
+depends on the current state and no previous values.
+
+By applying Bayes' theorem and marginalisation the current state can be described as
+\begin{align}
+\label{eqn:predict}
+p(x_{k} | y_{1:k-1}) & = \int p(x_{k}|x_{k-1}) p(x_{k-1} | y_{1:k-1}) dx_{k-1} \\
+\label{eqn:update}
+p(x_{k} | y_{1:k}) &= \frac{ p(y_{k}|x_{k})p(x_{k}|x_{1:k-1})}{ p(y_{k}|y_{1:k-1})}\,.
+\end{align}
+Equation~\ref{eqn:predict} is known as the predict equation. By integrating over
+the previous state, all potential outcomes of the state $x_k$ are
+considered. Equation~\ref{eqn:update} is referred to as the update equation,
+as the prediction is updated using the new measurement information~\cite{kam1997sensorfusion}.
+
+One of the most common methods of implementing SLAM is filtering using an
+Extended Kalman Filter (EKF). An EKF is an efficient, recursive filter
+that estimates the state of a dynamic system from a series of noisy measurements~\cite{fox2003bayesian}.
+This uses the premise of the predict and update equations as joint probability
+distributions. Given variables defined on a probability space, the joint
+probability distribution gives the probability that each of the variables falls in any
+particular range or set. It uses these techniques to estimates a state vector containing
+both the location of landmarks in the map and the robot pose~\cite{huang2007convergence}.
+
+\subsection{Computer vision}
+
+Computer vision is the analysis of digital image or video data to allow a computer
+system to gain a high-level understanding of the 3D environment contained within
+the image\cite{CVBallard}.A common application for computer vision is the identification and classification
+of objects. Identification generally involves the recognition of features of the
+object and the comparison of these features and their relative positions to a
+known model of the object. Classification usually involves machine learning
+algorithms to build up a definition of the object based on its visible properties\cite{CVpaoletti2018new}.
+
+Computer vision can also be used to triangulate the position of objects in the
+field of view by measuring the discrepancy in the objects position in the two camera
+frames given a translation matrix relating the two cameras.
+
+Computer vision can be well integrated with SLAM providing a means of both the measure
+of distance (if the CV system is bi-ocular) and the identification of distinctive
+features in the environment to allow loop closure\cite{CVho2006loop}.

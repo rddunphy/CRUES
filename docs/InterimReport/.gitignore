@@ -1,0 +1,31 @@
+# Compressed files
+*.zip
+*.tar
+*.gz
+
+# Temporary OpenOffice files
+*.~lock.*#
+
+# Latex files
+*.aux
+*.log
+*.tex.bak
+*.synctex.gz
+*.toc
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.bib.bak
+*.fls
+*.fdb_latexmk
+*.out
+*.lof
+*.lol
+*.lot
+*.pgf-plot.gnuplot
+*.pgf-plot.table
+*.snm
+*.nav
+*.tdo
+*.pdf

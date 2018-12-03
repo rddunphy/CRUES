@@ -1,0 +1,128 @@
+\documentclass[12pt, fleqn]{article}
+\usepackage[british,UKenglish]{babel}
+\usepackage[utf8]{inputenc}
+
+% Layout packages
+\usepackage[
+    a4paper,
+    right=25mm,
+    left=25mm,
+    top=25mm,
+    bottom=25mm,
+    headheight=15pt
+]{geometry}
+\usepackage{fancyhdr} % Adds page headers with chapter info
+\usepackage[justification=centering]{caption}
+\usepackage[all]{nowidow} % Prevents orphans and widows (single lines at start/end of a page)
+\usepackage{lscape} % For landscape-oriented pages (e.g. large figures)
+\usepackage[nottoc]{tocbibind} % Includes bibliography in ToC
+\usepackage{todonotes} % \todo and \missingfigure commands
+
+% Table setup
+% \usepackage{rotating}
+% \usepackage{tabularx}
+% \usepackage{booktabs}
+% \usepackage{csvsimple}
+% \usepackage{array}
+% \usepackage{makecell}
+% \usepackage{multirow}
+% \renewcommand\theadalign{cc}
+% \renewcommand\theadfont{\bfseries}
+% \renewcommand\theadgape{\Gape[4pt]}
+% \renewcommand\cellgape{\Gape[2pt]}
+% \renewcommand{\arraystretch}{1.5}
+% \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+% \newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+% Graphics packages
+\usepackage{graphicx}
+\usepackage{pgfplotstable}
+\usepackage{subcaption}
+\graphicspath{{img/}} % Sets root directory for image files
+\pgfplotsset{compat=1.6}
+
+% Maths packages
+\usepackage{amsmath}
+\usepackage[binary-units=true]{siunitx}
+\sisetup{exponent-to-prefix=true, zero-decimal-to-integer}
+% Hack to fix layout of sqrt with exponents:
+% \usepackage{letltxmacro}
+% \LetLtxMacro{\oldsqrt}{\sqrt}
+% \renewcommand{\sqrt}[2][\mkern8mu]{\mkern-4mu\mathop{\oldsqrt[#1]{#2}}}
+
+% Code listings packages, including syntax highlighting for Python
+% (probably not needed for interim report)
+% \usepackage{listings}
+% \usepackage{xcolor}
+% \definecolor{codegreen}{rgb}{0, 0.6, 0}
+% \definecolor{codeblue}{rgb}{0, 0, 0.6}
+% \definecolor{codegrey}{rgb}{0.4, 0.4, 0.4}
+% \definecolor{codebrown}{rgb}{0.5, 0, 0}
+% \lstdefinestyle{pystyle}{
+%     basicstyle=\small\ttfamily,
+%     language=Python,
+%     commentstyle=\color{codegreen},
+%     keywordstyle=\color{codeblue},
+%     numberstyle=\tiny\color{codegrey},
+%     stringstyle=\color{codebrown},
+%     breakatwhitespace=false,
+%     breaklines=true,
+%     showstringspaces=false,
+%     captionpos=b,
+%     numbers=left,
+%     numbersep=10pt
+% }
+% \usepackage{textcomp}
+% \usepackage[T1]{fontenc}
+% \lstset{
+%     style=pystyle,
+%     upquote=true,
+%     columns=fullflexible,
+%     keepspaces=true,
+%     showlines=true
+% }
+% \renewcommand{\lstlistlistingname}{List of Code Listings}
+
+% Typographical packages
+\usepackage{setspace}
+\onehalfspacing{} % Line spacing 1.5
+\usepackage{nth} % \nth{3} compiles to 3rd, etc.
+\usepackage[hidelinks]{hyperref} % Add clickable cross-references/hyperlinks in PDF
+\usepackage{csquotes} % Context-sensitive quote marks, required by babel
+
+% Hyphen issues
+\pretolerance=10000 % Set to 500 for some hyphenation
+\tolerance=2000
+\emergencystretch=10pt
+
+
+\begin{document}
+
+    \pagestyle{empty}
+    \hypersetup{pageanchor=false}
+    \pagenumbering{alph}
+    \include{chapters/000_alternate_titlepage}
+    \pagenumbering{arabic}
+    \include{chapters/00b_abstract}
+    % \include{chapters/00c_acknowledgements}
+    \hypersetup{pageanchor=true}
+
+    \pagestyle{plain}
+    \tableofcontents{}
+    \clearpage{}
+
+    \pagestyle{fancy}
+    \include{chapters/01_introduction}
+    \include{chapters/02_background}
+    \include{chapters/03_design}
+    \include{chapters/04_project_management}
+    \include{chapters/05_conclusion}
+
+    \pagestyle{plain}
+    \bibliographystyle{ieeetr}
+    \bibliography{references}
+
+    % \appendix{}
+    % \include{chapters/a_appendix}
+
+\end{document}

@@ -1,0 +1,32 @@
+% !TEX root = ../report.tex
+
+\section{Conclusion}\label{conclusion}
+\thispagestyle{plain}
+
+The aim of this project is to develop a co-operative robotic system capable of
+searching an environment in a coordinated and distributed manner, using exclusively
+non-telemetric communication.
+
+The robots will use a differential drive system mounted on a pre-built chassis.
+This will both minimise the time required to build the robot and provide more
+consistent frames than could be achieved using bespoke solutions at a similar
+budget. This also makes it far more straightforward to mount the motors and encoders
+as they are designed specifically for the chassis chosen.
+
+Several ultrasonic range finders will be positioned along the front of the robot
+to take distance measurements to the surrounding walls and obstacles in the
+environment. Over time these measurements will be used to develop a map of the
+surrounding area. This will be augmented using computer vision system capable
+of object identification, which will identify moving objects (that should not
+be mapped) such as other robots, and allow loop closure though recognising
+distinctive areas in the environment. The computer vision will also reduce the
+communication required, as robots will be able to observe other robots without
+direct communication. The object identification will likely be feature-based,
+probably either ORB or BRISK due to their computational efficiency relative to
+other feature-based algorithms. The The robots' positions and orientations will
+be tracked using wheel odometry and 6 DOF IMU data which will be combined using
+a sensor fusion algorithm.
+
+The team has appointed a project manager responsible for ensuring project
+deliverables, decided upon several workflow practices, and developed a detailed
+project timeline to ensure there is minimal project risk.
