@@ -8,3 +8,5 @@ Co-operative robotics using environmental sensors
   * `docs/final`: Final report LaTeX root
   * `docs/img`: Image root for reports
 * `wiring`: Wiring diagrams, PCB files
+* `cad`: CAD files
+* `crues_nodes`: Python ROS nodes
