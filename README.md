@@ -12,4 +12,5 @@ Co-operative robotics using environmental sensors
 * `crues_pi`: ROS nodes and Python code
   * `crues_pi/crues`: CRUES Python library to be installed on RPi
   * `crues_pi/ros_pkgs`: ROS packages to be added to catkin workspace
+  * `crues_pi/deploy.sh`: Script for deploying code to RPi
 
