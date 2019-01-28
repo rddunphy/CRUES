@@ -1,0 +1,3 @@
+<launch>
+    <node name="uc" package="ultrasonic" type="us.py" />
+</launch>

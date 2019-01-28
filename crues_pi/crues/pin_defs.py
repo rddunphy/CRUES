@@ -1,5 +1,7 @@
-#!/usr/bin/env python3
 """Pin definitions for Raspberry Pi GPIO."""
+
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 
 # Ultrasonic sensors
 UL_TRIG = 38
@@ -60,7 +62,3 @@ def print_config():
     print("LEDs")
     print("LED_RED: {}".format(LED_RED))
     print("LED_GREEN: {}".format(LED_GREEN))
-
-
-if __name__ == '__main__':
-    print_config()
