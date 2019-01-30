@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+
 import rospy
 from std_msgs.msg import String
+
 from crues import us
 
 
@@ -15,3 +18,7 @@ def main():
             rate.sleep()
     except rospy.ROSInterruptException:
         print "ROSInterruptException in node 'uc'"
+
+
+if __name__ == '__main__':
+    main()

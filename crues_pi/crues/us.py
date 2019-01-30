@@ -15,11 +15,8 @@ speed_of_sound = 343
 def get_range(dir):
     """Get range from ultrasonic sensor in millimetres.
 
-    Args:
-        dir (int): One of ultrasonic.US_LEFT, ultrasonic.US_CENTRE, or ultrasonic.US_RIGHT
-
-    Returns:
-        int: Range in millimetres
+    :param dir: (int) One of ultrasonic.US_LEFT, ultrasonic.US_CENTRE, or ultrasonic.US_RIGHT
+    :return: (int) Approx. range in millimetres
     """
     if dir == LEFT:
         echo_pin = UL_ECHO
