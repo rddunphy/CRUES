@@ -1,4 +1,4 @@
 <launch>
-    <node name="uc" package="ultrasonic" type="us_node.py" />
-    <node name="drive" package="motor_control" type="drive_node.py" />
+    <node name="uc" pkg="crues_sensors" type="us_node.py" />
+    <node name="drive" pkg="crues_actuators" type="drive_node.py" />
 </launch>
