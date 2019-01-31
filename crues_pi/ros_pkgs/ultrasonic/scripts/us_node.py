@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import String
+from std_msgs.msg import Int32
 
 from crues import us
 
@@ -9,7 +9,7 @@ from crues import us
 def main():
     try:
         print "Running ultrasonic node"
-        pub = rospy.Publisher('uc_range', String, queue_size=10)
+        pub = rospy.Publisher('uc_range', Int32, queue_size=10)
         rospy.init_node('uc')
         rate = rospy.Rate(2)
         while not rospy.is_shutdown():
