@@ -1,3 +1,12 @@
+# Compiled Python files
+*.pyc
+
+# Virtual environments
+venv/
+
+# PyCharm files
+.idea/
+
 # Compressed files
 *.zip
 *.tar
