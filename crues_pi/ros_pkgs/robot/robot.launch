@@ -1,4 +1,5 @@
 <launch>
     <node name="uc" pkg="crues_sensors" type="us_node.py" />
     <node name="drive" pkg="crues_actuators" type="drive_node.py" />
+    <node name="roomba" pkg="crues_control" type="roomba_control.py" />
 </launch>

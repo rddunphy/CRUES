@@ -13,8 +13,10 @@ def main():
         rospy.init_node('uc')
         rate = rospy.Rate(2)
         while not rospy.is_shutdown():
-            out = "Range: %d mm" % us.get_range(us.CENTRE)
-            pub.publish(out)
+            rospy.loginfo("Ping")
+            range = us.get_range(us.CENTRE)
+            rospy.loginfo("UC Range: %d", range)
+            pub.publish(range)
             rate.sleep()
     except rospy.ROSInterruptException:
         print "ROSInterruptException in node 'uc'"

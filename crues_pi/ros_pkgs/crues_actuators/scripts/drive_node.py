@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from motor_control.msg import MotorControl
+from crues_actuators.msg import MotorControl
 
 from crues import motors
 

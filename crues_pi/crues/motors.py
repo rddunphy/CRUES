@@ -17,13 +17,17 @@ def set_speeds(r_speed=0, l_speed=0, slp=True):
     GPIO.setup([ML_DIR, ML_PWM, MR_DIR, MR_PWM, M_SLP], GPIO.OUT)
     ml_pwm_pin = GPIO.PWM(ML_PWM, 50)  # set up pwm object at 50Hz
     mr_pwm_pin = GPIO.PWM(MR_PWM, 50)  # set up pwm object at 50Hz
-    ml_pwm_pin.start(1)  # Not sure what the parameter does?
-    mr_pwm_pin.start(1)
-
-    ml_pwm_pin.ChangeDutyCycle(abs(l_speed) if not slp else 0)
-    # Low output = forward
-    GPIO.output(ML_DIR, l_speed < 0)
-    mr_pwm_pin.ChangeDutyCycle(abs(r_speed) if not slp else 0)
-    GPIO.output(MR_DIR, r_speed < 0)
-    # SLP pin is active low, so invert output
     GPIO.output(M_SLP, not slp)
+    GPIO.output(ML_DIR, l_speed < 0)
+    GPIO.output(MR_DIR, r_speed < 0)
+    ml_pwm_pin.start(abs(l_speed))
+    mr_pwm_pin.start(abs(r_speed))
+
+    # ml_pwm_pin.ChangeDutyCycle(abs(l_speed))
+    # # Low output = forward
+    # mr_pwm_pin.ChangeDutyCycle(abs(r_speed))
+    # # SLP pin is active low, so invert output
+    # GPIO.output(M_SLP, not slp)
+    # print l_speed
+    # print r_speed
+    # print slp
