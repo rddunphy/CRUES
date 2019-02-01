@@ -28,7 +28,8 @@ def get_range(dir):
         echo_pin = UR_ECHO
         trig_pin = UR_TRIG
     else:
-        raise RuntimeError("ultrasonic.get_range(dir) must take valid direction as input.")
+        raise ValueError("ultrasonic.get_range(dir) must take valid direction as input.")
+
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(trig_pin, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(echo_pin, GPIO.IN)
@@ -43,5 +44,5 @@ def get_range(dir):
         pulse_end = time.time()
     duration = pulse_end - pulse_start
     distance = duration * speed_of_sound * 500
-    GPIO.cleanup()
+    GPIO.cleanup([trig_pin, echo_pin])
     return int(round(distance))

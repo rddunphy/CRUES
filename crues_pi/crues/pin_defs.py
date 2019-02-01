@@ -3,6 +3,8 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
+import RPi.GPIO as GPIO
+
 # Ultrasonic sensors
 UL_TRIG = 38
 UL_ECHO = 40
@@ -31,6 +33,20 @@ M_SLP = 16
 # LED indicators
 LED_RED = 36
 LED_GREEN = 28
+
+
+def configure_pwm():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup([ML_PWM, MR_PWM], GPIO.OUT)
+    ml_pin = GPIO.PWM(ML_PWM, 50)
+    mr_pin = GPIO.PWM(MR_PWM, 50)
+    ml_pin.start(0)
+    mr_pin.start(0)
+    return ml_pin, mr_pin
+
+
+def cleanup():
+    GPIO.cleanup()
 
 
 def print_config():

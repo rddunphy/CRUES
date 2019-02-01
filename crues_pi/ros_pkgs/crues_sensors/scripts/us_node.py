@@ -11,7 +11,7 @@ def main():
         print "Running ultrasonic node"
         pub = rospy.Publisher('uc_range', Int32, queue_size=10)
         rospy.init_node('uc')
-        rate = rospy.Rate(2)
+        rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rospy.loginfo("Ping")
             range = us.get_range(us.CENTRE)
