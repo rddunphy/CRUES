@@ -15,10 +15,15 @@ def main():
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rospy.loginfo("Ping")
-            range = us.get_range(us.CENTRE)
-            rospy.loginfo("UC Range: %d", range)
-            pub.publish(range)
-            rate.sleep()
+            try:
+                range = us.get_range(us.CENTRE)
+            except us.UltrasonicTimout as e:
+                rospy.logwarn(str(e))
+            else:
+                rospy.loginfo("UC Range: %d", range)
+                pub.publish(range)
+            finally:
+               rate.sleep()
     except rospy.ROSInterruptException:
         print "ROSInterruptException in node 'uc'"
     finally:
