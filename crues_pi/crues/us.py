@@ -14,10 +14,10 @@ _dir_str = {LEFT: "Left", CENTRE: "Centre", RIGHT: "Right"}
 speed_of_sound = 343
 
 # Max. time to wait for sensor response in s
-sensor_timeout = 0.019
+sensor_timeout = 0.049
 
 # Time period between pulses on adjacent sensors in s
-scan_increment = 0.02
+scan_increment = 0.05
 
 # Angle between sensors in degrees
 sensor_angle = 30
