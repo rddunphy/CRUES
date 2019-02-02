@@ -3,12 +3,13 @@
 import rospy
 from std_msgs.msg import Int32
 
-from crues import us
+from crues import us, pin_defs
 
 
 def main():
     try:
         print "Running ultrasonic node"
+        us.configure_gpio()
         pub = rospy.Publisher('uc_range', Int32, queue_size=10)
         rospy.init_node('uc')
         rate = rospy.Rate(10)
@@ -20,6 +21,8 @@ def main():
             rate.sleep()
     except rospy.ROSInterruptException:
         print "ROSInterruptException in node 'uc'"
+    finally:
+        pin_defs.cleanup()
 
 
 if __name__ == '__main__':

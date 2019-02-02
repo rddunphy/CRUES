@@ -4,13 +4,18 @@ import time
 import random
 
 from crues import pin_defs, motors, us
+from crues.us import UltrasonicTimout
 
 
 def main():
     try:
         pl, pr = motors.gpio_setup()
+        us.configure_gpio()
         while True:
-            d = us.get_range(us.CENTRE)
+            try:
+                d = us.get_range(us.CENTRE)
+            except UltrasonicTimout as e:
+                print e
             if d > 150:
                 motors.set_speeds(pl, pr, l_speed=25, r_speed=25, slp=False)
             elif d > 80:
