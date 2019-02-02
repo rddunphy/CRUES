@@ -8,11 +8,22 @@ LEFT = 0
 CENTRE = 1
 RIGHT = 2
 
+_dir_str = {LEFT: "Left", CENTRE: "Centre", RIGHT: "Right"}
+
 # Approx. speed of sound at 20C in m/s
 speed_of_sound = 343
 
+sensor_timeout = 0.019
 scan_increment = 0.02
 sensor_angle = 15
+
+
+class UltrasonicTimout(Exception):
+
+    def __init__(self, dir, timeout):
+        super(UltrasonicTimout, self).__init__("%s ultrasonic sensor timed out after %f s" % _dir_str.get(dir), timeout)
+        self.dir = dir
+        self.timeout = timeout
 
 
 class USScan:
@@ -54,22 +65,27 @@ def get_range(dir):
     time.sleep(0.00001)
     GPIO.output(trig_pin, GPIO.LOW)
     pulse_start = time.time()
-    while not GPIO.input(echo_pin):
+    timeout = pulse_start + sensor_timeout
+    while not GPIO.input(echo_pin) and pulse_start < timeout:
         pulse_start = time.time()
     pulse_end = pulse_start
-    while GPIO.input(echo_pin):
+    while GPIO.input(echo_pin) and pulse_end < timeout:
         pulse_end = time.time()
     GPIO.cleanup([trig_pin, echo_pin])
+    if pulse_end >= timeout:
+        raise UltrasonicTimout(dir, sensor_timeout)
     return _calculate_range(pulse_start, pulse_end)
 
 
 def get_scan():
     start = time.time()
     rl = get_range(LEFT)
-    while time.time() < start + scan_increment:
-        pass
+    time_remaining = start + scan_increment - time.time()
+    if time_remaining > 0:
+        time.sleep(time_remaining)
     rc = get_range(CENTRE)
-    while time.time() < start + 2 * scan_increment:
-        pass
+    time_remaining = start + 2 * scan_increment - time.time()
+    if time_remaining > 0:
+        time.sleep(time_remaining)
     rr = get_range(RIGHT)
     return USScan([rl, rc, rr])
