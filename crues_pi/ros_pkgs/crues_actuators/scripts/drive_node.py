@@ -18,7 +18,7 @@ def main():
     try:
         print "Running motor drive node"
         global ml_pwm_pin, mr_pwm_pin
-        ml_pwm_pin, mr_pwm_pin = pin_defs.configure_pwm()
+        ml_pwm_pin, mr_pwm_pin = motors.gpio_setup()
         rospy.init_node('motor_driver')
         rospy.Subscriber('motor_control', MotorControl, handle_mc_msg)
         # spin() simply keeps python from exiting until this node is stopped

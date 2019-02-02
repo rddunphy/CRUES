@@ -35,16 +35,6 @@ LED_RED = 36
 LED_GREEN = 28
 
 
-def configure_pwm():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup([ML_PWM, MR_PWM], GPIO.OUT)
-    ml_pin = GPIO.PWM(ML_PWM, 50)
-    mr_pin = GPIO.PWM(MR_PWM, 50)
-    ml_pin.start(0)
-    mr_pin.start(0)
-    return ml_pin, mr_pin
-
-
 def cleanup():
     GPIO.cleanup()
 

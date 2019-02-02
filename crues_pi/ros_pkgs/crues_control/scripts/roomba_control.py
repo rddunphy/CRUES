@@ -1,35 +1,32 @@
 #!/usr/bin/env python
 
+import random
+import time
+
 import rospy
 from std_msgs.msg import Int32
 from crues_actuators.msg import MotorControl
-from crues import pin_defs
 
 
 pub = rospy.Publisher('motor_control', MotorControl, queue_size=10)
 
 
-def _move_msg():
+def _mc_msg(ls, rs):
     msg = MotorControl()
-    msg.l_speed = 30
-    msg.r_speed = 30
-    msg.slp = False
-    return msg
-
-
-def _stop_msg():
-    msg = MotorControl()
-    msg.l_speed = 0
-    msg.r_speed = 0
+    msg.l_speed = ls
+    msg.r_speed = rs
     msg.slp = False
     return msg
 
 
 def handle_new_range(range):
+    if range.data > 150:
+        pub.publish(_mc_msg(25, 25))
     if range.data > 80:
-        pub.publish(_move_msg())
+        pub.publish(_mc_msg(10, 10))
     else:
-        pub.publish(_stop_msg())
+        pub.publish(_mc_msg(25, -25))
+        time.sleep(random.uniform(0.5, 1.3))
 
 
 def main():
