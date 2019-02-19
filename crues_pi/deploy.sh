@@ -10,8 +10,8 @@ if [ $# -eq 0 ]
         echo "Enter IP address as first argument."
     else
         IP="$1"
-        sshpass -p "dapamaka" rsync -r crues/ pi@$IP:~/crues_pi/crues/
-        sshpass -p "dapamaka" rsync setup.py pi@$IP:~/crues_pi/
-        sshpass -p "dapamaka" rsync requirements.txt pi@$IP:~/crues_pi/
-        sshpass -p "dapamaka" rsync -r ros_pkgs/ pi@$IP:~/ros_catkin_ws/src/
+        sshpass -p "dapamaka" rsync -r crues/ crues@$IP:~/crues_pi/crues/
+        sshpass -p "dapamaka" rsync setup.py crues@$IP:~/crues_pi/
+        sshpass -p "dapamaka" rsync requirements.txt crues@$IP:~/crues_pi/
+        sshpass -p "dapamaka" rsync -r ros_pkgs/ crues@$IP:~/catkin_ws/src/
 fi
