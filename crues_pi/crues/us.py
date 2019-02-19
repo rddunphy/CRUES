@@ -27,7 +27,7 @@ class UltrasonicTimout(Exception):
     """Error for indicating that an ultrasonic sensor has timed out (e.g. because GPIO missed an edge)."""
 
     def __init__(self, dir, timeout):
-        super(UltrasonicTimout, self).__init__("%s ultrasonic sensor timed out after %f s" % _dir_str.get(dir), timeout)
+        super(UltrasonicTimout, self).__init__("%s ultrasonic sensor timed out after %f s" % (_dir_str.get(dir), timeout))
         self.dir = dir
         self.timeout = timeout
 

@@ -20,24 +20,23 @@ def _mc_msg(ls, rs):
 
 
 def handle_new_range(range):
-    if range.data > 150:
+    rospy.loginfo("Roomba received new ultrasonic range.")
+    if range.data > 120:
         pub.publish(_mc_msg(25, 25))
-    if range.data > 80:
-        pub.publish(_mc_msg(10, 10))
     else:
-        pub.publish(_mc_msg(25, -25))
-        time.sleep(random.uniform(0.5, 1.3))
+        pub.publish(_mc_msg(18, -18))
+        time.sleep(random.uniform(0.3, 0.6))
 
 
 def main():
     try:
-        print "Running Roomba control node"
         rospy.init_node('roomba')
         rospy.Subscriber('uc_range', Int32, handle_new_range)
         # spin() simply keeps python from exiting until this node is stopped
         rospy.spin()
-    except rospy.ROSInterruptException:
-        print "ROSInterruptException in node 'roomba'"
+    except rospy.ROSInterruptException as e:
+        rospy.logerr("ROSInterruptException in node 'roomba'")
+        rospy.logerr(e)
 
 
 if __name__ == '__main__':
