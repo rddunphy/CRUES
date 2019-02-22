@@ -9,6 +9,7 @@ from crues_actuators.msg import MotorControl
 
 
 pub = rospy.Publisher('motor_control', MotorControl, queue_size=10)
+time_to_stop_turning = None
 
 
 def _mc_msg(ls, rs):
@@ -20,12 +21,13 @@ def _mc_msg(ls, rs):
 
 
 def handle_new_range(range):
-    rospy.loginfo("Roomba received new ultrasonic range.")
+    rospy.loginfo("Roomba received new ultrasonic range: %d" % range.data)
+    global time_to_stop_turning
     if range.data > 120:
         pub.publish(_mc_msg(25, 25))
-    else:
+    elif not time_to_stop_turning or time.time() < time_to_stop_turning:
+        time_to_stop_turning = time.time() + random.uniform(0.3, 0.6)
         pub.publish(_mc_msg(18, -18))
-        time.sleep(random.uniform(0.3, 0.6))
 
 
 def main():

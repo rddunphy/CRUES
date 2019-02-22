@@ -7,32 +7,32 @@ import RPi.GPIO as GPIO
 
 # Ultrasonic sensors
 UL_TRIG = 38
-UL_ECHO = 40
-UC_TRIG = 37
-UC_ECHO = 35
-UR_TRIG = 31
-UR_ECHO = 29
+UL_ECHO = 35
+UC_TRIG = 16
+UC_ECHO = 12
+UR_TRIG = 22
+UR_ECHO = 18
 
 # IMU serial pins
 IMU_SCL = 5
 IMU_SDA = 3
 
 # Encoder outputs
-EL_A = 22
-EL_B = 18
-ER_A = 13
-ER_B = 11
+EL_A = 23
+EL_B = 27
+ER_A = 24
+ER_B = 26
 
 # Motor control pins
-ML_DIR = 12
+ML_DIR = 11
 ML_PWM = 32
-MR_DIR = 7
+MR_DIR = 15
 MR_PWM = 33
-M_SLP = 16
+M_SLP = 13
 
 # LED indicators
-LED_RED = 36
-LED_GREEN = 28
+LED_RED = 29
+LED_GREEN = 31
 
 
 def cleanup():
