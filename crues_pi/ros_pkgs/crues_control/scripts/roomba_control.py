@@ -4,13 +4,15 @@ import random
 import time
 
 import rospy
-from std_msgs.msg import Int32
+from std_msgs.msg import Int32, Bool
 from crues_actuators.msg import MotorControl
 
 from crues.us import LEFT, CENTRE, RIGHT
 
 
 mc_pub = rospy.Publisher('motor_control', MotorControl, queue_size=10)
+gl_pub = rospy.Publisher('green_led', Bool, queue_size=10)
+rl_pub = rospy.Publisher('red_led', Bool, queue_size=10)
 time_to_stop_turning = None
 last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
 turn_speed = 18
@@ -38,14 +40,20 @@ def handle_new_range(r, s):
     if all([r > obstacle_range for r in last_ranges.values()]):
         # All clear, just go for it
         mc_pub.publish(_mc_msg(fwd_speed, fwd_speed))
+        gl_pub.publish(True)
+        rl_pub.publish(False)
     elif last_ranges[LEFT] < last_ranges[RIGHT]:
         # Obstacle more on left, so turn right
         mc_pub.publish(_mc_msg(turn_speed, -turn_speed))
         time_to_stop_turning = time.time() + random.uniform(0.3, 0.6)
+        gl_pub.publish(False)
+        rl_pub.publish(True)
     else:
         # Obstacle more on right, so turn left
         mc_pub.publish(_mc_msg(-turn_speed, turn_speed))
         time_to_stop_turning = time.time() + random.uniform(0.3, 0.6)
+        gl_pub.publish(False)
+        rl_pub.publish(True)
 
 
 def main():
