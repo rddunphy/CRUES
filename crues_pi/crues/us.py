@@ -8,7 +8,7 @@ LEFT = 0
 CENTRE = 1
 RIGHT = 2
 
-_dir_str = {LEFT: "Left", CENTRE: "Centre", RIGHT: "Right"}
+sensor_str = {LEFT: "Left", CENTRE: "Centre", RIGHT: "Right"}
 
 # Approx. speed of sound at 20C in m/s
 speed_of_sound = 343
@@ -27,7 +27,7 @@ class UltrasonicTimout(Exception):
     """Error for indicating that an ultrasonic sensor has timed out (e.g. because GPIO missed an edge)."""
 
     def __init__(self, dir, timeout):
-        super(UltrasonicTimout, self).__init__("%s ultrasonic sensor timed out after %f s" % (_dir_str.get(dir), timeout))
+        super(UltrasonicTimout, self).__init__("%s ultrasonic sensor timed out after %f s" % (sensor_str.get(dir), timeout))
         self.dir = dir
         self.timeout = timeout
 
