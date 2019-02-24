@@ -5,7 +5,9 @@ import time
 import rospy
 from std_msgs.msg import Int32
 
-from crues import us, pin_defs
+import RPi.GPIO as GPIO
+
+from crues import us
 
 
 ## VERSION FOR ONLY CENTRE ULTRASONIC SENSOR:
@@ -69,7 +71,7 @@ def main():
         rospy.logerr("ROSInterruptException in ultrasonic node")
         rospy.logerr(e)
     finally:
-        pin_defs.cleanup()
+        GPIO.cleanup()
 
 
 if __name__ == '__main__':

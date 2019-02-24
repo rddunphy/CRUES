@@ -3,7 +3,9 @@
 import rospy
 from std_msgs.msg import Bool
 
-from crues import leds, pin_defs
+import RPi.GPIO as GPIO
+
+from crues import leds
 
 
 def handle_led_msg(data, led):
@@ -23,7 +25,7 @@ def main():
     except rospy.ROSInterruptException as e:
         rospy.logerr(e)
     finally:
-        pin_defs.cleanup()
+        GPIO.cleanup()
 
 
 if __name__ == '__main__':

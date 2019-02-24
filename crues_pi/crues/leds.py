@@ -2,7 +2,7 @@ from threading import Event, Thread
 
 import RPi.GPIO as GPIO
 
-from pin_defs import LED_RED, LED_GREEN
+from crues.pin_defs import Pins
 
 
 class FlashInterrupt(Exception):
@@ -80,5 +80,6 @@ class LED:
         proc.start()
 
 
-green_led = LED(LED_GREEN)
-red_led = LED(LED_RED)
+pins = Pins()
+green_led = LED(pins.LG)
+red_led = LED(pins.LR)

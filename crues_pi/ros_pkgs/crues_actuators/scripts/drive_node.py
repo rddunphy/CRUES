@@ -3,7 +3,9 @@
 import rospy
 from crues_actuators.msg import MotorControl
 
-from crues import motors, pin_defs
+import RPi.GPIO as GPIO
+
+from crues import motors
 
 
 ml_pwm_pin = None
@@ -25,7 +27,7 @@ def main():
     except rospy.ROSInterruptException as e:
         rospy.logerr(e)
     finally:
-        pin_defs.cleanup()
+        GPIO.cleanup()
 
 
 if __name__ == '__main__':

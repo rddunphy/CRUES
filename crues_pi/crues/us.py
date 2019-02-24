@@ -2,11 +2,13 @@ import time
 
 import RPi.GPIO as GPIO
 
-from pin_defs import UC_ECHO, UC_TRIG, UR_ECHO, UR_TRIG, UL_ECHO, UL_TRIG
+from pin_defs import Pins
 
 LEFT = 0
 CENTRE = 1
 RIGHT = 2
+
+pins = Pins()
 
 sensor_str = {LEFT: "Left", CENTRE: "Centre", RIGHT: "Right"}
 
@@ -46,11 +48,11 @@ class USScan:
 
 def _get_pins(dir):
     if dir == LEFT:
-        return UL_TRIG, UL_ECHO
+        return pins.ULT, pins.ULE
     elif dir == CENTRE:
-        return UC_TRIG, UC_ECHO
+        return pins.UCT, pins.UCE
     elif dir == RIGHT:
-        return UR_TRIG, UR_ECHO
+        return pins.URT, pins.URE
     else:
         raise ValueError("ultrasonic.get_range(dir) must take valid direction as input.")
 
@@ -68,8 +70,8 @@ def configure_gpio():
     GPIO.cleanup() should be called on exit.
     """
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup([UL_TRIG, UC_TRIG, UR_TRIG], GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup([UL_ECHO, UC_ECHO, UR_ECHO], GPIO.IN)
+    GPIO.setup([pins.ULT, pins.UCT, pins.URT], GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup([pins.ULE, pins.UCE, pins.URE], GPIO.IN)
 
 
 def get_range(dir):

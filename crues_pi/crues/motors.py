@@ -1,15 +1,18 @@
-from crues.pin_defs import ML_DIR, ML_PWM, MR_DIR, MR_PWM, M_SLP
+from crues.pin_defs import Pins
 
 import RPi.GPIO as GPIO
 
 
+pins = Pins()
+
+
 def gpio_setup():
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup([ML_DIR, MR_DIR], GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(M_SLP, GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.setup([ML_PWM, MR_PWM], GPIO.OUT)
-    ml_pin = GPIO.PWM(ML_PWM, 50)
-    mr_pin = GPIO.PWM(MR_PWM, 50)
+    GPIO.setup([pins.MLD, pins.MRD], GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(pins.MS, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup([pins.MLP, pins.MRP], GPIO.OUT)
+    ml_pin = GPIO.PWM(pins.MLP, 50)
+    mr_pin = GPIO.PWM(pins.MRP, 50)
     ml_pin.start(0)
     mr_pin.start(0)
     return ml_pin, mr_pin
@@ -30,9 +33,9 @@ def set_speeds(ml_pin, mr_pin, l_speed=0, r_speed=0, slp=True):
     # GPIO.setmode(GPIO.BOARD)
     # GPIO.setup([ML_DIR, MR_DIR], GPIO.OUT, initial=GPIO.LOW)
     # GPIO.setup(M_SLP, GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.output(M_SLP, not slp)
+    GPIO.output(pins.MS, not slp)
     # Low output = forward
-    GPIO.output(ML_DIR, l_speed < 0)
-    GPIO.output(MR_DIR, r_speed < 0)
+    GPIO.output(pins.MLD, l_speed < 0)
+    GPIO.output(pins.MRD, r_speed < 0)
     ml_pin.ChangeDutyCycle(abs(l_speed))
     mr_pin.ChangeDutyCycle(abs(r_speed))

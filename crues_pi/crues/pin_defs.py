@@ -1,70 +1,30 @@
 """Pin definitions for Raspberry Pi GPIO."""
 
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
-
-import RPi.GPIO as GPIO
-
-# Ultrasonic sensors
-UL_TRIG = 38
-UL_ECHO = 35
-UC_TRIG = 16
-UC_ECHO = 12
-UR_TRIG = 22
-UR_ECHO = 18
-
-# IMU serial pins
-IMU_SCL = 5
-IMU_SDA = 3
-
-# Encoder outputs
-EL_A = 23
-EL_B = 27
-ER_A = 24
-ER_B = 26
-
-# Motor control pins
-ML_DIR = 11
-ML_PWM = 32
-MR_DIR = 15
-MR_PWM = 33
-M_SLP = 13
-
-# LED indicators
-LED_RED = 29
-LED_GREEN = 31
+import json
 
 
-def cleanup():
-    GPIO.cleanup()
+class Pins:
+    def __init__(self, path="../../wiring/eagle/main_pcb/pins_v1.json"):
+        self._load(path)
 
-
-def print_config():
-    print("Ultrasonic")
-    print("UL_TRIG: {}".format(UL_TRIG))
-    print("UL_ECHO: {}".format(UL_ECHO))
-    print("UC_TRIG: {}".format(UC_TRIG))
-    print("UC_ECHO: {}".format(UC_ECHO))
-    print("UR_TRIG: {}".format(UR_TRIG))
-    print("UR_ECHO: {}".format(UR_ECHO))
-    print()
-    print("IMU")
-    print("IMU_SCL: {}".format(IMU_SCL))
-    print("IMU_SDA: {}".format(IMU_SDA))
-    print()
-    print("Encoders")
-    print("EL_A: {}".format(EL_A))
-    print("EL_B: {}".format(EL_B))
-    print("ER_A: {}".format(ER_A))
-    print("ER_B: {}".format(ER_B))
-    print()
-    print("Motor control")
-    print("ML_DIR: {}".format(ML_DIR))
-    print("ML_PWM: {}".format(ML_PWM))
-    print("MR_DIR: {}".format(MR_DIR))
-    print("MR_PWM: {}".format(MR_PWM))
-    print("M_SLP: {}".format(M_SLP))
-    print()
-    print("LEDs")
-    print("LED_RED: {}".format(LED_RED))
-    print("LED_GREEN: {}".format(LED_GREEN))
+    def _load(self, path):
+        d = json.load(path)
+        self.UCT = d["uct"]
+        self.UCE = d["uce"]
+        self.ULT = d["ult"]
+        self.ULE = d["ule"]
+        self.URT = d["urt"]
+        self.URE = d["ure"]
+        self.SDA = d["sda"]
+        self.SCL = d["scl"]
+        self.MLD = d["mld"]
+        self.MRD = d["mrd"]
+        self.MLP = d["mlp"]
+        self.MRP = d["mrp"]
+        self.MS = d["ms"]
+        self.ELA = d["ela"]
+        self.ERA = d["era"]
+        self.ELB = d["elb"]
+        self.ERB = d["erb"]
+        self.LG = d["lg"]
+        self.LR = d["lr"]
