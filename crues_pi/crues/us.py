@@ -77,7 +77,7 @@ def configure_gpio():
 def get_range(dir):
     """Get range from ultrasonic sensor in millimetres.
 
-    :param dir: (int) One of ultrasonic.US_LEFT, ultrasonic.US_CENTRE, or ultrasonic.US_RIGHT
+    :param dir: (int) One of us.LEFT, us.CENTRE, or us.RIGHT
     :return: (int) Approx. range in millimetres
     :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
     """

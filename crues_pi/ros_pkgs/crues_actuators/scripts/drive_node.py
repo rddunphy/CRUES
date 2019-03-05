@@ -12,8 +12,8 @@ ml_pwm_pin = None
 mr_pwm_pin = None
 
 
-def handle_mc_msg(data):
-    motors.set_speeds(ml_pwm_pin, mr_pwm_pin, r_speed=data.r_speed, l_speed=data.l_speed, slp=data.slp)
+def handle_mc_msg(msg):
+    motors.set_speeds(ml_pwm_pin, mr_pwm_pin, r_speed=msg.r_speed, l_speed=msg.l_speed, slp=msg.slp)
 
 
 def main():

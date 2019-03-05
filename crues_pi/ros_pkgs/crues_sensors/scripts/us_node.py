@@ -41,7 +41,7 @@ def publish_range(s, pub):
     except us.UltrasonicTimout as e:
         rospy.logwarn(str(e))
     else:
-        rospy.loginfo("%s ultrasonic node range: %d", (us.sensor_str.get(s), r))
+        rospy.loginfo("%s ultrasonic node range: %d", us.sensor_str.get(s), r)
         pub.publish(r)
 
 
@@ -66,10 +66,8 @@ def main():
             publish_range(us.RIGHT, pub_r)
             # Additionally publish scan object for SLAM node?
             rate.sleep()
-        rospy.logwarn("ultrasonic node thinks rospy.is_shutdown???")
     except rospy.ROSInterruptException as e:
         rospy.logerr("ROSInterruptException in ultrasonic node")
-        rospy.logerr(e)
     finally:
         GPIO.cleanup()
 

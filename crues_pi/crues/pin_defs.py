@@ -4,8 +4,9 @@ import json
 
 
 class Pins:
-    def __init__(self, path="../../wiring/eagle/main_pcb/pins_v1.json"):
-        self._load(path)
+    def __init__(self, path="../config/pins_v1.json"):
+        with open(path) as f:
+            self._load(f)
 
     def _load(self, path):
         d = json.load(path)

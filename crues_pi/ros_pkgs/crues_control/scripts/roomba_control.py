@@ -7,13 +7,14 @@ import rospy
 from std_msgs.msg import Int32, Bool
 from crues_actuators.msg import MotorControl
 
+from crues import us
 from crues.us import LEFT, CENTRE, RIGHT
 
 
 mc_pub = rospy.Publisher('motor_control', MotorControl, queue_size=10)
 gl_pub = rospy.Publisher('green_led', Bool, queue_size=10)
 rl_pub = rospy.Publisher('red_led', Bool, queue_size=10)
-time_to_stop_turning = None
+time_to_stop_turning = -1
 last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
 turn_speed = 18
 fwd_speed = 25
@@ -28,13 +29,14 @@ def _mc_msg(ls, rs):
     return msg
 
 
-def handle_new_range(r, s):
+def handle_new_range(msg, s):
+    r = msg.data
     global time_to_stop_turning
     last_ranges[s] = r
-    if any([r is None for r in last_ranges.values()]):
+    #if any([r is None for r in last_ranges.values()]):
         # Still waiting for first reading from another sensor
-        return
-    if time_to_stop_turning < time.time():
+    #    return
+    if 0 < time_to_stop_turning < time.time():
         # Finish turning first
         return
     if all([r > obstacle_range for r in last_ranges.values()]):

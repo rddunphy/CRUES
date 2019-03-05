@@ -14,4 +14,5 @@ if [ $# -eq 0 ]
         sshpass -p "dapamaka" rsync setup.py crues@$IP:~/crues_pi/
         sshpass -p "dapamaka" rsync requirements.txt crues@$IP:~/crues_pi/
         sshpass -p "dapamaka" rsync -r ros_pkgs/ crues@$IP:~/catkin_ws/src/
+        sshpass -p "dapamaka" rsync -r config/ crues@$IP:~/config/
 fi
