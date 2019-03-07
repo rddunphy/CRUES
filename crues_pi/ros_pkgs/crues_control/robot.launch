@@ -1,0 +1,6 @@
+<launch>
+    <node name="ultrasonic" pkg="crues_sensors" type="us_node.py" />
+    <node name="drive" pkg="crues_actuators" type="drive_node.py" />
+    <node name="leds" pkg="crues_actuators" type="led_node.py" />
+    <node name="roomba" pkg="crues_control" type="roomba_control.py" />
+</launch>

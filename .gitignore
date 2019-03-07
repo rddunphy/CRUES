@@ -12,6 +12,14 @@ venv/
 *.tar
 *.gz
 
+# Eagle files
+*.b#*
+*.s#*
+*.job
+*.pro
+*.brd.lck
+*.sch.lck
+
 # Temporary OpenOffice files
 *.~lock.*#
 

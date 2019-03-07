@@ -1,4 +1,0 @@
-<launch>
-    <node name="uc" package="ultrasonic" type="us_node.py" />
-    <node name="drive" package="motor_control" type="drive_node.py" />
-</launch>
