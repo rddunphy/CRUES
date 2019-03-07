@@ -1,10 +1,18 @@
 """Pin definitions for Raspberry Pi GPIO."""
 
 import json
+import os
+
+
+def _get_pins_config_path():
+    dirname = os.path.dirname(__file__)
+    return os.path.join(dirname, "../config/pins_v1.json")
 
 
 class Pins:
-    def __init__(self, path="../config/pins_v1.json"):
+    def __init__(self, path=None):
+        if not path:
+            path = _get_pins_config_path()
         with open(path) as f:
             self._load(f)
 
