@@ -3,7 +3,8 @@ import threading
 import SocketServer
 import random
 import time
-from concurrent.futures import ThreadPoolExecutor 
+from concurrent.futures import ThreadPoolExecutor
+
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
@@ -15,8 +16,10 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         response = "{}: {}".format(cur_thread.name, data)
         self.request.sendall(response)
 
+
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
+
 
 def client(ip, port, message):
     time.sleep(random.randrange(0, 2))
@@ -31,6 +34,7 @@ def client(ip, port, message):
         print "Received: {}".format(response)
     finally:
         sock.close()
+
 
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
