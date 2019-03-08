@@ -8,8 +8,8 @@ import RPi.GPIO as GPIO
 from crues import leds
 
 
-def handle_led_msg(data, led):
-    if data:
+def handle_led_msg(msg, led):
+    if msg.data:
         led.turn_on()
     else:
         led.turn_off()
