@@ -125,3 +125,21 @@ distributions. Given variables defined on a probability space, the joint
 probability distribution gives the probability that each of the variables falls in any
 particular range or set. It uses these techniques to estimates a state vector containing
 both the location of landmarks in the map and the robot pose~\cite{huang2007convergence}.
+
+
+\section{Computer Vision}\label{litreview/cv}
+Computer vision is the analysis of digital image or video data to allow a computer
+system to gain a high-level understanding of the 3D environment contained within
+the image\cite{CVBallard}.A common application for computer vision is the identification and classification
+of objects. Identification generally involves the recognition of features of the
+object and the comparison of these features and their relative positions to a
+known model of the object. Classification usually involves machine learning
+algorithms to build up a definition of the object based on its visible properties\cite{CVpaoletti2018new}.
+
+Computer vision can also be used to triangulate the position of objects in the
+field of view by measuring the discrepancy in the objects position in the two camera
+frames given a translation matrix relating the two cameras.
+
+Computer vision can be well integrated with SLAM providing a means of both the measure
+of distance (if the CV system is bi-ocular) and the identification of distinctive
+features in the environment to allow loop closure\cite{CVho2006loop}.
