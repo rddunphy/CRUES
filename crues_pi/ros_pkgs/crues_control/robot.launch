@@ -1,9 +1,7 @@
 <launch>
-    <node name="ultrasonic" pkg="crues_sensors" type="us_node.py" />
-    <node name="drive" pkg="crues_actuators" type="drive_node.py" />
-    <node name="leds" pkg="crues_actuators" type="led_node.py" />
-    <node name="roomba" pkg="crues_control" type="roomba_control.py" />
 
+    <!-- SENSORS -->
+    <node name="ultrasonic" pkg="crues_sensors" type="us_node.py" />
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
         <param name="pin_a" value="ela" type="str" />
         <param name="pin_b" value="elb" type="str" />
@@ -11,9 +9,24 @@
         <remap from="wheel" to="lwheel"/>
     </node>
     <node name="right_encoder" pkg="crues_sensors" type="enc_node.py">
-        <param name="pin_a" value="era" type="str" />
-        <param name="pin_b" value="erb" type="str" />
-        <param name="rate" value="10" type="int" />
+        <param name="pin_a" type="str" value="era" />
+        <param name="pin_b" type="str" value="erb" />
+        <param name="rate" type="int" value="10" />
         <remap from="wheel" to="rwheel"/>
     </node>
+
+    <!-- ACTUATORS -->
+    <node name="drive" pkg="crues_actuators" type="drive_node.py" />
+    <node name="red_led" pkg="crues_actuators" type="led_node.py">
+        <param name="pin" type="str" value="lr" />
+        <remap from="led" to="red_led" />
+    </node>
+    <node name="green_led" pkg="crues_actuators" type="led_node.py">
+        <param name="pin" type="str" value="lg" />
+        <remap from="led" to="green_led" />
+    </node>
+
+    <!-- CONTROL -->
+    <node name="roomba" pkg="crues_control" type="roomba_control.py" />
+
 </launch>

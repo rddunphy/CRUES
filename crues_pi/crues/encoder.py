@@ -15,29 +15,29 @@ class Encoder:
         self.pin_a = pins.get(pin_a_str)
         self.pin_b = pins.get(pin_b_str)
         GPIO.setup([self.pin_a, self.pin_b], GPIO.IN)
-        GPIO.add_event_detect(self.pin_a, GPIO.BOTH, callback=self.callback_a)
-        GPIO.add_event_detect(self.pin_b, GPIO.BOTH, callback=self.callback_b)
+        GPIO.add_event_detect(self.pin_a, GPIO.BOTH, callback=self._callback_a)
+        GPIO.add_event_detect(self.pin_b, GPIO.BOTH, callback=self._callback_b)
 
-    def callback_a(self, _):
+    def _callback_a(self, _):
         a, b = GPIO.input(self.pin_a), GPIO.input(self.pin_b)
         if a == b:
-            self.inc()
+            self._inc()
         else:
-            self.dec()
+            self._dec()
 
-    def callback_b(self, _):
+    def _callback_b(self, _):
         a, b = GPIO.input(self.pin_a), GPIO.input(self.pin_b)
         if a == b:
-            self.dec()
+            self._dec()
         else:
-            self.inc()
+            self._inc()
 
-    def inc(self):
+    def _inc(self):
         self.count += 1
         if self.count > MAX_VAL:
             self.count = MIN_VAL
 
-    def dec(self):
+    def _dec(self):
         self.count -= 1
         if self.count < MIN_VAL:
             self.count = MAX_VAL
