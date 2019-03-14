@@ -1,33 +1,30 @@
 #!/usr/bin/env python
 
 import rospy
-from crues_actuators.msg import MotorControl
+from std_msgs.msg import Float32
 
-import RPi.GPIO as GPIO
-
-from crues import motors
+from crues.motors import Motor
 
 
-ml_pwm_pin = None
-mr_pwm_pin = None
-
-
-def handle_mc_msg(msg):
-    motors.set_speeds(ml_pwm_pin, mr_pwm_pin, r_speed=msg.r_speed, l_speed=msg.l_speed, slp=msg.slp)
+def handle_motor_cmd(msg, motor, scale_factor):
+    motor.set_speed(msg.data * scale_factor)
 
 
 def main():
+    rospy.init_node('motor')
+    pwm_pin = rospy.get_param('~pwm_pin')
+    dir_pin = rospy.get_param('~dir_pin')
+    speed_range = rospy.get_param('~speed_range', 255.0)
+    max_speed = rospy.get_param('~max_speed', 100.0)
+    motor = Motor(pwm_pin, dir_pin, max_speed)
+    scale_factor = 100.0 / speed_range
+    rospy.Subscriber('motor_cmd', Float32, handle_motor_cmd, args=(motor, scale_factor))
     try:
-        global ml_pwm_pin, mr_pwm_pin
-        ml_pwm_pin, mr_pwm_pin = motors.gpio_setup()
-        rospy.init_node('motor_driver')
-        rospy.Subscriber('motor_control', MotorControl, handle_mc_msg)
-        # spin() simply keeps python from exiting until this node is stopped
         rospy.spin()
     except rospy.ROSInterruptException as e:
         rospy.logerr(e)
     finally:
-        GPIO.cleanup()
+        motor.cleanup()
 
 
 if __name__ == '__main__':
