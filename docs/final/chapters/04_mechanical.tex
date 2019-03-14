@@ -2,11 +2,26 @@
 
 \chapter{Mechanical}\label{mechanical}
 
-\section{Chassis and Sensors}\label{mech/chassis}
+The mechanical design of each robot is central to its functionality, with sensors being heavily 
+reliant on the accuracy of the mechanical construction. As multiple robots are being created, 
+the mechanical similarity is also important to ensure the sensors and software function consistently across each robot. The placement of sensors will be critical to this and
+so the first robot will be completed and tested before further agents are constructed.
+Printed Circuit Boards (PCBs) are likely to be used for this purpose in the
+final iteration of the design---with strip board being used for prototyping---as this will provide additional robustness and guaranteed repeatability between robots.
 
-\subsection{Design}\label{mech/chassis/design}
+\section{Chassis}\label{mech/chassis}
+The chassis used for the robots was the pre-built ``hobbyist'' chassis from Pololu ~\cite{pololuchassis}. These chassis were chosen as they enabled consistency and scalability between robots which was essential to this component of the design. The chassis were accompanied by a number of fitted parts such as motors, encoders and a power distribution board which were also used for consistency. The initial design of the PCB and assembly of the robots was not constricted by this choice as the chassis had a number of holes at regular intervals which could be used to attach a varoiety in a number of different ways. A variety of chassis colours were also used to simplify the robot recognition which was required and will be discussed later in Section ~\ref{software/cv}. 
 
-\subsection{Implementation}\label{mech/chassis/impl}
+During testing, issues were encountered with the motors which had accompanied the chassis regarding the leaking of oil or grease from their plastic casing. This resulted in the gears making more noise than they should and could possibly result in motor failure if the motors were run without more grease for a prolonged period of time. This was investigated thorugh the manufacturer, however, unfortunately no reply has been forthcoming. The risk of motor failure was reduced by applying a more appropriate grease at the recommendation of \todo{insert Steve's surname????}, the lab technician.  
+
+
+
+\section{Sensors}\label{mech/sensors}
+
+
+\subsection{Design}\label{mech/sensors/design}
+
+\subsection{Implementation}\label{mech/sensors/impl}
 
 
 
