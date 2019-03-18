@@ -30,7 +30,7 @@ class MotorSleepController:
         pins = Pins()
         self.pin = pins.MS
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.pin, GPIO.OUT, intial=GPIO.HIGH)
+        GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.HIGH)
 
     def set_sleep(self, sleep):
         if sleep:

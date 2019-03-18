@@ -103,10 +103,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-<<<<<<< HEAD
-=======
   CATKIN_DEPENDS message_runtime
->>>>>>> 9ab59ae75468c6bfc9ea6d0beed48efcbf0897b6
 #  INCLUDE_DIRS include
 #  LIBRARIES crues_comms
 #  CATKIN_DEPENDS other_catkin_pkg

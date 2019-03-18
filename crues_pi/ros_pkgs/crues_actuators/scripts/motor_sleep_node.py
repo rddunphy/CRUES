@@ -6,14 +6,14 @@ from std_msgs.msg import Bool
 from crues.motors import MotorSleepController
 
 
-def handle_motor_cmd(msg, controller):
+def handle_sleep_cmd(msg, controller):
     controller.set_sleep(msg.data)
 
 
 def main():
     rospy.init_node('motor_sleep')
     controller = MotorSleepController()
-    rospy.Subscriber('motor_sleep', Bool, handle_sleep_cmd, args=(controller))
+    rospy.Subscriber('motor_sleep', Bool, handle_sleep_cmd, callback_args=(controller))
     try:
         rospy.spin()
     except rospy.ROSInterruptException as e:
