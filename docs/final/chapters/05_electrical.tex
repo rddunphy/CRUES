@@ -60,13 +60,18 @@ A circuit was then created to read the values using an Arduino microcontroller t
 
 
 \section{Encoders}\label{elec/encoder}
-
+what and why
+Wheel encoders are required to measure the speed of each wheel independently. This gives the system far more control over its path as well as allowing it to perform dead reckoning through wheel odometry. 
 \subsection{Design}\label{elec/encoder/design}
+ The motors selected had both incremental and absolute custom designed encoder, but as only the wheel speed is needed and not the position, the incremental rotary encoders were used. These were hall effect encoders, which measure the changing magnetic field of magnets which are attached to the motor shaft. It has two 6 pole magnets magnets which create 12 counts per revolution of the motor shaft, which, after scaling for the gear ratio of 120:1, results in 1440 counts per revolution of the robot wheel. 
+ 
+The encoders are quadrature encoders, which represent the speed and direction of the wheels with two square waves 
 
 \subsection{Implementation}\label{elec/encoder/impl}
-
+code 
 \subsection{Testing}\label{elec/encoder/test}
-
+oscilloscope hw testing
+system testing 
 
 \section{IMU}\label{elec/imu}
 IMU purpose 
