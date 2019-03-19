@@ -1,8 +1,10 @@
 # Compiled Python files
 *.pyc
+*.egg-info
 
 # Virtual environments
 venv/
+CRUES_VENV_2/
 
 # PyCharm files
 .idea/
