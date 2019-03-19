@@ -15,8 +15,8 @@ gl_pub = rospy.Publisher('green_led', Bool, queue_size=10)
 rl_pub = rospy.Publisher('red_led', Bool, queue_size=10)
 time_to_stop_turning = -1
 last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
-turn_speed = 25
-fwd_speed = 25
+turn_speed = 1
+fwd_speed = 0.2
 obstacle_range = 100
 
 

@@ -66,7 +66,7 @@ def main():
             publish_range(us.RIGHT, pub_r)
             # Additionally publish scan object for SLAM node?
             rate.sleep()
-    except rospy.ROSInterruptException as e:
+    except rospy.ROSInterruptException:
         rospy.logerr("ROSInterruptException in ultrasonic node")
     finally:
         GPIO.cleanup()

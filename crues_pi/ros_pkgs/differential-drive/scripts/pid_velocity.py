@@ -80,7 +80,10 @@ class PidVelocity():
         rospy.Subscriber("wheel_vtarget", Float32, self.targetCallback) 
         self.pub_motor = rospy.Publisher('motor_cmd', Float32, queue_size=10) 
         self.pub_vel = rospy.Publisher('wheel_vel', Float32, queue_size=10)
-   
+
+        rospy.Subscriber("Kp", Float32, self.setKp)
+        rospy.Subscriber("Ki", Float32, self.setKi)
+        rospy.Subscriber("Kd", Float32, self.setKd)
         
     #####################################################
     def spin(self):
@@ -185,7 +188,7 @@ class PidVelocity():
         if (self.target == 0):
             self.motor = 0
     
-        rospy.logdebug("vel:%0.2f tar:%0.2f err:%0.2f int:%0.2f der:%0.2f ## motor:%d " % 
+        rospy.logdebug("vel:%0.2f tar:%0.2f err:%0.2f int:%0.2f der:%0.2f ## motor:%d " %
                       (self.vel, self.target, self.error, self.integral, self.derivative, self.motor))
     
     
@@ -215,7 +218,16 @@ class PidVelocity():
         self.ticks_since_target = 0
         # rospy.logdebug("-D- %s targetCallback " % (self.nodename))
     
-    
+    ######################################################
+    def setKp(self, msg):
+        self.Kp = msg.data
+
+    def setKi(self, msg):
+        self.Ki = msg.data
+
+    def setKd(self, msg):
+        self.Kd = msg.data
+    ######################################################
 if __name__ == '__main__':
     """ main """
     try:

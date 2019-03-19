@@ -12,7 +12,7 @@ class Motor:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.dir_pin, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.pwm_pin_n, GPIO.OUT)
-        self.pwm_pin = GPIO.PWM(self.pwm_pin_n, 50)
+        self.pwm_pin = GPIO.PWM(self.pwm_pin_n, 100)
         self.pwm_pin.start(0)
 
     def set_speed(self, speed):
