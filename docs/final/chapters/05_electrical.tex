@@ -58,7 +58,27 @@ Wheel encoders are required to measure the speed of each wheel independently. Th
 The encoders are quadrature encoders, which represent the speed and direction of the wheels with two square waves where the frequency represents the speed and which of the two waves is leading shows the direction.
 
 \subsection{Implementation}\label{elec/encoder/impl}
-code 
+
+The encoder data was read into the RPi by an encoder class written in Python. This worked by connecting call back methods to both the A and B channel pins. 
+
+\todo{format listings}
+
+\begin{lstlisting}[language=Python]
+GPIO.add_event_detect(self.pin$_$a, GPIO.BOTH, callback=self._callback_a)
+\end{lstlisting}
+
+This then either increments or decrements a count depending on the direction. Note that \textit{\_callback\_b()} is identical but with \textit{self.\_inc()} and \textit{self.\_dec()} switched.
+
+\begin{lstlisting}[language=Python]
+def _callback_a(self, _):
+        a, b = GPIO.input(self.pin_a), GPIO.input(self.pin_b)
+        if a == b:
+            self._inc()
+        else:
+            self._dec()
+\end{lstlisting}
+
+
 \subsection{Testing}\label{elec/encoder/test}
 The encoders were first tested to ensure that they functioned correctly using a test circuit and connecting the encoder outputs to an oscilloscope. All the encoders were shown to function correctly outputting square waves in both channels and with channel A leading B when the motor was moving forwards and B leading A when going forwards. \todo{check order}
 \todo{get graph of output} 
@@ -82,15 +102,41 @@ It should be noted that, while this was the only I$^2$C device currently used, o
 \todo{code description}
 
 \subsection{Testing}\label{elec/imu/test}
-
+Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame. 
 
 
 
 \section{PCB}\label{elec/pcb}
-
+As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board).  
 \subsection{Design}\label{elec/pcb/design}
+The PCB required to contain the following components:
+\begin{itemize}
+  \item Raspberry Pi ribbon cable connector
+  \item Three ultrasonic sensors
+  \item IMU
+  \item Left and right encoder connectors
+  \item Motor drive connectors
+  \item Power connectors
+  \item LEDs for debugging
+\end{itemize}
 
-\subsection{Implementation}\label{elec/pcb/impl}
+with the following design constraints:
+
+\begin{itemize}
+  \item Central ultrasonic sensor at the centre of the robot in the x axis
+  \item the other ultrasonic sensors symmetrical about the y axis
+  \item IMU chip in centre of axis
+  \item Mounting holes for RPi and for mounting PCB to chassis
+  \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
+  \item Motor drive connectors also at fixed position relative to centre 
+\end{itemize}
+\todo{maybe find coordinates of parts for fixed position components}
+With these constraints the following PCB design shown in figure \todo{image and reference}
+
+Note that the peculiar shape is to allow room for the motors and encoders. 
 
 \subsection{Testing}\label{elec/pcb/test}
 
+After the components were soldered into place on the PCB, manual continuity tests were performed with a multimeter to ensure that adjacent pins had not been connected in the soldering process.
+
+The PCB was then mounted and each module test was rerun to ensure that the connections were all correct. This process exposed a flaw as one of the ultrasonic sensors seemed to no longer work. After some investigation it was noticed that the screws being used had slightly larger heads than the screws used for mounting the test strip board and was connecting two tracks. A rubber washer was used as temporary fix and then this was corrected in the final PCB design. 
