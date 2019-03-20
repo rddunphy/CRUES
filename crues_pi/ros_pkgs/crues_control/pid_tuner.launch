@@ -1,0 +1,84 @@
+<launch>
+
+    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf"/>
+    <rosparam param="ticks_meter">6353</rosparam>
+
+
+    <!-- SENSORS -->
+    <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
+        <param name="pin_a" type="str" value="ela" />
+        <param name="pin_b" type="str" value="elb" />
+        <param name="rate" type="int" value="50" />
+        <remap from="wheel" to="lwheel"/>
+    </node>
+    <node name="right_encoder" pkg="crues_sensors" type="enc_node.py">
+        <param name="pin_a" type="str" value="era" />
+        <param name="pin_b" type="str" value="erb" />
+        <param name="rate" type="int" value="50" />
+        <remap from="wheel" to="rwheel"/>
+    </node>
+
+    <!-- ACTUATORS -->
+    <node name="motor_sleep" pkg="crues_actuators" type="motor_sleep_node.py" />
+    <node name="left_motor" pkg="crues_actuators" type="drive_node.py">
+        <param name="pwm_pin" type="str" value="mlp" />
+        <param name="dir_pin" type="str" value="mld" />
+        <param name="speed_range" type="double" value="255.0" />
+        <param name="max_speed" type="double" value="255.0" />
+        <remap from="motor_cmd" to="lmotor_cmd" />
+    </node>
+    <node name="right_motor" pkg="crues_actuators" type="drive_node.py">
+        <param name="pwm_pin" type="str" value="mrp" />
+        <param name="dir_pin" type="str" value="mrd" />
+        <param name="speed_range" type="double" value="255.0" />
+        <param name="max_speed" type="double" value="255.0" />
+        <remap from="motor_cmd" to="rmotor_cmd" />
+    </node>
+
+    <!-- CONTROL -->
+    <node name="lpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
+        <rosparam param="Kp">0</rosparam>
+        <rosparam param="Ki">0</rosparam>
+        <rosparam param="Kd">0</rosparam>
+        <rosparam param="out_min">-255</rosparam>
+        <rosparam param="out_max">255</rosparam>
+        <rosparam param="rate">50</rosparam>
+        <rosparam param="rolling_pts">2</rosparam>
+        <remap from="wheel" to="lwheel"/>
+        <remap from="motor_cmd" to="lmotor_cmd"/>
+        <remap from="wheel_vtarget" to="lwheel_vtarget"/>
+        <remap from="wheel_vel" to="lwheel_vel"/>
+    </node>
+    <node name="rpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
+        <rosparam param="Kp">0</rosparam>
+        <rosparam param="Ki">0</rosparam>
+        <rosparam param="Kd">0</rosparam>
+        <rosparam param="out_min">-255</rosparam>
+        <rosparam param="out_max">255</rosparam>
+        <rosparam param="rate">50</rosparam>
+        <rosparam param="rolling_pts">2</rosparam>
+        <remap from="wheel" to="rwheel"/>
+        <remap from="motor_cmd" to="rmotor_cmd"/>
+        <remap from="wheel_vtarget" to="rwheel_vtarget"/>
+        <remap from="wheel_vel" to="rwheel_vel"/>
+    </node>
+
+    <node name="left_vel_control" pkg="crues_control" type="wheel_vel_control.py">
+        <rosparam param="rate">50</rosparam>
+        <remap from="wheel_vtarget" to="lwheel_vtarget"/>
+        <remap from="wheel_vinput" to="lwheel_vinput"/>
+    </node>
+    <node name="right_vel_control" pkg="crues_control" type="wheel_vel_control.py">
+        <rosparam param="rate">50</rosparam>
+        <remap from="wheel_vtarget" to="rwheel_vtarget"/>
+        <remap from="wheel_vinput" to="rwheel_vinput"/>
+    </node>
+
+    <node name="left_pid_dump" pkg="differential_drive" type="pid_data_dump.py">
+        <rosparam param="left">true</rosparam>
+    </node>
+    <node name="right_pid_dump" pkg="differential_drive" type="pid_data_dump.py">
+        <rosparam param="left">false</rosparam>
+    </node>
+
+</launch>

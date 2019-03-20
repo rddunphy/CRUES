@@ -184,10 +184,12 @@ class PidVelocity():
         if self.motor < self.out_min:
             self.motor = self.out_min
             self.integral = self.integral - (self.error * pid_dt)
-      
-        if (self.target == 0):
-            self.motor = 0
-    
+
+        # TODO: Disabled only for PID tuning
+        # if (self.target == 0):
+        #     self.motor = 0
+        rospy.logwarn("velocity: %0.2f   target: %0.2f" % (self.vel, self.target))
+
         rospy.logdebug("vel:%0.2f tar:%0.2f err:%0.2f int:%0.2f der:%0.2f ## motor:%d " %
                       (self.vel, self.target, self.error, self.integral, self.derivative, self.motor))
     
