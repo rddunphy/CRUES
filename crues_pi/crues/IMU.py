@@ -21,12 +21,13 @@ speed_vect = (0, 0, 0)
 pins = Pins()
 
 
-#class IMU:
+# class IMU:
 #    """This class represents a scan of ranges from ultrasonic sensors.
 #    """
 
-#def __init__(self, channel=1):
+# def __init__(self, channel=1):
 IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=1)
+
 
 def _read_gyro():
     """ reads IMU over i2c and returns tuple of x,y,z rotational velocities
@@ -54,7 +55,8 @@ def get_speeds():
 
     return tuple(speed_vect), gyro_speeds
 
+
 if __name__ == '__main__':
-    while(1):
-        print("gyro :" + _read_gyro(), + "   acc:" + _read_accel())
-        #print("speeds :" + get_speeds())
+    while 1:
+        print("gyro :" + _read_gyro() + "   acc:" + _read_accel())
+        # print("speeds :" + get_speeds())
