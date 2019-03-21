@@ -2,11 +2,13 @@
 
 \chapter{Electrical}\label{electrical}
 
-\section{Power Distribution and Motor Drive}
+\section{Power Distribution and Motor Drive}\label{elec/poweranddrive}
 Overview of system and why we bought it
-\subsection{Testing}\label{elec/range/test}
+\subsection{Testing}\label{elec/poweranddrive/test}
 motor drive system test circiut
 should test power distribrutionat somepoint 
+
+
 
 
 \section{Range Sensors}\label{elec/range}
@@ -15,7 +17,7 @@ For the robot to localise itself, it needs to be able to measure the distance be
 \subsection{Design}\label{elec/range/design}
 Infra-red, ultrasound and LIDAR distance were all considered. These are all active sensors, meaning that they measure the effect of an output from the sensor, in these cases, IR light, ultrasonic waves or visible light respectively. 
 
-Of these three, LIDAR is generally considered to be the most effectiveas it is the most accurate and has a \ang{360} field of view However, it is both too expensive and too heavy for our application, especially considering that each robot would need one. 
+Of these three, LIDAR is generally considered to be the most effective as it is the most accurate and has a \ang{360} field of view However, it is both too expensive and too heavy for our application, especially considering that each robot would need one. 
 \todo{infra red}
 Ultrasonic transceivers were therefore decided upon for use in this project. These work by transmitting sound at a particular frequency and measuring the time until the reflected wave returns to the sensor. These are also cheap, but produce a wider cone of transmission than the IR sensors, making them less likely to miss objects at the cost of accuracy in the direction of the measurement. 
 
@@ -37,7 +39,31 @@ Sensor selected and why
 Sensor layout (3 deg cones) 
 circuit layout
 schematic
-Software overview 
+
+The distances are measured by an \textit{USScan} class. This has a \textit{get\_scan()} function which iterates through each ultrasonic sensor and takes a reading, as shown below in Code Listing \ref{lst:get_scan}
+
+\begin{lstlisting}[caption={get\_scanFunction in USScan},label={lst:get_scan} , language=python]
+def get_scan():
+    """Get scan of ranges from all ultrasonic sensors.
+    :return: (USScan) Scan of ranges
+    :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
+    """
+    start = time.time()
+    rl = get_range(LEFT)
+    time_remaining = start + scan_increment - time.time()
+    if time_remaining > 0:
+        time.sleep(time_remaining)
+    rc = get_range(CENTRE)
+    time_remaining = start + 2 * scan_increment - time.time()
+    if time_remaining > 0:
+        time.sleep(time_remaining)
+    rr = get_range(RIGHT)
+    return USScan([rl, rc, rr])
+\end{lstlisting}
+
+This method allows the various readings to be taken without interfering with each other, as the second ultrasonic pulse isn't omitted until the first is received. 
+
+As \ref{lst:get_scan} shows,\textit{get\_range()} is used by \textit{get\_scan()} to find the distance measured by each sensor. This simply triggers the sensor and times how long until the echo pin turns high. The range is then calculated by the equation $ 2d = tv_s$ where $v_s$ is the speed of sound. It is then converted to mm.
 
 \subsection{Testing}\label{elec/range/test}
 The sensors were initially tested using a signal generator and an oscilloscope. This allowed us to quickly identify 2 malfunctioning sensors, as there was a linear response between the distance to an obstacle and the width of the echo pin pulse width. The pulse width could then be used to to calculate the measured distance and this compared to the distance found with a measuring tape. Gave readings accurate to within a cm, however this method  was not repeated enough for any rigorous analysis of accuracy as the distance calculations would have to be performed manually and this was time consuming. 
@@ -59,17 +85,17 @@ The encoders are quadrature encoders, which represent the speed and direction of
 
 \subsection{Implementation}\label{elec/encoder/impl}
 
-The encoder data was read into the RPi by an encoder class written in Python. This worked by connecting call back methods to both the A and B channel pins. 
+The encoder data was read into the RPi by an encoder class written in Python. This worked by connecting call back methods to both the A and B channel pins. How this is initialised is shown in Code Listing \ref{lst:enc_event_detect}
 
 \todo{format listings}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[caption={encoder callback set-up},label={lst:enc_event_detect} , language=python]
 GPIO.add_event_detect(self.pin$_$a, GPIO.BOTH, callback=self._callback_a)
 \end{lstlisting}
 
-This then either increments or decrements a count depending on the direction. Note that \textit{\_callback\_b()} is identical but with \textit{self.\_inc()} and \textit{self.\_dec()} switched.
+This then either increments or decrements a count depending on the direction, as shown in Code Listing \ref{lst:enc_callback}. Note that \textit{\_callback\_b()} is identical but with \textit{self.\_inc()} and \textit{self.\_dec()} switched.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[caption={Encoder Callback Function},label={lst:enc_callback} , language=python]
 def _callback_a(self, _):
         a, b = GPIO.input(self.pin_a), GPIO.input(self.pin_b)
         if a == b:
