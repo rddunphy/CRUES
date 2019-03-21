@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import math
 from crues import i2c
 
@@ -25,23 +26,23 @@ pins = Pins()
 #    """
 
 #def __init__(self, channel=1):
-i2c = i2c.i2c_object(IMU_ADDRESS, channel=1)
+IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=1)
 
 def _read_gyro():
     """ reads IMU over i2c and returns tuple of x,y,z rotational velocities
     in rad per second """
-    x_rot_v = i2c.read_signed_word(0x43) * GYRO_UNITS
-    y_rot_v = i2c.read_signed_word(0x45) * GYRO_UNITS
-    z_rot_v = i2c.read_signed_word(0x47) * GYRO_UNITS
+    x_rot_v = IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
+    y_rot_v = IMU_i2c.read_signed_word(0x45) * GYRO_UNITS
+    z_rot_v = IMU_i2c.read_signed_word(0x47) * GYRO_UNITS
     return (x_rot_v, y_rot_v, z_rot_v)
 
 
 def _read_accel():
     """ reads IMU over i2c and returns tuple of x,y,z linear accelerations
-    in rad per second """
-    x_a = i2c.read_signed_word(0x3b) * ACC_UNITS
-    y_a = i2c.read_signed_word(0x3d) * ACC_UNITS
-    z_a = i2c.read_signed_word(0x3f) * ACC_UNITS
+    in ms^-2 """
+    x_a = IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
+    y_a = IMU_i2c.read_signed_word(0x3d) * ACC_UNITS
+    z_a = IMU_i2c.read_signed_word(0x3f) * ACC_UNITS
     return (x_a, y_a, z_a)
 
 
@@ -56,3 +57,4 @@ def get_speeds():
 if __name__ == '__main__':
     while(1):
         print("gyro :" + _read_gyro(), + "   acc:" + _read_accel())
+        #print("speeds :" + get_speeds())
