@@ -51,9 +51,9 @@
     </node>
 
     <node name="lpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
-        <rosparam param="Kp">155</rosparam>
-        <rosparam param="Ki">2214</rosparam>
-        <rosparam param="Kd">7.49</rosparam>
+        <rosparam param="Kp">50</rosparam>
+        <rosparam param="Ki">714</rosparam>
+        <rosparam param="Kd">2.3</rosparam>
         <rosparam param="out_min">-255</rosparam>
         <rosparam param="out_max">255</rosparam>
         <rosparam param="rate">50</rosparam>
@@ -64,9 +64,9 @@
         <remap from="wheel_vel" to="lwheel_vel"/>
     </node>
     <node name="rpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
-        <rosparam param="Kp">155</rosparam>
-        <rosparam param="Ki">2214</rosparam>
-        <rosparam param="Kd">7.49</rosparam>
+        <rosparam param="Kp">50</rosparam>
+        <rosparam param="Ki">714</rosparam>
+        <rosparam param="Kd">2.3</rosparam>
         <rosparam param="out_min">-255</rosparam>
         <rosparam param="out_max">255</rosparam>
         <rosparam param="rate">50</rosparam>

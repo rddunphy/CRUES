@@ -63,22 +63,4 @@
         <remap from="wheel_vel" to="rwheel_vel"/>
     </node>
 
-    <node name="left_vel_control" pkg="crues_control" type="wheel_vel_control.py">
-        <rosparam param="rate">50</rosparam>
-        <remap from="wheel_vtarget" to="lwheel_vtarget"/>
-        <remap from="wheel_vinput" to="lwheel_vinput"/>
-    </node>
-    <node name="right_vel_control" pkg="crues_control" type="wheel_vel_control.py">
-        <rosparam param="rate">50</rosparam>
-        <remap from="wheel_vtarget" to="rwheel_vtarget"/>
-        <remap from="wheel_vinput" to="rwheel_vinput"/>
-    </node>
-
-    <node name="left_pid_dump" pkg="differential_drive" type="pid_data_dump.py">
-        <rosparam param="left">true</rosparam>
-    </node>
-    <node name="right_pid_dump" pkg="differential_drive" type="pid_data_dump.py">
-        <rosparam param="left">false</rosparam>
-    </node>
-
 </launch>
