@@ -7,6 +7,9 @@ class i2c_object:
     def __init__(self, address, channel=1):
         self.address = address
         self.bus = smbus.SMBus(channel)
+        
+    def write_byte(self, reg, val):
+        self.bus.write_byte_data(self.address, reg, val)
 
     def read_byte(self, reg):
         return self.bus.read_byte_data(self.address, reg)

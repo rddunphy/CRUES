@@ -12,7 +12,7 @@ def publish_data(pub):
     linear_speeds, ang_speeds = IMU.get_speeds()
     (vel_msg.angular.x, vel_msg.angular.y, vel_msg.angular.z) = ang_speeds
     (vel_msg.linear.x, vel_msg.linear.y, vel_msg.linear.z) = linear_speeds
-    rospy.loginfo("Gyro :" + ang_speeds + "  linear:" + linear_speeds)
+    rospy.loginfo("Gyro : %s  linear: %s" % (ang_speeds, linear_speeds))
     pub.publish(vel_msg)
 
 
