@@ -1,19 +1,18 @@
-import RPi.GPIO as GPIO
-
-from crues.pin_defs import Pins
-
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 MIN_VAL = -32768
 MAX_VAL = 32767
 
 
 class Encoder:
-    def __init__(self, pin_a_str, pin_b_str):
+    def __init__(self, pin_a, pin_b):
         self.count = 0
-        pins = Pins()
+        self.pin_a = pin_a
+        self.pin_b = pin_b
         GPIO.setmode(GPIO.BOARD)
-        self.pin_a = pins.get(pin_a_str)
-        self.pin_b = pins.get(pin_b_str)
         GPIO.setup([self.pin_a, self.pin_b], GPIO.IN)
         GPIO.add_event_detect(self.pin_a, GPIO.BOTH, callback=self._callback_a)
         GPIO.add_event_detect(self.pin_b, GPIO.BOTH, callback=self._callback_b)

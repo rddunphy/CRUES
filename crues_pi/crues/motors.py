@@ -1,34 +1,35 @@
 from crues.pin_defs import Pins
 
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 
 class Motor:
-    def __init__(self, pwm_pin_str, dir_pin_str, max_speed):
+    def __init__(self, pwm_pin, dir_pin, max_speed):
         self.max_speed = max_speed
-        pins = Pins()
-        self.pwm_pin_n = pins.get(pwm_pin_str)
-        self.dir_pin = pins.get(dir_pin_str)
+        self.pwm_pin = pwm_pin
+        self.dir_pin = dir_pin
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.dir_pin, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.pwm_pin_n, GPIO.OUT)
-        self.pwm_pin = GPIO.PWM(self.pwm_pin_n, 100)
-        self.pwm_pin.start(0)
+        self.pwm = GPIO.PWM(self.pwm_pin, 100)
+        self.pwm.start(0)
 
     def set_speed(self, speed):
         speed = min(self.max_speed, speed)
         speed = max(-self.max_speed, speed)
         GPIO.output(self.dir_pin, speed < 0)
-        self.pwm_pin.ChangeDutyCycle(abs(speed))
+        self.pwm.ChangeDutyCycle(abs(speed))
 
     def cleanup(self):
-        GPIO.cleanup([self.dir_pin, self.pwm_pin_n])
+        GPIO.cleanup([self.dir_pin, self.pwm_pin])
 
 
 class MotorSleepController:
-    def __init__(self):
-        pins = Pins()
-        self.pin = pins.MS
+    def __init__(self, pin):
+        self.pin = pin
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.HIGH)
 
