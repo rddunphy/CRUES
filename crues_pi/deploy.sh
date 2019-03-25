@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-# Pass IP address of connected RPi as argument. rsync merges new/updated files
-# into existing directory structure. In future, possibly scan for devices on
-# network and deploy to all available RPis?
-
-
 if [[ $# -eq 0 ]]
 then
-    echo "Enter robot names as arguments"
+    echo "Enter robot names as arguments."
+    exit 1
 else
+    echo "Checking execution permissions for ROS scripts..."
+    find ros_pkgs/ -name "*.py" -print0 | xargs -r0 chmod +x
     for NAME in "$@"
     do
         if [[ ${NAME} = "blinky" ]]
@@ -21,17 +19,19 @@ else
         then
             IP=192.168.1.4
         else
-            echo "${NAME} is not a valid robot name"
-            exit
+            echo "${NAME} is not a valid robot name."
+            exit 1
         fi
-        echo "Deploying to ${NAME} (crues@${IP})"
+        NUM=0
+        echo "Deploying to ${NAME} (crues@${IP}):"
         echo "  - Library files..."
-        sshpass -p "dapamaka" rsync --stats -r crues/ crues@${IP}:~/crues_pi/crues/ | grep 'files transferred'
-        sshpass -p "dapamaka" rsync --stats setup.py crues@${IP}:~/crues_pi/ | grep 'files transferred'
-        sshpass -p "dapamaka" rsync --stats requirements.txt crues@${IP}:~/crues_pi/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi crues/ crues@${IP}:~/crues_pi/crues/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
         echo "  - Configuration files..."
-        sshpass -p "dapamaka" rsync --stats -r config/ crues@${IP}:~/crues_pi/config/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi -r config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
         echo "  - ROS packages..."
-        sshpass -p "dapamaka" rsync --stats  -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
+        echo "Updated ${NUM} files on ${NAME}."
     done
 fi
