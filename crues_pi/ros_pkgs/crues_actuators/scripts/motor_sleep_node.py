@@ -12,8 +12,9 @@ def handle_sleep_cmd(msg, controller):
 
 def main():
     rospy.init_node('motor_sleep')
-    controller = MotorSleepController()
-    rospy.Subscriber('motor_sleep', Bool, handle_sleep_cmd, callback_args=(controller))
+    pin = rospy.get_param('pins/ms')
+    controller = MotorSleepController(pin)
+    rospy.Subscriber('motor_sleep', Bool, handle_sleep_cmd, callback_args=controller)
     try:
         rospy.spin()
     except rospy.ROSInterruptException as e:

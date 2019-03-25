@@ -6,19 +6,20 @@ from std_msgs.msg import Float32
 from crues.motors import Motor
 
 
-def handle_motor_cmd(msg, (motor, scale_factor)):
-    motor.set_speed(msg.data * scale_factor)
+def handle_motor_cmd(msg, (motor, offset, scale_factor)):
+    motor.set_speed((msg.data - offset) * scale_factor)
 
 
 def main():
     rospy.init_node('motor')
     pwm_pin = rospy.get_param('~pwm_pin')
     dir_pin = rospy.get_param('~dir_pin')
-    speed_range = rospy.get_param('~speed_range', 255.0)
-    max_speed = rospy.get_param('~max_speed', 100.0)
+    range_min = rospy.get_param('~range_min', -1.0)
+    range_max = rospy.get_param('~range_max', 1.0)
     motor = Motor(pwm_pin, dir_pin, max_speed)
-    scale_factor = 100.0 / speed_range
-    rospy.Subscriber('motor_cmd', Float32, handle_motor_cmd, callback_args=(motor, scale_factor))
+    offset = (range_min + range_max) / 2
+    scale_factor = 200.0 / (range_max - range_min)
+    rospy.Subscriber('motor_cmd', Float32, handle_motor_cmd, callback_args=(motor, offset, scale_factor))
     try:
         rospy.spin()
     except rospy.ROSInterruptException as e:

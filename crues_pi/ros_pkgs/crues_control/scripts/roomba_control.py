@@ -7,7 +7,10 @@ import rospy
 from std_msgs.msg import Bool, Float32, Int32
 from geometry_msgs.msg import Twist
 
-from crues.us import LEFT, CENTRE, RIGHT
+
+LEFT = 0
+CENTRE = 1
+RIGHT = 2
 
 
 m_pub = rospy.Publisher('twist', Twist, queue_size=10)

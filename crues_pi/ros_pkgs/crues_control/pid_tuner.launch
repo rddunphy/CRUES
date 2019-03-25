@@ -1,21 +1,20 @@
 <launch>
 
     <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf"/>
-    <rosparam param="ticks_meter">6353</rosparam>
-
+    <param command="load" file="/home/crues/crues_pi/config/params.yaml" />
 
     <!-- SENSORS -->
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
-        <param name="pin_a" type="str" value="ela" />
-        <param name="pin_b" type="str" value="elb" />
-        <param name="rate" type="int" value="50" />
-        <remap from="wheel" to="lwheel"/>
+        <remap from="~rate" to="enc_rate" />
+        <remap from="~pin_a" to="pins/ela" />
+        <remap from="~pin_b" to="pins/elb" />
+        <remap from="/wheel" to="/lwheel"/>
     </node>
     <node name="right_encoder" pkg="crues_sensors" type="enc_node.py">
-        <param name="pin_a" type="str" value="era" />
-        <param name="pin_b" type="str" value="erb" />
-        <param name="rate" type="int" value="50" />
-        <remap from="wheel" to="rwheel"/>
+        <remap from="~rate" to="enc_rate" />
+        <remap from="~pin_a" to="pins/era" />
+        <remap from="~pin_b" to="pins/erb" />
+        <remap from="/wheel" to="/rwheel" />
     </node>
 
     <!-- ACTUATORS -->
@@ -23,44 +22,45 @@
     <node name="left_motor" pkg="crues_actuators" type="drive_node.py">
         <param name="pwm_pin" type="str" value="mlp" />
         <param name="dir_pin" type="str" value="mld" />
-        <param name="speed_range" type="double" value="255.0" />
-        <param name="max_speed" type="double" value="255.0" />
+        <param name="range_min" type="double" value="-0.5" />
+        <param name="range_max" type="double" value="0.5" />
         <remap from="motor_cmd" to="lmotor_cmd" />
     </node>
     <node name="right_motor" pkg="crues_actuators" type="drive_node.py">
         <param name="pwm_pin" type="str" value="mrp" />
         <param name="dir_pin" type="str" value="mrd" />
-        <param name="speed_range" type="double" value="255.0" />
-        <param name="max_speed" type="double" value="255.0" />
+        <param name="range_min" type="double" value="-0.5" />
+        <param name="range_max" type="double" value="0.5" />
         <remap from="motor_cmd" to="rmotor_cmd" />
     </node>
 
     <!-- CONTROL -->
     <node name="lpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
-        <rosparam param="Kp">0</rosparam>
-        <rosparam param="Ki">0</rosparam>
-        <rosparam param="Kd">0</rosparam>
-        <rosparam param="out_min">-255</rosparam>
-        <rosparam param="out_max">255</rosparam>
-        <rosparam param="rate">50</rosparam>
-        <rosparam param="rolling_pts">2</rosparam>
+        <param name="Kp" type="double" value="0" />
+        <param name="Ki" type="double" value="0" />
+        <param name="Kd" type="double" value="0" />
+        <param name="out_min" type="double" value="-0.5" />
+        <param name="out_max" type="double" value="0.5" />
+        <param name="rate" type="int" value="50" />
+        <param name="rolling_pts" type="int" value="2" />
         <remap from="wheel" to="lwheel"/>
         <remap from="motor_cmd" to="lmotor_cmd"/>
         <remap from="wheel_vtarget" to="lwheel_vtarget"/>
         <remap from="wheel_vel" to="lwheel_vel"/>
     </node>
     <node name="rpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
-        <rosparam param="Kp">0</rosparam>
-        <rosparam param="Ki">0</rosparam>
-        <rosparam param="Kd">0</rosparam>
-        <rosparam param="out_min">-255</rosparam>
-        <rosparam param="out_max">255</rosparam>
-        <rosparam param="rate">50</rosparam>
-        <rosparam param="rolling_pts">2</rosparam>
+        <param name="Kp" type="double" value="0" />
+        <param name="Ki" type="double" value="0" />
+        <param name="Kd" type="double" value="0" />
+        <param name="out_min" type="double" value="-0.5" />
+        <param name="out_max" type="double" value="0.5" />
+        <param name="rate" type="int" value="50" />
+        <param name="rolling_pts" type="int" value="2" />
         <remap from="wheel" to="rwheel"/>
         <remap from="motor_cmd" to="rmotor_cmd"/>
         <remap from="wheel_vtarget" to="rwheel_vtarget"/>
         <remap from="wheel_vel" to="rwheel_vel"/>
     </node>
+    <node name="pid_tuner" pkg="crues_control" type="pid_tune.py" />
 
 </launch>
