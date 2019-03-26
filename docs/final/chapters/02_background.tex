@@ -11,14 +11,31 @@ the IEEE, were then screened further based on their titles and abstracts.
 Priority was given to those with direct relation to the study---for example
 those using ultrasonic sensors to do SLAM or those also using ground vehicles.
 Related articles were also found through citations used within these articles
-in addition to the related articles feature used by Google Scholar. These
-searches resulted in full investigations of XXX articles for each of the main
+in addition to the related articles feature provided by Google Scholar. These
+searches resulted in full investigations of around 4 articles for each of the main
 review topics. When more specific information was required e.g., for specific
 algorithms related to the study, the search term was altered to refine the
 relevant articles. If at any point throughout the study it was felt that more
 reading was required, the selection of articles here were revisited, with
 related articles used to fill in any gaps in knowledge from the original
 searches.
+
+\section{Robotics}\label{litreview/robotics}
+A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of teachnology which deals with the design, constrcution, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
+
+\subsection{Control}\label{litreview/robotics/control}  
+As the robots in this study are homogeneous and should be able to complete tasks individually, control is limited to the control of a single robot in the complete system. Robotic mechanisms form the control system for a robot and connect the fixed parts of the robot together by joints to allow motion between fixed parts%~\cite{https://books.google.co.uk/books?id=5NzFDgAAQBAJ&printsec=frontcover&dq=robotics&hl=en&sa=X&ved=0ahUKEwip3eXllqDhAhVcQRUIHZ1tDNEQ6AEIKjAA#v=onepage&q=robotics&f=false}.
+Actuation of the joints, usually by motors, imparts forces on the robot which allow it to move and perform a variety of tasks%~\cite{https://books.google.co.uk/books?id=5NzFDgAAQBAJ&printsec=frontcover&dq=robotics&hl=en&sa=X&ved=0ahUKEwip3eXllqDhAhVcQRUIHZ1tDNEQ6AEIKjAA#v=onepage&q=robotics&f=false}.
+The movement of these ``actuators'' is influenced by a number of sensors which provide the system with information about its environment. These sensors can also influence the movement of the actuators through feedback from previous movement instructions%~\cite{THEROBOTICSBIBLE^^}.    
+
+Sensors can take many forms and provide information about internal and external environmental factors of the robot. External sensors provide information which the robot would otherwise find significantly more difficult to discover, one such example being range sensing. This can take a number of different forms including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and binocular computer vision. Each of these sensors use unique methods to determine the distance from the robot to another object in its environment. Ultrasound sensors use high frequency sound waves which reflect from surfaces and return to the sensor in time t to calculate the distance to the object using the speed of sound. Infra-red sensors work in a similar fashion but with invisible light instead of sound. 
+
+LIDAR is a more advanced use of invisible light to more accurately detect distance using more powerful and precise beams of light than in the infra-red case~\cite{http://www.lidar-uk.com/how-lidar-works/}. Binocular vision allows depth perception to take place similar to that allowed by human vision~\cite{https://www.ncbi.nlm.nih.gov/pubmed/15471592} by perspective-based cues which can only be obtained from at least binocular vision~\cite{
+https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-546.pdf}. 
+
+
+
+%https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
