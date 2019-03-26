@@ -21,45 +21,47 @@ speed_vect = (0, 0, 0)
 pins = Pins()
 
 
-# class IMU:
-#    """This class represents a scan of ranges from ultrasonic sensors.
-#    """
+class IMU:
+    """This class represents a scan of ranges from ultrasonic sensors.
+   """
 
-# def __init__(self, channel=1):
-IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=1)
+    def __init__(self, address, rate, channel=1):
+        self.address = address
+        self.IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=channel)
+        self.rate = rate
 
-
-def _read_gyro():
-    """ reads IMU over i2c and returns tuple of x,y,z rotational velocities
-    in rad per second """
-    x_rot_v = IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
-    y_rot_v = IMU_i2c.read_signed_word(0x45) * GYRO_UNITS
-    z_rot_v = IMU_i2c.read_signed_word(0x47) * GYRO_UNITS
-    return (x_rot_v, y_rot_v, z_rot_v)
-
-
-def _read_accel():
-    """ reads IMU over i2c and returns tuple of x,y,z linear accelerations
-    in ms^-2 """
-    x_a = IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
-    y_a = IMU_i2c.read_signed_word(0x3d) * ACC_UNITS
-    z_a = IMU_i2c.read_signed_word(0x3f) * ACC_UNITS
-    return (x_a, y_a, z_a)
+    def _read_gyro(self):
+        """ reads IMU over i2c and returns tuple of x,y,z rotational velocities
+        in rad per second """
+        x_rot_v = self.IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
+        y_rot_v = self.IMU_i2c.read_signed_word(0x45) * GYRO_UNITS
+        z_rot_v = self.IMU_i2c.read_signed_word(0x47) * GYRO_UNITS
+        return (x_rot_v, y_rot_v, z_rot_v)
 
 
-def get_speeds():
-    """get linear and angular velocities from the IMU device
-    @:returns speed_vect, a three item tuple with linear veocities in x,y,z in m/s
-    @:returns gyro_speeds, a three item tuple with xyz angular velocities in rad/s"""
-    global speed_vect
-    gyro_speeds = _read_gyro()
-    accel_vect = _read_accel()
-    speed_vect = speed_vect + tuple(SAMPLE_PERIOD * x for x in accel_vect)
+    def _read_accel(self):
+        """ reads IMU over i2c and returns tuple of x,y,z linear accelerations
+        in ms^-2 """
+        x_a = self.IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
+        y_a = self.IMU_i2c.read_signed_word(0x3d) * ACC_UNITS
+        z_a = self.IMU_i2c.read_signed_word(0x3f) * ACC_UNITS
+        return (x_a, y_a, z_a)
 
-    return tuple(speed_vect), gyro_speeds
+
+    def get_speeds(self):
+        """get linear and angular velocities from the IMU device
+        @:returns speed_vect, a three item tuple with linear veocities in x,y,z in m/s
+        @:returns gyro_speeds, a three item tuple with xyz angular velocities in rad/s"""
+        global speed_vect
+        gyro_speeds = self._read_gyro()
+        accel_vect = self._read_accel()
+        speed_vect = speed_vect + tuple((1.0/self.rate) * x for x in accel_vect)
+
+        return tuple(speed_vect), gyro_speeds
 
 
 if __name__ == '__main__':
+    imu = IMU(0x68, 5)
     while 1:
-        print("gyro :" + _read_gyro() + "   acc:" + _read_accel())
-        print("speeds :" + get_speeds())
+        print("gyro :" + imu._read_gyro() + "   acc:" + imu._read_accel())
+        print("speeds :" + imu.get_speeds())
