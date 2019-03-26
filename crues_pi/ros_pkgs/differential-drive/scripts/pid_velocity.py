@@ -148,7 +148,7 @@ class PidVelocity():
             rospy.logdebug("-D- %s **** wheel updated vel=%0.3f **** " % (self.nodename, self.vel))
             self.wheel_prev = self.wheel_latest
             self.then = rospy.Time.now()
-            
+
         self.pub_vel.publish(self.vel)
         
     #####################################################
