@@ -48,6 +48,9 @@ def _read_accel():
 
 
 def get_speeds():
+    """get linear and angular velocities from the IMU device
+    @:returns speed_vect, a three item tuple with linear veocities in x,y,z in m/s
+    @:returns gyro_speeds, a three item tuple with xyz angular velocities in rad/s"""
     global speed_vect
     gyro_speeds = _read_gyro()
     accel_vect = _read_accel()
@@ -59,4 +62,4 @@ def get_speeds():
 if __name__ == '__main__':
     while 1:
         print("gyro :" + _read_gyro() + "   acc:" + _read_accel())
-        # print("speeds :" + get_speeds())
+        print("speeds :" + get_speeds())
