@@ -3,6 +3,7 @@ import math
 from crues import i2c
 
 from pin_defs import Pins
+import rospy
 
 IMU_ADDRESS = 0x68
 
@@ -16,7 +17,7 @@ ACC_RANGE = 2 * 9.81  # m/s^2
 ACC_DIVISIONS = 32768  # 2 ^15
 ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
 
-speed_vect = (0, 0, 0)
+speed_vect = (0.0, 0.0, 0.0)
 
 pins = Pins()
 
@@ -29,6 +30,8 @@ class IMU:
         self.address = address
         self.IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=channel)
         self.rate = rate
+        self.IMU_i2c.write_byte(0x6B, 0x00) # turns imu on
+
 
     def _read_gyro(self):
         """ reads IMU over i2c and returns tuple of x,y,z rotational velocities
@@ -56,9 +59,7 @@ class IMU:
         gyro_speeds = self._read_gyro()
         accel_vect = self._read_accel()
         speed_vect = speed_vect + tuple((1.0/self.rate) * x for x in accel_vect)
-
         return tuple(speed_vect), gyro_speeds
-
 
 if __name__ == '__main__':
     imu = IMU(0x68, 5)
