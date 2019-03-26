@@ -22,6 +22,9 @@ else
             echo "${NAME} is not a valid robot name."
             exit 1
         fi
+        echo "Synchronising time on ${NAME}..."
+        DATE=$(date)
+        sshpass -p "dapamaka" ssh crues@${IP} "date -s ${DATE}"
         NUM=0
         echo "Deploying to ${NAME} (crues@${IP}):"
         echo "  - Library files..."
