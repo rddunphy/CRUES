@@ -17,20 +17,19 @@ ACC_RANGE = 2 * 9.81  # m/s^2
 ACC_DIVISIONS = 32768  # 2 ^15
 ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
 
-speed_vect = (0.0, 0.0, 0.0)
-
 pins = Pins()
 
 
 class IMU:
-    """This class represents a scan of ranges from ultrasonic sensors.
+    """This class represents an IMU object connected over I2C
    """
 
     def __init__(self, address, rate, channel=1):
         self.address = address
-        self.IMU_i2c = i2c.i2c_object(IMU_ADDRESS, channel=channel)
+        self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
         self.rate = rate
         self.IMU_i2c.write_byte(0x6B, 0x00) # turns imu on
+        self.speed_vect = (0.0, 0.0, 0.0)
 
 
     def _read_gyro(self):
@@ -58,8 +57,8 @@ class IMU:
         global speed_vect
         gyro_speeds = self._read_gyro()
         accel_vect = self._read_accel()
-        speed_vect = speed_vect + tuple((1.0/self.rate) * x for x in accel_vect)
-        return tuple(speed_vect), gyro_speeds
+        speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
+        return speed_vect, gyro_speeds
 
 if __name__ == '__main__':
     imu = IMU(0x68, 5)
