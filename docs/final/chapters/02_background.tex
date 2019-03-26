@@ -33,7 +33,11 @@ Sensors can take many forms and provide information about internal and external 
 LIDAR is a more advanced use of invisible light to more accurately detect distance using more powerful and precise beams of light than in the infra-red case~\cite{http://www.lidar-uk.com/how-lidar-works/}. Binocular vision allows depth perception to take place similar to that allowed by human vision~\cite{https://www.ncbi.nlm.nih.gov/pubmed/15471592} by perspective-based cues which can only be obtained from at least binocular vision~\cite{
 https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-546.pdf}. 
 
+Internal sensors can either be related to the actuators or fixed parts of the robot. Those sensors which are connected to the fixed parts of the robot provide feedback about the entire robot and its local environment. The IMU...
 
+When connected to the actuators, generally only feedback information about that actuator is provided, as in the case of encoders. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised in the correct way.
+
+\subsection{Proportional-Integral-Derivative Controller}\label{litreview/pid}
 
 %https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
 
