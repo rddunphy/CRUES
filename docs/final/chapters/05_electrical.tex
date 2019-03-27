@@ -124,15 +124,67 @@ The IMU was to be placed as close to the centre of the axis of the robot as poss
 
 \subsection{Implementation}\label{elec/imu/impl}
 
-Th IMU selected uses the I$^2$C protocol for data transmission, which integrates well with the RPi as it has dedicated I$^2$C GPIO pins and existing libraries to facilitate communication. 
+The IMU selected uses the I$^2$C protocol for data transmission, which integrates well with the RPi as it has dedicated I$^2$C GPIO pins and existing libraries to facilitate communication. 
 
 It should be noted that, while this was the only I$^2$C device currently used, other devices with conflicting addresses can be handled as The IMU allows the address to be changed through a data pin from 0x68 to 0x69. This would most likely be used if the framework developed was being used on another, more complicated system requiring several IMUs. This pin was not connected to the RPi in this design as it was not yet required. 
 \todo{code description}
 
+An \verb|i2c\_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device. 
+
+\todo{what code is interesting}
+
+An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c\_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write\_byte()| call is essential to enable the IMU transmissions. 
+
+\begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
+def __init__(self, address, rate, channel=1):
+    self.address = address
+    self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
+    self.rate = rate
+    self.IMU_i2c.write_byte(0x6B, 0x00) # turns imu on
+    self.speed_vect = (0.0, 0.0, 0.0)
+\end{lstlisting}
+
+As the IMU returns arbitrary values between -32768 and 32767 \todo{source}, a constant was required to convert the results to meaningful values. The calculations for these is shown in Code Listing \ref{lst:imu_units}. 
+
+\begin{lstlisting}[caption={Calculation for IMU Value to SI unit Conversion Constants},label={lst:imu_units} , language=python]
+GYRO_RANGE = 250  # deg/sec
+GYRO_DIVISIONS = 32768  # 2 ^15
+GYRO_UNITS = (GYRO_RANGE * math.pi * 2.0) / (GYRO_DIVISIONS * 360)  # rad/sec
+
+ACC_RANGE = 2 * 9.81  # m/s^2
+ACC_DIVISIONS = 32768  # 2 ^15
+ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
+\end{lstlisting}
+
+The acceleration values can then be multiplied by the \textit{ACC\_UNITS} constant and the result is the acceleration in $ms^{-2}$, and \textit{GYRO\_UNITS} can be used similarly to find the rotation in $rads^{-1}$, as is shown in Code Listing \ref{lst:read_funcs}. 
+
+
+\begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
+    def _read_gyro(self):
+        x_rot_v = self.IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
+		...
+        return (x_rot_v, y_rot_v, z_rot_v)
+
+    def _read_accel(self):
+        x_a = self.IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
+		...
+        return (x_a, y_a, z_a)
+\end{lstlisting}
+
+The final step in reading the IMU results is to integrate the acceleration data as to get the linear velocities. This makes use of the \textit{speed\_vect} variable declared in the IMU constructor shown in Code Listing \ref{lst:imu_init}. \textit{speed\_vect} is incremented by the acceleration multiplied by the IMU rate, as shown in \ref{lst:imu_integration}.
+
+\begin{lstlisting}[caption={Integrating Linear Acceleration},label={lst:imu_integration} , language=python]
+
+def get_speeds(self):
+		...
+        accel_vect = self._read_accel()
+        speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
+        return speed_vect, gyro_speeds
+\end{lstlisting}
+
+
 \subsection{Testing}\label{elec/imu/test}
 Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame. 
-
-
 
 \section{PCB}\label{elec/pcb}
 As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board).  
