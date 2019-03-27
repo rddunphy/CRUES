@@ -1,0 +1,20 @@
+.gitignore	text
+.gitattributes	text
+CODEOWNERS	text
+*.json		text
+*.msg		text
+*.py		text
+*.sh		text
+*.xml		text
+*.md		text
+*.txt		text
+*.tex		text
+*.bib		text
+*.epf		text
+*.sch		text
+*.brd		text
+*.launch	text
+*.qet		text
+
+text=auto
+
