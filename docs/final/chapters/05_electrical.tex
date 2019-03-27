@@ -133,7 +133,7 @@ An \textit{i2c\_object} class that used the smbus package was created to simplif
 
 \todo{what code is interesting}
 
-An \textit{IMU} class was then created to read the data from the IMU which and an \textit{i2c\_object} instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \textit{write\_byte()} call is essential to enable the IMU transmissions. 
+An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c\_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write\_byte()| call is essential to enable the IMU transmissions. 
 
 \begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
 def __init__(self, address, rate, channel=1):
