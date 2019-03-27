@@ -129,7 +129,7 @@ The IMU selected uses the I$^2$C protocol for data transmission, which integrate
 It should be noted that, while this was the only I$^2$C device currently used, other devices with conflicting addresses can be handled as The IMU allows the address to be changed through a data pin from 0x68 to 0x69. This would most likely be used if the framework developed was being used on another, more complicated system requiring several IMUs. This pin was not connected to the RPi in this design as it was not yet required. 
 \todo{code description}
 
-An \textit{i2c\_object} class that used the smbus package was created to simplify the communication over the I$^2$C buses. These were initialised with an I$^2$C bus and an address, and contained various methods for reading and writing to the I$^2$C device. 
+An \verb|i2c\_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device. 
 
 \todo{what code is interesting}
 
