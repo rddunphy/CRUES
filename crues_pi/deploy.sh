@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-# Pass IP address of connected RPi as argument. rsync merges new/updated files
-# into existing directory structure. In future, possibly scan for devices on
-# network and deploy to all available RPis?
-
-
 if [[ $# -eq 0 ]]
 then
     echo "Enter robot names as arguments."
+    exit 1
 else
+    echo "Checking execution permissions for ROS scripts..."
+    find ros_pkgs/ -name "*.py" -print0 | xargs -r0 chmod +x
     for NAME in "$@"
     do
         if [[ ${NAME} = "blinky" ]]
@@ -21,14 +19,39 @@ else
         then
             IP=192.168.1.4
         else
-            echo "That's not a valid robot name"
-            exit
+            echo "${NAME} is not a valid robot name."
+            exit 1
         fi
-        echo "Deploying to ${NAME} (crues@${IP})..."
-        sshpass -p "dapamaka" rsync -r crues/ crues@${IP}:~/crues_pi/crues/
-        sshpass -p "dapamaka" rsync setup.py crues@${IP}:~/crues_pi/
-        sshpass -p "dapamaka" rsync requirements.txt crues@${IP}:~/crues_pi/
-        sshpass -p "dapamaka" rsync -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/
-        sshpass -p "dapamaka" rsync -r config/ crues@${IP}:~/crues_pi/config/
+        read -p "Enter password for ${NAME}: " -s PWD
+        STATUS=""
+        while [[ ${STATUS} != "ok" ]]
+        do
+            if [[ ${PWD} = "" ]]
+            then
+                STATUS=none
+            else
+                STATUS=$(sshpass -p ${PWD} ssh crues@${IP} echo ok 2>&1)
+            fi
+            case ${STATUS} in
+                ok) ;;
+                *"Permission denied"*) echo ""; read -p "Permission denied, try again: " -s PWD ;;
+                *) echo ""; echo ${STATUS}; exit 1 ;;
+            esac
+        done
+        echo ""
+        echo "Synchronising time on ${NAME}..."
+        DATE=$(date +"%d %b %Y %H:%M:%S")
+        sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
+        NUM=0
+        echo "Deploying to ${NAME} (crues@${IP}):"
+        echo "  - Library files..."
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi crues/ crues@${IP}:~/crues_pi/crues/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
+        echo "  - Configuration files..."
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
+        echo "  - ROS packages..."
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
+        echo "Updated ${NUM} files on ${NAME}."
     done
 fi
