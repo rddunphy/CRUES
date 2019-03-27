@@ -21,7 +21,7 @@ related articles used to fill in any gaps in knowledge from the original
 searches.
 
 \section{Robotics}\label{litreview/robotics}
-A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of teachnology which deals with the design, constrcution, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
+A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of technology which deals with the design, construction, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
 
 \subsection{Control}\label{litreview/robotics/control}  
 As the robots in this study are homogeneous and should be able to complete tasks individually, control is limited to the control of a single robot in the complete system. Robotic mechanisms form the control system for a robot and connect the fixed parts of the robot together by joints to allow motion between fixed parts%~\cite{https://books.google.co.uk/books?id=5NzFDgAAQBAJ&printsec=frontcover&dq=robotics&hl=en&sa=X&ved=0ahUKEwip3eXllqDhAhVcQRUIHZ1tDNEQ6AEIKjAA#v=onepage&q=robotics&f=false}.
@@ -33,13 +33,24 @@ Sensors can take many forms and provide information about internal and external 
 LIDAR is a more advanced use of invisible light to more accurately detect distance using more powerful and precise beams of light than in the infra-red case~\cite{http://www.lidar-uk.com/how-lidar-works/}. Binocular vision allows depth perception to take place similar to that allowed by human vision~\cite{https://www.ncbi.nlm.nih.gov/pubmed/15471592} by perspective-based cues which can only be obtained from at least binocular vision~\cite{
 https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-546.pdf}. 
 
-Internal sensors can either be related to the actuators or fixed parts of the robot. Those sensors which are connected to the fixed parts of the robot provide feedback about the entire robot and its local environment. The IMU...
+Internal sensors can either be related to the actuators or fixed parts of the robot. Those sensors which are connected to the fixed parts of the robot provide feedback about the entire robot and its local environment. The Inertial Measurement Unit (IMU) provides feedback regarding the acceleration and angular velocity with relation to 6 different axis (x, y, z in both linear and angular planes) or Degrees of Freedom (DOF). This can be combined with information from other sensors in order to reduce the overall error in determining the robot's location with relation to its starting position.  
 
-When connected to the actuators, generally only feedback information about that actuator is provided, as in the case of encoders. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised in the correct way.
+One such sensor is the encoder which is connected to the wheels and provides only feedback information about this actuator. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised by the Proportional-Integral-Derivative(PID) controller of the robot.  
 
-\subsection{Proportional-Integral-Derivative Controller}\label{litreview/pid}
+\subsection{PID Controller}\label{litreview/robotics/pid}
+As mentioned above the PID controller uses feedback from the encoders to maintain a straight line of movement and maintain each of wheels at a constant velocity. The PID controller is a feedback loop which is designed to eliminate errors in the actuator systems by the mathematical description \todo{add the mathematical formula for PID add wheres also}. By tuning $ K_p $, $ T_i $ and $ T_d $ for the system in question, the error in the system can be reduced.    
 
+Following the setting of $K_p$ to an appropriate value which gives a steady closed-loop state, $T_i$ can be used to further tune the system. The increasing of $T_i$, reduces the overshoot of the system from a state of steady oscillation but reduces the response speed of the system~\cite{https://books.google.co.uk/books?hl=en&lr=&id=C_2mg9xAUJcC&oi=fnd&pg=PR1&dq=linear+feedback+control+atherton&ots=eQDFoD-pNx&sig=ehe3TxPbXlvhlmVfZgDY1yQa-aU#v=onepage&q=pid&f=false, p 183}. $T_d$ is then used to damp any remaining oscillations to a steady line response, however this can introduce noise amplification to the system and should be used with care. 
+
+One method of tuning a PID controller is the Ziegler-Nicholls method~\cite{https://staff.guilan.ac.ir/staff/users/chaibakhsh/fckeditor_repo/file/documents/Optimum%20Settings%20for%20Automatic%20Controllers%20(Ziegler%20and%20Nichols,%201942).pdf}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{https://www.sciencedirect.com/science/article/pii/S0959152404000034#BIB30}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $T_i$ and $T_d$ which results in a tuned system. However, many different formulae and defintions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nicholls method is mathematiocally imperfect and this will have to be explored experimentally during the project.     
 %https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
+
+\subsection{Rate Control}\label{litreview/robotics/ratecontrol}
+
+
+\section{AI}\label{litreview/ai}
+At the software level of control 
+
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
