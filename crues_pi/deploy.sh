@@ -22,19 +22,22 @@ else
             echo "${NAME} is not a valid robot name."
             exit 1
         fi
+        read -p "Enter password for ${NAME}: " -s PWD
+        echo ""
+        # TODO: VALIDATE PASSWORD
         echo "Synchronising time on ${NAME}..."
-        DATE=$(date)
-        sshpass -p "dapamaka" ssh crues@${IP} "date -s ${DATE}"
+        DATE=$(date +"%d %b %Y %H:%M:%S")
+        sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
         NUM=0
         echo "Deploying to ${NAME} (crues@${IP}):"
         echo "  - Library files..."
-        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi crues/ crues@${IP}:~/crues_pi/crues/ | wc -l)"))
-        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
-        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi crues/ crues@${IP}:~/crues_pi/crues/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
         echo "  - Configuration files..."
-        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi -r config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
         echo "  - ROS packages..."
-        NUM=$(($NUM + "$(sshpass -p "dapamaka" rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
         echo "Updated ${NUM} files on ${NAME}."
     done
 fi
