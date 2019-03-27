@@ -43,43 +43,38 @@ of collaborative robotics in requiring an additional aspect of intelligence in
 the communication and coordination of the individual agents~\cite{cao1995cooperative}.
 
 \section{SLAM}\label{litreview/slam}
-An essential skill for mobile robots navigating unknown environments is being
-able to build a map of the environment whilst simultaneously identifying its own
-position. This is especially true in the absence of external referencing systems
-such as GPS.\@ This is known as the Simultaneous Localisation And Mapping (SLAM)
+A key challenge in mobile robotics is for the robot to know its own position in the
+environment whilst still being able to build a map of its surroundings. 
+This is especially true in the absence of external referencing systems
+such as GPS to aid in knowing its relative position. This is known as the Simultaneous Localisation And Mapping (SLAM)
 problem and has been one of the most extensively researched topics in mobile
 robotics over the last two decades~\cite{grisetti2010tutorial}. As the robot's
 estimate of its position is affected by both the previous state's uncertainty
-and the any errors in the current measurement, uncertainties in the readings compound
+and any errors in the current measurement, the uncertainties compound
 over time. To rectify this, a map with distinctive landmarks can reduce its
 localisation error by revisiting these known areas. This is known as loop closure.
 
-SLAM implementations rely on sensor fusion algorithms which take in readings from an
-array of sensors and calculates a estimated state changed based on the probability
-or error for each sensor. This effectively allows errors between multiple sensors
-to be cancelled out, resulting in more reliable estimates. A typical approach is to
-use sensor fusion to combine odometry readings from wheel encoders with acceleration
-information obtained from an inertial measurement unit (IMU) to correct for errors
-caused by wheels slipping and sensor imperfections.
+SLAM implementations rely on sensor fusion algorithms as part of their implementation. 
+This takes in readings from an array of sensors and calculates an estimated state change
+based on the probability of error for each sensor. This effectively allows errors between 
+multiple sensors to be cancelled out, resulting in more reliable estimates. A standard 
+approach is to use sensor fusion to combine odometry readings from wheel encoders with 
+acceleration information obtained from an inertial measurement unit (IMU) to correct for 
+errors caused by wheels slipping and sensor imperfections.
 
-There are a large variety of solutions to suit various system requirements, which
-fall into the two categories of filtering and smoothing. Filtering
-involves creating a state estimation where the state of the system consists of
-the current robot position and the map. The estimate is augmented and improved
-by considering the new measurements as they become available. Some popular
+There are a large variety of solutions to suit various system requirements, these
+can be categorized as either filtering and smoothing. Filtering creates a state estimation 
+using the current robot position and the map. The estimate is augmented and improved
+by using the new measurements as they become available. Some popular
 approaches to filtering are techniques such as Kalman filters, particle filters
-and information filters. This technique is known as online SLAM where only the most
-recent pose (the robot's position and orientation) is recovered with previous poses
-marginalised out. Smoothing approaches involve a full estimate of the trajectory of
-the robot from all available
-measurements. These typically use least-square error minimisation techniques and are
-used to address the problem known as the full SLAM problem. Full SLAM involves
-attempting to map the entire path.
+and information filters. Smoothing techniques involve a full estimate of the trajectory of
+the robot from all available measurements. These typically use least-square error 
+minimisation techniques and are used to address the problem known as the full SLAM 
+problem which attempts to map the entire path.
 
-The state of the system is known as $x_k$ and
-this can be defined as a function which uses the previous state to determine the next
-state. As the model can not be perfectly accurate, there will be uncertainty in the
-readings and so this must be taken into account by the model. As a result, $x_k$,
+The state of the system is known as $x_k$ which is a function that uses the previous 
+state to determine the next state. As this can not be perfectly accurate, there will 
+be uncertainty in the readings that must be taken into account. As a result, $x_k$,
 which is known as the motion model, is defined as
 \begin{equation}
 x_{k} = f(x_{k-1}, q_{k-1})\,,
@@ -90,13 +85,13 @@ also be represented by the probability distribution
 x_{k} \sim p(x_{k} | x_{k-1})\,.
 \end{equation}
 Both of these imply that the state is stochastic and depends on the previous
-state. The probability distribution helps emphasise that the current state is
+state. The probability distribution emphasises that the current state is
 drawn from a distribution of possible states based on the previous state. Given that a perfect sensor is not possible, the current state will also have noise
 in the reading. This is known as the measurement model and can be defined as
 \begin{equation}
 y_{k} = h(x_{k}, r_{k})\,,
 \end{equation}
-where $r$ represents the uncertainty that is present in the model of the sensor. As
+where $r$ represents the uncertainty of the sensor. As
 before this can be expressed as an uncertainty model:
 \begin{equation}
 y_{k} \sim p(y_{k} | y_{k-1})\,.
