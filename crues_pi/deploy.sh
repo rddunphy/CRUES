@@ -23,8 +23,22 @@ else
             exit 1
         fi
         read -p "Enter password for ${NAME}: " -s PWD
+        STATUS=""
+        while [[ ${STATUS} != "ok" ]]
+        do
+            if [[ ${PWD} = "" ]]
+            then
+                STATUS=none
+            else
+                STATUS=$(sshpass -p ${PWD} ssh crues@${IP} echo ok 2>&1)
+            fi
+            case ${STATUS} in
+                ok) ;;
+                *"Permission denied"*) echo ""; read -p "Permission denied, try again: " -s PWD ;;
+                *) echo ""; echo ${STATUS}; exit 1 ;;
+            esac
+        done
         echo ""
-        # TODO: VALIDATE PASSWORD
         echo "Synchronising time on ${NAME}..."
         DATE=$(date +"%d %b %Y %H:%M:%S")
         sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
