@@ -1,8 +1,9 @@
 from threading import Event, Thread
 
-import RPi.GPIO as GPIO
-
-from crues.pin_defs import Pins
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 
 class FlashInterrupt(Exception):
@@ -17,7 +18,7 @@ class LED:
         self.flashing = False
         self.exit_flash = Event()
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.LOW)
 
     def turn_on(self):
         """Turn on the LED. (Interrupts flashing.)"""
@@ -79,7 +80,5 @@ class LED:
         proc = Thread(target=self._flash_thread_worker, args=[n, f])
         proc.start()
 
-
-pins = Pins()
-green_led = LED(pins.LG)
-red_led = LED(pins.LR)
+    def cleanup(self):
+        GPIO.cleanup(self.pin)

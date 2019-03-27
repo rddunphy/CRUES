@@ -1,9 +1,18 @@
 # Client Program
 import socket
 import json
+from paths import config_file
 
 
-addresses = {'Lagann' : '192.168.1.1','blinky': '192.168.1.2', 'inky': '192.168.1.3', 'clyde': '192.168.1.4'}
+CONFIG_FILE_NAME = "ip_addresses.json"
+
+
+def load_addresses():
+    path = config_file(CONFIG_FILE_NAME)
+    return json.load(path)
+
+
+addresses = load_addresses()
 
 
 def lookupip(name):

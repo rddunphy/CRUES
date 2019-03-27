@@ -1,33 +1,55 @@
 #!/usr/bin/env python
 
 import rospy
-from crues_actuators.msg import MotorControl
+from std_msgs.msg import Float32
 
-import RPi.GPIO as GPIO
-
-from crues import motors
+from crues.motors import Motor
 
 
-ml_pwm_pin = None
-mr_pwm_pin = None
+ticks_since_last_cmd = 0
+cmd = 0
 
 
-def handle_mc_msg(msg):
-    motors.set_speeds(ml_pwm_pin, mr_pwm_pin, r_speed=msg.r_speed, l_speed=msg.l_speed, slp=msg.slp)
+def tick(motor, timeout_ticks, offset, scale_factor, pwm_min, pwm_max):
+    global ticks_since_last_cmd
+    ticks_since_last_cmd += 1
+    if ticks_since_last_cmd > timeout_ticks:
+        motor.set_speed(0)
+    else:
+        pwm_val = (cmd - offset) * scale_factor
+        pwm_val = max(pwm_val, pwm_min)
+        pwm_val = min(pwm_val, pwm_max)
+        motor.set_speed(pwm_val)
+
+
+def handle_motor_cmd(msg):
+    global cmd, ticks_since_last_cmd
+    cmd = msg.data
+    ticks_since_last_cmd = 0
 
 
 def main():
+    rospy.init_node('motor')
+    pwm_pin = rospy.get_param('~pwm_pin')
+    dir_pin = rospy.get_param('~dir_pin')
+    range_min = rospy.get_param('~range_min', -1.0)
+    range_max = rospy.get_param('~range_max', 1.0)
+    timeout_ticks = rospy.get_param('~timeout_ticks', 2)
+    pwm_min = rospy.get_param('~pwm_min', -50)
+    pwm_max = rospy.get_param('~pwm_max', 50)
+    motor = Motor(pwm_pin, dir_pin)
+    offset = (range_min + range_max) / 2
+    scale_factor = 200.0 / (range_max - range_min)
+    rospy.Subscriber('motor_cmd', Float32, handle_motor_cmd)
+    rate = rospy.Rate(rospy.get_param('~rate', 50))
     try:
-        global ml_pwm_pin, mr_pwm_pin
-        ml_pwm_pin, mr_pwm_pin = motors.gpio_setup()
-        rospy.init_node('motor_driver')
-        rospy.Subscriber('motor_control', MotorControl, handle_mc_msg)
-        # spin() simply keeps python from exiting until this node is stopped
-        rospy.spin()
+        while not rospy.is_shutdown():
+            tick(motor, timeout_ticks, offset, scale_factor, pwm_min, pwm_max)
+            rate.sleep()
     except rospy.ROSInterruptException as e:
         rospy.logerr(e)
     finally:
-        GPIO.cleanup()
+        motor.cleanup()
 
 
 if __name__ == '__main__':
