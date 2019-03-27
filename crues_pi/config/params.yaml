@@ -31,6 +31,6 @@ us_rate: 5
 us_angle: deg(30)
 us_time: 0.05
 pid:
-  Kp: 0.79
-  Ki: 0.025
-  Kd: 0.012
+  Kp: 0.176
+  Ki: 0
+  Kd: 0.008

@@ -16,12 +16,6 @@ RIGHT = 2
 class Roomba:
     def __init__(self):
         rospy.init_node('roomba')
-        rospy.Subscriber('ul_range', Int32, self.range_callback, callback_args=LEFT)
-        rospy.Subscriber('uc_range', Int32, self.range_callback, callback_args=CENTRE)
-        rospy.Subscriber('ur_range', Int32, self.range_callback, callback_args=RIGHT)
-        self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
-        self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
-        self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)
         self.turn_vel = rospy.get_param('~turn_vel', 1)
         self.fwd_vel = rospy.get_param('~fwd_vel', 0.2)
         self.obstacle_range = rospy.get_param('~obstacle_range', 100)
@@ -29,6 +23,12 @@ class Roomba:
         self.time_to_stop_turning = -1
         self.turn_twist = None
         self.last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
+        rospy.Subscriber('ul_range', Int32, self.range_callback, callback_args=LEFT)
+        rospy.Subscriber('uc_range', Int32, self.range_callback, callback_args=CENTRE)
+        rospy.Subscriber('ur_range', Int32, self.range_callback, callback_args=RIGHT)
+        self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
+        self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
+        self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)
 
     def spin(self):
         while not rospy.is_shutdown():

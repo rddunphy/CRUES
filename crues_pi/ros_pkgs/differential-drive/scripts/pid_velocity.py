@@ -176,7 +176,7 @@ class PidVelocity():
         self.derivative = (self.error - self.previous_error) / pid_dt
         self.previous_error = self.error
     
-        self.motor = (self.Kp * self.error) + (self.Ki * self.integral) + (self.Kd * self.derivative)
+        self.motor = self.motor + (self.Kp * self.error) + (self.Ki * self.integral) + (self.Kd * self.derivative)
     
         if self.motor > self.out_max:
             self.motor = self.out_max
