@@ -1,24 +1,33 @@
 #!/usr/bin/env python
 import rospy
-from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Imu
+from geometry_msgs.msg import Vector3
 
 import RPi.GPIO as GPIO
 
 from crues import IMU
 
 
+def setup_imu_message((a_x, a_y, a_z), (roll_v, pitch_v, yaw_v)):
+    msg = Imu()
+    msg.orientation_covariance = [-1.0, 0.0, 0.0,
+                                  0.0, 0.0, 0.0,
+                                  0.0, 0.0, 0.0], # indicate orientation unknown
+    msg.linear_acceleration = Vector3(a_x, a_y, a_z)
+    msg.angular_velocity = Vector3(roll_v, pitch_v, yaw_v)
+    return msg
+
 def publish_data(pub, imu):
-    vel_msg = Twist()
-    linear_speeds, ang_speeds = imu.get_speeds()
-    (vel_msg.angular.x, vel_msg.angular.y, vel_msg.angular.z) = ang_speeds
-    (vel_msg.linear.x, vel_msg.linear.y, vel_msg.linear.z) = linear_speeds
-    rospy.loginfo("Gyro : %s  linear: %s" % (ang_speeds, linear_speeds))
+    vel_msg = Imu()
+    linear_acc, ang_speeds = imu.read_values()
+    msg = setup_imu_message(linear_acc, ang_speeds)
+    rospy.loginfo("Gyro : %s  linear: %s" % (ang_speeds, linear_acc))
     pub.publish(vel_msg)
 
 
 def main():
     try:
-        IMU_pub = rospy.Publisher('IMU_twist', Twist, queue_size=10)
+        IMU_pub = rospy.Publisher('IMU_twist', Imu, queue_size=10)
         rospy.init_node("IMU")
         r = rospy.get_param('~rate', 5)
         rate = rospy.Rate(r)

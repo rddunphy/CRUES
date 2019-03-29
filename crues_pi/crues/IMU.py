@@ -60,6 +60,11 @@ class IMU:
         speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
         return speed_vect, gyro_speeds
 
+    def read_values(self):
+        gyro_speeds_vect = self._read_gyro()
+        accel_vect = self._read_accel()
+        return accel_vect, gyro_speeds_vect
+
 if __name__ == '__main__':
     imu = IMU(0x68, 5)
     while 1:
