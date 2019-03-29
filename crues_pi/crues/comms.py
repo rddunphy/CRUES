@@ -4,6 +4,7 @@ import json
 from paths import config_file
 import SocketServer
 import threading
+import time
 
 
 CONFIG_FILE_NAME = "ip_addresses.json"
@@ -30,13 +31,14 @@ def lookupname(search_ip):
 
 
 
-def tojson(host_ip, hostname, data):
+def tojson(host_ip, hostname, time_stamp, data):
     # receiver ip and hostname, our ip and hostname, classname
     sender_ip = socket.gethostbyname(socket.gethostname())
-    header = [host_ip, hostname, sender_ip, lookupname(sender_ip), type(data).__name__]
+    header = [host_ip, hostname, sender_ip, lookupname(sender_ip), time_stamp, type(data).__name__]
     content = [header, data]
     message = json.dumps(content, separators=(',', ':'))
     return message
+
 
 def fromjson(packet):
     message = json.loads(packet)
@@ -46,7 +48,7 @@ def fromjson(packet):
         #print socket.gethostname()
         #print Address_lookup.lookupip(socket.gethostname())
         if target == lookupip(socket.gethostname()):
-            return message[1]
+            return message
         else:
             return -1
     except IndexError:
@@ -77,7 +79,8 @@ def send(hostname, data):
     #print host_ip
     port = 8001            # The same port as used by the server
 
-    message = tojson(host_ip, hostname, data)
+    time_stamp = time.time()
+    message = tojson(host_ip, hostname, time_stamp, data)
     #print message
     #print fromjson(message)
     #s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -100,8 +103,9 @@ def send(hostname, data):
 
 
 
-def listen(pub):
-    ThreadedTCPRequestHandler.pub = pub
+def listen():#pub):
+    #ThreadedTCPRequestHandler.pub = pub
+    ThreadedTCPRequestHandler.handle = dump_log
     HOST, PORT = "0.0.0.0", 8001
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
@@ -141,4 +145,23 @@ def killServer(server):
     #print "Message received"
     #print message
     return message"""
-    
+
+
+import sys
+
+output = []
+
+
+def dump_log(self):
+    data = self.request.recv(1024)
+    message = fromjson(data)
+    received = time.time()
+    latency = received - message[0][4]
+    global output
+    output += [(sys.getsizeof(message), latency)]
+
+import os
+
+
+def send_bytes(n):
+    send("t430", os.urandom(n))
