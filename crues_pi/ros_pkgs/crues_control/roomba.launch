@@ -116,6 +116,6 @@
     </node>
 
     <!-- DATA RECORDING -->
-    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /diff/odom /odometry/filtered" />
+    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom_ /diff/odom /odometry/filtered" />
 
 </launch>
