@@ -17,12 +17,12 @@ def setup_imu_message((a_x, a_y, a_z), (roll_v, pitch_v, yaw_v)):
     msg.angular_velocity = Vector3(roll_v, pitch_v, yaw_v)
     return msg
 
+
 def publish_data(pub, imu):
-    vel_msg = Imu()
     linear_acc, ang_speeds = imu.read_values()
     msg = setup_imu_message(linear_acc, ang_speeds)
     rospy.loginfo("Gyro : %s  linear: %s" % (ang_speeds, linear_acc))
-    pub.publish(vel_msg)
+    pub.publish(msg)
 
 
 def main():
