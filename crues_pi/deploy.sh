@@ -34,6 +34,7 @@ else
             fi
             case ${STATUS} in
                 ok) ;;
+                none) echo ""; read -p "No password entered, try again: " -s PWD ;;
                 *"Permission denied"*) echo ""; read -p "Permission denied, try again: " -s PWD ;;
                 *) echo ""; echo ${STATUS}; exit 1 ;;
             esac
@@ -53,5 +54,8 @@ else
         echo "  - ROS packages..."
         NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
         echo "Updated ${NUM} files on ${NAME}."
+        echo "Fetching rosbag files..."
+        NUM="$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l"
+        echo "Fetched ${NUM} files to rosbag/${NAME}/."
     done
 fi
