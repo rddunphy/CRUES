@@ -34,6 +34,7 @@ else
             fi
             case ${STATUS} in
                 ok) ;;
+                none) echo ""; read -p "No password entered, try again: " -s PWD ;;
                 *"Permission denied"*) echo ""; read -p "Permission denied, try again: " -s PWD ;;
                 *) echo ""; echo ${STATUS}; exit 1 ;;
             esac
