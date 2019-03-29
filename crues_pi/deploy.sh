@@ -53,5 +53,8 @@ else
         echo "  - ROS packages..."
         NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
         echo "Updated ${NUM} files on ${NAME}."
+        echo "Fetching rosbag files..."
+        NUM="$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l"
+        echo "Fetched ${NUM} files to rosbag/${NAME}/."
     done
 fi
