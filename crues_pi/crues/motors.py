@@ -1,41 +1,42 @@
 from crues.pin_defs import Pins
 
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 
-pins = Pins()
+class Motor:
+    def __init__(self, pwm_pin, dir_pin):
+        self.pwm_pin = pwm_pin
+        self.dir_pin = dir_pin
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.dir_pin, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.pwm_pin, GPIO.OUT)
+        self.pwm = GPIO.PWM(self.pwm_pin, 100)
+        self.pwm.start(0)
+
+    def set_speed(self, speed):
+        # speed = min(self.max_speed, speed)
+        # speed = max(-self.max_speed, speed)
+        GPIO.output(self.dir_pin, speed < 0)
+        self.pwm.ChangeDutyCycle(abs(speed))
+
+    def cleanup(self):
+        GPIO.cleanup([self.dir_pin, self.pwm_pin])
 
 
-def gpio_setup():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup([pins.MLD, pins.MRD], GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(pins.MS, GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.setup([pins.MLP, pins.MRP], GPIO.OUT)
-    ml_pin = GPIO.PWM(pins.MLP, 50)
-    mr_pin = GPIO.PWM(pins.MRP, 50)
-    ml_pin.start(0)
-    mr_pin.start(0)
-    return ml_pin, mr_pin
+class MotorSleepController:
+    def __init__(self, pin):
+        self.pin = pin
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.HIGH)
 
+    def set_sleep(self, sleep):
+        if sleep:
+            GPIO.output(self.pin, GPIO.LOW)
+        else:
+            GPIO.output(self.pin, GPIO.HIGH)
 
-def set_speeds(ml_pin, mr_pin, l_speed=0, r_speed=0, slp=True):
-    """Set the speed of both motors. Values for the speed should be in the
-    range [-100, 100], where negative values result in moving backwards, positive
-    in moving forward, 0 results in no movement.
-
-    :param r_speed: Speed of the right motor (as percentage)
-    :param l_speed: Speed of the left motor (as percentage)
-    :param slp: True to turn off motor break and coast. r_speed and l_speed will
-        be disregarded if slp==True
-    """
-    # SLP pin is active low, so invert output
-    #
-    # GPIO.setmode(GPIO.BOARD)
-    # GPIO.setup([ML_DIR, MR_DIR], GPIO.OUT, initial=GPIO.LOW)
-    # GPIO.setup(M_SLP, GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.output(pins.MS, not slp)
-    # Low output = forward
-    GPIO.output(pins.MLD, l_speed < 0)
-    GPIO.output(pins.MRD, r_speed < 0)
-    ml_pin.ChangeDutyCycle(abs(l_speed))
-    mr_pin.ChangeDutyCycle(abs(r_speed))
+    def cleanup(self):
+        GPIO.cleanup(self.pin)
