@@ -5,9 +5,7 @@ import time
 import rospy
 from std_msgs.msg import Int32
 
-import RPi.GPIO as GPIO
-
-from crues import us
+from crues.us import Ultrasonic, UltrasonicTimeout
 
 
 ## VERSION FOR ONLY CENTRE ULTRASONIC SENSOR:
@@ -35,41 +33,49 @@ from crues import us
 #         pin_defs.cleanup()
 
 
-def publish_range(s, pub):
+def publish_range(us, pub):
     try:
-        r = us.get_range(s)
-    except us.UltrasonicTimout as e:
+        r = us.get_range()
+    except UltrasonicTimeout as e:
         rospy.logwarn(str(e))
     else:
-        rospy.loginfo("%s ultrasonic node range: %d", us.sensor_str.get(s), r)
+        rospy.logdebug("%s ultrasonic node range: %d", us.name, r)
         pub.publish(r)
 
 
 def main():
+    rospy.init_node("ultrasonic")
+    scan_increment = rospy.get_param('~scan_increment', 0.05)
+    timeout = scan_increment * 0.9
+    sensor_angle = rospy.get_param('~sensor_angle', 30)
+    us_l = Ultrasonic("Left", rospy.get_param('pins/ult'), rospy.get_param('pins/ule'), timeout)
+    us_c = Ultrasonic("Centre", rospy.get_param('pins/uct'), rospy.get_param('pins/uce'), timeout)
+    us_r = Ultrasonic("Right", rospy.get_param('pins/urt'), rospy.get_param('pins/ure'), timeout)
+    r = rospy.get_param('~rate', 5)
     try:
-        us.configure_gpio()
         pub_l = rospy.Publisher('ul_range', Int32, queue_size=10)
         pub_c = rospy.Publisher('uc_range', Int32, queue_size=10)
         pub_r = rospy.Publisher('ur_range', Int32, queue_size=10)
-        rospy.init_node("ultrasonic")
-        rate = rospy.Rate(5)
+        rate = rospy.Rate(r)
         while not rospy.is_shutdown():
             start = time.time()
-            publish_range(us.LEFT, pub_l)
-            time_remaining = start + us.scan_increment - time.time()
+            publish_range(us_l, pub_l)
+            time_remaining = start + scan_increment - time.time()
             if time_remaining > 0:
                 time.sleep(time_remaining)
-            publish_range(us.CENTRE, pub_c)
-            time_remaining = start + 2 * us.scan_increment - time.time()
+            publish_range(us_c, pub_c)
+            time_remaining = start + 2 * scan_increment - time.time()
             if time_remaining > 0:
                 time.sleep(time_remaining)
-            publish_range(us.RIGHT, pub_r)
+            publish_range(us_r, pub_r)
             # Additionally publish scan object for SLAM node?
             rate.sleep()
-    except rospy.ROSInterruptException as e:
+    except rospy.ROSInterruptException:
         rospy.logerr("ROSInterruptException in ultrasonic node")
     finally:
-        GPIO.cleanup()
+        us_l.cleanup()
+        us_c.cleanup()
+        us_r.cleanup()
 
 
 if __name__ == '__main__':

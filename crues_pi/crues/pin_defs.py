@@ -35,3 +35,7 @@ class Pins:
         self.ERB = d["erb"]
         self.LG = d["lg"]
         self.LR = d["lr"]
+        self.pin_dict = d
+
+    def get(self, name):
+        return self.pin_dict[name.lower()]
