@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.0">
+<eagle version="9.3.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -5052,10 +5052,12 @@ Source: www.kingbright.com</description>
 <pinref part="PDBHD" gate="A" pin="5"/>
 <label x="5.08" y="83.82" size="1.778" layer="95"/>
 <wire x1="2.54" y1="83.82" x2="7.62" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="PIHD" gate="A" pin="21"/>
 <wire x1="2.54" y1="83.82" x2="0" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="0" y1="83.82" x2="0" y2="50.8" width="0.1524" layer="91"/>
 <junction x="2.54" y="83.82"/>
+<pinref part="PIHD" gate="A" pin="19"/>
+<wire x1="2.54" y1="50.8" x2="2.54" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="76.2" x2="0" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="0" y1="76.2" x2="0" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="LPWM" class="0">
@@ -5218,22 +5220,6 @@ Source: www.kingbright.com</description>
 <wire x1="7.62" y1="33.02" x2="7.62" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="EL_A" class="0">
-<segment>
-<pinref part="E_L" gate="G$1" pin="2"/>
-<pinref part="PIHD" gate="A" pin="23"/>
-<wire x1="5.08" y1="63.5" x2="-2.54" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="-2.54" y1="63.5" x2="-2.54" y2="50.8" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="EL_B" class="0">
-<segment>
-<pinref part="E_L" gate="G$1" pin="1"/>
-<pinref part="PIHD" gate="A" pin="27"/>
-<wire x1="5.08" y1="66.04" x2="-7.62" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="-7.62" y1="66.04" x2="-7.62" y2="50.8" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="ER_A" class="0">
 <segment>
 <pinref part="E_R" gate="G$1" pin="1"/>
@@ -5261,6 +5247,22 @@ Source: www.kingbright.com</description>
 <pinref part="PIHD" gate="A" pin="31"/>
 <wire x1="-10.16" y1="55.88" x2="-12.7" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="-12.7" y1="55.88" x2="-12.7" y2="50.8" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="E_L" gate="G$1" pin="2"/>
+<pinref part="PIHD" gate="A" pin="21"/>
+<wire x1="5.08" y1="63.5" x2="0" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="0" y1="63.5" x2="0" y2="50.8" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="E_L" gate="G$1" pin="1"/>
+<pinref part="PIHD" gate="A" pin="23"/>
+<wire x1="5.08" y1="66.04" x2="-2.54" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-2.54" y1="66.04" x2="-2.54" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

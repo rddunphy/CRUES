@@ -1,0 +1,89 @@
+<launch>
+
+<param name="robot_description" textfile="$(find differential_drive)/blinky.urdf"/>
+<rosparam param="ticks_meter">529</rosparam>
+
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+  <node name="diff_tf" pkg="differential_drive" type="diff_tf.py" >
+     <rosparam param="rate">10.0</rosparam>
+     <rosparam param="base_width">0.149</rosparam>
+  </node>
+
+ <node name="lpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
+      <rosparam param="Kp">200</rosparam>
+      <rosparam param="Ki">200</rosparam>
+      <rosparam param="Kd">0</rosparam>
+      <rosparam param="out_min">-255</rosparam>
+      <rosparam param="out_max">255</rosparam>
+      <rosparam param="rate">30</rosparam>
+      <rosparam param="rolling_pts">5</rosparam>
+      <remap from="wheel" to="lwheel"/>
+      <remap from="motor_cmd" to="lmotor_cmd"/>
+      <remap from="wheel_vtarget" to="lwheel_vtarget"/>
+      <remap from="wheel_vel" to="lwheel_vel"/>
+  </node> 
+  <node name="rpid_velocity" pkg="differential_drive" type="pid_velocity.py" >
+      <rosparam param="Kp">200</rosparam>
+      <rosparam param="Ki">200</rosparam>
+      <rosparam param="Kd">0</rosparam>
+      <rosparam param="out_min">-255</rosparam>
+      <rosparam param="out_max">255</rosparam>
+      <rosparam param="rate">30</rosparam>
+      <rosparam param="rolling_pts">5</rosparam>
+      <remap from="wheel" to="rwheel"/>
+      <remap from="motor_cmd" to="rmotor_cmd"/>
+      <remap from="wheel_vtarget" to="rwheel_vtarget"/>
+      <remap from="wheel_vel" to="rwheel_vel"/>
+  </node> 
+
+  <node pkg="differential_drive" type="wheel_scaler.py" name="wheel_scaler" output="screen"/>
+
+  <node name="twist_to_motors" pkg="differential_drive" type="twist_to_motors.py" output="screen">
+    <rosparam param="base_width">0.149</rosparam>
+  </node>
+  
+  <node name="lwheel_loopback" pkg="differential_drive" type="wheel_loopback.py" output="screen">
+    <remap from="wheel" to="lwheel"/>
+    <remap from="motor" to="lmotor_cmd"/>
+  </node>
+  
+  <node name="rwheel_loopback" pkg="differential_drive" type="wheel_loopback.py" output="screen">
+    <remap from="wheel" to="rwheel"/>
+    <remap from="motor" to="rmotor_cmd"/>
+  </node>
+  
+  <node pkg="rviz" type="rviz" name="rviz" output="screen"/>
+
+<node name="rqt" pkg="rqt_graph" type="rqt_graph" output="screen"/>
+
+<!--node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>-->
+
+  <node pkg="gmapping" type="slam_gmapping" name="gmapping" output="screen">
+    <remap from="scan" to="/laser"/>
+    <rosparam param="odom_frame">odom</rosparam>
+    <rosparam param="linearUpdate">0.10</rosparam> <!-- Process a scan each time the robot translates this far -->
+    <rosparam param="angularUpdate">0.25</rosparam> <!-- Process a scan each time the robot rotates this far -->
+    <rosparam param="kernelSize">1.0</rosparam>    <!-- The kernel in which to look for a correspondence -->
+    <rosparam param="lstep">0.05</rosparam>        <!-- The optimization step in translation -->
+    <rosparam param="astep">0.05</rosparam>        <!-- The optimization step in rotation -->
+    <rosparam param="iterations">5</rosparam>      <!-- The number of interations in the scan matcher -->
+    <rosparam param="lsigma">0.075</rosparam>      <!-- The sigma of a beam used for likelihood -->
+    <rosparam param="delta">0.05</rosparam>        <!-- resolution of the map -->
+    <rosparam param="xmin">-10.0</rosparam>
+    <rosparam param="xmax">10.0</rosparam>
+    <rosparam param="ymin">-10.0</rosparam>
+    <rosparam param="ymax">10.0</rosparam>
+    <rosparam param="llsamplerange">0.01</rosparam>
+    <rosparam param="llsamplestep">0.01</rosparam>
+    <rosparam param="maxRange">1.0</rosparam>
+    <rosparam param="maxURange">0.98</rosparam>
+    <rosparam param="srr">0.001</rosparam>
+    <rosparam param="srt">0.002</rosparam>
+    <rosparam param="str">0.001</rosparam>
+    <rosparam param="stt">0.002</rosparam>
+    <rosparam param="temporalUpdate">30</rosparam>
+  </node>emporalUpdate
+
+
+</launch>
