@@ -1,0 +1,31 @@
+<launch>
+
+    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+
+    <node name="motor_sleep" pkg="crues_actuators" type="motor_sleep_node.py" />
+
+    <node name="left_motor" pkg="crues_actuators" type="drive_node.py">
+        <param name="range_min" type="double" value="-0.5" />
+        <param name="range_max" type="double" value="0.5" />
+        <param name="pwm_min" type="double" value="-50" />
+        <param name="pwm_max" type="double" value="50" />
+        <param name="timeout_ticks" type="int" value="2" />
+        <remap from="~rate" to="enc_rate" />
+        <remap from="~pwm_pin" to="pins/mlp" />
+        <remap from="~dir_pin" to="pins/mld" />
+        <remap from="/motor_cmd" to="/lmotor_cmd" />
+    </node>
+
+    <node name="right_motor" pkg="crues_actuators" type="drive_node.py">
+        <param name="range_min" type="double" value="-0.5" />
+        <param name="range_max" type="double" value="0.5" />
+        <param name="pwm_min" type="double" value="-50" />
+        <param name="pwm_max" type="double" value="50" />
+        <param name="timeout_ticks" type="int" value="2" />
+        <remap from="~rate" to="enc_rate" />
+        <remap from="~pwm_pin" to="pins/mrp" />
+        <remap from="~dir_pin" to="pins/mrd" />
+        <remap from="/motor_cmd" to="/rmotor_cmd" />
+    </node>
+
+</launch>
