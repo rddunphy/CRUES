@@ -18,7 +18,39 @@ algorithms related to the study, the search term was altered to refine the
 relevant articles. If at any point throughout the study it was felt that more
 reading was required, the selection of articles here were revisited, with
 related articles used to fill in any gaps in knowledge from the original
-searches.
+searches. \todo{i dont think we need these paragraphs}
+
+\section{Robotics}\label{litreview/robotics}
+A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of technology which deals with the design, construction, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
+
+\subsection{Control}\label{litreview/robotics/control}  
+As the robots in this study are homogeneous and should be able to complete tasks individually, control is limited to the control of a single robot in the complete system. Robotic mechanisms form the control system for a robot and connect the fixed parts of the robot together by joints to allow motion between fixed parts~\cite{lynch2017modern}.
+Actuation of the joints, usually by motors, imparts forces on the robot which allow it to move and perform a variety of tasks~\cite{lynch2017modern}.
+The movement of these ``actuators'' is influenced by a number of sensors which provide the system with information about its environment. These sensors can also influence the movement of the actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
+
+Sensors can take many forms and provide information about internal and external environmental factors of the robot. External sensors provide information which the robot would otherwise find significantly more difficult to discover, one such example being range sensing. This can take a number of different forms including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and binocular computer vision. Each of these sensors use unique methods to determine the distance from the robot to another object in its environment. Ultrasound sensors use high frequency sound waves which reflect from surfaces and return to the sensor in time t to calculate the distance to the object using the speed of sound. Infra-red sensors work in a similar fashion but with invisible light instead of sound. 
+
+LIDAR is a more advanced use of invisible light to more accurately detect distance using more powerful and precise beams of light than in the infra-red case~\cite{LIDAR}. Binocular vision allows depth perception to take place similar to that allowed by human vision~\cite{read2005early} by perspective-based cues which can only be obtained from at least binocular vision~\cite{
+pfautz2002depth}. 
+
+Internal sensors can either be related to the actuators or fixed parts of the robot. Those sensors which are connected to the fixed parts of the robot provide feedback about the entire robot and its local environment. The Inertial Measurement Unit (IMU) provides feedback regarding the acceleration and angular velocity with relation to 6 different axis (x, y, z in both linear and angular planes) or Degrees of Freedom (DOF). This can be combined with information from other sensors in order to reduce the overall error in determining the robot's location with relation to its starting position.  
+
+One such sensor is the encoder which is connected to the wheels and provides only feedback information about this actuator. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised by the Proportional-Integral-Derivative(PID) controller of the robot.  
+
+\subsection{PID Controller}\label{litreview/robotics/pid}
+As mentioned above the PID controller uses feedback from the encoders to maintain a straight line of movement and maintain each of wheels at a constant velocity. The PID controller is a feedback loop which is designed to eliminate errors in the actuator systems by the mathematical description \todo{add the mathematical formula for PID add wheres also}. By tuning $ K_p $, $ T_i $ and $ T_d $ for the system in question, the error in the system can be reduced.    
+
+Following the setting of $K_p$ to an appropriate value which gives a steady closed-loop state, $T_i$ can be used to further tune the system. The increasing of $T_i$, reduces the overshoot of the system from a state of steady oscillation but reduces the response speed of the system~\cite{chen2007linear}. $T_d$ is then used to damp any remaining oscillations to a steady line response, however this can introduce noise amplification to the system and should be used with care. 
+
+One method of tuning a PID controller is the Ziegler-Nicholls method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $T_i$ and $T_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nicholls method is mathematically imperfect and this will have to be explored experimentally during the project.     
+%https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
+
+\subsection{Rate Control}\label{litreview/robotics/ratecontrol}
+
+
+\section{AI}\label{litreview/ai}
+At the software level of control 
+
 
 \section{Robotics}\label{litreview/robotics}
 A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of technology which deals with the design, construction, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
@@ -75,43 +107,38 @@ of collaborative robotics in requiring an additional aspect of intelligence in
 the communication and coordination of the individual agents~\cite{cao1995cooperative}.
 
 \section{SLAM}\label{litreview/slam}
-An essential skill for mobile robots navigating unknown environments is being
-able to build a map of the environment whilst simultaneously identifying its own
-position. This is especially true in the absence of external referencing systems
-such as GPS.\@ This is known as the Simultaneous Localisation And Mapping (SLAM)
+A key challenge in mobile robotics is for the robot to know its own position in the
+environment whilst still being able to build a map of its surroundings. 
+This is especially true in the absence of external referencing systems
+such as GPS to aid in knowing its relative position. This is known as the Simultaneous Localisation And Mapping (SLAM)
 problem and has been one of the most extensively researched topics in mobile
 robotics over the last two decades~\cite{grisetti2010tutorial}. As the robot's
 estimate of its position is affected by both the previous state's uncertainty
-and the any errors in the current measurement, uncertainties in the readings compound
+and any errors in the current measurement, the uncertainties compound
 over time. To rectify this, a map with distinctive landmarks can reduce its
 localisation error by revisiting these known areas. This is known as loop closure.
 
-SLAM implementations rely on sensor fusion algorithms which take in readings from an
-array of sensors and calculates a estimated state changed based on the probability
-or error for each sensor. This effectively allows errors between multiple sensors
-to be cancelled out, resulting in more reliable estimates. A typical approach is to
-use sensor fusion to combine odometry readings from wheel encoders with acceleration
-information obtained from an inertial measurement unit (IMU) to correct for errors
-caused by wheels slipping and sensor imperfections.
+SLAM implementations rely on sensor fusion algorithms as part of their implementation. 
+This takes in readings from an array of sensors and calculates an estimated state change
+based on the probability of error for each sensor. This effectively allows errors between 
+multiple sensors to be cancelled out, resulting in more reliable estimates. A standard 
+approach is to use sensor fusion to combine odometry readings from wheel encoders with 
+acceleration information obtained from an inertial measurement unit (IMU) to correct for 
+errors caused by wheels slipping and sensor imperfections.
 
-There are a large variety of solutions to suit various system requirements, which
-fall into the two categories of filtering and smoothing. Filtering
-involves creating a state estimation where the state of the system consists of
-the current robot position and the map. The estimate is augmented and improved
-by considering the new measurements as they become available. Some popular
+There are a large variety of solutions to suit various system requirements, these
+can be categorized as either filtering and smoothing. Filtering creates a state estimation 
+using the current robot position and the map. The estimate is augmented and improved
+by using the new measurements as they become available. Some popular
 approaches to filtering are techniques such as Kalman filters, particle filters
-and information filters. This technique is known as online SLAM where only the most
-recent pose (the robot's position and orientation) is recovered with previous poses
-marginalised out. Smoothing approaches involve a full estimate of the trajectory of
-the robot from all available
-measurements. These typically use least-square error minimisation techniques and are
-used to address the problem known as the full SLAM problem. Full SLAM involves
-attempting to map the entire path.
+and information filters. Smoothing techniques involve a full estimate of the trajectory of
+the robot from all available measurements. These typically use least-square error 
+minimisation techniques and are used to address the problem known as the full SLAM 
+problem which attempts to map the entire path.
 
-The state of the system is known as $x_k$ and
-this can be defined as a function which uses the previous state to determine the next
-state. As the model can not be perfectly accurate, there will be uncertainty in the
-readings and so this must be taken into account by the model. As a result, $x_k$,
+The state of the system is known as $x_k$ which is a function that uses the previous 
+state to determine the next state. As this can not be perfectly accurate, there will 
+be uncertainty in the readings that must be taken into account. As a result, $x_k$,
 which is known as the motion model, is defined as
 \begin{equation}
 x_{k} = f(x_{k-1}, q_{k-1})\,,
@@ -122,13 +149,13 @@ also be represented by the probability distribution
 x_{k} \sim p(x_{k} | x_{k-1})\,.
 \end{equation}
 Both of these imply that the state is stochastic and depends on the previous
-state. The probability distribution helps emphasise that the current state is
+state. The probability distribution emphasises that the current state is
 drawn from a distribution of possible states based on the previous state. Given that a perfect sensor is not possible, the current state will also have noise
 in the reading. This is known as the measurement model and can be defined as
 \begin{equation}
 y_{k} = h(x_{k}, r_{k})\,,
 \end{equation}
-where $r$ represents the uncertainty that is present in the model of the sensor. As
+where $r$ represents the uncertainty of the sensor. As
 before this can be expressed as an uncertainty model:
 \begin{equation}
 y_{k} \sim p(y_{k} | y_{k-1})\,.
@@ -175,3 +202,34 @@ frames given a translation matrix relating the two cameras.
 Computer vision can be well integrated with SLAM providing a means of both the measure
 of distance (if the CV system is bi-ocular) and the identification of distinctive
 features in the environment to allow loop closure\cite{CVho2006loop}.
+
+\section{ROS}\label{litreview/ROS}
+
+\section{Maze Solving}\label{litreview/maze}
+\subsection{Maze Exploration}\label{litreview/maze/exploration}
+discuss algorithms being used for exploration. 
+Wall follower - works only on simply connected mazes
+Trémaux's algorithm - requires recognition of places already been. finds a path, not shortest path	
+
+\subsection{Shortest Path Finding}\label{litreview/maze/path}
+breadth first - works but inefficient
+A* - works but needs heuristic. Coordinates can be used. 
+
+\section{Motor Control}\label{litreview/control}
+
+As the control of the mo
+
+\section{PID Controller}\label{litreview/control/pid}
+PID controller are a very common solution to problems where the error of the system (the difference between the current state and the desired state) can be measured. PID stands for Proportional-Integral-Derivative, referring to the function of the error with which the output is calculated. The output of the system is the summation of a term which is proportional to the error, a term which is related to the error integrated over time, and a term which is proportional to the rate of change of the error. This is shown in equation \todo{equation}
+
+$$ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}$$
+
+If $k_d$ and $k_i$ were both 0, and only the P term was active, the output would change to reduce the error in the system. Imagine a temperature controller, if the temperature was too low, the heater would turn on, and the heater would be turned up higher the greater the difference between the actual temperature and the required temperature. In many systems, this simple implementation is adequate, however it has several limitations. 
+
+Consider for instance the temperature controller example where heat is being lost in the system is equal to the P constant times the error. This would result in a stable state with a potentially large error. To prevent this, the I term can be increased. This will increase the longer an error is present, and preventing stable state errors. 
+
+Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs.
+
+\section{PID Rate Controller}\label{litreview/control/pid}
+rate control
+
