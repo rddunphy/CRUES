@@ -27,12 +27,12 @@ Ultrasonic system theory
 Sensor selected and why
 
 
-
 \begin{figure}[!ht]
 	\centering
 	%\includegraphics[width=0.5\textwidth]{UltraSoundSensorDiagram}
 	\caption{Ultrasound Sensor Layout}\label{UltraSoundSensorDiagram}
-%\end{figure}
+
+\end{figure}
 
 \subsection{Implementation}\label{elec/range/impl}
 Sensor layout (3 deg cones) 
@@ -222,7 +222,7 @@ The PCB required to contain the following components:
   \item LEDs for debugging
 \end{itemize}
 
-with the following design constraints:
+with the following physical design constraints:
 
 \begin{itemize}
   \item Central ultrasonic sensor at the centre of the robot in the x axis
@@ -232,9 +232,19 @@ with the following design constraints:
   \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
   \item Motor drive connectors also at fixed position relative to centre 
 \end{itemize}
-\todo{maybe find coordinates of parts for fixed position components}
-With these constraints the following PCB design shown in figure \todo{image and reference}
 
+\todo{maybe find coordinates of parts for fixed position components}
+
+\todo{pin constraints too??}
+
+With these constraints the following PCB design shown in figure \ref{PCB_Design}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{main_pcb.pdf}
+	\caption{Final PCB Design}\label{PCB_Design}
+
+\end{figure}
 Note that the peculiar shape is to allow room for the motors and encoders. 
 
 \subsection{Testing}\label{elec/pcb/test}
@@ -242,10 +252,3 @@ Note that the peculiar shape is to allow room for the motors and encoders.
 After the components were soldered into place on the PCB, manual continuity tests were performed with a multimeter to ensure that adjacent pins had not been connected in the soldering process.
 
 The PCB was then mounted and each module test was rerun to ensure that the connections were all correct. This process exposed a flaw as one of the ultrasonic sensors seemed to no longer work. After some investigation it was noticed that the screws being used had slightly larger heads than the screws used for mounting the test strip board and was connecting two tracks. A rubber washer was used as temporary fix and then this was corrected in the final PCB design. 
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=1\textwidth]{main_pcb.pdf}
-	\caption{Final PCB Design}\label{PCB Design}
-
-\end{figure}
