@@ -2,22 +2,22 @@
 
 \chapter{Mechanical}\label{mechanical}
 
-The mechanical design of each robot is central to its functionality, with sensors being heavily 
+The mechanical design of each robot is central to its functionality as several of the sensors are
 reliant on the accuracy of the mechanical construction. As multiple robots are being created, 
-the mechanical similarity is also important to ensure the sensors and software function consistently across each robot. The placement of sensors will be critical for this and
-so the first robot will be completed and tested before further agents are constructed.
-Printed Circuit Boards (PCBs) were used for this purpose in the
+the mechanical similarity is also important to guarantee the sensors and software function consistently across each robot. 
+Given this consideration, Printed Circuit Boards (PCBs) were in the
 final iteration of the design---with strip board being used for prototyping---as this will provide additional robustness and guaranteed repeatability between robots.
 
 \section{Chassis}\label{mech/chassis}
-The chassis used for the robots was the pre-built ``hobbyist'' chassis from Pololu ~\cite{pololuchassis}. These chassis were chosen as they enabled consistency and scalability between robots which was essential to this component of the design. The chassis were accompanied by a number of fitted parts such as motors, encoders and a power distribution board which were also used for consistency. The initial design of the PCB and assembly of the robots was not constricted by this choice as the chassis had a number of holes at regular intervals which could be used to attach a variety in a number of different ways. A variety of chassis colours were also used to simplify the robot recognition which was required and will be discussed later in Section ~\ref{software/cv}. 
+The chassis used for the robots was the pre-built ``hobbyist'' chassis from Pololu ~\cite{pololuchassis}. These chassis were chosen as they ensured manufacturing  consistency and allowed for scalability, due to their availability, both of which were essential design consideration. The chassis were accompanied by a number of fitted parts such as motors, encoders and a power distribution board which were also used. Using these pre-built solutions reduced the number of parts which had to be created and fitted, simplifying the construction process.
+The chassis had numerous mounting holes, which again eased construction, as holes did not need to be drilled in the chassis to mount the PCB and other components. A variety of chassis colours were also used to simplify the robot recognition which was required and will be discussed later in Section ~\ref{software/cv}. 
 
-During testing, issues were encountered with the motors which had accompanied the chassis regarding the leaking of oil or grease from their plastic casing. This resulted in the gears making more noise than they should and could possibly result in motor failure if the motors were run without more grease for a prolonged period of time. This was investigated through the manufacturer, however, unfortunately no reply has been forthcoming. The risk of motor failure was reduced by applying a more appropriate grease at the recommendation of \todo{insert Steve's surname????}, the lab technician.  
+During testing, issues were encountered with some of the motors which had accompanied the chassis, as it was noticed that they were leaking oil or grease from their plastic casing. This resulted in the gears making more noise than they did previously and resulted in motor failure if the motors were run without more grease for a prolonged period of time. This was investigated through the manufacturer, however, unfortunately no reply has been forthcoming. The risk of motor failure was reduced by applying a more appropriate grease at the recommendation of \todo{insert Steve's surname????}, the lab technician.  
 
 \section{Sensor Placement}\label{mech/sensors}
 The range sensors chosen were ultrasound sensors as these fit the scalability and accuracy requirements of the range sensing. Mechanically these had to be mounted in a consistent manner on each robot to ensure that software results could be replicated between robots with minimal deviation from the standard code. The ultrasonic sensors chosen were HC-SR04 \todo{cite us sensor datasheet}.
 
-As can be seen from the datasheet, the sensors have a cone of detection of 30 \todo{add degrees symbol???}. This was the main consideration when designing the layout of the sensors at the front of the robot. Due to space restrictions on the front of robot, three sensors were used for an overall cone of detection of approximately 90 \todo{degree symbol}. This was first drawn roughly on a scale drawing of the robot before the cones of detection were tested using stripboard\ref{elec/range}. Following these tests, the PCB could be designed with these measurements in mind\ref{elec/PCB} and headers used to ensure the design was modular and sensors could be swapped out if needed. 
+As can be seen from the datasheet, the sensors have a cone of detection of \ang{30}. This was the main consideration when designing the layout of the sensors at the front of the robot. Due to space restrictions on the front of robot, three sensors were used for an overall cone of detection of approximately \ang{90}. This was first drawn roughly on a scale drawing of the robot before the cones of detection were tested using stripboard\ref{elec/range}. Following these tests, the PCB could be designed with these measurements in mind\ref{elec/PCB} and headers used to ensure the design was modular and sensors could be swapped out if needed. 
 
 The inertial measurement unit (IMU) had to be placed in the centre/as close to the centre of the robot as possible. This was to ensure the the IMU was as close to the centre rotation of the robot as possible, to obtain the most accurate readings possible. By placing the IMU correctly on the robot the need for regular calibration of the measurements is reduced. This heavily influenced the design of the PCB. 
 
@@ -30,27 +30,4 @@ wheels are not connected by a single axle~\cite[p.~146]{braunl_embedded_2013}.
 When using a two wheeled robot, DDR allows the
 robot to rotate on the spot around its central axis when the wheels are
 driven in opposite directions. This provides a high level of mobility which
-will aid in the sensing and mapping capabilities of the robot. The chassis chosen is accompanied by a motor and encoder for each wheel for wheel odometry data.
-
-The drive system will be controlled either by the central computer on
-the Raspberry Pi or by a microcontroller uniquely assigned to managing the
-drive system. In either case the wheel odometry data will be gathered and
-sent for fusion with data from other sensors on the Raspberry Pi for the
-purpose of localisation. The benefits of using a microcontroller for the
-drive system would predominantly be the higher level of precision with
-which tasks could be timed and carried out. This would also allow the
-odometry data to be collected quickly and regularly with little
-interference from other tasks, ensuring the data was correct. The decision
-on this has not yet been made and this will be based predominantly on the
-load of the algorithms on the Raspberry Pi which is currently difficult to
-determine. A cheap and effective microcontroller such as the MSP430
-Launchpad could be ordered and integrated at fairly short notice following consultation with Dr James Irvine (see Section~\ref{plan/structure}).
-
-A pre-built motor drive board is likely to be used from the same supplier as the
-pre-built chassis. As an
-accompanying component the circuit is guaranteed to fit neatly onto the
-chassis~\cite{pololudriver}. This circuit also includes a power distribution board
-which will be useful in reducing the mechanical complexity of the robot.
-Using these pre-built solutions will improve the repeatability of the
-robot as the number of parts which have to be created and fitted will be
-reduced.  
+will aid in the sensing and mapping capabilities of the robot. The chassis chosen is accompanied by a motor and encoder for each wheel which can be used to obtain data for wheel odometry .
