@@ -1,27 +1,40 @@
 #!/usr/bin/env python
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 import rospy
 from std_msgs.msg import Bool
 
-from crues.motors import MotorSleepController
 
+class MotorSleepController:
+    def __init__(self):
+        rospy.init_node('motor_sleep')
+        self.pin = rospy.get_param('pins/ms')
+        rospy.Subscriber('motor_sleep', Bool, self._sleep_callback)
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.HIGH)
 
-def handle_sleep_cmd(msg, controller):
-    controller.set_sleep(msg.data)
+    def spin(self):
+        try:
+            rospy.spin()
+        finally:
+            self._cleanup()
 
+    def _cleanup(self):
+        GPIO.cleanup(self.pin)
 
-def main():
-    rospy.init_node('motor_sleep')
-    pin = rospy.get_param('pins/ms')
-    controller = MotorSleepController(pin)
-    rospy.Subscriber('motor_sleep', Bool, handle_sleep_cmd, callback_args=controller)
-    try:
-        rospy.spin()
-    except rospy.ROSInterruptException as e:
-        rospy.logerr(e)
-    finally:
-        controller.cleanup()
+    def _sleep_callback(self, msg):
+        if msg.data:
+            GPIO.output(self.pin, GPIO.LOW)
+        else:
+            GPIO.output(self.pin, GPIO.HIGH)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        ms = MotorSleepController()
+        ms.spin()
+    except rospy.ROSInterruptException:
+        pass
