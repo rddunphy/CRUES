@@ -1,0 +1,5 @@
+<launch>
+    <node name="imu" pkg="crues_sensors" type="imu_node.py">
+        <param name="rate" type="double" value="10" />
+    </node>
+</launch>

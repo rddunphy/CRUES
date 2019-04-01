@@ -1,0 +1,16 @@
+<launch>
+
+    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+
+    <node name="red_led" pkg="crues_actuators" type="led_node.py">
+        <remap from="~pin" to="pins/lr" />
+        <remap from="/led" to="/red_led" />
+        <remap from="/led_flash" to="/red_led_flash" />
+    </node>
+    <node name="green_led" pkg="crues_actuators" type="led_node.py">
+        <remap from="~pin" to="pins/lg" />
+        <remap from="/led" to="/green_led" />
+        <remap from="/led_flash" to="/green_led_flash" />
+    </node>
+
+</launch>

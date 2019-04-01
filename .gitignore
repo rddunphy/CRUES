@@ -1,7 +1,26 @@
+# Compiled Python files
+*.pyc
+*.egg-info
+
+# Virtual environments
+venv/
+CRUES_VENV_2/
+
+# PyCharm files
+.idea/
+
 # Compressed files
 *.zip
 *.tar
 *.gz
+
+# Eagle files
+*.b#*
+*.s#*
+*.job
+*.pro
+*.brd.lck
+*.sch.lck
 
 # Temporary OpenOffice files
 *.~lock.*#

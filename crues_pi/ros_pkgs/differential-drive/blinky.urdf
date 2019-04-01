@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot name="blinkyinkyclyde">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.01" radius="0.0825"/>
+      </geometry>
+    </visual>
+  </link>
+
+<link name="rwheel">
+	<visual>
+		<origin xyz="0 0 0" rpy="1.570795 0 1.570795" />
+		<geometry>
+			<cylinder length="0.007" radius="0.036"/>
+		</geometry>
+    	</visual>
+</link>
+
+<link name="lwheel">
+	<visual>
+		<origin xyz="0 0 0" rpy="1.570795 0 1.570795" />
+		<geometry>
+			<cylinder length="0.007" radius="0.036"/>
+		</geometry>
+    	</visual>
+</link>
+
+ <joint name="base_to_rwheel" type="continuous">
+ 	 <parent link="base_link"/>
+   	<child link="rwheel"/>
+   	<origin xyz="0.071 0.0 0.015"/> 
+  </joint>
+
+<joint name="base_to_lwheel" type="continuous">
+ 	 <parent link="base_link"/>
+   	<child link="lwheel"/>
+   	<origin xyz="-0.071 0.0 0.015"/> 
+  </joint>
+
+<link name="imu">
+	<visual>
+<geometry>
+			<box size="0.0212 0.0164 0.0033"/>
+		</geometry>
+    	</visual>
+</link>
+
+<joint name="base_to_imu" type="fixed">
+ 	 <parent link="base_link"/>
+   	<child link="imu"/>
+   	<origin xyz="0.0025 0.001 0.040"/> 
+  </joint>
+
+
+<link name="ultraC">
+<visual>
+<geometry>
+			<box size="0.045 0.020 0.015"/>
+		</geometry>
+    	</visual>
+</link>
+
+<joint name="base_to_ultraC" type="fixed">
+ 	 <parent link="base_link"/>
+   	<child link="ultraC"/>
+   	<origin xyz="0.0 0.0515 0.048"/> 
+  </joint>
+
+<link name="ultraL">
+	<visual>
+	<origin xyz="0 0 0" rpy="0 0 0.523599" />
+		<geometry>
+			<box size="0.045 0.020 0.015"/>
+		</geometry>
+    	</visual>
+</link>
+
+<joint name="base_to_ultraL" type="fixed">
+ 	<parent link="base_link"/>
+   	<child link="ultraL"/>
+   	<origin xyz="-0.04862 0.03666 0.048"/> 
+  </joint>
+
+<link name="ultraR">
+	<visual>
+	<origin xyz="0 0 0" rpy="0 0 -0.523599" />
+		<geometry>
+			<box size="0.045 0.020 0.015"/>
+		</geometry>
+    	</visual>
+</link>
+
+<joint name="base_to_ultraR" type="fixed">
+ 	<parent link="base_link"/>
+   	<child link="ultraR"/>
+   	<origin xyz="0.048 0.03696 0.048"/> 
+  </joint>
+</robot>
