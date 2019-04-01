@@ -2,6 +2,7 @@
 import cv2
 #import imutils
 from crues_sensors.msg import Vision
+from imutils.video import VideoStream
 
 import numpy as np
 try:
@@ -10,13 +11,22 @@ except ImportError:
     from crues import GPIO_MOCK as GPIO
 import rospy
 
+
+pi = True
+
 class RobotDetector():
     def __init__(self):
         self.name = "Robot"
         self.robot_colours = [("Inky", ([110, 100, 40], [140, 255, 255]),(255, 0, 0)),
                               ("Clyde", ([20, 120, 100],[50, 255, 255]), (0, 255, 255)),
                               ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255))]
-        self.cap = cv2.VideoCapture(1)
+
+        if pi:
+            frameSize = (320, 240)
+            self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frameSize,
+                             framerate=32).start()
+        else:
+            self.cap = cv2.VideoCapture(1)
         rospy.init_node("vision", anonymous = False)
         self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
 
@@ -102,7 +112,10 @@ class RobotDetector():
             #self._cleanup()
 
     def _tick(self):
-        _, frame = self.cap.read()
+        if pi:
+            frame = self.cap.read()
+        else:
+            _, frame = self.cap.read()
         names, found, coords, outlines, highlight_colours = self.search(frame)
         #for i, name in enumerate(names):
         #    if found[i]:
@@ -140,4 +153,6 @@ if __name__ == '__main__':
         cv = RobotDetector()
         cv.spin()
     except rospy.ROSInterruptException:
+        if pi:
+            cv.cap.stop()
         pass
