@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 import cv2
-import imutils
+#import imutils
 from crues_sensors.msg import Vision
 
 import numpy as np
@@ -15,7 +16,8 @@ class RobotDetector():
         self.robot_colours = [("Inky", ([110, 100, 40], [140, 255, 255]),(255, 0, 0)),
                               ("Clyde", ([20, 120, 100],[50, 255, 255]), (0, 255, 255)),
                               ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255))]
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
+        rospy.init_node("vision", anonymous = False)
         self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
 
     def search(self, search_frame):
@@ -96,7 +98,8 @@ class RobotDetector():
                 self._tick()
                 rate.sleep()
         finally:
-            self._cleanup()
+            pass
+            #self._cleanup()
 
     def _tick(self):
         _, frame = self.cap.read()
