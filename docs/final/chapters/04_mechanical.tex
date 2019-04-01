@@ -2,17 +2,50 @@
 
 \chapter{Mechanical}\label{mechanical}
 
-The mechanical design of each robot is central to its functionality as several of the sensors are
-reliant on the accuracy of the mechanical construction. As multiple robots are being created, 
-the mechanical similarity is also important to guarantee the sensors and software function consistently across each robot. 
-Given this consideration, Printed Circuit Boards (PCBs) were in the
-final iteration of the design---with strip board being used for prototyping---as this will provide additional robustness and guaranteed repeatability between robots.
+The mechanical design of each robot is central to its 
+functionality as several of the sensors are
+reliant on the accuracy of the mechanical construction. As 
+multiple robots are being created, 
+the mechanical similarity is also important to guarantee the 
+sensors and software function consistently across each robot. 
+Given this consideration, Printed Circuit Boards (PCBs) were in 
+the
+final iteration of the design---with strip board being used for 
+prototyping---as this will provide additional robustness and 
+guaranteed repeatability between robots.
 
 \section{Chassis}\label{mech/chassis}
-The chassis used for the robots was the pre-built ``hobbyist'' chassis from Pololu ~\cite{pololuchassis}. These chassis were chosen as they ensured manufacturing  consistency and allowed for scalability, due to their availability, both of which were essential design consideration. The chassis were accompanied by a number of fitted parts such as motors, encoders and a power distribution board which were also used. Using these pre-built solutions reduced the number of parts which had to be created and fitted, simplifying the construction process.
-The chassis had numerous mounting holes, which again eased construction, as holes did not need to be drilled in the chassis to mount the PCB and other components. A variety of chassis colours were also used to simplify the robot recognition which was required and will be discussed later in Section ~\ref{software/cv}. 
+The chassis used for the robots was the pre-built ``hobbyist'' 
+chassis from Pololu ~\cite{pololuchassis}. These chassis were 
+chosen as they ensured manufacturing  consistency and allowed 
+for scalability, due to their availability, both of which were 
+essential design consideration. The chassis were accompanied by 
+a number of fitted parts such as motors, encoders and a power 
+distribution board which were also used. Using these pre-built 
+solutions reduced the number of parts which had to be created 
+and fitted, simplifying the construction process.
+The chassis had numerous mounting holes, which again eased 
+construction, as holes did not need to be drilled in the chassis 
+to mount the PCB and other components. A variety of chassis 
+colours were also used to simplify the robot recognition which 
+was required and will be discussed later in Section ~
+\ref{software/cv}. 
 
-During testing, issues were encountered with some of the motors which had accompanied the chassis, as it was noticed that they were leaking oil or grease from their plastic casing. This resulted in the gears making more noise than they did previously and resulted in motor failure if the motors were run without more grease for a prolonged period of time. This was investigated through the manufacturer, however, unfortunately no reply has been forthcoming. The risk of motor failure was reduced by applying a more appropriate grease at the recommendation of \todo{insert Steve's surname????}, the lab technician.  
+During testing, issues were encountered with some of the motors 
+which had accompanied the chassis, as it was noticed that they 
+were leaking oil or grease from their plastic casing. This 
+resulted in the gears making more noise than they did previously 
+and resulted in motor failure if the motors were run without 
+more grease for a prolonged period of time. This was 
+investigated through the manufacturer, however, unfortunately no 
+reply has been forthcoming. The risk of motor failure was 
+reduced by applying a more appropriate grease at the 
+recommendation of S. Cartwright, the lab 
+technician.  
+
+In order to robustly connect each of the components to the chassis, plastic spacers were used. To obtain the required size of 23mm \todo{reference manual??} between the chassis and PCB and between the PCB and the Raspberry Pi, spacers of 8mm and 15mm were attached using an M3 screw. In order for the M3 screw to also be used to connect the relevant parts, the standard mounting holes on the Raspberry Pi had to be widened slightly. The M3 screws were then used to attach the chassis to the PCB and the PCB to the Raspberry Pi. The 23mm size was determined using the standard header size which would be between both sets of components in addition to allowing for a small gap between the header and the component above. This additional space allowed for airflow which provides automatic cooling of components. 
+
+The spacers also allow components to be placed above each other and above the centre of the robot. Maintaining the centre of gravity close to the centre of the robot, and therefore maintaining centripetal forces around the centre of the robot, is vital for the accuracy of the IMU \ref{elec/imu/impl}. By using the spacers to maintain a centre of gravity above the centre of the robot, the general balance of the robot is also aided and the drive control of the robot should be more simple.    
 
 \section{Sensor Placement}\label{mech/sensors}
 The range sensors chosen were ultrasound sensors as these fit the scalability and accuracy requirements of the range sensing. Mechanically these had to be mounted in a consistent manner on each robot to ensure that software results could be replicated between robots with minimal deviation from the standard code. The ultrasonic sensors chosen were HC-SR04 \todo{cite us sensor datasheet}.
@@ -30,4 +63,4 @@ wheels are not connected by a single axle~\cite[p.~146]{braunl_embedded_2013}.
 When using a two wheeled robot, DDR allows the
 robot to rotate on the spot around its central axis when the wheels are
 driven in opposite directions. This provides a high level of mobility which
-will aid in the sensing and mapping capabilities of the robot. The chassis chosen is accompanied by a motor and encoder for each wheel which can be used to obtain data for wheel odometry .
+will aid in the sensing and mapping capabilities of the robot. The chassis chosen is accompanied by a motor and encoder for each wheel which can be used to obtain data for wheel odometry. 
