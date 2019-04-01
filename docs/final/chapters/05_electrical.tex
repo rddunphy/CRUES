@@ -128,11 +128,11 @@ The IMU selected uses the I$^2$C protocol for data transmission, which integrate
 It should be noted that, while this was the only I$^2$C device currently used, other devices with conflicting addresses can be handled as The IMU allows the address to be changed through a data pin from 0x68 to 0x69. This would most likely be used if the framework developed was being used on another, more complicated system requiring several IMUs. This pin was not connected to the RPi in this design as it was not yet required. 
 \todo{code description}
 
-An \verb|i2c\_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device. 
+An \verb|i2c_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device. 
 
 \todo{what code is interesting}
 
-An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c\_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write\_byte()| call is essential to enable the IMU transmissions. 
+An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write_byte()| call is essential to enable the IMU transmissions. 
 
 \begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
 def __init__(self, address, rate, channel=1):
