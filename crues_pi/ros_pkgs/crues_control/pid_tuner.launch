@@ -61,6 +61,5 @@
         <!--<remap from="/wheel_vtarget" to="/rwheel_vtarget" />-->
         <!--<remap from="/wheel_vel" to="/rwheel_vel" />-->
     <!--</node>-->
-    <!--<node name="pid_tuner" pkg="crues_control" type="pid_tune.py" />-->
 
 </launch>
