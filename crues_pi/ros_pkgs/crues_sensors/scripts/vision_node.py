@@ -1,6 +1,13 @@
 import cv2
 import imutils
+from crues_sensors.msg import Vision
+
 import numpy as np
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
+import rospy
 
 class RobotDetector():
     def __init__(self):
@@ -8,6 +15,8 @@ class RobotDetector():
         self.robot_colours = [("Inky", ([110, 100, 40], [140, 255, 255]),(255, 0, 0)),
                               ("Clyde", ([20, 120, 100],[50, 255, 255]), (0, 255, 255)),
                               ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255))]
+        self.cap = cv2.VideoCapture(0)
+        self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
 
     def search(self, search_frame):
         ''' Search search_frame for other robots and return relevant information
@@ -80,25 +89,52 @@ class RobotDetector():
             cX, cY = 0, 0
         return cX, cY
 
+    def spin(self):
+        rate = rospy.Rate(rospy.get_param('~rate', 50))
+        try:
+            while not rospy.is_shutdown():
+                self._tick()
+                rate.sleep()
+        finally:
+            self._cleanup()
+
+    def _tick(self):
+        _, frame = self.cap.read()
+        names, found, coords, outlines, highlight_colours = self.search(frame)
+        #for i, name in enumerate(names):
+        #    if found[i]:
+                #x, y, w, h = cv2.boundingRect(outlines[i])
+                #cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
+                #cv2.putText(frame, name, (x - 20, y - 20),
+                #            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+        msg = Vision()
+        msg.robot_list  = ",".join(names)
+        self.pub.publish(msg)
+
+#if __name__ == '__main__':
+#
+#    cap = cv2.VideoCapture(0)
+#    rd = RobotDetector()
+#    while 1:
+#        _, frame = cap.read()
+#        names, found, coords, outlines, highlight_colours = rd.search(frame)
+#
+#        for i, name in enumerate(names):
+#            if found[i]:
+#                #cv2.drawContours(frame, [outline], -1, (0, 255, 0), 2)
+#                #cv2.circle(frame, (cx, cy), 7, (255, 255, 255), -1)
+#                x, y, w, h = cv2.boundingRect(outlines[i])
+#                cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
+#                cv2.putText(frame, name, (x - 20, y - 20),
+#                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+#        cv2.imshow('frame2', frame)
+#        if cv2.waitKey(10) & 0xFF == ord('q'):
+#            break
+#    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-
-    cap = cv2.VideoCapture(0)
-    rd = RobotDetector()
-    while 1:
-        _, frame = cap.read()
-        names, found, coords, outlines, highlight_colours = rd.search(frame)
-
-        for i, name in enumerate(names):
-            if found[i]:
-                #cv2.drawContours(frame, [outline], -1, (0, 255, 0), 2)
-                #cv2.circle(frame, (cx, cy), 7, (255, 255, 255), -1)
-                x, y, w, h = cv2.boundingRect(outlines[i])
-                cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-                cv2.putText(frame, name, (x - 20, y - 20),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
-        cv2.imshow('frame2', frame)
-        if cv2.waitKey(10) & 0xFF == ord('q'):
-            break
-    cv2.destroyAllWindows()
-
+    try:
+        cv = RobotDetector()
+        cv.spin()
+    except rospy.ROSInterruptException:
+        pass
