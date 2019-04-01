@@ -24,6 +24,10 @@
         <remap from="/wheel" to="/rwheel" />
     </node>
 
+    <node name="imu" pkg="crues_sensors" type="imu_node.py">
+        <remap from="~rate" to="imu_rate" />
+    </node>
+
     <!-- ACTUATORS -->
     <include file="$(find crues_actuators)/motors.launch" />
     <include file="$(find crues_actuators)/leds.launch" />
@@ -73,7 +77,12 @@
         <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />
     </node>
 
+    <node name="imu_ekf" pkg="robot_localization" type="ekf_localiztion_node" clear_params="true">
+        <rosparam command="load" file="/home/crues/crues_pi/conifg/ekf_imu_only.yaml" />
+        <remap from="/odometry/filtered" to="/imu_odom" />
+    </node>
+
     <!-- DATA RECORDING -->
-    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom_ /diff/odom /odometry/filtered" />
+    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom_ /diff/odom /imu_odom /odometry/filtered" />
 
 </launch>

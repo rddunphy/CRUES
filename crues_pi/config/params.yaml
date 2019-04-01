@@ -30,6 +30,7 @@ enc_rate: 50
 us_rate: 5
 us_angle: deg(30)
 us_time: 0.05
+imu_rate: 50
 pid:
   Kp: 0.176
   Ki: 0

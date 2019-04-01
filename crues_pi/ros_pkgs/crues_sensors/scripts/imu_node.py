@@ -12,9 +12,9 @@ def setup_imu_message((a_x, a_y, a_z), (roll_v, pitch_v, yaw_v)):
     msg = Imu()
     msg.orientation_covariance = [-1.0, 0.0, 0.0,
                                   0.0, 0.0, 0.0,
-                                  0.0, 0.0, 0.0], # indicate orientation unknown
-    msg.linear_acceleration = Vector3(a_x, a_y, a_z)
-    msg.angular_velocity = Vector3(roll_v, pitch_v, yaw_v)
+                                  0.0, 0.0, 0.0]  # indicate orientation unknown
+    msg.linear_acceleration = Vector3(a_y, -a_x, a_z)
+    msg.angular_velocity = Vector3(pitch_v, -roll_v, yaw_v)
     return msg
 
 
@@ -27,8 +27,8 @@ def publish_data(pub, imu):
 
 def main():
     try:
-        IMU_pub = rospy.Publisher('IMU_twist', Imu, queue_size=10)
         rospy.init_node("IMU")
+        IMU_pub = rospy.Publisher('imu_data', Imu, queue_size=10)
         r = rospy.get_param('~rate', 5)
         rate = rospy.Rate(r)
         imu = IMU.IMU(0x68, r)
