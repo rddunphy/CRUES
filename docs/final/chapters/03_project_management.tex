@@ -1,24 +1,115 @@
 % !TEX root = ../report.tex
 \chapter{Project Management}\label{pm}
 
-The project was managed throughout by an elected project manager (Andrew Fagan), who was tasked with ensuring tasks were completed to the schedule decided by the group as a whole. This allowed every member in the group to have an equal voice in decisions regarding the project while still having a overall manager of the timeline. Using this system, with a minimal number of managers and no strictly assigned teams allowed workflow fluidity and flexibility meaning no work was restricted specifically to a subset of the group. This also improved the group's understanding of the project as a whole and the aspects which will be detailed herein. 
+The project was managed throughout by an elected project manager 
+(Andrew Fagan), who was tasked with ensuring tasks were 
+completed to the schedule decided by the group as a whole. This 
+allowed every member in the group to have an equal voice in 
+decisions regarding the project while still having a overall 
+manager of the timeline. Using this system, with a minimal 
+number of managers and no strictly assigned teams allowed 
+workflow fluidity and flexibility meaning no work was restricted 
+specifically to a subset of the group. This also improved the 
+group's understanding of the project as a whole and the aspects 
+which will be detailed herein. 
 
 \section{Project Structure}\label{pm/structure}
 
-The project was structured in two week agile sprints. At the beginning of each sprint a number of tasks were created which were expected to be completed within the next sprint. These were then assigned to group members as appropriate. Upon completion of a task within the sprint, this was reported to the project manager and a further task was assigned. The project manager was responsible for ensuring estimated timelines were adhered to within the sprint. At the end of the sprint a short meeting was held to discuss progress made and issues encountered which would be used to influence the tasks for the subsequent sprint. 
+The project was structured in two week agile sprints. At the 
+beginning of each sprint a number of tasks were created which 
+were expected to be completed within the next sprint. These were 
+then assigned to group members as appropriate. Upon completion 
+of a task within the sprint, this was reported to the project 
+manager and a further task was assigned. The project manager was 
+responsible for ensuring estimated timelines were adhered to 
+within the sprint. At the end of the sprint a short meeting was 
+held to discuss progress made and issues encountered which would 
+be used to influence the tasks for the subsequent sprint. Tasks 
+within the sprint were tracked using Git issues, assigned to one 
+or many members of the group. The agile methods used were 
+generally well adhered to and 
+resulted in successful outcomes for the tasks which they were 
+used for. 
 	
-	\todo{evaluate this method (that we definitely used throughout...all the time...stuck to it like glue)} 
 
 \subsection{Consultations}\label{pm/consultations}
-Throughout the project a number of member of academic staff were consulted to obtain an expert's opinion on either discussions or decisions which had been made by the group. 
-\todo{Mark Post discussion}
-\todo{James Irvine discussions}
+Throughout the project a number of members of academic staff 
+were consulted to obtain an expert's opinion on either 
+discussions or decisions which had been made by the group. 
+Members of staff from the EEE, CIS and EMEA departments were 
+consulted at various stages in the project, bringing together 
+each of the individual components of the robot. 
+
+From the EMEA department, Dr Mark Post (now at York University) 
+was consulted in the planning stages of the project. With a 
+background in robotic vehicles and SLAM, Dr Post was consulted 
+with a view to obtaining as much knowledge as possible 
+surrounding the possibilities for operating system to use, 
+possible SLAM implementations, potential objectives and 
+timescales for parts of the project. Only one meeting took place 
+as Dr Post moved to York University shortly after the meeting, 
+however, the meeting was highly beneficial and gave a vast 
+quantity of insight into existing solutions and software and 
+also potential pitfalls which could be encountered throughout 
+the project. Full notes available in Appendix A. \todo{Is this 
+in depth enough? Do we want more info here? Also add notes to 
+appendix}
+
+Dr James Irvine, EEE Department, was consulted informally  
+regarding the use of Sockets for communication using a Wireless 
+Ad-hoc Network (WANET). Dr Irvine was approached with an 
+assumption that using the Python Socket library to send 
+serialised data between the Raspberry Pis would be a sufficient 
+method of communication between the robots. This was confirmed 
+by Dr Irvine with the additional suggestion that JSON could be 
+used to serialise the data. 
+
+
+Dr Gordon Dobie, EEE Department, was consulted towards the end 
+of the project regarding the tuning of the PID controller. A 
+meeting was arranged and the processes followed explained at the 
+beginning of the meeting. Dr Dobie went on to say that although 
+PID was useful, a more simple PD rate control system 
+\ref{litreview/control/ratecontrol} would be more appropriate 
+for the system. Following the in-depth investigations made into 
+PID controllers, the group was fairly confident following some 
+basic guidance, provided by Dr Dobie, on implementing the 
+recommended system. 
+
+
+Prior to the arrangement of the meeting with Dr Dobie, Dr Phil 
+Rogers was consulted regarding the tuning of the PID controller. 
+He suggested providing a frame of reference in order to correct 
+the PID controller and maintain a straight line with regards to its reference frame. While the group waited on the meeting with Dr Dobie, who is a specialist in PID control, Dr Rogers advice was followed and SLAM was progressed in the interim.   
 
 \subsection{Mechanical Workshop}\label{pm/mechshop}
-The construction of the modular maze used for testing \ref{mech/maze} was outsourced to the mechanical workshop located in the EEE department at the university. A number of discussions were had with the mechanical workshop to specify the work correctly before construction began however despite this, issues were encountered throughout the construction of the maze. 
+The construction of the modular maze used for testing \ref{mech/
+maze} was outsourced to the mechanical workshop located in the 
+EEE department at the university. A number of discussions were 
+had with the mechanical workshop to specify the work correctly 
+before construction began however despite this, issues were 
+encountered throughout the construction of the maze. 
 
-Following an initial meeting where the idea was discussed and rough drawings were requested in order to clarify the specification, sketches of the 'pegs', 'boards' and 'base' were created and taken to the mechanical workshop. These sketches were deemed insufficient and more precise technical drawings were requested. These were provided and an understanding was achieved. 
-	Initially it had been thought that the 'pegs' would be made from existing wood dowel however, the mechanical workshop advised that 3D printing may be more efficient and CAD models were created of 3 different iterations of the 'pegs'. Each of these was presented in turn to the mechanical workshop and printed before it was discovered that revision was required. Upon the final iteration, the mechanical workshop advised that a different approach could be taken and that aluminium rods with existing slots could instead be used when cut into sections. This simplified the manufacturing process and the maze was delivered by the mechanical workshop shortly afterwards. The completed maze with an arbitrary configuration is shown below.
+Following an initial meeting where the idea was discussed and 
+rough drawings were requested in order to clarify the 
+specification, sketches of the 'pegs', 'boards' and 'base' were 
+created and taken to the mechanical workshop. These sketches 
+were deemed insufficient and more precise technical drawings 
+were requested. These were provided and an understanding was 
+achieved. 
+
+Initially it had been thought that the 'pegs' would be made from 
+existing wood dowel however, the mechanical workshop advised 
+that 3D printing may be more efficient and CAD models were 
+created of 3 different iterations of the 'pegs'. Each of these 
+was presented in turn to the mechanical workshop and printed 
+before it was discovered that revision was required. Upon the 
+final iteration, the mechanical workshop advised that a 
+different approach could be taken and that aluminium rods with 
+existing slots could instead be used when cut into sections. 
+This simplified the manufacturing process and the maze was 
+delivered by the mechanical workshop shortly afterwards. The 
+completed maze with an arbitrary configuration is shown below.
 \todo{add figure of maze}
 \todo{this might be better in the maze design and implementation section in more detail}  
 
@@ -30,3 +121,4 @@ Following an initial meeting where the idea was discussed and rough drawings wer
 
 
 \section{Risk Evaluation}\label{pm/riskeval}
+
