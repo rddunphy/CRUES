@@ -75,10 +75,11 @@
 
     <node name="ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
         <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />
+        <remap from="/cmd_vel" to="/twist" />
     </node>
 
-    <node name="imu_ekf" pkg="robot_localization" type="ekf_localiztion_node" clear_params="true">
-        <rosparam command="load" file="/home/crues/crues_pi/conifg/ekf_imu_only.yaml" />
+    <node name="imu_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+        <rosparam command="load" file="/home/crues/crues_pi/config/ekf_imu_only.yaml" />
         <remap from="/odometry/filtered" to="/imu_odom" />
     </node>
 
