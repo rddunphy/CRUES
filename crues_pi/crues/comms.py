@@ -5,7 +5,6 @@ from paths import config_file
 import SocketServer
 import threading
 
-
 CONFIG_FILE_NAME = "ip_addresses.json"
 
 
@@ -13,7 +12,6 @@ def load_addresses():
     path = config_file(CONFIG_FILE_NAME)
     with open(path) as f:
         return json.load(f)
-
 
 addresses = load_addresses()
 

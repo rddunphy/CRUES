@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-# Pass IP address of connected RPi as argument. rsync merges new/updated files
-# into existing directory structure. In future, possibly scan for devices on
-# network and deploy to all available RPis?
-
-
 if [[ $# -eq 0 ]]
 then
-    echo "Enter robot names as arguments"
+    echo "Enter robot names as arguments."
+    exit 1
 else
+    echo "Checking execution permissions for ROS scripts..."
+    find ros_pkgs/ -name "*.py" -print0 | xargs -r0 chmod +x
     for NAME in "$@"
     do
         if [[ ${NAME} = "blinky" ]]
@@ -21,17 +19,45 @@ else
         then
             IP=192.168.1.4
         else
-            echo "${NAME} is not a valid robot name"
-            exit
+            echo "${NAME} is not a valid robot name."
+            exit 1
         fi
-        echo "Deploying to ${NAME} (crues@${IP})"
+        read -p "Enter password for ${NAME}: " -s PWD
+        STATUS=""
+        while [[ ${STATUS} != "ok" ]]
+        do
+            if [[ ${PWD} = "" ]]
+            then
+                STATUS=none
+            else
+                STATUS=$(sshpass -p ${PWD} ssh crues@${IP} echo ok 2>&1)
+            fi
+            case ${STATUS} in
+                ok) ;;
+                none) echo ""; read -p "No password entered, try again: " -s PWD ;;
+                *"Permission denied"*) echo ""; read -p "Permission denied, try again: " -s PWD ;;
+                *) echo ""; echo ${STATUS}; exit 1 ;;
+            esac
+        done
+        echo ""
+        echo "Synchronising time on ${NAME}..."
+        DATE=$(date -u +"%d %b %Y %H:%M:%S")
+        sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
+        NUM=0
+        echo "Deploying to ${NAME} (crues@${IP}):"
         echo "  - Library files..."
-        sshpass -p "dapamaka" rsync --stats -r crues/ crues@${IP}:~/crues_pi/crues/ | grep 'files transferred'
-        sshpass -p "dapamaka" rsync --stats setup.py crues@${IP}:~/crues_pi/ | grep 'files transferred'
-        sshpass -p "dapamaka" rsync --stats requirements.txt crues@${IP}:~/crues_pi/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi crues/ crues@${IP}:~/crues_pi/crues/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
         echo "  - Configuration files..."
-        sshpass -p "dapamaka" rsync --stats -r config/ crues@${IP}:~/crues_pi/config/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
         echo "  - ROS packages..."
-        sshpass -p "dapamaka" rsync --stats  -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | grep 'files transferred'
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
+        echo "Updated ${NUM} files on ${NAME}."
+        echo "Fetching Rosbag files..."
+        sshpass -p ${PWD} ssh crues@${IP} "mkdir -p ~/rosbag/"
+        mkdir -p rosbag/${NAME}/
+        NUM="$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l)"
+        echo "Fetched ${NUM} files to rosbag/${NAME}/."
     done
 fi

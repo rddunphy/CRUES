@@ -1,76 +1,115 @@
 #!/usr/bin/env python
-
 import time
+
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues import GPIO_MOCK as GPIO
 
 import rospy
 from std_msgs.msg import Int32
 
-import RPi.GPIO as GPIO
 
-from crues import us
-
-
-## VERSION FOR ONLY CENTRE ULTRASONIC SENSOR:
-# def main():
-#     try:
-#         us.configure_gpio()
-#         pub = rospy.Publisher('uc_range', Int32, queue_size=10)
-#         rospy.init_node("uc")
-#         rate = rospy.Rate(10)
-#         while not rospy.is_shutdown():
-#             try:
-#                 rospy.loginfo("Trying to get ultrasonic range from uc")
-#                 range = us.get_range(us.CENTRE)
-#             except us.UltrasonicTimout as e:
-#                 rospy.logwarn(str(e))
-#             else:
-#                 rospy.loginfo("Range from uc: %d", range)
-#                 pub.publish(range)
-#             rate.sleep()
-#         rospy.warn("uc thinks rospy.is_shutdown???")
-#     except rospy.ROSInterruptException as e:
-#         rospy.logerr("ROSInterruptException in node uc")
-#         rospy.logerr(e)
-#     finally:
-#         pin_defs.cleanup()
+# Approx. speed of sound at 20C in m/s
+SPEED_OF_SOUND = 343
 
 
-def publish_range(s, pub):
-    try:
-        r = us.get_range(s)
-    except us.UltrasonicTimout as e:
-        rospy.logwarn(str(e))
-    else:
-        rospy.loginfo("%s ultrasonic node range: %d", us.sensor_str.get(s), r)
-        pub.publish(r)
+class UltrasonicTimeout(Exception):
+    """Error for indicating that an ultrasonic sensor has timed out (e.g. because GPIO missed an edge)."""
+
+    def __init__(self, name, timeout):
+        super(UltrasonicTimeout, self).__init__("%s ultrasonic sensor timed out after %f s" % (name, timeout))
+        self.name = name
+        self.timeout = timeout
 
 
-def main():
-    try:
-        us.configure_gpio()
-        pub_l = rospy.Publisher('ul_range', Int32, queue_size=10)
-        pub_c = rospy.Publisher('uc_range', Int32, queue_size=10)
-        pub_r = rospy.Publisher('ur_range', Int32, queue_size=10)
+class Ultrasonic:
+    def __init__(self, name, trig_pin, echo_pin, sensor_timeout, pulse_duration=0.00001):
+        self.name = name
+        self.trig_pin = trig_pin
+        self.echo_pin = echo_pin
+        self.sensor_timeout = sensor_timeout
+        self.pulse_duration = pulse_duration
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(trig_pin, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(echo_pin, GPIO.IN)
+
+    def get_range(self):
+        """Get range from ultrasonic sensor in millimetres.
+
+        :return: (int) Approx. range in millimetres
+        :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
+        """
+        GPIO.output(self.trig_pin, GPIO.HIGH)
+        time.sleep(self.pulse_duration)
+        GPIO.output(self.trig_pin, GPIO.LOW)
+        pulse_start = time.time()
+        timeout = pulse_start + self.sensor_timeout
+        while not GPIO.input(self.echo_pin) and pulse_start < timeout:
+            pulse_start = time.time()
+        pulse_end = pulse_start
+        while GPIO.input(self.echo_pin) and pulse_end < timeout:
+            pulse_end = time.time()
+        if pulse_end >= timeout:
+            raise UltrasonicTimeout(self.name, self.sensor_timeout)
+        duration = pulse_end - pulse_start
+        distance = duration * SPEED_OF_SOUND * 500
+        return int(round(distance))
+
+    def cleanup(self):
+        GPIO.cleanup([self.trig_pin, self.echo_pin])
+
+
+class UltrasonicScanner:
+    def __init__(self):
         rospy.init_node("ultrasonic")
-        rate = rospy.Rate(5)
-        while not rospy.is_shutdown():
-            start = time.time()
-            publish_range(us.LEFT, pub_l)
-            time_remaining = start + us.scan_increment - time.time()
-            if time_remaining > 0:
-                time.sleep(time_remaining)
-            publish_range(us.CENTRE, pub_c)
-            time_remaining = start + 2 * us.scan_increment - time.time()
-            if time_remaining > 0:
-                time.sleep(time_remaining)
-            publish_range(us.RIGHT, pub_r)
-            # Additionally publish scan object for SLAM node?
-            rate.sleep()
-    except rospy.ROSInterruptException as e:
-        rospy.logerr("ROSInterruptException in ultrasonic node")
-    finally:
-        GPIO.cleanup()
+        self.scan_increment = rospy.get_param('~scan_increment', 0.05)
+        timeout = self.scan_increment * 0.9
+        sensor_angle = rospy.get_param('~sensor_angle', 30)
+        self.left = Ultrasonic("Left", rospy.get_param('pins/ult'), rospy.get_param('pins/ule'), timeout)
+        self.centre = Ultrasonic("Centre", rospy.get_param('pins/uct'), rospy.get_param('pins/uce'), timeout)
+        self.right = Ultrasonic("Right", rospy.get_param('pins/urt'), rospy.get_param('pins/ure'), timeout)
+        self.rate = rospy.Rate(rospy.get_param('~rate', 5))
+        self.pub_l = rospy.Publisher('ul_range', Int32, queue_size=10)
+        self.pub_c = rospy.Publisher('uc_range', Int32, queue_size=10)
+        self.pub_r = rospy.Publisher('ur_range', Int32, queue_size=10)
+
+    def spin(self):
+        try:
+            while not rospy.is_shutdown():
+                self._scan()
+                self.rate.sleep()
+        finally:
+            self.left.cleanup()
+            self.centre.cleanup()
+            self.right.cleanup()
+
+    def _scan(self):
+        start = time.time()
+        self._publish_range(self.left, self.pub_l)
+        time_remaining = start + self.scan_increment - time.time()
+        if time_remaining > 0:
+            time.sleep(time_remaining)
+        self._publish_range(self.centre, self.pub_c)
+        time_remaining = start + 2 * self.scan_increment - time.time()
+        if time_remaining > 0:
+            time.sleep(time_remaining)
+        self._publish_range(self.right, self.pub_r)
+        # Additionally publish scan object for SLAM node?
+
+    def _publish_range(self, sensor, pub):
+        try:
+            r = sensor.get_range()
+        except UltrasonicTimeout as e:
+            rospy.logwarn(str(e))
+        else:
+            rospy.logdebug("%s ultrasonic node range: %d", sensor.name, r)
+            pub.publish(r)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        scanner = UltrasonicScanner()
+        scanner.spin()
+    except rospy.ROSInterruptException:
+        pass
