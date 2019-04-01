@@ -9,9 +9,11 @@ def server_node():
         pub = rospy.Publisher('received_message', String, queue_size=10)
         rospy.init_node('server') #, anonymous=True)
         #rate = rospy.Rate(10) # 10hz
-    
+        def pubHandler(self, message):
+            pub.publish(message)
+
         #hello_str = "hello world %s" % rospy.get_time()
-        sock = listen(pub)
+        sock = listen(pubHandler)
         rospy.spin()
     
     except rospy.ROSInterruptException:

@@ -55,12 +55,13 @@ def fromjson(packet):
 # End of Helper Functions
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
-    pub = None
+    def messageHandler(self, x):
+        print x
 
     def handle(self):
         data = self.request.recv(1024)
         message = fromjson(data)
-        ThreadedTCPRequestHandler.pub.publish(message)
+        self.messageHandler(message)
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -100,8 +101,8 @@ def send(hostname, data):
 
 
 
-def listen(pub):
-    ThreadedTCPRequestHandler.pub = pub
+def listen(handler):
+    ThreadedTCPRequestHandler.messageHandler = handler
     HOST, PORT = "0.0.0.0", 8001
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
