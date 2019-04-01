@@ -41,7 +41,7 @@ else
         done
         echo ""
         echo "Synchronising time on ${NAME}..."
-        DATE=$(date +"%d %b %Y %H:%M:%S")
+        DATE=$(date -u +"%d %b %Y %H:%M:%S")
         sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
         NUM=0
         echo "Deploying to ${NAME} (crues@${IP}):"
@@ -50,12 +50,12 @@ else
         NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi setup.py crues@${IP}:~/crues_pi/ | wc -l)"))
         NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi requirements.txt crues@${IP}:~/crues_pi/ | wc -l)"))
         echo "  - Configuration files..."
-        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi config/ crues@${IP}:~/crues_pi/config/ | wc -l)"))
         echo "  - ROS packages..."
-        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi -r ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
+        NUM=$(($NUM + "$(sshpass -p ${PWD} rsync -rupzi ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)"))
         echo "Updated ${NUM} files on ${NAME}."
         echo "Fetching Rosbag files..."
-        sshpass -p ${PWD} ssh crues@${IP} "mkdir -p /home/crues/rosbag/"
+        sshpass -p ${PWD} ssh crues@${IP} "mkdir -p ~/rosbag/"
         mkdir -p rosbag/${NAME}/
         NUM="$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l)"
         echo "Fetched ${NUM} files to rosbag/${NAME}/."
