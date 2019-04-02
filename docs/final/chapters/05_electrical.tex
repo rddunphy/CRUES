@@ -29,7 +29,7 @@ Sensor selected and why
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{UltraSoundSensorDiagram}
+	%\includegraphics[width=0.5\textwidth]{UltraSoundSensorDiagram}
 	\caption{Ultrasound Sensor Layout}\label{UltraSoundSensorDiagram}
 
 \end{figure}
@@ -39,7 +39,7 @@ Sensor layout (3 deg cones)
 circuit layout
 schematic
 
-The hardware required for the ultrasonic sensors is relatively straight forwards. They are each connected to a 5V supply and ground, and the other two pins are connected to standard GPIO pins on the RPi. The echo pin has to be connected through a voltage divider as the RPi is only rated at 3.3V compared to the sensor's 5V. The trig pin can be connected directly to the RPi, however, as 3.3V is above the threshold voltage\todo{cite sensor DS}.
+The hardware required for the ultrasonic sensors is relatively straight forwards. They are each connected to a 5V supply and ground, and the other two pins are connected to standard GPIO pins on the RPi. The echo pin has to be connected through a voltage divider as the RPi is only rated at 3.3V compared to the sensor's 5V. The trig pin can be connected directly to the RPi, however, as 3.3V was found to be above the threshold voltage.
 
 The distances are measured by an \textit{USScan} class. This has a \textit{get\_scan()} function which iterates through each ultrasonic sensor and takes a reading, as shown below in Code Listing \ref{lst:get_scan}
 
@@ -67,15 +67,27 @@ This method allows the various readings to be taken without interfering with eac
 As \ref{lst:get_scan} shows,\textit{get\_range()} is used by \textit{get\_scan()} to find the distance measured by each sensor. This simply triggers the sensor and times how long until the echo pin turns high. The range is then calculated by the equation $ 2d = tv_s$ where $v_s$ is the speed of sound. It is then converted to mm.
 
 \subsection{Testing}\label{elec/range/test}
-The sensors were initially tested using a signal generator and an oscilloscope. This allowed us to quickly identify 2 malfunctioning sensors, as there was a linear response between the distance to an obstacle and the width of the echo pin pulse width. The pulse width could then be used to to calculate the measured distance and this compared to the distance found with a measuring tape. Gave readings accurate to within a cm, however this method  was not repeated enough for any rigorous analysis of accuracy as the distance calculations would have to be performed manually and this was time consuming. 
-\todo{images of testing waveform and maybe test cicuit schematic}
+The sensors were initially tested using a signal generator and an 
+oscilloscope. An object was then placed in front of the sensors 
+and moved away. The expected output of this test was a linear increase
+in the width of the pulse width on the echo pin as the distance increased.
+This experiment allowed us to quickly identify 2 malfunctioning sensors. The pulse width could then be used to to calculate the measured distance
+and this compared to the distance found with a measuring tape. This found 
+approximately correct answers, however the precision with which we could 
+measure the pulse width was not great enough for effective testing. 
 
-A circuit was then created to read the values using an Arduino microcontroller to allow the distance readings to be found quickly and the accuracy of the sensors measured.
+The wave forms produced are shown in Figure \ref{UltrasoundWaveform}. This shows the shorted echo pulse following the fall of the wider square wave on the trig pin, produced by the signal generator. 
 
-\todo{rpi testing roomba node}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Graphs/UltrasonicResponseGraph.jpg}
+	\caption{Ultrasound Response Waveform}\label{UltrasoundWaveform}
 
+\end{figure}
 
+A circuit was then created to read the values using an Arduino microcontroller to allow the distance readings to be found quickly and the accuracy of the sensors measured. The readings from this were found to be approximately accurate (to at least within a half a cm, as measured with a tape measure), although rigorous testing was not performed as the accuracy would be dependant on the temperature due to changes in air pressure, and we had no way of accurately controlling this. 
 
+The testing was then repeated using the RPi set-up as to test the software, with similar results obtained.
 
 \section{Encoders}\label{elec/encoder}
 Wheel encoders are required to measure the speed of each wheel independently. This gives the system far more control over its path as well as allowing it to perform dead reckoning through wheel odometry. 
@@ -108,13 +120,24 @@ def _callback_a(self, _):
 
 \subsection{Testing}\label{elec/encoder/test}
 The encoders were first tested to ensure that they functioned correctly using a test circuit and connecting the encoder outputs to an oscilloscope. All the encoders were shown to function correctly outputting square waves in both channels and with channel A leading B when the motor was moving forwards and B leading A when going forwards. \todo{check order}
-\todo{get graph of output} 
 
-\todo{system testing }
+An example of the encoder output found is shown in Figure 
+\ref{EncoderGraph} below. This shows the two square waves produced by the 
+two encoder outputs a quarter wavelength out of phase.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Graphs/EncoderGraph.jpg}
+	\caption{Encoder Output Test Waveforms}\label{EncoderGraph}
+
+\end{figure}
+
+This experiment allowed us to quickly confirm the correct functionality of 
+all 6 encoders, however did not allow us to test the accuracy. After this, 
+the motors were run at a low speed for several rotations while the system counted pulses. This was not an accurate test of the encoders, as the wheel could not be stopped at an exact integer multiple of rotations, however did verify that the system was approximately outputting 1440 counts per rotation. 
 
 \section{IMU}\label{elec/imu}
 The IMU consists of a three axis accelerometer and a three axis gyroscope which can be used to measure both the linear acceleration and rotational velocity of the robot. This can be integrated and double integrated to track the robots position over time again performing dead reckoning. The system can then perform sensor fusion on this data and the encoder readings to get far more accurate results than possible with either system independently. 
-
 
 \subsection{Design}\label{elec/imu/design}
 The IMU selected was the MPU-6050. It was the most accurate sensor of a similar budget with regards to noise, cross axis sensitivity and non linearity. Offset tolerance was also considered but this was less of a consideration as this can be compensated for as long as the offset is not so extreame as to limit the range. It was configured to operate in its smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$\cite{}\todo{citation}).
@@ -199,7 +222,7 @@ The PCB required to contain the following components:
   \item LEDs for debugging
 \end{itemize}
 
-with the following design constraints:
+with the following physical design constraints:
 
 \begin{itemize}
   \item Central ultrasonic sensor at the centre of the robot in the x axis
@@ -209,9 +232,19 @@ with the following design constraints:
   \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
   \item Motor drive connectors also at fixed position relative to centre 
 \end{itemize}
-\todo{maybe find coordinates of parts for fixed position components}
-With these constraints the following PCB design shown in figure \todo{image and reference}
 
+\todo{maybe find coordinates of parts for fixed position components}
+
+\todo{pin constraints too??}
+
+With these constraints the following PCB design shown in figure \ref{PCB_Design}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{main_pcb.pdf}
+	\caption{Final PCB Design}\label{PCB_Design}
+
+\end{figure}
 Note that the peculiar shape is to allow room for the motors and encoders. 
 
 \subsection{Testing}\label{elec/pcb/test}
