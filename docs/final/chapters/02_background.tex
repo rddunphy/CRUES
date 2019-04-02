@@ -255,10 +255,6 @@ which implement commonly required functionality for a robotic system.
 
 \section{Maze Solving}\label{litreview/maze}
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
-discuss algorithms being used for exploration. 
-Wall follower - works only on simply connected mazes
-Trémaux's algorithm - requires recognition of places already been. finds a path, not shortest path	
-
 In robotics the exploration of an unknown environment, to gain knowledge, 
 is a well researched problem. This is particularly important for 
 environments that are difficult or dangerous for humans. There are many
@@ -324,11 +320,30 @@ treating them as dead-ends. Paths without markings are prioritised, before
 choosing those marked once in search of further unmarked paths. If a 
 solution is found then the path that is marked only once is the route 
 from the goal back to the start point. Otherwise if no solution is found,
-all paths in the maze will be marked twice. 
+all paths in the maze will be marked twice \cite{even2011graph}.
+Importantly, this will likely not find the shortest path but it will be 
+guaranteed to find one if it exists.
 
-\subsection{Shortest Path Finding}\label{litreview/maze/path}
+\subsection{Path Finding}\label{litreview/maze/path}
 breadth first - works but inefficient
 A* - works but needs heuristic. Coordinates can be used. 
+
+There are many algorithms that can be used to find the shortest path 
+through a graph such as Dijkstra's algorithm and A* search. In the case 
+of an unweighted graph, the simplest algorithm is breadth-first search. 
+This explores all neighbours at the same depth before moving onto nodes 
+at the next depth level. This would be guaranteed to find a path with the 
+shortest number of edges and is $\mathcal{O}(V + E)$. 
+
+In the case where the edges have a weighting, Dijkstra's algorithm is one 
+of the most commonly used methods for finding the shortest path between a 
+specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
+\begin{enumerate}
+\item Assign the start node to have a distance of 0 and all other nodes to have a distance of $\infty$
+\item Search the unvisited nodes for the closest node. Stop if the closest node is $\infty$ (means there is no path to target node). This node is now labelled as visited and as the current node.
+\item For each node adjacent to the new current that is unvisited, update the saved distance to be the sum of the edge weight and the distance from start to the current node if this is less than the saved total distance to that node. 
+\item Repeat the process from Step 2, doing as many iterations as required.
+\end{enumerate}
 
 \section{Motor Control}\label{litreview/control}
 
@@ -343,7 +358,7 @@ If $k_d$ and $k_i$ were both 0, and only the P term was active, the output would
 
 Consider for instance the temperature controller example where heat is being lost in the system is equal to the P constant times the error. This would result in a stable state with a potentially large error. To prevent this, the I term can be increased. This will increase the longer an error is present, and preventing stable state errors. 
 
-Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs.
+Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs. 
 
 \section{PID Rate Controller}\label{litreview/control/pid}
 rate control
