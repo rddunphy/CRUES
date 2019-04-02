@@ -10,7 +10,7 @@
 <grid distance="0.254" unitdist="mm" unit="mm" style="lines" multiple="4" display="yes" altdistance="0.1" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
@@ -1667,8 +1667,8 @@ design rules under a new name.</description>
 <param name="mdCopperDimension" value="40mil"/>
 <param name="mdDrill" value="0.8mm"/>
 <param name="mdSmdStop" value="0mil"/>
-<param name="msWidth" value="0.6mm"/>
-<param name="msDrill" value="0.1mm"/>
+<param name="msWidth" value="1.5mm"/>
+<param name="msDrill" value="0.8mm"/>
 <param name="msMicroVia" value="9.99mm"/>
 <param name="msBlindViaRatio" value="0.5"/>
 <param name="rvPadTop" value="0.25"/>
@@ -1994,25 +1994,28 @@ design rules under a new name.</description>
 <signal name="SLP">
 <contactref element="PDBHD" pad="4"/>
 <contactref element="PIHD" pad="13"/>
-<wire x1="49.088" y1="33.04450625" x2="49.088" y2="31.27" width="1.5" layer="1"/>
+<wire x1="49.088" y1="35.07650625" x2="49.088" y2="31.27" width="1.5" layer="1"/>
 <wire x1="49.088" y1="31.27" x2="49.06" y2="31.242" width="1.5" layer="1"/>
-<wire x1="61.468" y1="36.068" x2="52.11149375" y2="36.068" width="1.5" layer="1"/>
-<wire x1="52.11149375" y1="36.068" x2="49.088" y2="33.04450625" width="1.5" layer="1"/>
-<wire x1="65.53" y1="39.89" x2="65.29" y2="39.89" width="1.5" layer="16"/>
-<via x="61.468" y="36.068" extent="1-16" drill="0.8" diameter="2"/>
+<wire x1="62.23" y1="36.322" x2="60.96" y2="37.592" width="1.5" layer="1"/>
+<wire x1="60.96" y1="37.592" x2="51.60349375" y2="37.592" width="1.5" layer="1"/>
+<wire x1="51.60349375" y1="37.592" x2="49.088" y2="35.07650625" width="1.5" layer="1"/>
+<via x="62.23" y="36.322" extent="1-16" drill="0.8" diameter="2"/>
+<wire x1="64.274" y1="39.89" x2="62.23" y2="37.846" width="1.5" layer="16"/>
+<wire x1="62.23" y1="37.846" x2="62.23" y2="36.322" width="1.5" layer="16"/>
 <wire x1="65.53" y1="39.89" x2="64.274" y2="39.89" width="1.5" layer="16"/>
-<wire x1="64.274" y1="39.89" x2="61.468" y2="37.084" width="1.5" layer="16"/>
-<wire x1="61.468" y1="37.084" x2="61.468" y2="36.068" width="1.5" layer="16"/>
 </signal>
 <signal name="RDIR">
 <contactref element="PDBHD" pad="5"/>
-<via x="51.562" y="27.686" extent="1-16" drill="0.8" diameter="2"/>
-<wire x1="51.562" y1="27.686" x2="51.6" y2="31.242" width="1.5" layer="1"/>
-<contactref element="PIHD" pad="21"/>
-<wire x1="65.502" y1="29.702" x2="65.53" y2="29.73" width="1.5" layer="16"/>
-<wire x1="60.4724625" y1="27.686" x2="62.4884625" y2="29.702" width="1.5" layer="16"/>
-<wire x1="62.4884625" y1="29.702" x2="65.502" y2="29.702" width="1.5" layer="16"/>
-<wire x1="51.562" y1="27.686" x2="60.4724625" y2="27.686" width="1.5" layer="16"/>
+<contactref element="PIHD" pad="19"/>
+<wire x1="51.6" y1="31.242" x2="51.588" y2="31.254" width="1.5" layer="1"/>
+<wire x1="51.588" y1="31.254" x2="51.588" y2="33.274" width="1.5" layer="1"/>
+<wire x1="51.588" y1="33.274" x2="53.338" y2="35.024" width="1.5" layer="1"/>
+<wire x1="53.338" y1="35.024" x2="59.464" y2="35.024" width="1.5" layer="1"/>
+<wire x1="59.464" y1="35.024" x2="61.722" y2="32.766" width="1.5" layer="1"/>
+<via x="61.722" y="32.766" extent="1-16" drill="0.8" diameter="2"/>
+<wire x1="65.518" y1="32.258" x2="62.23" y2="32.258" width="1.5" layer="16"/>
+<wire x1="62.23" y1="32.258" x2="61.722" y2="32.766" width="1.5" layer="16"/>
+<wire x1="65.53" y1="32.27" x2="65.518" y2="32.258" width="1.5" layer="16"/>
 </signal>
 <signal name="LPWM">
 <contactref element="PDBHD" pad="3"/>
@@ -2138,9 +2141,9 @@ design rules under a new name.</description>
 <via x="21.844" y="9.398" extent="1-16" drill="0.8" diameter="2"/>
 <wire x1="21.844" y1="9.398" x2="18.034" y2="5.588" width="1.5" layer="16"/>
 <wire x1="18.034" y1="5.588" x2="15.24" y2="5.588" width="1.5" layer="16"/>
-<wire x1="28.956" y1="20.32" x2="47.9678375" y2="20.32" width="1.5" layer="16"/>
-<wire x1="47.9678375" y1="20.32" x2="48.6898375" y2="19.598" width="1.5" layer="16"/>
-<wire x1="48.6898375" y1="19.598" x2="65.502" y2="19.598" width="1.5" layer="16"/>
+<wire x1="28.956" y1="20.32" x2="32.2198375" y2="20.32" width="1.5" layer="16"/>
+<wire x1="32.2198375" y1="20.32" x2="32.9418375" y2="19.598" width="1.5" layer="16"/>
+<wire x1="32.9418375" y1="19.598" x2="65.502" y2="19.598" width="1.5" layer="16"/>
 <wire x1="65.502" y1="19.598" x2="65.53" y2="19.57" width="1.5" layer="16"/>
 <wire x1="28.956" y1="15.24" x2="28.956" y2="20.32" width="1.5" layer="1"/>
 <wire x1="21.844" y1="9.398" x2="23.114" y2="9.398" width="1.5" layer="1"/>
@@ -2173,25 +2176,6 @@ design rules under a new name.</description>
 <wire x1="59.69" y1="72.644" x2="73.152" y2="59.182" width="1.5" layer="16"/>
 <wire x1="68.07" y1="37.35" x2="70.37" y2="37.35" width="1.5" layer="16"/>
 <wire x1="70.37" y1="37.35" x2="73.152" y2="40.132" width="1.5" layer="16"/>
-</signal>
-<signal name="EL_A">
-<contactref element="E_L" pad="2"/>
-<contactref element="PIHD" pad="23"/>
-<wire x1="50.4669125" y1="24.892" x2="61.214" y2="24.892" width="1.5" layer="16"/>
-<wire x1="61.214" y1="24.892" x2="63.5" y2="27.178" width="1.5" layer="16"/>
-<wire x1="63.5" y1="27.178" x2="65.518" y2="27.178" width="1.5" layer="16"/>
-<wire x1="65.518" y1="27.178" x2="65.53" y2="27.19" width="1.5" layer="16"/>
-<wire x1="29" y1="27.18" x2="29.028" y2="27.152" width="1.5" layer="16"/>
-<wire x1="29.028" y1="27.152" x2="48.2069125" y2="27.152" width="1.5" layer="16"/>
-<wire x1="48.2069125" y1="27.152" x2="50.4669125" y2="24.892" width="1.5" layer="16"/>
-</signal>
-<signal name="EL_B">
-<contactref element="E_L" pad="1"/>
-<contactref element="PIHD" pad="27"/>
-<wire x1="65.518" y1="22.098" x2="65.53" y2="22.11" width="1.5" layer="16"/>
-<wire x1="65.518" y1="22.098" x2="49.725375" y2="22.098" width="1.5" layer="16"/>
-<wire x1="47.183375" y1="24.64" x2="29" y2="24.64" width="1.5" layer="16"/>
-<wire x1="49.725375" y1="22.098" x2="47.183375" y2="24.64" width="1.5" layer="16"/>
 </signal>
 <signal name="ER_A">
 <contactref element="E_R" pad="1"/>
@@ -2241,7 +2225,26 @@ design rules under a new name.</description>
 <via x="27.5" y="4" extent="1-16" drill="1" diameter="5"/>
 </signal>
 <signal name="SPACER_IMU">
-<via x="57.658" y="32.004" extent="1-16" drill="1" diameter="3"/>
+<via x="57.85" y="31.774" extent="1-16" drill="1" diameter="3"/>
+</signal>
+<signal name="N$1">
+<contactref element="E_L" pad="2"/>
+<contactref element="PIHD" pad="21"/>
+<wire x1="65.53" y1="29.73" x2="61.1437375" y2="29.73" width="1.5" layer="16"/>
+<wire x1="61.1437375" y1="29.73" x2="58.5657375" y2="27.152" width="1.5" layer="16"/>
+<wire x1="58.5657375" y1="27.152" x2="28.972" y2="27.152" width="1.5" layer="16"/>
+<wire x1="28.448" y1="27.152" x2="28.972" y2="27.152" width="1.5" layer="16"/>
+<wire x1="28.972" y1="27.152" x2="29" y2="27.18" width="1.5" layer="16"/>
+</signal>
+<signal name="N$2">
+<contactref element="E_L" pad="1"/>
+<contactref element="PIHD" pad="23"/>
+<wire x1="29" y1="24.64" x2="59.589275" y2="24.64" width="1.5" layer="16"/>
+<wire x1="59.589275" y1="24.64" x2="62.179275" y2="27.23" width="1.5" layer="16"/>
+<wire x1="62.179275" y1="27.23" x2="64.47749375" y2="27.23" width="1.5" layer="16"/>
+<wire x1="64.47749375" y1="27.23" x2="64.48949375" y2="27.218" width="1.5" layer="16"/>
+<wire x1="64.48949375" y1="27.218" x2="65.502" y2="27.218" width="1.5" layer="16"/>
+<wire x1="65.502" y1="27.218" x2="65.53" y2="27.19" width="1.5" layer="16"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

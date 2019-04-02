@@ -1,0 +1,4 @@
+<launch>
+    <node name="cv" pkg="crues_sensors" type="vision_node.py">
+    </node>
+</launch>

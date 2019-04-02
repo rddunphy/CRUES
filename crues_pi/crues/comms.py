@@ -1,9 +1,19 @@
 # Client Program
 import socket
 import json
+from paths import config_file
+import SocketServer
+import threading
+
+CONFIG_FILE_NAME = "ip_addresses.json"
 
 
-addresses = {'Lagann' : '192.168.1.1','blinky': '192.168.1.2', 'inky': '192.168.1.3', 'clyde': '192.168.1.4'}
+def load_addresses():
+    path = config_file(CONFIG_FILE_NAME)
+    with open(path) as f:
+        return json.load(f)
+
+addresses = load_addresses()
 
 
 def lookupip(name):
@@ -40,26 +50,76 @@ def fromjson(packet):
     except IndexError:
         return -2
 
+# End of Helper Functions
 
+class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+    def messageHandler(self, x):
+        print x
+
+    def handle(self):
+        data = self.request.recv(1024)
+        message = fromjson(data)
+        self.messageHandler(message)
+
+
+class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+    pass
+    
+#End of Class Definitions
+    
+    
+    
+    
 # data is python object to send
 def send(hostname, data):
     host_ip = lookupip(hostname)    # The remote host
     #print host_ip
-    port_number = 8001              # The same port as used by the server
+    port = 8001            # The same port as used by the server
+
     message = tojson(host_ip, hostname, data)
     #print message
     #print fromjson(message)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if not s.connect_ex((host_ip, port_number)):
-        #print "connected"
-        s.sendall(message)          # Sends string (of JSON)
+    #s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    #if not s.connect_ex((host_ip, port_number)):
+    #    print s.getsockname()
+    #    #print "connected"
+    #    s.sendall(message)          # Sends string (of JSON)
         # data = s.recv(1024)       # used as ACK so uncomment if needed
-        s.close()
+    #    s.close()
+        
+        
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((host_ip, port))
+    try:
+        sock.sendall(message)
+    finally:
+        sock.close()
 
 
 
 
-def listen():
+def listen(handler):
+    ThreadedTCPRequestHandler.messageHandler = handler
+    HOST, PORT = "0.0.0.0", 8001
+
+    server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
+
+    ip, port = server.server_address
+    #ThreadedTCPRequestHandler.set_pub(pub)
+    # Start a thread with the server -- that thread will then start one
+    # more thread for each request
+    server_thread = threading.Thread(target=server.serve_forever)
+    # Exit the server thread when the main thread terminates
+    server_thread.daemon = True
+    server_thread.start()
+    return server
+
+
+def killServer(server):
+    server.shutdown()
+    server.server_close()
+    """
     # host_ip = socket.gethostbyname(socket.gethostname())  # Symbolic name meaning all available interfaces
     PORT = 8001  # Arbitrary non-privileged port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -79,4 +139,5 @@ def listen():
     message = fromjson(packets)
     #print "Message received"
     #print message
-    return message
+    return message"""
+    
