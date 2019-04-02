@@ -119,25 +119,5 @@ def listen(handler):
 def killServer(server):
     server.shutdown()
     server.server_close()
-    """
-    # host_ip = socket.gethostbyname(socket.gethostname())  # Symbolic name meaning all available interfaces
-    PORT = 8001  # Arbitrary non-privileged port
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(('0.0.0.0', PORT))
-    s.listen(2)
-    conn, addr = s.accept()
-    #print 'Connected by', addr
-    packets = '' #"ERRORVALUE"
-    while 1:
-        packet = conn.recv(1024)
-        if not packet:
-            break
-        packets += packet
-   # conn.sendall("ACK")
-    conn.close()
-    #print "packet: {" + packets + "}"
-    message = fromjson(packets)
-    #print "Message received"
-    #print message
-    return message"""
+    
     
