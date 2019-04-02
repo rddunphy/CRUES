@@ -7,9 +7,9 @@ from crues_comms.msg import Comms
 from crues_sensors.msg import Vision
 
 
-class ClientNode:
+class Client:
     def __init__(self):
-        rospy.init_node('client', anonymous=True)
+        rospy.init_node('client', anonymous=True)  # Why anonymous?
         rospy.Subscriber('send_message', Comms, self._send_callback)
         rospy.Subscriber('robots_detected', Vision, self._robots_detected_callback)
         self._msg_queue = []
@@ -19,6 +19,7 @@ class ClientNode:
         rospy.spin()
 
     def _send(self):
+        # This blocks, so should maybe be on a new thread?
         while self._msg_queue:
             self._send_next()
 
@@ -48,7 +49,7 @@ class ClientNode:
 
 if __name__ == '__main__':
     try:
-        client = ClientNode()
+        client = Client()
         client.spin()
     except rospy.ROSInterruptException:
         pass
