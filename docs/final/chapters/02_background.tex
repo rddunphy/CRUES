@@ -259,6 +259,73 @@ discuss algorithms being used for exploration.
 Wall follower - works only on simply connected mazes
 Trémaux's algorithm - requires recognition of places already been. finds a path, not shortest path	
 
+In robotics the exploration of an unknown environment, to gain knowledge, 
+is a well researched problem. This is particularly important for 
+environments that are difficult or dangerous for humans. There are many
+algorithms that can be used for exploration such as wall follower, 
+Trémaux's and Pledge.
+
+One of the simplest exploration algorithms is the Wall Follower algorithm, 
+also known as the right-hand rule (or left-hand rule). If the maze is 
+simply connected, that is, any two points of the maze can be traversed without
+leaving the maze, then the wall follower algorithm is guaranteed to reach a
+goal/exit if there is one . Otherwise, the algorithm will return to the start 
+point having traversed every corridor at least once \cite{wallFollowerArcBotics}.
+The steps of the algorithm are relatively straightforward. If using the
+right-hand rule:
+\begin{enumerate}
+\item If the robot can turn right, turn right
+\item Else continue going straight on
+\item Else turn left if possible
+\item Else a dead end is reached, so turn $180^{\circ}$
+\end{enumerate}
+These steps ensure to keep a wall on the right hand side of the robot at 
+all times. The left-rule is just the opposite where the robot turns left 
+if at all possible to keep the wall on the robots' left. As a result, 
+this algorithm is inherently inefficiently as it exhaustively searches the
+maze. In many cases, one of these algorithms would be significantly quicker
+than the other but that is impossible to know without prior knowledge of 
+the maze.
+
+An alternatively to the Wall Follower algorithm is Pledge's algorithm. This
+aims to solve the problem where Wall Follower could be stuck in a loop. An 
+example of which is if walls form to create a rectangle in the centre of 
+the maze, the robot would continually turn right or left (depending on
+algorithm) around that rectangle, never to find the exit. Pledge solves this
+by keeping a count of the number of turns made (if not right-angled turns,
+then the angle of turn is used instead) as well as the initial direction of
+travel. \cite{klein2011pledge}
+
+\begin{algorithm}
+\caption{Pledge's Algorithm}
+\begin{algorithmic}
+\STATE Set angle counter to 0
+\REPEAT
+\REPEAT
+\STATE Walk straight ahead;
+\UNTIL {wall hit};
+\STATE Turn right;
+\REPEAT
+\STATE Follow the obstacle's wall;
+\UNTIL{angle counter = 0;}
+\UNTIL {exit found;}
+\end{algorithmic}
+\end{algorithm}
+Using the initial direction and a count of the turns made, allows the 
+algorithm to avoid traps such as an upper case letter "G" that simpler 
+algorithms struggle with.
+
+The Trémaux maze-solving algorithm requires the robot to record its path 
+throughout its navigation routine for finding a route. Any given path 
+can be unmarked, marked once or marked twice. If a path is marked twice that 
+indicates the robot has travelled down it in both directions. The robot 
+will not travel down any path marked twice for a third time, therefore 
+treating them as dead-ends. Paths without markings are prioritised, before 
+choosing those marked once in search of further unmarked paths. If a 
+solution is found then the path that is marked only once is the route 
+from the goal back to the start point. Otherwise if no solution is found,
+all paths in the maze will be marked twice. 
+
 \subsection{Shortest Path Finding}\label{litreview/maze/path}
 breadth first - works but inefficient
 A* - works but needs heuristic. Coordinates can be used. 
