@@ -180,5 +180,53 @@ of distance (if the CV system is bi-ocular) and the identification of distinctiv
 features in the environment to allow loop closure\cite{CVho2006loop}.
 
 \section{ROS}\label{litreview/ROS}
+The Robot Operating System (ROS) is a framework for developing robot
+software designed to allow flexible software design. It is a collection of tools, 
+libraries and conventions that aim to simplify creating complex and 
+robust robotic systems across a variety of platforms.\cite{aboutROS}
+ROS was designed with the objective of being as modular and distributed
+as possible. This modularity allows the user to be able to use as much or
+as little of ROS as they desire, where their own implementation can be
+easily fit into the system. \cite{rosForMe}
+
+ROS uses a peer-to-peer networking topology to communicate throughout 
+the system. These systems consist of a number of processes called nodes 
+that preform the system's computation where these nodes are likely 
+running across multiple machines. The peer-to-peer  topology requires 
+some sort of lookup mechanism to allow processes to find each other at 
+runtime. Nodes communicate by passing messages that are data structures 
+of typed fields. These messages can consist of arbitrarily nested 
+structures and arrays. \cite{crick2017rosbridge}
+
+Nodes can use two types of communication to send messages within the ROS 
+framework, services and topics. Services are synchronous and are like function
+calls in traditional programming languages, where only one node in the 
+system can provide a service of a specific name. Alternatively, topics are
+asynchronous streams of objects published by a node. Other nodes can 
+subscribe by creating  handler function when a new data object is available.
+Multiple nodes can concurrently publish and/or subscribe to the same topic and
+a single node may publish and/or subscribe to multiple topics.
+
+ROS was also designed to be language-neutral and supports languages 
+such as C++, Python and Octave. To support this cross-language 
+development, ROS uses a simple, language-neutral interface definition 
+language (IDL) to describe the messages sent between modules 
+\cite{quigley2009ros}. Code generators for each language then generate 
+native implementations which are serialised and de-serialised by ROS 
+as messages are sent and received. This results in a language-neutral 
+message processing scheme where languages can be used as the programmer 
+prefers based on the requirements of that given module. 
+
+There are other alternatives to ROS, such as Yet Another Robot Platform 
+(YARP). YARP was designed to attempt to make robot software more stable 
+and long-lasting without compromising flexibility to change the sensors, 
+processors and actuators. It also communicates using a peer-to-peer 
+topology with an extensible family of connection types however, YARP is 
+written in C++ and does not support other languages \cite{aboutYARP}.
+The YARP model of communication is transport-neutral, meaning the details 
+of the underlying networks and protocols in use are decoupled from the 
+data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
+As a result it does not have the same extensive a range of libraries available 
+which implement commonly required functionality for a robotic system.
 
 
