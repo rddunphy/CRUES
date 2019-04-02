@@ -4,8 +4,6 @@ import json
 from paths import config_file
 import SocketServer
 import threading
-import time
-
 
 CONFIG_FILE_NAME = "ip_addresses.json"
 
@@ -14,7 +12,6 @@ def load_addresses():
     path = config_file(CONFIG_FILE_NAME)
     with open(path) as f:
         return json.load(f)
-
 
 addresses = load_addresses()
 
@@ -31,14 +28,13 @@ def lookupname(search_ip):
 
 
 
-def tojson(host_ip, hostname, time_stamp, data):
+def tojson(host_ip, hostname, data):
     # receiver ip and hostname, our ip and hostname, classname
     sender_ip = socket.gethostbyname(socket.gethostname())
-    header = [host_ip, hostname, sender_ip, lookupname(sender_ip), time_stamp, type(data).__name__]
+    header = [host_ip, hostname, sender_ip, lookupname(sender_ip), type(data).__name__]
     content = [header, data]
     message = json.dumps(content, separators=(',', ':'))
     return message
-
 
 def fromjson(packet):
     message = json.loads(packet)
@@ -48,7 +44,7 @@ def fromjson(packet):
         #print socket.gethostname()
         #print Address_lookup.lookupip(socket.gethostname())
         if target == lookupip(socket.gethostname()):
-            return message
+            return message[1]
         else:
             return -1
     except IndexError:
@@ -57,12 +53,13 @@ def fromjson(packet):
 # End of Helper Functions
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
-    pub = None
+    def messageHandler(self, x):
+        print x
 
     def handle(self):
         data = self.request.recv(1024)
         message = fromjson(data)
-        ThreadedTCPRequestHandler.pub.publish(message)
+        self.messageHandler(message)
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -79,8 +76,7 @@ def send(hostname, data):
     #print host_ip
     port = 8001            # The same port as used by the server
 
-    time_stamp = time.time()
-    message = tojson(host_ip, hostname, time_stamp, data)
+    message = tojson(host_ip, hostname, data)
     #print message
     #print fromjson(message)
     #s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -103,9 +99,8 @@ def send(hostname, data):
 
 
 
-def listen():#pub):
-    #ThreadedTCPRequestHandler.pub = pub
-    ThreadedTCPRequestHandler.handle = dump_log
+def listen(handler):
+    ThreadedTCPRequestHandler.messageHandler = handler
     HOST, PORT = "0.0.0.0", 8001
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
@@ -123,5 +118,4 @@ def listen():#pub):
 
 def killServer(server):
     server.shutdown()
-    server.server_close()
-
+server.server_close()
