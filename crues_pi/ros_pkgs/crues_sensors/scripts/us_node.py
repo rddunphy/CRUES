@@ -32,9 +32,8 @@ class Ultrasonic:
         self.pulse_duration = pulse_duration
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(trig_pin, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(echo_pin, GPIO.IN)
-        GPIO.add_event_detect(echo_pin, GPIO.RISING, callback=self.startTime)
-        GPIO.add_event_detect(echo_pin, GPIO.FALLING, callback=self.stopTime)
+        GPIO.setup(echo_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(echo_pin, GPIO.BOTH, callback=self.logTime)
 
     def get_range(self):
         """Get range from ultrasonic sensor in millimetres.
@@ -60,10 +59,11 @@ class Ultrasonic:
         
         return int(round(distance))
     
-    def startTime(self):
-        self.start_time = time.time()
-    def stopTime(self):
-        self.stop_time = time.time()
+    def logTime(self, channel):
+        if GPIO.input(self.echo_pin):
+            self.start_time = time.time()
+        else:
+            self.stop_time = time.time()
 
     def cleanup(self):
         GPIO.cleanup([self.trig_pin, self.echo_pin])
@@ -99,10 +99,14 @@ class UltrasonicScanner:
         time_remaining = start + self.scan_increment - time.time()
         if time_remaining > 0:
             time.sleep(time_remaining)
+            
+            
         self._publish_range(self.centre, self.pub_c)
         time_remaining = start + 2 * self.scan_increment - time.time()
         if time_remaining > 0:
             time.sleep(time_remaining)
+            
+            
         self._publish_range(self.right, self.pub_r)
         # Additionally publish scan object for SLAM node?
 
@@ -111,8 +115,10 @@ class UltrasonicScanner:
             r = sensor.get_range()
         except UltrasonicTimeout as e:
             rospy.logwarn(str(e))
+            r = -1
         else:
             rospy.logdebug("%s ultrasonic node range: %d", sensor.name, r)
+        finally:
             pub.publish(r)
 
 

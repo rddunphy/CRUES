@@ -1,0 +1,200 @@
+data: 62
+---
+data: 69
+---
+data: 69
+---
+data: 73
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 63
+---
+data: 66
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 66
+---
+data: 69
+---
+data: 69
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 69
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 66
+---
+data: 64
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 63
+---
+data: 68
+---
+data: 68
+---
+data: 68
+---
+data: 68
+---
+data: 68
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 64
+---
+data: 67
+---
+data: 69
+---
+data: 68
+---
+data: 68
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 65
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 68
+---
+data: 67
+---
+data: 68
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 67
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 68
+---
+data: 67
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 69
+---
+data: 68
+---
+data: 69
+---
+data: 69
+---
+data: 69
+---
+data: 69
+---
+data: 72
+---

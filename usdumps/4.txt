@@ -1,0 +1,200 @@
+data: 51
+---
+data: 56
+---
+data: 58
+---
+data: 57
+---
+data: 57
+---
+data: 57
+---
+data: 58
+---
+data: 58
+---
+data: 58
+---
+data: 57
+---
+data: 58
+---
+data: 58
+---
+data: 57
+---
+data: 58
+---
+data: 57
+---
+data: 49
+---
+data: 57
+---
+data: 58
+---
+data: 58
+---
+data: 57
+---
+data: 55
+---
+data: 55
+---
+data: 56
+---
+data: 57
+---
+data: 57
+---
+data: 57
+---
+data: 57
+---
+data: 57
+---
+data: 57
+---
+data: 55
+---
+data: 54
+---
+data: 57
+---
+data: 55
+---
+data: 57
+---
+data: 56
+---
+data: 56
+---
+data: 56
+---
+data: 56
+---
+data: 60
+---
+data: 56
+---
+data: 57
+---
+data: 63
+---
+data: 55
+---
+data: 56
+---
+data: 56
+---
+data: 56
+---
+data: 57
+---
+data: 55
+---
+data: 59
+---
+data: 56
+---
+data: 56
+---
+data: 56
+---
+data: 58
+---
+data: 56
+---
+data: 55
+---
+data: 55
+---
+data: 56
+---
+data: 55
+---
+data: 59
+---
+data: 55
+---
+data: 55
+---
+data: 54
+---
+data: 55
+---
+data: 56
+---
+data: 55
+---
+data: 56
+---
+data: 56
+---
+data: 55
+---
+data: 56
+---
+data: 55
+---
+data: 55
+---
+data: 56
+---
+data: 52
+---
+data: 56
+---
+data: 56
+---
+data: 55
+---
+data: 56
+---
+data: 52
+---
+data: 56
+---
+data: 54
+---
+data: 54
+---
+data: 54
+---
+data: 52
+---
+data: 57
+---
+data: 54
+---
+data: 54
+---
+data: 54
+---
+data: 52
+---
+data: 54
+---
+data: 53
+---
+data: 53
+---
+data: 54
+---
+data: 49
+---
+data: 54
+---
+data: 53
+---
+data: 53
+---
+data: 53
+---
+data: 51
+---
+data: 54
+---
+data: 53
+---

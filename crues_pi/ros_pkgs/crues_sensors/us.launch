@@ -1,0 +1,10 @@
+<launch>
+<rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+
+    <!-- SENSORS -->
+    <node name="ultrasonic" pkg="crues_sensors" type="us_node.py">
+        <remap from="~scan_increment" to="us_time" />
+        <remap from="~sensor_angle" to="us_angle" />
+        <remap from="~rate" to="us_rate" />
+    </node>
+</launch>

@@ -1,0 +1,200 @@
+data: 320
+---
+data: 322
+---
+data: 319
+---
+data: 320
+---
+data: 321
+---
+data: 321
+---
+data: 321
+---
+data: 319
+---
+data: 320
+---
+data: 321
+---
+data: 316
+---
+data: 317
+---
+data: 315
+---
+data: 316
+---
+data: 316
+---
+data: 319
+---
+data: 317
+---
+data: 314
+---
+data: 316
+---
+data: 317
+---
+data: 315
+---
+data: 317
+---
+data: 315
+---
+data: 316
+---
+data: 316
+---
+data: 320
+---
+data: 317
+---
+data: 315
+---
+data: 315
+---
+data: 317
+---
+data: 317
+---
+data: 317
+---
+data: 315
+---
+data: 316
+---
+data: 320
+---
+data: 316
+---
+data: 317
+---
+data: 314
+---
+data: 316
+---
+data: 315
+---
+data: 318
+---
+data: 316
+---
+data: 318
+---
+data: 319
+---
+data: 315
+---
+data: 314
+---
+data: 315
+---
+data: 314
+---
+data: 319
+---
+data: 315
+---
+data: 315
+---
+data: 316
+---
+data: 314
+---
+data: 315
+---
+data: 311
+---
+data: 315
+---
+data: 315
+---
+data: 318
+---
+data: 319
+---
+data: 312
+---
+data: 315
+---
+data: 322
+---
+data: 318
+---
+data: 318
+---
+data: 319
+---
+data: 318
+---
+data: 319
+---
+data: 318
+---
+data: 318
+---
+data: 318
+---
+data: 318
+---
+data: 319
+---
+data: 315
+---
+data: 316
+---
+data: 315
+---
+data: 314
+---
+data: 319
+---
+data: 318
+---
+data: 319
+---
+data: 315
+---
+data: 315
+---
+data: 312
+---
+data: 313
+---
+data: 316
+---
+data: 313
+---
+data: 318
+---
+data: 320
+---
+data: 318
+---
+data: 320
+---
+data: 315
+---
+data: 319
+---
+data: 320
+---
+data: 318
+---
+data: 320
+---
+data: 316
+---
+data: 320
+---
+data: 320
+---
+data: 318
+---
+data: 319
+---
+data: 320
+---

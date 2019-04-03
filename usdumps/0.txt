@@ -1,0 +1,200 @@
+data: 10
+---
+data: 10
+---
+data: 20
+---
+data: 22
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 20
+---
+data: 19
+---
+data: 19
+---
+data: 17
+---
+data: 19
+---
+data: 17
+---
+data: 19
+---
+data: 19
+---
+data: 17
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 18
+---
+data: 17
+---
+data: 19
+---
+data: 13
+---
+data: 19
+---
+data: 17
+---
+data: 19
+---
+data: 20
+---
+data: 18
+---
+data: 17
+---
+data: 18
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 22
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 16
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 17
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 22
+---
+data: 19
+---
+data: 19
+---
+data: 19
+---
+data: 18
+---
+data: 19
+---
+data: 18
+---
+data: 17
+---
+data: 17
+---
+data: 18
+---
+data: 17
+---
+data: 21
+---
+data: 19
+---
+data: 17
+---
+data: 17
+---
+data: 17
+---
+data: 20
+---
+data: 19
+---
+data: 17
+---
+data: 17
+---
+data: 19
+---
+data: 26
+---
+data: 19
+---
+data: 17
+---
+data: 17
+---
+data: 19
+---
+data: 17
+---
+data: 21
+---
+data: 17
+---
+data: 17
+---
+data: 19
+---
+data: -1
+---
+data: 19
+---

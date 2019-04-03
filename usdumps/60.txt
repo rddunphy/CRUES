@@ -1,0 +1,200 @@
+data: 609
+---
+data: 603
+---
+data: 615
+---
+data: 616
+---
+data: 613
+---
+data: 615
+---
+data: 616
+---
+data: 617
+---
+data: 614
+---
+data: 606
+---
+data: 615
+---
+data: 618
+---
+data: 616
+---
+data: 614
+---
+data: 618
+---
+data: 614
+---
+data: 614
+---
+data: 619
+---
+data: 614
+---
+data: 618
+---
+data: 612
+---
+data: 613
+---
+data: 613
+---
+data: 614
+---
+data: 613
+---
+data: 611
+---
+data: 618
+---
+data: 617
+---
+data: 618
+---
+data: 618
+---
+data: 614
+---
+data: 617
+---
+data: 613
+---
+data: 617
+---
+data: 618
+---
+data: 610
+---
+data: 617
+---
+data: 613
+---
+data: 618
+---
+data: 613
+---
+data: 615
+---
+data: 616
+---
+data: 617
+---
+data: 617
+---
+data: 617
+---
+data: 613
+---
+data: 615
+---
+data: 617
+---
+data: 619
+---
+data: 614
+---
+data: 612
+---
+data: 616
+---
+data: 614
+---
+data: 615
+---
+data: 615
+---
+data: 602
+---
+data: 616
+---
+data: 618
+---
+data: 618
+---
+data: 618
+---
+data: 615
+---
+data: 617
+---
+data: 617
+---
+data: 617
+---
+data: 619
+---
+data: 613
+---
+data: 626
+---
+data: 616
+---
+data: 616
+---
+data: 616
+---
+data: 616
+---
+data: 622
+---
+data: 617
+---
+data: 619
+---
+data: 617
+---
+data: 612
+---
+data: 616
+---
+data: 623
+---
+data: 619
+---
+data: 619
+---
+data: 617
+---
+data: 616
+---
+data: 616
+---
+data: 619
+---
+data: 618
+---
+data: 617
+---
+data: 618
+---
+data: 616
+---
+data: 618
+---
+data: 618
+---
+data: 617
+---
+data: 616
+---
+data: 618
+---
+data: 618
+---
+data: 618
+---
+data: 618
+---
+data: 618
+---
+data: 599
+---
+data: 618
+---
+data: 618
+---

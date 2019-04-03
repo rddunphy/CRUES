@@ -1,0 +1,200 @@
+data: 194
+---
+data: 200
+---
+data: 200
+---
+data: 201
+---
+data: 201
+---
+data: 200
+---
+data: 201
+---
+data: 200
+---
+data: 205
+---
+data: 201
+---
+data: 199
+---
+data: 202
+---
+data: 200
+---
+data: 201
+---
+data: 201
+---
+data: 199
+---
+data: 202
+---
+data: 201
+---
+data: 201
+---
+data: 201
+---
+data: 200
+---
+data: 201
+---
+data: 198
+---
+data: 201
+---
+data: 200
+---
+data: 201
+---
+data: 203
+---
+data: 200
+---
+data: 200
+---
+data: 201
+---
+data: 200
+---
+data: 203
+---
+data: 199
+---
+data: 201
+---
+data: 201
+---
+data: 198
+---
+data: 204
+---
+data: 200
+---
+data: 201
+---
+data: 201
+---
+data: 201
+---
+data: 201
+---
+data: 200
+---
+data: 201
+---
+data: 198
+---
+data: 202
+---
+data: 203
+---
+data: 188
+---
+data: 202
+---
+data: 199
+---
+data: 205
+---
+data: 202
+---
+data: 201
+---
+data: 202
+---
+data: 201
+---
+data: 203
+---
+data: 204
+---
+data: 205
+---
+data: 201
+---
+data: 201
+---
+data: 203
+---
+data: 201
+---
+data: 203
+---
+data: 203
+---
+data: 201
+---
+data: 203
+---
+data: 201
+---
+data: 202
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 200
+---
+data: 203
+---
+data: 203
+---
+data: 198
+---
+data: 203
+---
+data: 202
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 204
+---
+data: 201
+---
+data: 204
+---
+data: 202
+---
+data: 206
+---
+data: 203
+---
+data: 201
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 203
+---
+data: 201
+---
+data: 200
+---
+data: 202
+---
+data: 202
+---
+data: 199
+---

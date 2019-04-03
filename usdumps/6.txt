@@ -1,0 +1,200 @@
+data: 72
+---
+data: 70
+---
+data: 78
+---
+data: 77
+---
+data: 75
+---
+data: 75
+---
+data: 76
+---
+data: 76
+---
+data: 75
+---
+data: 76
+---
+data: 74
+---
+data: 78
+---
+data: 74
+---
+data: 74
+---
+data: 75
+---
+data: 73
+---
+data: 74
+---
+data: 74
+---
+data: 74
+---
+data: 75
+---
+data: 70
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 74
+---
+data: 75
+---
+data: 76
+---
+data: 80
+---
+data: 77
+---
+data: 74
+---
+data: 76
+---
+data: 75
+---
+data: 77
+---
+data: 75
+---
+data: 75
+---
+data: 77
+---
+data: 73
+---
+data: 77
+---
+data: 77
+---
+data: 74
+---
+data: 75
+---
+data: 76
+---
+data: 79
+---
+data: 82
+---
+data: 75
+---
+data: 75
+---
+data: 80
+---
+data: 74
+---
+data: 78
+---
+data: 76
+---
+data: 81
+---
+data: 75
+---
+data: 74
+---
+data: 80
+---
+data: 85
+---
+data: 72
+---
+data: 76
+---
+data: 74
+---
+data: 75
+---
+data: -1
+---
+data: 75
+---
+data: 75
+---
+data: 74
+---
+data: 76
+---
+data: 77
+---
+data: 75
+---
+data: 75
+---
+data: 77
+---
+data: 75
+---
+data: 77
+---
+data: 74
+---
+data: 75
+---
+data: 74
+---
+data: 74
+---
+data: 74
+---
+data: 75
+---
+data: 75
+---
+data: 74
+---
+data: 75
+---
+data: 72
+---
+data: 75
+---
+data: 72
+---
+data: 75
+---
+data: 77
+---
+data: 75
+---
+data: 76
+---
+data: 75
+---
+data: 75
+---
+data: 75
+---
+data: 79
+---
+data: 80
+---
+data: 76
+---
+data: 71
+---
+data: 76
+---

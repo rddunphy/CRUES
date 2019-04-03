@@ -1,0 +1,200 @@
+data: -1
+---
+data: 26
+---
+data: 27
+---
+data: 29
+---
+data: 29
+---
+data: -1
+---
+data: 28
+---
+data: 32
+---
+data: 28
+---
+data: 26
+---
+data: 28
+---
+data: 26
+---
+data: 29
+---
+data: 28
+---
+data: 29
+---
+data: 26
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 28
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 28
+---
+data: 29
+---
+data: 29
+---
+data: 28
+---
+data: 32
+---
+data: 28
+---
+data: 28
+---
+data: 29
+---
+data: 28
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 27
+---
+data: 29
+---
+data: 31
+---
+data: 29
+---
+data: 28
+---
+data: 27
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 30
+---
+data: 27
+---
+data: 27
+---
+data: 25
+---
+data: 29
+---
+data: 29
+---
+data: 27
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 29
+---
+data: 27
+---
+data: 29
+---
+data: 32
+---
+data: 27
+---
+data: 28
+---
+data: 27
+---
+data: 29
+---
+data: 28
+---
+data: 27
+---
+data: 28
+---
+data: 27
+---
+data: 28
+---
+data: 27
+---
+data: 28
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 27
+---
+data: 28
+---
+data: 26
+---
+data: 27
+---
+data: 29
+---
+data: 26
+---
+data: 27
+---
+data: 26
+---
+data: 27
+---
+data: 28
+---
+data: 27
+---
+data: 26
+---
+data: 26
+---
+data: 25
+---
+data: 31
+---
+data: 27
+---
+data: 26
+---
+data: 26
+---
+data: 26
+---
+data: 29
+---
+data: 27
+---

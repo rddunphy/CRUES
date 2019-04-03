@@ -1,0 +1,200 @@
+data: 153
+---
+data: 151
+---
+data: 153
+---
+data: 152
+---
+data: 155
+---
+data: 152
+---
+data: 156
+---
+data: 159
+---
+data: 156
+---
+data: 160
+---
+data: 160
+---
+data: 160
+---
+data: 152
+---
+data: 156
+---
+data: 151
+---
+data: 157
+---
+data: 153
+---
+data: 155
+---
+data: 154
+---
+data: 153
+---
+data: 154
+---
+data: 160
+---
+data: 158
+---
+data: 160
+---
+data: 160
+---
+data: 156
+---
+data: 150
+---
+data: 152
+---
+data: 153
+---
+data: 161
+---
+data: 144
+---
+data: 161
+---
+data: 160
+---
+data: 161
+---
+data: 161
+---
+data: 162
+---
+data: 160
+---
+data: 159
+---
+data: 160
+---
+data: 160
+---
+data: 154
+---
+data: 159
+---
+data: 160
+---
+data: 160
+---
+data: 160
+---
+data: 160
+---
+data: 157
+---
+data: 157
+---
+data: 160
+---
+data: 161
+---
+data: 167
+---
+data: 158
+---
+data: 156
+---
+data: 156
+---
+data: 157
+---
+data: 156
+---
+data: 156
+---
+data: 157
+---
+data: 157
+---
+data: 156
+---
+data: 157
+---
+data: 159
+---
+data: 155
+---
+data: 156
+---
+data: 156
+---
+data: 156
+---
+data: 160
+---
+data: 156
+---
+data: 156
+---
+data: 156
+---
+data: 154
+---
+data: 153
+---
+data: 153
+---
+data: 153
+---
+data: 154
+---
+data: 154
+---
+data: 149
+---
+data: 152
+---
+data: 153
+---
+data: 151
+---
+data: 153
+---
+data: 155
+---
+data: 154
+---
+data: 153
+---
+data: 157
+---
+data: 153
+---
+data: 155
+---
+data: 156
+---
+data: 154
+---
+data: 155
+---
+data: 153
+---
+data: 153
+---
+data: 149
+---
+data: 150
+---
+data: 150
+---
+data: 150
+---
+data: 153
+---
+data: 153
+---
+data: 153
+---
+data: 154
+---
