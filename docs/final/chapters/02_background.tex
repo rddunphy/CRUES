@@ -50,15 +50,11 @@ Consider for instance the temperature controller example where heat is being los
 
 Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs. They do, however, reduce the response speed of the system~\cite{chen2007linear}.
 
-One method of tuning a PID controller is the Ziegler-Nicholls method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $T_i$ and $T_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nicholls method is mathematically imperfect and this will have to be explored experimentally during the project.     
+One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $T_i$ and $T_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nichols method is mathematically imperfect and this will have to be explored experimentally during the project.     
 %https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
 
 \subsection{Rate Control}\label{litreview/robotics/ratecontrol}
-
-
-\section{AI}\label{litreview/ai}
-At the software level of control 
-
+Opposed to traditional PID, Rate Control employs only the P and D portions of the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed more smoothly and fewer spikes in motor current are required for the required drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb more slowly from start-up and recover from dips in speed more slowly. This is mitigated, however, by using the current speed as the base and therefore, a high gain is not required to increase the speed to the required level. 
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
@@ -229,8 +225,8 @@ data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
 As a result it does not have the same extensive a range of libraries available 
 which implement commonly required functionality for a robotic system.
 
-
-\section{Maze Solving}\label{litreview/maze}
+\section{AI}\label{litreview/maze}
+Artificial intelligence is another component of intelligent robotic control and is the development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a common branch of artificial intelligence into which much research has been undertaken. Search algorithms and optimisation algorithms can be thought of as highly similar, and in the case of a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
 In robotics, the exploration of an unknown environment to gain knowledge, 
 is a well researched problem. Robot exploration is particularly important for 
@@ -311,6 +307,11 @@ is breadth-first search. This explores all neighbours at the same depth
 before moving onto nodes at the next depth level. This would be guaranteed 
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
 where $|V|$ is the number of vertices and $|E|$ is the number of edges. 
+Breadth-first search searches the oldest discovered node first meaning 
+a large number of backtracks to reach the oldest discovered node. As 
+backtracking in physical space is expensive, this results in a very 
+costly search for a single-agent. As more agents are added, the cost of this 
+decreases as less backtracking would take place. 
 
 In the case where the edges have a weighting, Dijkstra's algorithm is one 
 of the most commonly used methods for finding the shortest path between a 
