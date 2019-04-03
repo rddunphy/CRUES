@@ -344,24 +344,3 @@ node and h is the heuristic value from that node to the goal. The heuristic
 value can be found exactly as the first step of the algorithm though 
 this is very time consuming so approximate heuristics are used such 
 as the Manhattan distance, Diagonal distance and the Euclidean distance. 
-
-
-\section{Motor Control}\label{litreview/control}
-
-As the control of the mo
-
-\section{PID Controller}\label{litreview/control/pid}
-PID controller are a very common solution to problems where the error of the system (the difference between the current state and the desired state) can be measured. PID stands for Proportional-Integral-Derivative, referring to the function of the error with which the output is calculated. The output of the system is the summation of a term which is proportional to the error, a term which is related to the error integrated over time, and a term which is proportional to the rate of change of the error. This is shown in equation \todo{equation}
-
-$$ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}$$
-
-If $k_d$ and $k_i$ were both 0, and only the P term was active, the output would change to reduce the error in the system. Imagine a temperature controller, if the temperature was too low, the heater would turn on, and the heater would be turned up higher the greater the difference between the actual temperature and the required temperature. In many systems, this simple implementation is adequate, however it has several limitations. 
-
-Consider for instance the temperature controller example where heat is being lost in the system is equal to the P constant times the error. This would result in a stable state with a potentially large error. To prevent this, the I term can be increased. This will increase the longer an error is present, and preventing stable state errors. 
-
-Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs. 
-
-\section{PID Rate Controller}\label{litreview/control/pid}
-rate control
-
-
