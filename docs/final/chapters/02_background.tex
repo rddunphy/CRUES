@@ -235,7 +235,8 @@ algorithms that can be used for exploration such as Wall Follower,
 Trémaux's and Pledge.
 
 One of the simplest exploration algorithms is the Wall Follower algorithm, 
-also known as the right-hand rule (or left-hand rule). If the maze is 
+also known as the right-hand rule, when prioritising turning right or 
+left-hand rule when prioritising turning left. If the maze is 
 simply connected, that is, any two points of the maze can be traversed without
 leaving the maze, then the Wall Follower algorithm is guaranteed to reach a
 goal/exit if there is one. Otherwise, the algorithm will return to the starting 
@@ -256,7 +257,7 @@ maze. In many cases, one of these algorithms would be significantly quicker
 than the other but that is impossible to know without prior knowledge of 
 the maze.
 
-An alternatively to the Wall Follower algorithm is Pledge's algorithm. This
+An alternative to the Wall Follower algorithm is Pledge's algorithm. This
 aims to solve the problem where Wall Follower could be stuck in a loop. An 
 example of which is if walls form to create a rectangle in the centre of 
 the maze, the robot would continually turn right or left (depending on
