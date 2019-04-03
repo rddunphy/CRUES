@@ -4,7 +4,7 @@ import random
 import time
 
 import rospy
-from std_msgs.msg import Bool, Int32
+from std_msgs.msg import Bool, Float32
 from geometry_msgs.msg import Twist
 
 
@@ -23,9 +23,9 @@ class Roomba:
         self.time_to_stop_turning = -1
         self.turn_twist = None
         self.last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
-        rospy.Subscriber('ul_range', Int32, self.range_callback, callback_args=LEFT)
-        rospy.Subscriber('uc_range', Int32, self.range_callback, callback_args=CENTRE)
-        rospy.Subscriber('ur_range', Int32, self.range_callback, callback_args=RIGHT)
+        rospy.Subscriber('ul_range', Float32, self.range_callback, callback_args=LEFT)
+        rospy.Subscriber('uc_range', Float32, self.range_callback, callback_args=CENTRE)
+        rospy.Subscriber('ur_range', Float32, self.range_callback, callback_args=RIGHT)
         self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
         self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
         self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)

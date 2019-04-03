@@ -1,10 +1,12 @@
 <launch>
-<rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
 
-    <!-- SENSORS -->
+    <node name="us_scan_tf_broadcaster" pkg="crues_sensors" type="us_scan_tf.py" />
     <node name="ultrasonic" pkg="crues_sensors" type="us_node.py">
-        <remap from="~scan_increment" to="us_time" />
-        <remap from="~sensor_angle" to="us_angle" />
+        <param name="offset_left" value="20" />
+        <param name="offset_centre" value="20" />
+        <param name="offset_right" value="20" />
         <remap from="~rate" to="us_rate" />
     </node>
+
 </launch>
