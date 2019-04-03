@@ -6,6 +6,8 @@ from crues.comms import send
 from crues_comms.msg import Comms
 from crues_sensors.msg import Vision
 
+debug = False
+
 
 class Client:
     def __init__(self):
@@ -14,7 +16,7 @@ class Client:
         rospy.Subscriber('robots_detected', Vision, self._robots_detected_callback)
         self._msg_queue = []
         self._robots_in_view = []
-        self.rate = rospy.rate(rospy.get_param('~rate', 50))
+        self.rate = rospy.Rate(rospy.get_param('~rate', 50))
 
     def spin(self):
         while not rospy.is_shutdown():
@@ -28,14 +30,14 @@ class Client:
 
     def _send_next(self):
         msg = self._msg_queue[0]
-        if msg.destination not in self._robots_in_view:
+        if msg.destination not in self._robots_in_view or debug:
             rospy.logwarn("%s attempted to send %s to %s, but robot was not in view" %
                           (rospy.get_caller_id(), msg.data, msg.destination))
             del self._msg_queue[0]
         else:
             rospy.loginfo("%s attempting to send %s to %s" % (rospy.get_caller_id(), msg.data, msg.destination))
             try:
-                send(msg.destination, msg.data)
+                send(msg.destination, msg.topic, msg.data)
                 del self._msg_queue[0]
                 rospy.loginfo("%s successfully sent %s to %s" % (rospy.get_caller_id(), msg.data, msg.destination))
             except:  # What's this catching?
