@@ -53,13 +53,13 @@ def fromjson(packet):
 # End of Helper Functions
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
-    def messageHandler(self, x):
+    def messageHandler(x):
         print x
 
     def handle(self):
         data = self.request.recv(1024)
         message = fromjson(data)
-        self.messageHandler(message)
+        ThreadedTCPRequestHandler.messageHandler(message)
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):

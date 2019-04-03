@@ -9,7 +9,7 @@ class Server:
     def __init__(self):
         rospy.init_node('server')
         self.pub = rospy.Publisher('received_message', String, queue_size=10)  # Should this be a Comms message?
-        self.sock = listen(self._msg_callback)
+        self.sock = listen(self._msg_callback) # self._msg_callback :: msg -> void
 
     def spin(self):
         try:
