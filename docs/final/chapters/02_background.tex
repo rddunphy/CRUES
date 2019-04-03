@@ -55,10 +55,6 @@ One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegle
 \subsection{Rate Control}\label{litreview/robotics/ratecontrol}
 Opposed to traditional PID, Rate Control employs only the P and D portions of the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed more smoothly and fewer spikes in motor current are required for the required drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb more slowly from start-up and recover from dips in speed more slowly. This is mitigated, however, by using the current speed as the base and therefore, a high gain is not required to increase the speed to the required level. 
 
-\section{AI}\label{litreview/ai}
-Artificial intelligence is another component of intelligent robotic control and is the development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a common branch of artificial intelligence into which much research has been undertaken. Search algorithms and optimisation algorithms can be thought of as highly similar, and in the case of a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
-	 
-This project will predominantly discuss the exploration class of search problems. As only the goal state/object is known ``searching'' or ``optimisation'' algorithms cannot be used. The simplest exploration algorithm is wall-following, where either the right or left wall is followed until the maze is solved. However, this only works if the maze is simply connected (i.e. has no loops), otherwise it can result in infinite loops. Next to this highly primitive search, are similar brute force methods, depth-first and breadth-first search~\cite{korf1996artificial}. Breadth-first search searches the oldest discovered node first meaning a large number of backtracks to reach the oldest discovered node. As backtracking in physical space is expensive, this results in a very costly search for a single-agent but could be used for multi-agent implementations where less backtracking took place. Depth-first search investigates each complete path first as in the simple wall-following algorithm. Also as in the wall-follower, depth-first search is susceptible to infinite loops in non-simply connected mazes. The solution to this in single-agent scenarios is to implement loop closure~\ref{litreview/SLAM}. In multi-agent scenarios the loop closure problem becomes more complex and it could therefore be simpler to use breadth-first search as it is resistant to infinite loops but suffers in exploration time because of this. 
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
@@ -229,4 +225,122 @@ data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
 As a result it does not have the same extensive a range of libraries available 
 which implement commonly required functionality for a robotic system.
 
+\section{AI}\label{litreview/maze}
+Artificial intelligence is another component of intelligent robotic control and is the development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a common branch of artificial intelligence into which much research has been undertaken. Search algorithms and optimisation algorithms can be thought of as highly similar, and in the case of a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
+\subsection{Maze Exploration}\label{litreview/maze/exploration}
+In robotics, the exploration of an unknown environment to gain knowledge, 
+is a well researched problem. Robot exploration is particularly important for 
+environments that are difficult or dangerous for humans. There are many
+algorithms that can be used for exploration such as Wall Follower, 
+Trémaux's and Pledge.
 
+One of the simplest exploration algorithms is the Wall Follower algorithm, 
+also known as the right-hand rule, when prioritising turning right or 
+left-hand rule when prioritising turning left. If the maze is 
+simply connected, that is, any two points of the maze can be traversed without
+leaving the maze, then the Wall Follower algorithm is guaranteed to reach a
+goal/exit if there is one. Otherwise, the algorithm will return to the starting 
+point having traversed every corridor at least once \cite{wallFollowerArcBotics}.
+The steps of the algorithm are relatively straightforward. If using the
+right-hand rule:
+\begin{enumerate}
+\item If the robot can turn right, turn right
+\item \textbf{Else} continue going straight on
+\item \textbf{Else} turn left if possible
+\item \textbf{Else} a dead end is reached, so turn $180^{\circ}$
+\end{enumerate}
+These steps ensure to keep a wall on the right hand side of the robot at 
+all times. The left-rule is just the opposite where the robot turns left 
+if at all possible to keep the wall on the robots' left. As a result, 
+this algorithm is inherently inefficiently as it exhaustively searches the
+maze. In many cases, one of these algorithms would be significantly quicker
+than the other but that is impossible to know without prior knowledge of 
+the maze.
+
+An alternative to the Wall Follower algorithm is Pledge's algorithm. This
+aims to solve the problem where Wall Follower could be stuck in a loop. An 
+example of which is if walls form to create a rectangle in the centre of 
+the maze, the robot would continually turn right or left (depending on
+algorithm) around that rectangle, never to find the exit. Pledge solves this
+by keeping a count of the number of turns made (if not right-angled turns,
+then the angle of turn is used instead) as well as the initial direction of
+travel. \cite{klein2011pledge}
+
+\begin{algorithm}
+\caption{Pledge's Algorithm}
+\begin{algorithmic}
+\STATE Set angle counter to 0
+\REPEAT
+\REPEAT
+\STATE Walk straight ahead;
+\UNTIL {wall hit};
+\STATE Turn right;
+\REPEAT
+\STATE Follow the obstacle's wall;
+\UNTIL{angle counter = 0;}
+\UNTIL {exit found;}
+\end{algorithmic}
+\end{algorithm}
+Using the initial direction and counting the turns made, allows the 
+algorithm to avoid traps such as an upper case letter "G" that simpler 
+algorithms struggle with.
+
+The Trémaux maze-solving algorithm requires the robot to record its path 
+throughout its navigation routine for finding a route. Any given path 
+can be unmarked, marked once or marked twice. If a path is marked twice that 
+indicates the robot has travelled down it in both directions. The robot 
+will not travel down any path marked twice for a third time, therefore 
+treating them as dead-ends. Paths without markings are prioritised, before 
+choosing those marked once in search of further unmarked paths. If a 
+solution is found then the path that is marked only once is the route 
+from the goal back to the start point. Otherwise if no solution is found,
+all paths in the maze will be marked twice \cite{even2011graph}.
+Importantly, this will likely not find the shortest path but it will be 
+guaranteed to find one if it exists.
+
+\subsection{Path Finding}\label{litreview/maze/path}
+There are many algorithms that can be used to find the shortest path 
+through a graph such as Dijkstra's algorithm and A* search. In the 
+context of our agents, path finding is likely to be used once 
+the goal has been found to return the robot back to its starting 
+position. In the case of an unweighted graph, one of the simplest algorithm 
+is breadth-first search. This explores all neighbours at the same depth 
+before moving onto nodes at the next depth level. This would be guaranteed 
+to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
+where $|V|$ is the number of vertices and $|E|$ is the number of edges. 
+Breadth-first search searches the oldest discovered node first meaning 
+a large number of backtracks to reach the oldest discovered node. As 
+backtracking in physical space is expensive, this results in a very 
+costly search for a single-agent. As more agents are added, the cost of this 
+decreases as less backtracking would take place. 
+
+In the case where the edges have a weighting, Dijkstra's algorithm is one 
+of the most commonly used methods for finding the shortest path between a 
+specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
+\begin{enumerate}
+\item Assign the start node to have a distance of 0 and all other nodes to 
+have a distance of $\infty$
+\item Search the unvisited nodes for the closest node. Stop if the closest 
+node is $\infty$ (means there is no path to target node). This node is now 
+labelled as visited and as the current node.
+\item For each node adjacent to the new current that is unvisited, update 
+the saved distance to be the sum of the edge weight and the distance from 
+start to the current node if this is less than the saved total distance to 
+that node. 
+\item Repeat the process from Step 2, doing as many iterations as required.
+\end{enumerate}
+This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
+\cite{xu2007improved}. An improvement to this original algorithm using a 
+min-priority queue implemented by a Fibonacci heap, runs in $\mathcal{O}
+(|E| + |V|log |V|)$ and was first proposed in \cite{fredman1987fibonacci}.
+
+Developed initially as an extension of Dijkstra's algorithm, A* is a 
+pathfinding algorithm that typically achieves better performance by 
+use of a heuristic. At each node, A* chooses the node which it believes 
+can be used in the shortest path. It does so by choosing the node with 
+the lowest value of f, where f is the sum of g and h, where g is the 
+distance to the current node plus the known distance to that adjacent 
+node and h is the heuristic value from that node to the goal. The heuristic 
+value can be found exactly as the first step of the algorithm though 
+this is very time consuming so approximate heuristics are used such 
+as the Manhattan distance, Diagonal distance and the Euclidean distance. 
