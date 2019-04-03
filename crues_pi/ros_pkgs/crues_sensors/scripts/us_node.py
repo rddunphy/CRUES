@@ -33,6 +33,8 @@ class Ultrasonic:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(trig_pin, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(echo_pin, GPIO.IN)
+        GPIO.add_event_detect(echo_pin, GPIO.RISING, callback=self.startTime)
+        GPIO.add_event_detect(echo_pin, GPIO.FALLING, callback=self.stopTime)
 
     def get_range(self):
         """Get range from ultrasonic sensor in millimetres.
@@ -40,21 +42,28 @@ class Ultrasonic:
         :return: (int) Approx. range in millimetres
         :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
         """
+        self.start_time = -1
+        self.stop_time = -1
+        
         GPIO.output(self.trig_pin, GPIO.HIGH)
         time.sleep(self.pulse_duration)
+        
         GPIO.output(self.trig_pin, GPIO.LOW)
-        pulse_start = time.time()
-        timeout = pulse_start + self.sensor_timeout
-        while not GPIO.input(self.echo_pin) and pulse_start < timeout:
-            pulse_start = time.time()
-        pulse_end = pulse_start
-        while GPIO.input(self.echo_pin) and pulse_end < timeout:
-            pulse_end = time.time()
-        if pulse_end >= timeout:
+        time.sleep(self.sensor_timeout)
+        
+        if self.start_time == -1 or self.stop_time == -1:
             raise UltrasonicTimeout(self.name, self.sensor_timeout)
-        duration = pulse_end - pulse_start
+            
+        
+        duration = self.stop_time - self.start_time
         distance = duration * SPEED_OF_SOUND * 500
+        
         return int(round(distance))
+    
+    def startTime(self):
+        self.start_time = time.time()
+    def stopTime(self):
+        self.stop_time = time.time()
 
     def cleanup(self):
         GPIO.cleanup([self.trig_pin, self.echo_pin])
