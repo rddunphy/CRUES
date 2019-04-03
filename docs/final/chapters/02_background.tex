@@ -255,25 +255,25 @@ which implement commonly required functionality for a robotic system.
 
 \section{Maze Solving}\label{litreview/maze}
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
-In robotics the exploration of an unknown environment, to gain knowledge, 
-is a well researched problem. This is particularly important for 
+In robotics, the exploration of an unknown environment to gain knowledge, 
+is a well researched problem. Robot exploration is particularly important for 
 environments that are difficult or dangerous for humans. There are many
-algorithms that can be used for exploration such as wall follower, 
+algorithms that can be used for exploration such as Wall Follower, 
 Trémaux's and Pledge.
 
 One of the simplest exploration algorithms is the Wall Follower algorithm, 
 also known as the right-hand rule (or left-hand rule). If the maze is 
 simply connected, that is, any two points of the maze can be traversed without
-leaving the maze, then the wall follower algorithm is guaranteed to reach a
-goal/exit if there is one . Otherwise, the algorithm will return to the start 
+leaving the maze, then the Wall Follower algorithm is guaranteed to reach a
+goal/exit if there is one. Otherwise, the algorithm will return to the starting 
 point having traversed every corridor at least once \cite{wallFollowerArcBotics}.
 The steps of the algorithm are relatively straightforward. If using the
 right-hand rule:
 \begin{enumerate}
 \item If the robot can turn right, turn right
-\item Else continue going straight on
-\item Else turn left if possible
-\item Else a dead end is reached, so turn $180^{\circ}$
+\item \textbf{Else} continue going straight on
+\item \textbf{Else} turn left if possible
+\item \textbf{Else} a dead end is reached, so turn $180^{\circ}$
 \end{enumerate}
 These steps ensure to keep a wall on the right hand side of the robot at 
 all times. The left-rule is just the opposite where the robot turns left 
@@ -307,7 +307,7 @@ travel. \cite{klein2011pledge}
 \UNTIL {exit found;}
 \end{algorithmic}
 \end{algorithm}
-Using the initial direction and a count of the turns made, allows the 
+Using the initial direction and counting the turns made, allows the 
 algorithm to avoid traps such as an upper case letter "G" that simpler 
 algorithms struggle with.
 
@@ -325,25 +325,47 @@ Importantly, this will likely not find the shortest path but it will be
 guaranteed to find one if it exists.
 
 \subsection{Path Finding}\label{litreview/maze/path}
-breadth first - works but inefficient
-A* - works but needs heuristic. Coordinates can be used. 
-
 There are many algorithms that can be used to find the shortest path 
-through a graph such as Dijkstra's algorithm and A* search. In the case 
-of an unweighted graph, the simplest algorithm is breadth-first search. 
-This explores all neighbours at the same depth before moving onto nodes 
-at the next depth level. This would be guaranteed to find a path with the 
-shortest number of edges and is $\mathcal{O}(V + E)$. 
+through a graph such as Dijkstra's algorithm and A* search. In the 
+context of our agents, path finding is likely to be used once 
+the goal has been found to return the robot back to its starting 
+position. In the case of an unweighted graph, one of the simplest algorithm 
+is breadth-first search. This explores all neighbours at the same depth 
+before moving onto nodes at the next depth level. This would be guaranteed 
+to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
+where $|V|$ is the number of vertices and $|E|$ is the number of edges. 
 
 In the case where the edges have a weighting, Dijkstra's algorithm is one 
 of the most commonly used methods for finding the shortest path between a 
 specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
 \begin{enumerate}
-\item Assign the start node to have a distance of 0 and all other nodes to have a distance of $\infty$
-\item Search the unvisited nodes for the closest node. Stop if the closest node is $\infty$ (means there is no path to target node). This node is now labelled as visited and as the current node.
-\item For each node adjacent to the new current that is unvisited, update the saved distance to be the sum of the edge weight and the distance from start to the current node if this is less than the saved total distance to that node. 
+\item Assign the start node to have a distance of 0 and all other nodes to 
+have a distance of $\infty$
+\item Search the unvisited nodes for the closest node. Stop if the closest 
+node is $\infty$ (means there is no path to target node). This node is now 
+labelled as visited and as the current node.
+\item For each node adjacent to the new current that is unvisited, update 
+the saved distance to be the sum of the edge weight and the distance from 
+start to the current node if this is less than the saved total distance to 
+that node. 
 \item Repeat the process from Step 2, doing as many iterations as required.
 \end{enumerate}
+This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
+\cite{xu2007improved}. An improvement to this original algorithm using a 
+min-priority queue implemented by a Fibonacci heap, runs in $\mathcal{O}
+(|E| + |V|log |V|)$ and was first proposed in \cite{fredman1987fibonacci}.
+
+Developed initially as an extension of Dijkstra's algorithm, A* is a 
+pathfinding algorithm that typically achieves better performance by 
+use of a heuristic. At each node, A* chooses the node which it believes 
+can be used in the shortest path. It does so by choosing the node with 
+the lowest value of f, where f is the sum of g and h, where g is the 
+distance to the current node plus the known distance to that adjacent 
+node and h is the heuristic value from that node to the goal. The heuristic 
+value can be found exactly as the first step of the algorithm though 
+this is very time consuming so approximate heuristics are used such 
+as the Manhattan distance, Diagonal distance and the Euclidean distance. 
+
 
 \section{Motor Control}\label{litreview/control}
 
