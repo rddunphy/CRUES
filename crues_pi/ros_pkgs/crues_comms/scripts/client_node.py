@@ -14,9 +14,12 @@ class Client:
         rospy.Subscriber('robots_detected', Vision, self._robots_detected_callback)
         self._msg_queue = []
         self._robots_in_view = []
+        self.rate = rospy.rate(rospy.get_param('~rate', 50))
 
     def spin(self):
-        rospy.spin()
+        while not rospy.is_shutdown():
+            self._send()
+            self.rate.sleep()
 
     def _send(self):
         # This blocks, so should maybe be on a new thread?
@@ -41,7 +44,6 @@ class Client:
 
     def _send_callback(self, msg):
         self._msg_queue.append(msg)
-        self._send()
 
     def _robots_detected_callback(self, msg):
         self._robots_in_view = [s.trim() for s in msg.robot_list.split(",")]
