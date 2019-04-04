@@ -65,16 +65,16 @@
         <param name="timeout_ticks" type="int" value="7" />
     </node>
 
-<!--    <node name="ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">-->
-<!--        <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />-->
-<!--    </node>-->
+    <node name="ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+        <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />
+    </node>
 
     <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">
         <remap from="scan" to="us_scan" />
     </node>
 
     <!-- DATA RECORDING -->
-<!--    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom_ /diff/odom /odometry/filtered" />-->
+    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom_ /diff/odom /odometry/filtered" />
     <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /map" />
 
 </launch>
