@@ -38,7 +38,7 @@ def main():
     except rospy.ROSInterruptException as e:
         rospy.logerr("ROSInterruptException in ultrasonic node")
     finally:
-        GPIO.cleanup()
+        GPIO.cleanup()  # TODO: specific pins
 
 
 if __name__ == '__main__':

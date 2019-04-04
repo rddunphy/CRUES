@@ -75,7 +75,12 @@
     </node>
 
     <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">
-        <remap from="scan" to="us_scan" />
+        <param name="maxRange" value="4.0" />
+        <param name="maxUrange" value="1.0" />
+        <param name="xmax" value="4.0" />
+        <param name="ymax" value="4.0" />
+        <param name="delta" value="0.01" />
+        <remap from="/scan" to="/us_scan" />
     </node>
 
     <!-- DATA RECORDING -->

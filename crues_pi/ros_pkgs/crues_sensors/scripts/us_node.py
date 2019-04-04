@@ -53,11 +53,13 @@ class Ultrasonic:
         time.sleep(self.sensor_timeout)
         if self.start_time == -1 or self.stop_time == -1:
             raise UltrasonicTimeout(self.name, self.sensor_timeout)
+        if self.start_time == -1 and self.stop_time != -1:
+            rospy.logwarn("AAAAARRRRGGGHH")
         duration = self.stop_time - self.start_time
         distance = duration * SPEED_OF_SOUND * 500
         return distance - self.offset
 
-    def _log_time(self, channel):
+    def _log_time(self, _):
         if GPIO.input(self.echo_pin):
             self.start_time = time.time()
         else:
