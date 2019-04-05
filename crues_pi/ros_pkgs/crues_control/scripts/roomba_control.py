@@ -4,7 +4,8 @@ import random
 import time
 
 import rospy
-from std_msgs.msg import Bool, Float32
+from std_msgs.msg import Bool, Float32, Int32
+from crues_sensors.msg import Vision
 from geometry_msgs.msg import Twist
 
 
@@ -22,13 +23,16 @@ class Roomba:
         self.rate = rospy.Rate(rospy.get_param('~rate', 50))
         self.time_to_stop_turning = -1
         self.turn_twist = None
+        self.stop = False
         self.last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
         rospy.Subscriber('ul_range', Float32, self.range_callback, callback_args=LEFT)
         rospy.Subscriber('uc_range', Float32, self.range_callback, callback_args=CENTRE)
         rospy.Subscriber('ur_range', Float32, self.range_callback, callback_args=RIGHT)
+        rospy.Subscriber('/robots_detected', Vision, self.robots_callback)
         self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
         self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
         self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)
+        self.gled_flash_pub = rospy.Publisher('green_led_flash', Int32, queue_size=10)
 
     def spin(self):
         while not rospy.is_shutdown():
@@ -36,6 +40,8 @@ class Roomba:
             self.rate.sleep()
 
     def publish_cmd(self):
+        if self.stop:
+            return
         if any([r is None for r in self.last_ranges.values()]):
             # Still waiting for first reading from another sensor
             return
@@ -80,6 +86,13 @@ class Roomba:
 
     def range_callback(self, msg, s):
         self.last_ranges[s] = msg.data
+
+    def robots_callback(self, msg):
+        robots = [x.strip().lower() for x in msg.robot_list.split(',')]
+        if 'clyde' in robots:
+            self.gled_flash_pub.publish(5)
+            self.stop = True
+
 
 
 if __name__ == '__main__':
