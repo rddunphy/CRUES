@@ -63,16 +63,25 @@ a message to. The simplest method for this is to use a lookup table
 that maps the robot's name to their fixed IP in the network, allowing 
 all nodes in the network access to this.
 
-After deciding to use WANET for connecting the agent's a decision 
-had to be made in how to format the data to send over the network. 
-A few options were available such as using JSON, XML or a 
-custom-structure. It was decided the best option was to use 
-JavaScript Object Notation (JSON) objects after consultation with Dr~
-Irvine as discussed in Section~\ref{pm/consultations}. JSON is a 
-standard data-interchange format that is easy for humans to read and 
-write as it uses attribute-value pairs and array data types.
+After deciding to use WANET, a decision  had to be made in how to format 
+the data to send over the network. A few options were available such as 
+using JSON, XML or a custom-structure. It was decided the best option was 
+to use JavaScript Object Notation (JSON) objects after consultation with 
+Dr~Irvine as discussed in Section~\ref{pm/consultations}. JSON is a 
+standard data-interchange format that is easy for humans to read and write 
+as it uses attribute-value pairs and array data types.
+
+For the structure of the communication module after considering various options, 
+a client-server system was decided upon. The client is the node 
+responsible for sending the messages whilst the server is responsible 
+for listening for incoming messages. As these would be separate nodes, 
+these would work independently of each other and so would allow for the 
+robot to send and receive messages simultaneously. 
 
 \subsection{Implementation}\label{soft/comms/impl}
+Look-up table
+First copy of send/receive that caused multi-message issues
+The new implementation with the thread-safe code
 
 \subsection{Testing}\label{soft/comms/test}
 
