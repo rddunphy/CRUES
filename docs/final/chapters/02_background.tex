@@ -38,26 +38,22 @@ Internal sensors can either be related to the actuators or fixed parts of the ro
 One such sensor is the encoder which is connected to the wheels and provides only feedback information about this actuator. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised by the Proportional-Integral-Derivative(PID) controller of the robot.  
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
-As mentioned above the PID controller uses feedback from the encoders to maintain a straight line of movement and maintain each of wheels at a constant velocity. The PID controller is a feedback loop which is designed to eliminate errors in the actuator systems by the mathematical description \todo{add the mathematical formula for PID add wheres also}. By tuning $ K_p $, $ T_i $ and $ T_d $ for the system in question, the error in the system can be reduced.  \todo{maybe good intro to when we talk about imlementation of motor controller} 
+As mentioned above the PID controller uses feedback from the encoders to maintain a straight line of movement and maintain each of wheels at a constant velocity. The PID controller is a feedback loop which is designed to eliminate errors in the actuator systems by the mathematical description \todo{add the mathematical formula for PID add wheres also}. By tuning $ K_p $, $ K_i $ and $ K_d $ for the system in question, the error in the system can be reduced.  \todo{maybe good intro to when we talk about imlementation of motor controller} 
 
 PID controller are a very common solution to problems where the error of the system (the difference between the current state and the desired state) can be measured. PID stands for Proportional-Integral-Derivative, referring to the function of the error with which the output is calculated. The output of the system is the summation of a term which is proportional to the error, a term which is related to the error integrated over time, and a term which is proportional to the rate of change of the error. This is shown in equation \todo{equation}
 
 $$ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}$$
 
-If $k_d$ and $k_i$ were both 0, and only the P term was active, the output would change to reduce the error in the system. Imagine a temperature controller, if the temperature was too low, the heater would turn on, and the heater would be turned up higher the greater the difference between the actual temperature and the required temperature. In many systems, this simple implementation is adequate, however it has several limitations. 
+If $K_d$ and $K_i$ were both 0, and only the P term was active, the output would change to reduce the error in the system. Imagine a temperature controller, if the temperature was too low, the heater would turn on, and the heater would be turned up higher the greater the difference between the actual temperature and the required temperature. In many systems, this simple implementation is adequate, however it has several limitations. 
 
 Consider for instance the temperature controller example where heat is being lost in the system is equal to the P constant times the error. This would result in a stable state with a potentially large error. To prevent this, the I term can be increased. This will increase the longer an error is present, and preventing stable state errors. 
 
 Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs. They do, however, reduce the response speed of the system~\cite{chen2007linear}.
 
-One method of tuning a PID controller is the Ziegler-Nicholls method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $T_i$ and $T_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nicholls method is mathematically imperfect and this will have to be explored experimentally during the project.     
-%https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1068004
+One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $K_i$ and $K_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nichols method is mathematically imperfect and this will have to be explored experimentally during the project.     
 
 \subsection{Rate Control}\label{litreview/robotics/ratecontrol}
-
-
-\section{AI}\label{litreview/ai}
-At the software level of control 
+Opposed to traditional PID, Rate Control employs only the P and D portions of the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed more smoothly and fewer spikes in motor current are required for the required drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb more slowly from start-up and recover from dips in speed more slowly. This is mitigated, however, by using the current speed as the base and therefore, a high gain is not required to increase the speed to the required level. 
 
 
 \section{Cooperative Robotics}\label{litreview/coop}
@@ -229,4 +225,122 @@ data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
 As a result it does not have the same extensive a range of libraries available 
 which implement commonly required functionality for a robotic system.
 
+\section{AI}\label{litreview/maze}
+Artificial intelligence is another component of intelligent robotic control and is the development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a common branch of artificial intelligence into which much research has been undertaken. Search algorithms and optimisation algorithms can be thought of as highly similar, and in the case of a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
+\subsection{Maze Exploration}\label{litreview/maze/exploration}
+In robotics, the exploration of an unknown environment to gain knowledge, 
+is a well researched problem. Robot exploration is particularly important for 
+environments that are difficult or dangerous for humans. There are many
+algorithms that can be used for exploration such as Wall Follower, 
+Trémaux's and Pledge.
 
+One of the simplest exploration algorithms is the Wall Follower algorithm, 
+also known as the right-hand rule, when prioritising turning right or 
+left-hand rule when prioritising turning left. If the maze is 
+simply connected, that is, any two points of the maze can be traversed without
+leaving the maze, then the Wall Follower algorithm is guaranteed to reach a
+goal/exit if there is one. Otherwise, the algorithm will return to the starting 
+point having traversed every corridor at least once \cite{wallFollowerArcBotics}.
+The steps of the algorithm are relatively straightforward. If using the
+right-hand rule:
+\begin{enumerate}
+\item If the robot can turn right, turn right
+\item \textbf{Else} continue going straight on
+\item \textbf{Else} turn left if possible
+\item \textbf{Else} a dead end is reached, so turn $180^{\circ}$
+\end{enumerate}
+These steps ensure to keep a wall on the right hand side of the robot at 
+all times. The left-rule is just the opposite where the robot turns left 
+if at all possible to keep the wall on the robots' left. As a result, 
+this algorithm is inherently inefficiently as it exhaustively searches the
+maze. In many cases, one of these algorithms would be significantly quicker
+than the other but that is impossible to know without prior knowledge of 
+the maze.
+
+An alternative to the Wall Follower algorithm is Pledge's algorithm. This
+aims to solve the problem where Wall Follower could be stuck in a loop. An 
+example of which is if walls form to create a rectangle in the centre of 
+the maze, the robot would continually turn right or left (depending on
+algorithm) around that rectangle, never to find the exit. Pledge solves this
+by keeping a count of the number of turns made (if not right-angled turns,
+then the angle of turn is used instead) as well as the initial direction of
+travel. \cite{klein2011pledge}
+
+\begin{algorithm}
+\caption{Pledge's Algorithm}
+\begin{algorithmic}
+\STATE Set angle counter to 0
+\REPEAT
+\REPEAT
+\STATE Walk straight ahead;
+\UNTIL {wall hit};
+\STATE Turn right;
+\REPEAT
+\STATE Follow the obstacle's wall;
+\UNTIL{angle counter = 0;}
+\UNTIL {exit found;}
+\end{algorithmic}
+\end{algorithm}
+Using the initial direction and counting the turns made, allows the 
+algorithm to avoid traps such as an upper case letter "G" that simpler 
+algorithms struggle with.
+
+The Trémaux maze-solving algorithm requires the robot to record its path 
+throughout its navigation routine for finding a route. Any given path 
+can be unmarked, marked once or marked twice. If a path is marked twice that 
+indicates the robot has travelled down it in both directions. The robot 
+will not travel down any path marked twice for a third time, therefore 
+treating them as dead-ends. Paths without markings are prioritised, before 
+choosing those marked once in search of further unmarked paths. If a 
+solution is found then the path that is marked only once is the route 
+from the goal back to the start point. Otherwise if no solution is found,
+all paths in the maze will be marked twice \cite{even2011graph}.
+Importantly, this will likely not find the shortest path but it will be 
+guaranteed to find one if it exists.
+
+\subsection{Path Finding}\label{litreview/maze/path}
+There are many algorithms that can be used to find the shortest path 
+through a graph such as Dijkstra's algorithm and A* search. In the 
+context of our agents, path finding is likely to be used once 
+the goal has been found to return the robot back to its starting 
+position. In the case of an unweighted graph, one of the simplest algorithm 
+is breadth-first search. This explores all neighbours at the same depth 
+before moving onto nodes at the next depth level. This would be guaranteed 
+to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
+where $|V|$ is the number of vertices and $|E|$ is the number of edges. 
+Breadth-first search searches the oldest discovered node first meaning 
+a large number of backtracks to reach the oldest discovered node. As 
+backtracking in physical space is expensive, this results in a very 
+costly search for a single-agent. As more agents are added, the cost of this 
+decreases as less backtracking would take place. 
+
+In the case where the edges have a weighting, Dijkstra's algorithm is one 
+of the most commonly used methods for finding the shortest path between a 
+specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
+\begin{enumerate}
+\item Assign the start node to have a distance of 0 and all other nodes to 
+have a distance of $\infty$
+\item Search the unvisited nodes for the closest node. Stop if the closest 
+node is $\infty$ (means there is no path to target node). This node is now 
+labelled as visited and as the current node.
+\item For each node adjacent to the new current that is unvisited, update 
+the saved distance to be the sum of the edge weight and the distance from 
+start to the current node if this is less than the saved total distance to 
+that node. 
+\item Repeat the process from Step 2, doing as many iterations as required.
+\end{enumerate}
+This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
+\cite{xu2007improved}. An improvement to this original algorithm using a 
+min-priority queue implemented by a Fibonacci heap, runs in $\mathcal{O}
+(|E| + |V|log |V|)$ and was first proposed in \cite{fredman1987fibonacci}.
+
+Developed initially as an extension of Dijkstra's algorithm, A* is a 
+pathfinding algorithm that typically achieves better performance by 
+use of a heuristic. At each node, A* chooses the node which it believes 
+can be used in the shortest path. It does so by choosing the node with 
+the lowest value of f, where f is the sum of g and h, where g is the 
+distance to the current node plus the known distance to that adjacent 
+node and h is the heuristic value from that node to the goal. The heuristic 
+value can be found exactly as the first step of the algorithm though 
+this is very time consuming so approximate heuristics are used such 
+as the Manhattan distance, Diagonal distance and the Euclidean distance. 
