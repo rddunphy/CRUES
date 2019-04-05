@@ -17,8 +17,60 @@
 
 
 \section{Communication}\label{soft/comms}
+The communication node's requirements were to allow the agents to 
+be able to send and receive messages to each other. The structure 
+of these messages should allow for any object to be able to be sent 
+regardless of the data types, depth or complexity of the objects. 
+Each robot should also be able to simultaneously be listening for 
+incoming messages whilst sending messages to a different robot. 
+With the aim of allowing scalability, the communication system 
+should be able to handle robots listening to multiple robots at the 
+same time, whilst also being connected to send messages to different 
+robots at the same time. 
+
+The communication system also requires a network or communication 
+technology to allow all of the robots in the system to be able to 
+communicate with each other. Each of the robot's will also require 
+a unique identifier to allow sending messages to specific robots 
+rather than broadcasting all messages to all robots. 
 
 \subsection{Design}\label{soft/comms/design}
+In order to implement these requirements the first decision was the 
+method the robots were going to use to communicate. A few options 
+for this were considered such as Bluetooth and WiFi. After 
+researching  and considering these options, we initially decided to 
+use a Wireless Ad-hoc Network (WANET). 
+
+WANET is a wireless network where the nodes can be located anywhere 
+globally and does not require any infrastructure such as a router or 
+mobile network. The underlying design is such that the nodes believe 
+they are part of a single-hop or multiple-hop wireless network at the 
+physical layer and the data link layer as part of the MAC sublayer~
+\cite{rajesh2015congestion}. The wireless channels are often shared 
+and so use carrier sense multiple access protocols to handle multiple 
+nodes attempting to use the channel at the same time. This is known 
+as link-level congestion and increases packet service time, 
+decreasing utilization and overall throughput. Although scalability 
+is an important  factor, it was deemed that WANET's handling of 
+congestion was sufficient given the anticipated level of 
+communication across the system at any time would be low. 
+
+The WANET gives each node on the network its own local IP address. 
+Anything that connects to the network can then send messages through 
+the network provided it knows this address. As a result, a robot 
+needs a way to find this address if it knows who it wishes to send 
+a message to. The simplest method for this is to use a lookup table 
+that maps the robot's name to their fixed IP in the network, allowing 
+all nodes in the network access to this.
+
+After deciding to use WANET for connecting the agent's a decision 
+had to be made in how to format the data to send over the network. 
+A few options were available such as using JSON, XML or a 
+custom-structure. It was decided the best option was to use 
+JavaScript Object Notation (JSON) objects after consultation with Dr~
+Irvine as discussed in Section~\ref{pm/consultations}. JSON is a 
+standard data-interchange format that is easy for humans to read and 
+write as it uses attribute-value pairs and array data types.
 
 \subsection{Implementation}\label{soft/comms/impl}
 
