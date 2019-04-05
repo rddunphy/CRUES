@@ -24,15 +24,17 @@ class RobotDetector:
 
         if pi:
             frameSize = (640, 480)
+            self.frame_rate = rospy.get_param('~framerate', 25)
             self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frameSize,
-                                   framerate=32).start()
+                                   framerate=self.frame_rate).start()
             rospy.init_node("vision", anonymous=False)
             self.recording = rospy.get_param("~recording", False)
             self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
+            self.rate = rospy.Rate(self.frame_rate)
             if self.recording:
                 # Define the codec and create VideoWriter object
                 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-                self.recorder = cv2.VideoWriter('/home/crues/rosbag/output.avi', fourcc, 20.0, (640, 480))
+                self.recorder = cv2.VideoWriter('/home/crues/rosbag/output.avi', fourcc, self.frame_rate, (640, 480))
         else:
             self.cap = cv2.VideoCapture(1)
 
@@ -52,7 +54,7 @@ class RobotDetector:
             cx, cy, outline = None, None, None
             obj_found = False
             for c in contours:
-                if cv2.contourArea(c) > max((300, maxsize)):  # & cv2.arcLength(c,True):
+                if cv2.contourArea(c) > max((10000, maxsize)):  # & cv2.arcLength(c,True):
                     maxsize = cv2.contourArea(c)
                     cx, cy = self.get_centre_point(c)
                     outline = self.get_outline(c)
@@ -109,11 +111,10 @@ class RobotDetector:
         return cX, cY
 
     def spin(self):
-        rate = rospy.Rate(rospy.get_param('~rate', 50))
         try:
             while not rospy.is_shutdown():
                 self._tick()
-                rate.sleep()
+                self.rate.sleep()
         finally:
             self.recorder.release()
             # self._cleanup()
@@ -121,6 +122,7 @@ class RobotDetector:
     def _tick(self):
         if pi:
             frame = self.cap.read()
+            frame = cv2.flip(frame, -1)
         else:
             _, frame = self.cap.read()
         names, found, coords, outlines, highlight_colours = self.search(frame)
