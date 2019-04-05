@@ -3,7 +3,7 @@
 
 The project was managed throughout by an elected project manager 
 (Andrew Fagan), who was tasked with ensuring tasks were 
-completed to the schedule decided by the group as a whole. This 
+completed in the timeline decided by the whole group. This 
 allowed every member in the group to have an equal voice in 
 decisions regarding the project while still having a overall 
 manager of the timeline. Using this system, with a minimal 
@@ -22,21 +22,20 @@ then assigned to group members as appropriate. Upon completion
 of a task within the sprint, this was reported to the project 
 manager and a further task was assigned. The project manager was 
 responsible for ensuring estimated timelines were adhered to 
-within the sprint. At the end of the sprint a short meeting was 
+within the sprint. At the end of the sprint, a short meeting was 
 held to discuss progress made and issues encountered which would 
 be used to influence the tasks for the subsequent sprint. Tasks 
 within the sprint were tracked using Git issues, assigned to one 
-or many members of the group. The agile methods used were 
-generally well adhered to and 
-resulted in successful outcomes for the tasks which they were 
-used for. 
+or many members of the group. The agile methods used were well 
+adhered to and resulted in successful outcomes for the tasks for which 
+they were used. 
 	
 
 \subsection{Consultations}\label{pm/consultations}
 Throughout the project a number of members of academic staff 
 were consulted to obtain an expert's opinion on either 
-discussions or decisions which had been made by the group. 
-Members of staff from the EEE, CIS and EMEA departments were 
+discussions or decisions made by the group. 
+Staff from the EEE, CIS and EMEA departments were 
 consulted at various stages in the project, bringing together 
 each of the individual components of the robot. 
 
@@ -49,8 +48,8 @@ possible SLAM implementations, potential objectives and
 timescales for parts of the project. Only one meeting took place 
 as Dr Post moved to York University shortly after the meeting, 
 however, the meeting was highly beneficial and gave a vast 
-quantity of insight into existing solutions and software and 
-also potential pitfalls which could be encountered throughout 
+insight into existing solutions and software, whilst highlighting 
+potential pitfalls which could be encountered throughout 
 the project. Full notes available in Appendix A. \todo{Is this 
 in depth enough? Do we want more info here? Also add notes to 
 appendix}
@@ -59,35 +58,37 @@ Dr James Irvine, EEE Department, was consulted informally
 regarding the use of Sockets for communication using a Wireless 
 Ad-hoc Network (WANET). Dr Irvine was approached with an 
 assumption that using the Python Socket library to send 
-serialised data between the Raspberry Pis would be a sufficient 
+serialised data between the Raspberry Pis would be a robust 
 method of communication between the robots. This was confirmed 
-by Dr Irvine with the additional suggestion that JSON could be 
-used to serialise the data. 
+by Dr Irvine with the additional suggestion to serialise the data
+as JSON objects. 
 
 
 Dr Gordon Dobie, EEE Department, was consulted towards the end 
-of the project regarding the tuning of the PID controller. A 
-meeting was arranged and the processes followed explained at the 
-beginning of the meeting. Dr Dobie went on to say that although 
-PID was useful, a more simple PD rate control system 
+of the project regarding the tuning of the PID controller. 
+Members of the group met with Dr Dobie and explained the PID tuning 
+processes undertook to that point. He explained that although 
+PID was conceptually useful, a more simple PD rate control system 
 \ref{litreview/control/ratecontrol} would be more appropriate 
-for the system. Following the in-depth investigations made into 
-PID controllers, the group was fairly confident following some 
+in this particular case. Following the in-depth investigations made 
+into PID controllers, the group was fairly confident following some 
 basic guidance, provided by Dr Dobie, on implementing the 
 recommended system. 
-
 
 Prior to the arrangement of the meeting with Dr Dobie, Dr Phil 
 Rogers was consulted regarding the tuning of the PID controller. 
 He suggested providing a frame of reference in order to correct 
-the PID controller and maintain a straight line with regards to its reference frame. While the group waited on the meeting with Dr Dobie, who is a specialist in PID control, Dr Rogers advice was followed and SLAM was progressed in the interim.   
+the PID controller and maintain a straight line with regards to 
+its reference frame. While the group waited on the meeting with 
+Dr Dobie, a specialist in PID control, Dr Rogers advice was 
+followed and SLAM was progressed in the interim.   
 
 \subsection{Mechanical Workshop}\label{pm/mechshop}
 The construction of the modular maze used for testing \ref{mech/
 maze} was outsourced to the mechanical workshop located in the 
-EEE department at the university. A number of discussions were 
-had with the mechanical workshop to specify the work correctly 
-before construction began however despite this, issues were 
+EEE department at the university. A number of discussions with 
+the mechanical workshop were used to specify the design  
+before construction began. However despite this, issues were 
 encountered throughout the construction of the maze. 
 
 Following an initial meeting where the idea was discussed and 
@@ -116,13 +117,13 @@ completed maze with an arbitrary configuration is shown below.
 
 
 \section{Timeline}\label{pm/timeline}
-The Gantt chart here Figure~\ref{figure:gantt} was created using 
-the objectives and their respective sub-objectives (Section~
+The Gantt chart shown here in Figure~\ref{figure:gantt} was created 
+using the objectives and their respective sub-objectives (Section~
 \ref{introduction/objectives}). The timescales were determined 
 approximately using knowledge obtained from research and 
-consultations with the addition of time for possible technical 
-risks. In line with the agile methodology adopted, the tasks were 
-given appropriate time and a small margin for error within the 
+consultations, with additional time added to account for possible 
+technical risks. In line with the agile methodology adopted, the tasks 
+were given appropriate time and a small margin for error within the 
 Gantt chart. For example, assembly of remaining robots was 
 allocated a longer time than expected as this involved lead times 
 for components and also spanned the period of time when the labs 
@@ -154,15 +155,12 @@ chart was due to the issues surrounding PID tuning and the
 difficulties encountered when tuning the PID. \todo{ref PID 
 Section}
 
-
-\todo{what to say here??}
-
 \section{Risk Evaluation}\label{pm/riskeval}
 A risk evaluation took place at the beginning of the project and 
 was re-evaluated at the time of the interim report. The technical 
 risks evaluated at this time mainly centred on the possible lead 
 times for ordering parts. At the time of ordering, this was 
-thought to be a major issue, and so one part for each of the 
+thought to be a major issue, and so one part for each of the three 
 robots was ordered at this time. One part of the order in 
 particular was not in stock and was back-ordered with an expected 
 lead-time of 5 weeks from the end of December. This happened to 
