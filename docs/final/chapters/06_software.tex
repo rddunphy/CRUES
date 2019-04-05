@@ -1,19 +1,103 @@
 % !TEX root = ../report.tex
 
 \chapter{Software}\label{software}
+The software architecture was centred on the event driven implicit implication 
+design pattern~\cite{garlan1993introduction}. This architecture design pattern is 
+also known as the ``Hollywood'' design pattern due to its definition of ``Don't 
+call us, we'll call you''. With regards to software architecture this means 
+modules are signalled to start by other modules and this is propagated through 
+the system with ``events'' triggering other ``events'' within the system. 
 
-\todo{Bit in here about overall structure and architecture}
+To implement this architecture, each part of the system can be defined as its own 
+module with a function which triggers its invocation and a function which can 
+broadcast events if required. A methodology for implementation of this system is 
+the publish/subscribe model. Each modules' invoking function is a publisher and 
+modules which would be triggered by this function are known as subscribers. Using 
+this method in the context of this project, means the software has strong support 
+for reuse --- as new sensors or libraries can be plugged in and subscribe to the 
+appropriate events --- and loose coupling throughout the system means that 
+maintenance of each module can take place independently. 
 
+In robotic systems, this architecture is highly beneficial as each of the sensor 
+and actuator systems can run independently publishing their data for feedback, 
+using event driven implicit invocation through data driven programming. This 
+reduces the risk of system crashes as module crashes are isolated, improving 
+robustness.   
 
+\todo{Bit here about deploy.sh or a new section}
 
 \section{ROS}\label{soft/ROS}
+In order to implement this architecture, and following extensive research(see 
+Section~\ref{litreview/ROS}, the Robot Operating System (ROS) library was 
+selected as a framework. The ROS library makes it simple to design and implement 
+individual modules within a system and uses a central control node named 
+``roscore'' to manage publish and subscribe ``topics'' between modules. 
 
 \subsection{Design}\label{soft/ROS/design}
+Following the decision to use ROS to implement our chosen architecture, a modular 
+approach was adopted for the design of each of the components within the system~
+\ref{elec}. Hence, a system block diagram was developed to visualise data flow 
+within the system. \todo{put in block diagram} The block diagram in Figure~
+\ref{BlockDiagram} demonstrates the modularisation of the system and also the 
+expectation that the AI module at the top of the system will be completely 
+independent from the other components of the system. By making the control module 
+an API, AI algorithms can be interchanged easily for testing. The modular 
+approach also means sensor and actuator modules can be plugged in and out as 
+desired and could easily be changed if needed at any point in the project. 
 
+Each module can be programmed in a different language before being converted to a 
+ROS node, which publishes and subscribes, using the appropriate methods for that 
+language. Although the majority of the system will be programmed in Python, 
+allowing different programming languages means that timing or processing 
+sensitive operations can be programmed in C or C++ as required. Once converted to 
+a ROS node, each module can then be started individually using a ROS launch file. 
+Launch files are used by ROS to create and start a number of nodes within a 
+system with any number of parameters. Again, due to the modular approach and use 
+of ROS, launch files allow various configurations of modules to be tested easily.  
+
+In order for ROS launch files to function, the directory structure within the 
+``catkin''~\cite{catkin} workspace must be configured correctly. ``Catkin is the 
+CMake based build system that is used to build packages in ROS''~\cite{gitcatkin} 
+and requires a strict directory structure in order to build each of the 
+individual modules within the project. Packages within ROS allow code to be 
+maintained and compartmentalised, and by using packages throughout existing 
+packages can be added easily. 
+
+Considerations of appropriate packages were made and a final design UML diagram 
+created\todo{UML~\ref{UMLDiagram}}. This demonstrates a full system 
+implementation and the expected interactions between each of the modules within 
+the program. 
 \subsection{Implementation}\label{soft/ROS/impl}
+Each of the individual modules discussed in Section~\ref{elec} were transformed 
+into ROS nodes. These modules are implemented within Python scripts which can be 
+run as ROS nodes. The following listing shows an example of how this was done 
+with the .... node \todo{ listing here of example}. This listing shows the Python 
+version of a ROS node, which is the case for the majority of the nodes. Although 
+a variety of languages was permissible, in practice the majority of the code base 
+is Python. The $spin()$ method is the ``main loop'' for each of the modules and 
+carries out tasks while the node is running. Each of the nodes which publish 
+information to the system also use the $rospy.Publisher$ class to create objects 
+which can then publish messages of a pre-determined type to the system. 
+Similarly, $rospy.Subscriber$ is used by nodes wishing to listen for messages on 
+a specific topic. 
+
+To further modularise the code for each node, object oriented Python was used and 
+each node defined as its own class. This meant that each method within the class 
+was defined for that class and function names could be repeated throughout the 
+codebase where this made sense, such as with the $spin()$ method. Each node also 
+has an $__init__()$ method which is called on instantiation of the class which it 
+is contained within. This \todo{add init listing} example code shows the setup 
+for the Motor node. A number of parameters are set or drawn in from the launch 
+file from which the node was created and the node set as a subscriber to the 
+$motor_cmd$ topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place. 
+  \todo{David needs to write this i think}
+
 
 \subsection{Testing}\label{soft/ROS/test}
+In addition to each of the nodes being tested independently in a similar manner to how each of them were tested in isolation throughout the~\ref{elec} Section, the nodes were tested in a number of different configurations.  
+\todo{David maybe needs to write this}
 
+Each of the topics can be tracked from the main graph of nodes in the ROS runtime using the command $rqt_graph$. This produces the following output, \todo{put rqt grpah of nodes and topics in here and dicuss}. 
 
 
 \section{Communication}\label{soft/comms}
