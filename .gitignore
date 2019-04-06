@@ -1,4 +1,5 @@
 # Rosbag files
+rosbag/
 *.bag
 *.bag.active
 
