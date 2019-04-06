@@ -137,7 +137,31 @@ As can be seen from the table below the requirements laid out in the design phas
     \end{tabular}
 \end{table}
 \section{Testing Strategy}\label{systest/strategy}
+The testing strategy designed for system testing was to develop a number of increasingly difficult mazes and test the capability of the robot to find a goal in each of these mazes. Additional robots will then be added to each of these configurations and the time recorded for quantitative testing of the project. Throughout the tests, qualitative results and conclusions will also be drawn to determine if the robots are co-operating effectively when searching the various maze configurations. 
 
+A number of maze configurations were drawn up to be used as the default test cases for the robots. These configurations are shown below. \todo{add maze diagram} It is worth noting that these configurations were created before the cell width of the maze was reduced and therefore, maze configurations with 1 cell width paths are significantly more difficult to traverse than previously thought. This will be taken into consideration when testing and adjusted accordingly if required. 
 
 
 \section{Results}\label{systest/results}
+Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/impl} and \todo{add PID tuning section}~\ref{} respectively, minimal system testing took place. The system tests which did take place were without SLAM/with poor SLAM and therefore could have no AI module as this is dependent on knowing the world state (having a map built). Despite this, the system as it was at the end of the project was tested on the maze configurations and the results are as follows. \todo{Are we gpoing to do this?}
+
+begin{table}[!ht]\centering
+\caption{Modular Maze Requirements
+\label{maze_reqs_met}}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{Maze Configuration} & \thead{Number of Agents} & \thead{Time taken[\SI{\second}]}\\
+        \midrule
+        1 & 1 & xx\\
+        1 & 2 & xx\\
+        2 & 1 & xx\\
+        2 & 2 & xx\\
+        3 & 1 & xx\\
+        3 & 2 & xx\\
+        4 & 1 & xx\\
+        4 & 2 & xx\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The results shown are not indicative of the project had it been completed in its entirety, however these results give benchmark scores for the shown maze configurations with what is essentially a random AI module on top. In practice the robots performance is slightly worse than this as there is also no mapping, and so a random AI could perform better. This is because in this case choices regarding paths would still be being made and paths would not be being repeated which can be the case in these results. Work detailed in further work (Section~\ref{furtherwork}) can use the results shown here as benchmark results and measure the success of SLAM and AI implementations against these results to evaluate progress being made.  \todo{add more when we have the results}
