@@ -83,6 +83,113 @@ Look-up table
 First copy of send/receive that caused multi-message issues
 The new implementation with the thread-safe code
 
+To implement these requirements a $comms.py$ file was created which contain 
+the function definitions and address lookup table that the ROS server and 
+client nodes would use to communicate. Firstly a python dictionary of the 
+robot's IP addresses as well as our laptop for testing purposes was created. 
+A $lookupIP(name)$ function and a $lookupname(ip)$ function were created for 
+readability and maintainability. Secondly, a function were needed that could 
+create the JSON message ($tojsn()$) and one that could extract the data from 
+the message ($fromjson()$). 
+
+\begin{lstlisting}
+def tojson(host_ip, hostname, data):
+    # receiver ip and hostname, our ip and hostname, classname
+    sender_ip = socket.gethostbyname(socket.gethostname())
+    header = [host_ip, hostname, sender_ip, 
+    Address_lookup.lookupname(sender_ip), type(data).__name__]
+    content = [header, data]
+    message = json.dump(content, separators=(',', ':'))
+    return message
+
+def fromjson(packet):
+    message = json.loads(packet)
+    try:
+        target = message[0][0]
+        if target == socket.gethostbyname(socket.gethostname()):
+            return message[1]
+        else:
+            return -1
+    except IndexError:
+        return -2
+\end{lstlisting} 
+The header created includes the IP and name of both the sender and the 
+receiver as well as the type of python object the data is. The header along 
+with the data to be sent is converted to json and returned as a string. When  converting from JSON it checks that it was the intended recipient of the 
+message, returning $-1$ to indicate it was not, before returning the data 
+object located at index 1 (header is index 0). These are the four helper 
+methods used by the send and listen methods.
+
+In order to physically send and receive the data the Python Socket library 
+is used. This interface's $sockett()$ function returns a socket object whose 
+methods implement the Unix socket system calls. 
+\begin{lstlisting}
+# data is python object to send
+def send(hostname, data):
+    host_ip = lookupip(hostname) # The remote host
+    port_number = 8001 # The same port as used by the server
+    message = tojson(host_ip, hostname, data)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    if not s.connect_ex((host_ip, port_number)):
+        s.sendall(message) # Sends string (of JSON)
+        s.close()
+\end{lstlisting}
+The send function looks up the IP of the destination and gets the JSON object 
+of the message. It then attempts to connect using the $connect_ex()$ which 
+returns 0 if successful. If so then it can use the socket methods to send the 
+data and then close the connection. 
+
+\begin{lstlisting}
+def listen():
+    PORT = 8001 # Arbitrary non-privileged port
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('0.0.0.0', PORT))
+    s.listen(2)
+    conn, addr = s.accept()
+    packets = '' 
+    while 1:
+        packet = conn.recv(1024)
+        if not packet:
+            break
+        packets += packet
+    conn.close()
+    message = fromjson(packets)
+    return message
+\end{lstlisting}
+When listening for incoming messages, the created socket object must bind to 
+an IP address and port number. The address of 0.0.0.0 results in it listening 
+to any incoming messages. The $listen()$ function starts the node listening 
+whilst setting the number of queued connections allowed. In this case it is 
+set to 2 but can be increased when scaling the system to use many more agents. 
+Once the socket  accepts a connection, we can continually store the packets 
+until no more data is received. After which the connection can be closed and 
+the data read from the JSON strings and returned.
+
+This implementation was set up and initially tested between a laptop and a Pi 
+by remotely connecting to the Pi. When this succeeded in sending multiple 
+messages between them, we remotely connected to another Pi and attempted to 
+have them send messages back and forth to each other. Again this was successful 
+and so this demonstrated the basic functionality of the communication system was 
+working.
+
+When undertaking more extensive testing, an important issue with the previous 
+code was found. When nodes were sending messages to each other simultaneously 
+at least one of the nodes would fail. For example, if Blinky sends a message to  
+Clyde but before the message has finished sending, Clyde sends a message to 
+Blinky then the receiver of Clyde crashes and Blinky never receives the message. 
+If Clyde were to send to a third robot, Inky, then Clyde's receiver would still 
+fail as would one of either Blinky or Inky. 
+
+As a result of this bug, the implementation would have to be changed to handle 
+multiple connections properly. Various potential solutions were discussed, 
+such as using multiple ports so as not to kill the socket connection when 
+attempting to connect again or to use a multi-connection selector as part of 
+the server to handle multiple requests \cite{multiconnectionServer}. Instead 
+of these solutions, a thread-safe version of the existing code base was 
+designed. It was thought that if server can always be listening by utilising 
+multiple threads then there would be no downtime of the system and that each 
+message would be successfully sent.
+
 \subsection{Testing}\label{soft/comms/test}
 
 
