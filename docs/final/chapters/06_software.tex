@@ -85,11 +85,11 @@ To further modularise the code for each node, object oriented Python was used an
 each node defined as its own class. This meant that each method within the class 
 was defined for that class and function names could be repeated throughout the 
 codebase where this made sense, such as with the $spin()$ method. Each node also 
-has an $__init__()$ method which is called on instantiation of the class which it 
+has an $init()$ method which is called on instantiation of the class which it 
 is contained within. This \todo{add init listing} example code shows the setup 
 for the Motor node. A number of parameters are set or drawn in from the launch 
 file from which the node was created and the node set as a subscriber to the 
-$motor_cmd$ topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place. 
+$motor cmd$ topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place. 
   \todo{David needs to write this i think}
 
 
@@ -97,7 +97,7 @@ $motor_cmd$ topic which gives instructions to the Motor node. By using a number 
 In addition to each of the nodes being tested independently in a similar manner to how each of them were tested in isolation throughout the~\ref{elec} Section, the nodes were tested in a number of different configurations.  
 \todo{David maybe needs to write this}
 
-Each of the topics can be tracked from the main graph of nodes in the ROS runtime using the command $rqt_graph$. This produces the following output, \todo{put rqt grpah of nodes and topics in here and dicuss}. 
+Each of the topics can be tracked from the main graph of nodes in the ROS runtime using the command $rqt graph$. This produces the following output, \todo{put rqt grpah of nodes and topics in here and dicuss}. 
 
 
 \section{Communication}\label{soft/comms}
