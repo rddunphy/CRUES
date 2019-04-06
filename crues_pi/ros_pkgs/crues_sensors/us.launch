@@ -4,7 +4,8 @@
     <node name="us_scan_tf_broadcaster" pkg="crues_sensors" type="us_scan_tf.py" />
     <node name="ultrasonic" pkg="crues_sensors" type="us_node.py">
         <param name="offset_left" value="20" />
-        <param name="offset_centre" value="20" />
+        <param name="response_centre" value="0.9987" />
+        <param name="offset_centre" value="18.8731" />
         <param name="offset_right" value="20" />
         <param name="range_max" value="4.0" />
         <remap from="~rate" to="us_rate" />
