@@ -186,13 +186,73 @@ such as using multiple ports so as not to kill the socket connection when
 attempting to connect again or to use a multi-connection selector as part of 
 the server to handle multiple requests \cite{multiconnectionServer}. Instead 
 of these solutions, a thread-safe version of the existing code base was 
-designed. It was thought that if server can always be listening by utilising 
-multiple threads then there would be no downtime of the system and that each 
-message would be successfully sent.
+designed.  If the server can always be listening for incoming messages by 
+utilising multiple threads then there would be no downtime of the system and 
+thus each message would be successfully sent. 
+
+This was implemented by defining ThreadedTCPServer and ThreadedTCPRequestHandler  
+classes to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
+\begin{lstlisting}
+class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+    def messageHandler(self, x):
+        print x
+
+    def handle(self):
+        data = self.request.recv(1024)
+        message = fromjson(data)
+        self.messageHandler(message)
+
+class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+    pass
+\end{lstlisting}
+The $listen()$ function is changed to take in a handler parameter. This is 
+passed a function which is used instead of the messageHandler function in 
+the ThreadedTCPRequetHandler before it is used to create a ThreadedTCPServer 
+object as shown.
+\begin{lstlisting}
+def listen(handler):
+    ThreadedTCPRequestHandler.messageHandler = handler
+    HOST, PORT = "0.0.0.0", 8001
+    server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
+    ip, port = server.server_address
+    # Start a thread with the server -- that thread will then start one
+    # more thread for each request
+    server_thread = threading.Thread(target=server.serve_forever)
+    # Exit the server thread when the main thread terminates
+    server_thread.daemon = True
+    server_thread.start()
+    return server
+\end{lstlisting}
+The handler object passed is a function that will solely publish the 
+message contents so the relevant subscribers can use the data received 
+from the other agent. As a new thread is being created for each request 
+there should be no node crashes from having the process interrupted as 
+it will be happening on a different thread.
+\todo{Is testing for just the final designed testing - cause this goes impl - testing  impl - testing and not sure how we want to handle that}
 
 \subsection{Testing}\label{soft/comms/test}
 
-
+In order to test this version it was important to first ensure that the 
+working functionality from the previous version still worked. Therefore 
+the same initial tests were applied to this implementation which passed 
+as expected. In order to test whether this was thread-safe, a number of 
+tests were executed. The first test involved creating a loop that would 
+send 100 messages from Blinky to Clyde. When this succeeded without any 
+node crashes, the test was repeat but with Clyde sending messages to Blinky 
+simultaneously. This previously would have crashed the nodes but with the 
+server's listening on separate threads for each request, this was handled 
+successfully. This test was repeated with Clyde sending messages to Inky 
+instead of Clyde. This too was successful with the messages being received 
+without any being lost. The test was repeated but the limit on the number of 
+messages being send was removed, and so the messages would, in theory, 
+continue to create new threads to listen to the incoming messages. This 
+worked initially, but due to there being no delay in between sending messages, 
+thousands of threads were being created quickly. This resulted in the node 
+crashing as the thread limit had been reached, however, this happened after 
+over 50 thousand messages in quick succession (due to no delay). As a result, 
+this was determined to be the upper limit of this system, that with this set 
+up would never be close to reached and so it was determined that the system 
+was sufficiently thread-safe to be used. 
 
 
 \section{SLAM \& Sensor Fusion}\label{soft/SLAM}
