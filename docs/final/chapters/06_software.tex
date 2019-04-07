@@ -68,28 +68,61 @@ the program.
 
 
 \subsection{Implementation}\label{soft/ROS/impl}
-Each of the individual modules discussed in Section~\ref{elec} were transformed
-into ROS nodes. These modules are implemented within Python scripts which can be
-run as ROS nodes. The following listing shows an example of how this was done
-with the .... node \todo{ listing here of example}. This listing shows the Python
+Each of the individual modules discussed in Section~\ref{elec} was implemented as a ROS node, generally encapsulated in a single Python script. In order to adhere to best practices and ensure consitency across the code base, each node was represented as class, with an \verb|__init__()| method initialising the node and a \verb|spin()| method which is called to keep the node running. In nodes which perform recurring work, such as the sensor nodes, this method uses a \verb|rospy.Rate| object to schedule tasks, whereas nodes that respond to events on subscribed topics simply call \verb|rospy.spin()|, which prevents the script from exiting until a ROS shutdown signal is received. Listing~\ref{lst:ros_node} shows an example of a ROS nod that publishes at a predefined rate. The rate can be passed in as a parameter in the launch file, and defaults to \SI{10}{\Hz}.
+
+\begin{lstlisting}[caption={Example ROS node}, label={lst:ros_node}]
+#!/usr/bin/env python
+import rospy
+from std_msgs.msg import Int16
+
+
+class Node:
+    def __init__(self):
+        rospy.init_node('node_name')
+        self.rate = rospy.Rate(rospy.get_param("~rate", 10))
+        self.pub = rospy.Publisher('topic', Int16, queue_size=10)
+        self.data = 0
+
+    def spin(self):
+        try:
+            while not rospy.is_shutdown():
+                self.pub.publish(self.data)
+                self.rate.sleep()
+        finally:
+            self._cleanup()
+
+    def _cleanup(self):
+        # Perform cleanup operations such as saving data to files
+        # or clearing GPIO setup
+
+
+if __name__ == '__main__':
+    try:
+        node = Node()
+        node.spin()
+    except rospy.ROSInterruptException:
+        pass
+\end{lstlisting}
+
+This listing shows the Python
 version of a ROS node, which is the case for the majority of the nodes. Although
 a variety of languages was permissible, in practice the majority of the code base
-is Python. The $spin()$ method is the ``main loop'' for each of the modules and
+is Python. The \verb|spin()| method is the ``main loop'' for each of the modules and
 carries out tasks while the node is running. Each of the nodes which publish
-information to the system also use the $rospy.Publisher$ class to create objects
+information to the system also use the \verb|rospy.Publisher| class to create objects
 which can then publish messages of a pre-determined type to the system.
-Similarly, $rospy.Subscriber$ is used by nodes wishing to listen for messages on
+Similarly, \verb|rospy.Subscriber| is used by nodes wishing to listen for messages on
 a specific topic.
 
 To further modularise the code for each node, object oriented Python was used and
 each node defined as its own class. This meant that each method within the class
 was defined for that class and function names could be repeated throughout the
-codebase where this made sense, such as with the $spin()$ method. Each node also
-has an $init()$ method which is called on instantiation of the class which it
+codebase where this made sense, such as with the \verb|spin()| method. Each node also
+has an \verb|init()| method which is called on instantiation of the class which it
 is contained within. This \todo{add init listing} example code shows the setup
 for the Motor node. A number of parameters are set or drawn in from the launch
 file from which the node was created and the node set as a subscriber to the
-$motor cmd$ topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place.
+\verb|motor cmd| topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place.
   \todo{David needs to write this i think}
 
 
