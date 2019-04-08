@@ -18,12 +18,7 @@ pins:
   mrp: 33
   ult: 35
   ule: 37
-ip_addresses:
-  lagann: "192.168.1.1"
-  blinky: "192.168.1.2"
-  inky:   "192.168.1.3"
-  clyde:  "192.168.1.4"
-  t430:   "192.168.1.5"
+hostname: "blinky"
 ticks_meter: 6530
 base_width: 0.141
 enc_rate: 20

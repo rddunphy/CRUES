@@ -1,4 +1,5 @@
 <launch>
-    <node name="client" pkg="crues_comms" type="client_node.py" respawn="true"/>
-    <node name="server" pkg="crues_comms" type="server_node.py" respawn="true"/>
+    <rosparam command="load" file="/home/crues/crues_pi/config/robots.yaml" />
+    <node name="client" pkg="crues_comms" type="client_node.py" respawn="true" />
+    <node name="server" pkg="crues_comms" type="server_node.py" respawn="true" />
 </launch>
