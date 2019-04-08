@@ -59,7 +59,8 @@ from math import sin, cos, pi
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from tf.broadcaster import TransformBroadcaster
+import tf2_ros
+# from tf.broadcaster import TransformBroadcaster
 from std_msgs.msg import Int16
 
 #############################################################################
@@ -109,7 +110,7 @@ class DiffTf:
         rospy.Subscriber("lwheel", Int16, self.lwheelCallback)
         rospy.Subscriber("rwheel", Int16, self.rwheelCallback)
         self.odomPub = rospy.Publisher("odom", Odometry, queue_size=10)
-        self.odomBroadcaster = TransformBroadcaster()
+        self.odomBroadcaster = tf2_ros.TransformBroadcaster()
         
     #############################################################################
     def spin(self):
@@ -162,16 +163,26 @@ class DiffTf:
             quaternion = Quaternion()
             quaternion.x = 0.0
             quaternion.y = 0.0
-            quaternion.z = sin( self.th / 2 )
-            quaternion.w = cos( self.th / 2 )
-            # self.odomBroadcaster.sendTransform(
-            #     (self.x, self.y, 0),
-            #     (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
-            #     rospy.Time.now(),
-            #     self.base_frame_id,
-            #     self.odom_frame_id
-            #     )
-            
+            quaternion.z = sin( self.th / 2)
+            quaternion.w = cos( self.th / 2)
+
+            ts = tf2_ros.TransformStamped()
+
+            ts.header.stamp = rospy.Time.now()
+            ts.header.frame_id = 'odom'
+            ts.child_frame_id = 'base_link'
+
+            ts.transform.translation.x = self.x
+            ts.transform.translation.y = self.y
+            ts.transform.translation.z = 0
+
+            ts.transform.rotation.x = 0.0
+            ts.transform.rotation.y = 0.0
+            ts.transform.rotation.z = sin(self.th / 2)
+            ts.transform.rotation.w = cos(self.th / 2)
+
+            self.odomBroadcaster.sendTransform(ts)
+
             odom = Odometry()
             odom.header.stamp = now
             odom.header.frame_id = self.odom_frame_id
