@@ -20,6 +20,10 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
+% Bibliography
+\usepackage[style=ieee, urldate=comp]{biblatex}
+\addbibresource{references.bib}
+
 % Table setup
 \usepackage{rotating}
 \usepackage{tabularx}
@@ -74,16 +78,17 @@
      numbers=left,
      numbersep=10pt
  }
-% \usepackage{textcomp}
-% \usepackage[T1]{fontenc}
-% \lstset{
-%     style=pystyle,
-%     upquote=true,
-%     columns=fullflexible,
-%     keepspaces=true,
-%     showlines=true
-% }
-% \renewcommand{\lstlistlistingname}{List of Code Listings}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.85]{beramono}
+\lstset{
+    style=pystyle,
+    upquote=true,
+    columns=fullflexible,
+    keepspaces=true,
+    showlines=true
+}
+\renewcommand{\lstlistlistingname}{List of Code Listings}
 
 % Typographical packages
 \usepackage{setspace}
@@ -96,6 +101,7 @@
 \pretolerance=10000 % Set to 500 for some hyphenation
 \tolerance=2000
 \emergencystretch=10pt
+
 
 \begin{document}
 
@@ -128,8 +134,9 @@
     \include{chapters/10_conclusion}
 
     \pagestyle{plain}
-    \bibliographystyle{ieeetr}
-    \bibliography{references}
+    % \bibliographystyle{ieeetr}
+    % \bibliography{references}
+    \printbibliography{}
 
     \appendix{}
     \include{chapters/a_appendix}
