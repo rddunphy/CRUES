@@ -1,3 +1,8 @@
+# Rosbag files
+rosbag/
+*.bag
+*.bag.active
+
 # Compiled Python files
 *.pyc
 *.egg-info

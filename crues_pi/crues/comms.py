@@ -28,10 +28,10 @@ def lookupname(search_ip):
 
 
 
-def tojson(host_ip, hostname, data):
+def tojson(host_ip, hostname, topic, data):
     # receiver ip and hostname, our ip and hostname, classname
     sender_ip = socket.gethostbyname(socket.gethostname())
-    header = [host_ip, hostname, sender_ip, lookupname(sender_ip), type(data).__name__]
+    header = [host_ip, hostname, topic, sender_ip, lookupname(sender_ip), type(data).__name__]
     content = [header, data]
     message = json.dumps(content, separators=(',', ':'))
     return message
@@ -44,7 +44,7 @@ def fromjson(packet):
         #print socket.gethostname()
         #print Address_lookup.lookupip(socket.gethostname())
         if target == lookupip(socket.gethostname()):
-            return message[1]
+            return (message[0][2],message[1])
         else:
             return -1
     except IndexError:
@@ -53,13 +53,13 @@ def fromjson(packet):
 # End of Helper Functions
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
-    def messageHandler(self, x):
+    def messageHandler(x):
         print x
 
     def handle(self):
         data = self.request.recv(1024)
         message = fromjson(data)
-        self.messageHandler(message)
+        ThreadedTCPRequestHandler.messageHandler(message)
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -71,12 +71,12 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     
     
 # data is python object to send
-def send(hostname, data):
+def send(hostname, topic, data):
     host_ip = lookupip(hostname)    # The remote host
     #print host_ip
     port = 8001            # The same port as used by the server
 
-    message = tojson(host_ip, hostname, data)
+    message = tojson(host_ip, hostname, topic, data)
     #print message
     #print fromjson(message)
     #s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -118,4 +118,4 @@ def listen(handler):
 
 def killServer(server):
     server.shutdown()
-server.server_close()
+    server.server_close()
