@@ -179,23 +179,23 @@ features in the environment to allow loop closure\cite{CVho2006loop}.
 The Robot Operating System (ROS) is a framework for developing robot
 software designed to allow flexible software design. It is a collection of tools, 
 libraries and conventions that aim to simplify creating complex and 
-robust robotic systems across a variety of platforms.\cite{aboutROS}
-ROS was designed with the objective of being as modular and distributed
+robust robotic systems across a variety of platforms~\cite{aboutROS}. 
+It was designed with the objective of being as modular and distributed
 as possible. This modularity allows the user to be able to use as much or
 as little of ROS as they desire, where their own implementation can be
-easily fit into the system. \cite{rosForMe}
+easily fit into the system~\cite{rosForMe}.
 
-ROS uses a peer-to-peer networking topology to communicate throughout 
-the system. These systems consist of a number of processes called nodes 
-that preform the system's computation where these nodes are likely 
-running across multiple machines. The peer-to-peer  topology requires 
-some sort of lookup mechanism to allow processes to find each other at 
-runtime. Nodes communicate by passing messages that are data structures 
-of typed fields. These messages can consist of arbitrarily nested 
-structures and arrays. \cite{crick2017rosbridge}
+ROS uses a peer-to-peer networking topology to allow communication 
+throughout the system. These systems consist of a number of processes  
+that perform the system's computation called nodes which can  
+run across multiple machines. The peer-to-peer topology requires 
+a lookup mechanism to allow processes to find other process' addresses at 
+runtime so as they can communicate. Nodes communicate by passing messages 
+that are data structures of typed fields which can include arbitrarily nested 
+structures and arrays~\cite{crick2017rosbridge}.
 
-Nodes can use two types of communication to send messages within the ROS 
-framework, services and topics. Services are synchronous and are like function
+Nodes can using two distinct ROS frameworks, services and topics. 
+Services are synchronous and perform like function
 calls in traditional programming languages, where only one node in the 
 system can provide a service of a specific name. Alternatively, topics are
 asynchronous streams of objects published by a node. Other nodes can 
@@ -205,8 +205,8 @@ a single node may publish and/or subscribe to multiple topics.
 
 ROS was also designed to be language-neutral and supports languages 
 such as C++, Python and Octave. To support this cross-language 
-development, ROS uses a simple, language-neutral interface definition 
-language (IDL) to describe the messages sent between modules 
+development, ROS uses a simple, language-neutral Interface Definition 
+Language (IDL) to describe the messages sent between modules 
 \cite{quigley2009ros}. Code generators for each language then generate 
 native implementations which are serialised and de-serialised by ROS 
 as messages are sent and received. This results in a language-neutral 
@@ -228,21 +228,20 @@ which implement commonly required functionality for a robotic system.
 \section{AI}\label{litreview/maze}
 Artificial intelligence is another component of intelligent robotic control and is the development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a common branch of artificial intelligence into which much research has been undertaken. Search algorithms and optimisation algorithms can be thought of as highly similar, and in the case of a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
-In robotics, the exploration of an unknown environment to gain knowledge, 
-is a well researched problem. Robot exploration is particularly important for 
+The exploration of an unknown environment is a well researched problem in 
+robotics. Robot exploration is particularly important for 
 environments that are difficult or dangerous for humans. There are many
 algorithms that can be used for exploration such as Wall Follower, 
 Trémaux's and Pledge.
 
 One of the simplest exploration algorithms is the Wall Follower algorithm, 
 also known as the right-hand rule, when prioritising turning right or 
-left-hand rule when prioritising turning left. If the maze is 
-simply connected, that is, any two points of the maze can be traversed without
-leaving the maze, then the Wall Follower algorithm is guaranteed to reach a
-goal/exit if there is one. Otherwise, the algorithm will return to the starting 
-point having traversed every corridor at least once \cite{wallFollowerArcBotics}.
-The steps of the algorithm are relatively straightforward. If using the
-right-hand rule:
+left-hand rule when prioritising turning left. If the maze is simply 
+connected, that is, there are no loops in the maze then the Wall Follower 
+algorithm is guaranteed to reach a goal/exit if there is one. Otherwise, the 
+algorithm will return to the starting point having traversed every corridor at 
+least once~\cite{wallFollowerArcBotics}. The steps of the algorithm are 
+relatively straightforward. If using the right-hand rule:
 \begin{enumerate}
 \item If the robot can turn right, turn right
 \item \textbf{Else} continue going straight on
@@ -251,7 +250,7 @@ right-hand rule:
 \end{enumerate}
 These steps ensure to keep a wall on the right hand side of the robot at 
 all times. The left-rule is just the opposite where the robot turns left 
-if at all possible to keep the wall on the robots' left. As a result, 
+if at all possible to keep the wall on the robots' left. Therefore,
 this algorithm is inherently inefficiently as it exhaustively searches the
 maze. In many cases, one of these algorithms would be significantly quicker
 than the other but that is impossible to know without prior knowledge of 
@@ -285,11 +284,11 @@ Using the initial direction and counting the turns made, allows the
 algorithm to avoid traps such as an upper case letter "G" that simpler 
 algorithms struggle with.
 
-The Trémaux maze-solving algorithm requires the robot to record its path 
-throughout its navigation routine for finding a route. Any given path 
-can be unmarked, marked once or marked twice. If a path is marked twice that 
-indicates the robot has travelled down it in both directions. The robot 
-will not travel down any path marked twice for a third time, therefore 
+The Trémaux maze-solving algorithm requires the robot to record its 
+path and mark the routes it has taken throughout its navigation routine. Any 
+given path  can be unmarked, marked once or marked twice. If a path is marked 
+twice that indicates the robot has travelled down it in both directions. The 
+robot will not travel down any path marked twice for a third time, therefore 
 treating them as dead-ends. Paths without markings are prioritised, before 
 choosing those marked once in search of further unmarked paths. If a 
 solution is found then the path that is marked only once is the route 
@@ -303,26 +302,30 @@ There are many algorithms that can be used to find the shortest path
 through a graph such as Dijkstra's algorithm and A* search. In the 
 context of our agents, path finding is likely to be used once 
 the goal has been found to return the robot back to its starting 
-position. In the case of an unweighted graph, one of the simplest algorithm 
+position. In the case of an unweighted graph (a graph where all edges are 
+equivalent to search), one of the simplest algorithm 
 is breadth-first search. This explores all neighbours at the same depth 
 before moving onto nodes at the next depth level. This would be guaranteed 
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
-where $|V|$ is the number of vertices and $|E|$ is the number of edges. 
+where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}.
 Breadth-first search searches the oldest discovered node first meaning 
 a large number of backtracks to reach the oldest discovered node. As 
 backtracking in physical space is expensive, this results in a very 
 costly search for a single-agent. As more agents are added, the cost of this 
 decreases as less backtracking would take place. 
 
-In the case where the edges have a weighting, Dijkstra's algorithm is one 
+In the case where the edges have a weighting, which in our case would be the 
+distance to next junction, Dijkstra's algorithm is one 
 of the most commonly used methods for finding the shortest path between a 
 specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
 \begin{enumerate}
 \item Assign the start node to have a distance of 0 and all other nodes to 
 have a distance of $\infty$
-\item Search the unvisited nodes for the closest node. Stop if the closest 
-node is $\infty$ (means there is no path to target node). This node is now 
-labelled as visited and as the current node.
+\item Choose the node with the smallest distance (i.e closest to start node) 
+from the list of unvisited nodes. This node will now be labelled as the 
+current node and removed from the unvisited list. If the closest unvisited 
+node has a distance of $\infty$ that means there is no path to from start 
+node to destination.
 \item For each node adjacent to the new current that is unvisited, update 
 the saved distance to be the sum of the edge weight and the distance from 
 start to the current node if this is less than the saved total distance to 
@@ -331,8 +334,8 @@ that node.
 \end{enumerate}
 This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
 \cite{xu2007improved}. An improvement to this original algorithm using a 
-min-priority queue implemented by a Fibonacci heap, runs in $\mathcal{O}
-(|E| + |V|log |V|)$ and was first proposed in \cite{fredman1987fibonacci}.
+min-priority queue implemented using a heap, runs in $\mathcal{O}
+(|E| + |V|log |V|)$ and was first proposed in~\cite{fredman1987fibonacci}.
 
 Developed initially as an extension of Dijkstra's algorithm, A* is a 
 pathfinding algorithm that typically achieves better performance by 
