@@ -355,11 +355,11 @@ As a result of this bug, the implementation would have to be changed to handle
 multiple connections properly. Various potential solutions were discussed, 
 such as using multiple ports so as not to kill the socket connection when 
 attempting to connect again or to use a multi-connection selector as part of 
-the server to handle multiple requests \cite{multiconnectionServer}. Instead 
-of these solutions, a thread-safe version of the existing code base was 
-designed.  If the server can always be listening for incoming messages by 
+the server to handle multiple requests \cite{multiconnectionServer}. 
+Alternatively, if the server can always be listening for incoming messages by 
 utilising multiple threads then there would be no downtime of the system and 
-thus each message would be successfully sent. 
+thus each message would be successfully sent. As a result, we choose to
+design a thread-safe version of the existing code base.
 
 This was implemented by defining ThreadedTCPServer and ThreadedTCPRequestHandler  
 classes to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
