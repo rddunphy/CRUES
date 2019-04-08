@@ -7,21 +7,22 @@ HIGH = ON = 1
 FALLING = 0
 RISING = 1
 BOTH = 2
+PUD_DOWN = 0
 
 
 def setmode(mode):
     print("Setting GPIO mode to %d" % mode)
 
 
-def setup(pins, mode, initial=LOW):
+def setup(pins, mode, initial=LOW, pull_up_down=PUD_DOWN):
     if isinstance(pins, list):
         for pin in pins:
-            setup(pin, mode, initial=initial)
+            setup(pin, mode, initial=initial, pull_up_down=pull_up_down)
     else:
         if mode == OUT:
             print("Setting pin %d as output with initial value %d" % (pins, initial))
         else:
-            print("Setting pin %d as input")
+            print("Setting pin %d as input with pull-up/down %d" % (pins, pull_up_down))
 
 
 def add_event_detect(pin, edge, callback=None):

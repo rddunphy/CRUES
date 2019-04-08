@@ -79,14 +79,18 @@
 <!--        <remap from="/cmd_vel" to="/twist" />-->
 <!--    </node>-->
 
-<!--    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">-->
-<!--        <param name="maxRange" value="4.0" />-->
-<!--        <param name="maxUrange" value="1.0" />-->
-<!--        <param name="xmax" value="4.0" />-->
-<!--        <param name="ymax" value="4.0" />-->
-<!--        <param name="delta" value="0.01" />-->
-<!--        <remap from="/scan" to="/us_scan" />-->
-<!--    </node>-->
+    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">
+        <param name="maxRange" value="4.0" />
+        <param name="maxUrange" value="2.0" />
+        <param name="xmin" value="-2.0" />
+        <param name="xmax" value="2.0" />
+        <param name="ymin" value="-2.0" />
+        <param name="ymax" value="2.0" />
+        <param name="delta" value="0.05" />
+        <param name="particles" value="30" />
+        <param name="map_update_interval" value="10" />
+        <remap from="/scan" to="/sonar_scan" />
+    </node>
 
     <!-- DATA RECORDING -->
     <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />
