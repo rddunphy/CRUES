@@ -68,7 +68,13 @@ the program.
 
 
 \subsection{Implementation}\label{soft/ROS/impl}
-Each of the individual modules discussed in Section~\ref{elec} was implemented as a ROS node, generally encapsulated in a single Python script. In order to adhere to best practices and ensure consitency across the code base, each node was represented as class, with an \verb|__init__()| method initialising the node and a \verb|spin()| method which is called to keep the node running. In nodes which perform recurring work, such as the sensor nodes, this method uses a \verb|rospy.Rate| object to schedule tasks, whereas nodes that respond to events on subscribed topics simply call \verb|rospy.spin()|, which prevents the script from exiting until a ROS shutdown signal is received. Listing~\ref{lst:ros_node} shows an example of a ROS nod that publishes at a predefined rate. The rate can be passed in as a parameter in the launch file, and defaults to \SI{10}{\Hz}.
+In order to enable rapid development of the system, the ROS packages were primarily written in Python, with the \verb|rospy| library used to interface with ROS functionality.
+
+Each of the individual modules discussed in Section~\ref{elec} was implemented as a ROS node, generally encapsulated in a single Python script. In order to adhere to best practices and ensure consitency across the code base, each node was represented as class, with an \verb|__init__()| method initialising the node and a \verb|spin()| method which is called to run the node's main loop. In nodes which perform recurring work, such as polling sensors for data, this method uses a \verb|rospy.Rate| object to schedule tasks, whereas nodes that respond to events on subscribed topics simply call \verb|rospy.spin()|, which prevents the script from exiting until a ROS shutdown signal is received.
+
+The \verb|rospy.Publisher| class is used to publish messages of a pre-determined type to a topic with a given name. Similarly, \verb|rospy.Subscriber| is used by nodes wishing to listen for messages on a specific topic. The constructor of this class specifies a callback function, which takes the message as a parameter. By loading parameterised values at startup, the code maintains flexibility, as different values can be used in launch files for different applications.
+
+Listing~\ref{lst:ros_node} shows an example of a ROS node that publishes at a predefined rate. The rate can be passed to the node as a parameter in the launch file, and in this case defaults to \SI{10}{\Hz}. The data is set by a callback method, which is called by a subscriber to another topic. In general, callback methods were kept very short in order to prevent blocking of the subscriber's thread, with any processor-intensive work executed in the main loop.
 
 \begin{lstlisting}[caption={Example ROS node}, label={lst:ros_node}]
 #!/usr/bin/env python
@@ -80,7 +86,8 @@ class Node:
     def __init__(self):
         rospy.init_node('node_name')
         self.rate = rospy.Rate(rospy.get_param("~rate", 10))
-        self.pub = rospy.Publisher('topic', Int16, queue_size=10)
+        rospy.Subscriber('topic1', Int16, self._callback)
+        self.pub = rospy.Publisher('topic2', Int16, queue_size=10)
         self.data = 0
 
     def spin(self):
@@ -91,9 +98,13 @@ class Node:
         finally:
             self._cleanup()
 
+    def _callback(self, msg):
+        self.data = msg.data
+
     def _cleanup(self):
         # Perform cleanup operations such as saving data to files
-        # or clearing GPIO setup
+        # or clearing GPIO pin configuration
+        pass
 
 
 if __name__ == '__main__':
@@ -104,25 +115,13 @@ if __name__ == '__main__':
         pass
 \end{lstlisting}
 
-This listing shows the Python
-version of a ROS node, which is the case for the majority of the nodes. Although
-a variety of languages was permissible, in practice the majority of the code base
-is Python. The \verb|spin()| method is the ``main loop'' for each of the modules and
-carries out tasks while the node is running. Each of the nodes which publish
-information to the system also use the \verb|rospy.Publisher| class to create objects
-which can then publish messages of a pre-determined type to the system.
-Similarly, \verb|rospy.Subscriber| is used by nodes wishing to listen for messages on
-a specific topic.
 
-To further modularise the code for each node, object oriented Python was used and
-each node defined as its own class. This meant that each method within the class
-was defined for that class and function names could be repeated throughout the
-codebase where this made sense, such as with the \verb|spin()| method. Each node also
-has an \verb|init()| method which is called on instantiation of the class which it
-is contained within. This \todo{add init listing} example code shows the setup
-for the Motor node. A number of parameters are set or drawn in from the launch
-file from which the node was created and the node set as a subscriber to the
-\verb|motor cmd| topic which gives instructions to the Motor node. By using a number of parameters the code maintains its flexibility as these can be tuned in different launch files to different values. Topic values can also be changed on the fly using thje command line from within a catkin workspace, allowing real time tuning of parameters to take place.
+\subsubsection{Python version}
+This project currently uses Python 2.7, which will no longer be supported after January 2020~\cite{python2-eol}. The reason for this choice was the lack of official support for Python 3.x in ROS Kinetic. While it is possible to use Python 3 with ROS, various issues may arise resulting from incompatibility~\cite{medium-ros-python3}. In the interest of stability, it was decided to use the older version. Migration to ROS 2, which is currently under heavy development but will have native support for Python 3, is recommended in future~\cite{ros2}.
+
+
+
+
   \todo{David needs to write this i think}
 
 
