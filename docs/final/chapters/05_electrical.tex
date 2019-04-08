@@ -4,37 +4,33 @@
 
 \section{Power Distribution and Motor Drive}\label{elec/poweranddrive}
 The Pololu Power Distribution and Motor Drive board~\cite{pololupower}
-was selected as the main circuit board for power distribution across
+was selected for power distribution across
 the robot. This board is the main accompanying part for the Romi
 chassis chosen, and in addition to power distribution also provides
-two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers built
-in to control the motors. The board integrates with the chassis easily
+two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers to control the motors. The board integrates with the chassis easily
 and regulates the voltage provided by the 6 AA batteries, using an
 MP4223H switching buck converter~\cite{mpbuck}, to \SI{5}{\volt} or
-\SI{3.3}{\volt} at at a maximum of \SI{2.5}{\ampere}. This can be used
-to power any microcontroller used by the robot, with the board
-supplying the motors with the reverse protected voltage before
+\SI{3.3}{\volt} at a maximum of \SI{2.5}{\ampere}. This can be used
+to power the microcontroller and peripherals used by the robot, with the motors being supplied with the reverse protected voltage before
 regulation.
 
 The board was also configurable if required, allowing the supply to be
-divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies
-respectively dependent on the nominal voltage of the batteries used.
-There are also a number of further jumper wires on the board which can
+divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies dependent on the voltage of the batteries used.
+There are also a number of further jumper connections on the board which can
 be cut for further voltage customisation.
 
-The DRV8838 Motor Driver takes two inputs of direction and Pulse Width
+The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse Width
 Modulation (PWM), which allows the motor speed to be controlled. The
 driver also has a sleep input which can be used to coast the motors if
 this would be beneficial. Each of the motors' respective sleep inputs
-and are connected by default. These should not be driven at the same
-time, as this results in short cases within the motor driver, however
-the jumper wire between these can be cut to allow the sleep inputs to
+and are connected by default and therefore should not be driven at the same time, as this could result in short cases within the motor driver, however
+the jumper connection between these can be cut to allow the sleep inputs to
 be driven separately.
 
 The power board also provides a power button and switch to control the
 power supply. A separate board with only power distribution was
 available, however, for the additional small cost, integration of
-motor drivers was deemed a cost worthy addition.
+motor drivers was deemed to be a cost effective addition given our space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
 onto the boards as the robots were assembled.
