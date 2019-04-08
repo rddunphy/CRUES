@@ -41,7 +41,7 @@
 Computer vision is a very cheap and effective way of gaining a high level understanding of the environment. It was used to allow the agents to identify other robots and objectives in in the system. Detecting the other robots was an essential component to allow communication between robots, prevent agents mistakenly mapping other agents,and to recognise when ultrasonic interference would occur. 
 
 \subsection{Design}\label{soft/cv/design}
-The first detection system considered was a CNN, as discussed in \ref{litreview/cv/objDet/CNN}.This is a very effective system which has the advantage of 
+The first detection system considered was a CNN, as discussed in Section \ref{litreview/cv/objDet/CNN}. This is a very effective system which has the advantage of 
 being able to classify instances of objects that it has not 
 seen before. This would be essential if the target objects of 
 the robot was not consistent, for instance if it had to find 
@@ -52,7 +52,7 @@ this application would require the collection of a large data
 set of images of the robots and goals, as well as the time 
 consuming process of tuning the CNN. 
 
-Feature Based Object detection was also considered. As described in Section \ref{litreview/cv/objDet/fb}, thisonly requires a picture to be taken of the object and therefore takes far less time to 
+Feature Based Object detection was also considered. As described in Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be taken of the object and therefore takes far less time to 
 implement than the CNN solution. However, the accuracy and 
 consistency are largely dependant on the number of features 
 detected, and the algorithm's complexity grows relatively 
@@ -137,7 +137,7 @@ An example of this running is shown in Figure \ref{fig:cv_screenshot}
 
 \end{figure}
 
-The system was then tested on the RPi by monitoring the ROS topic \textit{robots_detected} to test both the integration with the RPi and with ROS. Various detectable objects were moved in and out of the frame and changes in the output were observed. This initially failed as the RPi camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function does not support. When running on the RPi, this was replaced with imutil's VideoStream package. After this the test performed as expected, consistently identifying which objects were in frame.  
+The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to test both the integration with the RPi and with ROS. Various detectable objects were moved in and out of the frame and changes in the output were observed. This initially failed as the RPi camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function does not support. When running on the RPi, this was replaced with imutil's VideoStream package. After this the test performed as expected, consistently identifying which objects were in frame.  
 
 Functionality was then added to record the feed as to see how the computer vision responded as the robot was traversing the maze, however there were issues with frame rate as it was too computationally intensive for the RPi to perform the recording as well as all the other computation. 
 
