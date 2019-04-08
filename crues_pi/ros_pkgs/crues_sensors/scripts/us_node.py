@@ -25,7 +25,7 @@ class UltrasonicTimeout(Exception):
 
 
 class Ultrasonic:
-    def __init__(self, name, trig_pin, echo_pin, sensor_timeout, pulse_duration=0.00001, offset=0):
+    def __init__(self, name, trig_pin, echo_pin, sensor_timeout, pulse_duration=0.00001, response=1.0, offset=0.0):
         self.name = name
         self.trig_pin = trig_pin
         self.echo_pin = echo_pin
@@ -33,6 +33,7 @@ class Ultrasonic:
         self.pulse_duration = pulse_duration
         self.start_time = -1
         self.stop_time = -1
+        self.response = response
         self.offset = offset
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(trig_pin, GPIO.OUT, initial=GPIO.LOW)
@@ -57,7 +58,7 @@ class Ultrasonic:
             rospy.logwarn("AAAAARRRRGGGHH")
         duration = self.stop_time - self.start_time
         distance = duration * SPEED_OF_SOUND * 500
-        return distance - self.offset
+        return self.response * distance - self.offset
 
     def _log_time(self, _):
         if GPIO.input(self.echo_pin):
@@ -83,10 +84,13 @@ class UltrasonicScanner:
         self.range_max = rospy.get_param('~range_max', 1.0) + self.offset_outer
         self.scan_frame_id = rospy.get_param('~scan_frame_id', 'us_scan_frame')
         self.left = Ultrasonic("Left", rospy.get_param('pins/ult'), rospy.get_param('pins/ule'), timeout,
+                               response=rospy.get_param('~response_left', 1),
                                offset=rospy.get_param('~offset_left', 20))
         self.centre = Ultrasonic("Centre", rospy.get_param('pins/uct'), rospy.get_param('pins/uce'), timeout,
+                                 response=rospy.get_param('~response_centre', 1),
                                  offset=rospy.get_param('~offset_centre', 20))
         self.right = Ultrasonic("Right", rospy.get_param('pins/urt'), rospy.get_param('pins/ure'), timeout,
+                                response=rospy.get_param('~response_right', 1),
                                 offset=rospy.get_param('~offset_right', 20))
         f = rospy.get_param('~rate', 5)
         self.rate = rospy.Rate(f)

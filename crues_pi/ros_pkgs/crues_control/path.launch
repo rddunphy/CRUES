@@ -85,7 +85,7 @@
     <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />
     <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /map" />
 
-    <node name="controller" pkg="crues_control" type="path_control.py">
+    <node name="controller" pkg="crues_control" type="path_control.py" required="true">
         <param name="turn_vel" type="double" value="1" />
         <param name="fwd_vel" type="double" value="0.15" />
         <remap from="~rate" to="enc_rate" />
