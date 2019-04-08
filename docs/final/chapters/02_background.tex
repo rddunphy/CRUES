@@ -174,6 +174,36 @@ frames given a translation matrix relating the two cameras.
 Computer vision can be well integrated with SLAM providing a means of both the measure
 of distance (if the CV system is bi-ocular) and the identification of distinctive
 features in the environment to allow loop closure\cite{CVho2006loop}.
+\subsection{Object Detection}\label{litreview/cv/objDet}
+\subsubsection{CNN}\label{litreview/cv/objDet/CNN}
+A common method for object detection is to use a Convolutional 
+Neural Network (CNN). This is a deep learning method that 
+considers the relative position of pixels in the image. It 
+works by scanning a Locally Receptive Field (LRF) across the 
+image, and searching this small group of pixels for patterns 
+at each position as it moves. This results in a set of 
+matrices of outputs, which can then be scanned again. With 
+each iteration the complexity of pattern which can be detected 
+increases. The output of these convolutional layers is then 
+pooled (combined to reduce size), and used as the input to a 
+neural network which can then classify the image.
+
+
+\subsubsection{Feature Based}\label{litreview/cv/objDet/fb}
+Another approach to object detection is feature based. This 
+involves the identification and comparison of key points in an 
+image of the target object and in the camera frame. There are 
+several key point detection algorithms - SIFT, BRISK and ORB, 
+to name a few - each of which has its own way of describing 
+patterns in the pixels and selecting which will be rarer and 
+therefore more useful when identifying objects. Each also has 
+a method of quantifying the similarity of two matches called a 
+distance metric. The algorithm then looks for features in both 
+the frame and the object image which score low in the distance 
+metric (indicating similarity), filters the matches to remove 
+false positives, and then uses the relative positions of the 
+matches to estimate an outline of the object in the image 
+frame. 
 
 \section{ROS}\label{litreview/ROS}
 The Robot Operating System (ROS) is a framework for developing robot
