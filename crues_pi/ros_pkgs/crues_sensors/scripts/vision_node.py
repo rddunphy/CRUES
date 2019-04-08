@@ -1,18 +1,15 @@
 #!/usr/bin/env python
 import cv2
 import numpy as np
-pi = False
 
 try:
     import RPi.GPIO as GPIO
-    pi = True
-except ImportError:
-    from crues import GPIO_MOCK as GPIO
-
-if pi:
     from crues_sensors.msg import Vision
     from imutils.video import VideoStream
     import rospy
+    pi = True
+except ImportError:
+    pi = False
 
 
 class RobotDetector:
