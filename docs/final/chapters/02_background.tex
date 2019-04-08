@@ -192,7 +192,7 @@ run across multiple machines. The peer-to-peer topology requires
 a lookup mechanism to allow processes to find other process' addresses at 
 runtime so as they can communicate. Nodes communicate by passing messages 
 that are data structures of typed fields which can include arbitrarily nested 
-structures and arrays. \cite{crick2017rosbridge}
+structures and arrays~\cite{crick2017rosbridge}.
 
 Nodes can using two distinct ROS frameworks, services and topics. 
 Services are synchronous and perform like function
@@ -307,7 +307,7 @@ equivalent to search), one of the simplest algorithm
 is breadth-first search. This explores all neighbours at the same depth 
 before moving onto nodes at the next depth level. This would be guaranteed 
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
-where $|V|$ is the number of vertices and $|E|$ is the number of edges. \cite{cormen2009introduction}
+where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}.
 Breadth-first search searches the oldest discovered node first meaning 
 a large number of backtracks to reach the oldest discovered node. As 
 backtracking in physical space is expensive, this results in a very 
@@ -335,7 +335,7 @@ that node.
 This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
 \cite{xu2007improved}. An improvement to this original algorithm using a 
 min-priority queue implemented using a heap, runs in $\mathcal{O}
-(|E| + |V|log |V|)$ and was first proposed in \cite{fredman1987fibonacci}. 
+(|E| + |V|log |V|)$ and was first proposed in~\cite{fredman1987fibonacci}.
 
 Developed initially as an extension of Dijkstra's algorithm, A* is a 
 pathfinding algorithm that typically achieves better performance by 
