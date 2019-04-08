@@ -1,0 +1,10 @@
+turn_vel 0.2
+fwd_vel 0.1
+turn 360
+fwd 400
+turn -360
+wait 1
+turn 135
+fwd 200
+turn 360
+exit 1

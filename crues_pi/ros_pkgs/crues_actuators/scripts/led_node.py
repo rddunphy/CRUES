@@ -23,6 +23,7 @@ class LED:
         self.pin = rospy.get_param('~pin')
         self.on = False
         self.flashing = False
+        self.flash_code = 0
         self.exit_flash = Event()
         rospy.Subscriber('led', Bool, self._led_callback)
         rospy.Subscriber('led_flash', Int32, self._flash_callback)
@@ -109,6 +110,9 @@ class LED:
 
     def _flash_callback(self, msg):
         code = msg.data
+        if self.flash_code == code:
+            return
+        self.flash_code = code
         if code == 0:
             self.turn_off()
         elif code == 1:
