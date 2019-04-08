@@ -1,8 +1,5 @@
 <launch>
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf" />
-    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
-
     <include file="$(find crues_control)/robot.launch" />
 
     <node name="controller" pkg="crues_control" type="path_control.py" required="true">

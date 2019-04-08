@@ -1,8 +1,5 @@
 <launch>
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf"/>
-    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
-
     <!-- SENSORS -->
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
         <remap from="~rate" to="enc_rate" />

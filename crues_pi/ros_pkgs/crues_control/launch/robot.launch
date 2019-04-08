@@ -1,7 +1,7 @@
 <launch>
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf" />
-    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+    <param name="robot_description" textfile="$(find crues_control)/config/crues.urdf" />
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
 
     <!-- SENSORS -->
     <include file="$(find crues_sensors)/us.launch" />
@@ -75,7 +75,7 @@
     </node>
 
 <!--    <node name="ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">-->
-<!--        <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />-->
+<!--        <rosparam command="load" file="$(find crues_control)/config/ekf.yaml" />-->
 <!--        <remap from="/cmd_vel" to="/twist" />-->
 <!--    </node>-->
 

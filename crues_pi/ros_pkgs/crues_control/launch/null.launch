@@ -1,8 +1,6 @@
 <launch>
     <!--Empty control node that does nothing for debugging purposes.-->
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf" />
-
     <include file="$(find crues_control)/robot.launch" />
 
     <node name="roomba" pkg="crues_control" type="roomba_control.py">
