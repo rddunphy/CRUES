@@ -68,13 +68,36 @@ the program.
 
 
 \subsection{Implementation}\label{soft/ROS/impl}
-In order to enable rapid development of the system, the ROS packages were primarily written in Python, with the \verb|rospy| library used to interface with ROS functionality.
+In order to enable rapid development of the system, the ROS packages were 
+primarily written in Python, with the \verb|rospy| library used to 
+interface with ROS functionality.
 
-Each of the individual modules discussed in Section~\ref{elec} was implemented as a ROS node, generally encapsulated in a single Python script. In order to adhere to best practices and ensure consitency across the code base, each node was represented as class, with an \verb|__init__()| method initialising the node and a \verb|spin()| method which is called to run the node's main loop. In nodes which perform recurring work, such as polling sensors for data, this method uses a \verb|rospy.Rate| object to schedule tasks, whereas nodes that respond to events on subscribed topics simply call \verb|rospy.spin()|, which prevents the script from exiting until a ROS shutdown signal is received.
+Each of the individual modules discussed in Section~\ref{elec} was 
+implemented as a ROS node, generally encapsulated in a single Python 
+script. In order to adhere to best practices and ensure consitency across 
+the code base, each node was represented as class, with an 
+\verb|__init__()| method initialising the node and a \verb|spin()| method 
+which is called to run the node's main loop. In nodes which perform 
+recurring work, such as polling sensors for data, this method uses a 
+\verb|rospy.Rate| object to schedule tasks, whereas nodes that respond to 
+events on subscribed topics simply call \verb|rospy.spin()|, which 
+prevents the script from exiting until a ROS shutdown signal is received.
 
-The \verb|rospy.Publisher| class is used to publish messages of a pre-determined type to a topic with a given name. Similarly, \verb|rospy.Subscriber| is used by nodes wishing to listen for messages on a specific topic. The constructor of this class specifies a callback function, which takes the message as a parameter. By loading parameterised values at startup, the code maintains flexibility, as different values can be used in launch files for different applications.
+The \verb|rospy.Publisher| class is used to publish messages of a pre-
+determined type to a topic with a given name. Similarly, 
+\verb|rospy.Subscriber| is used by nodes wishing to listen for messages on 
+a specific topic. The constructor of this class specifies a callback 
+function, which takes the message as a parameter. By loading parameterised 
+values at startup, the code maintains flexibility, as different values can 
+be used in launch files for different applications.
 
-Listing~\ref{lst:ros_node} shows an example of a ROS node that publishes at a predefined rate. The rate can be passed to the node as a parameter in the launch file, and in this case defaults to \SI{10}{\Hz}. The data is set by a callback method, which is called by a subscriber to another topic. In general, callback methods were kept very short in order to prevent blocking of the subscriber's thread, with any processor-intensive work executed in the main loop.
+Listing~\ref{lst:ros_node} shows an example of a ROS node that publishes 
+at a predefined rate. The rate can be passed to the node as a parameter in 
+the launch file, and in this case defaults to \SI{10}{\Hz}. The data is 
+set by a callback method, which is called by a subscriber to another 
+topic. In general, callback methods were kept very short in order to 
+prevent blocking of the subscriber's thread, with any processor-intensive 
+work executed in the main loop.
 
 \begin{lstlisting}[caption={Example ROS node}, label={lst:ros_node}]
 #!/usr/bin/env python
@@ -117,7 +140,14 @@ if __name__ == '__main__':
 
 
 \subsubsection{Python version}
-This project currently uses Python 2.7, which will no longer be supported after January 2020~\cite{python2-eol}. The reason for this choice was the lack of official support for Python 3.x in ROS Kinetic. While it is possible to use Python 3 with ROS, various issues may arise resulting from incompatibility~\cite{medium-ros-python3}. In the interest of stability, it was decided to use the older version. Migration to ROS 2, which is currently under heavy development but will have native support for Python 3, is recommended in future~\cite{ros2}.
+This project currently uses Python 2.7, which will no longer be supported 
+after January 2020~\cite{python2-eol}. The reason for this choice was the 
+lack of official support for Python 3.x in ROS Kinetic. While it is 
+possible to use Python 3 with ROS, various issues may arise resulting from 
+incompatibility~\cite{medium-ros-python3}. In the interest of stability, 
+it was decided to use the older version. Migration to ROS 2, which is 
+currently under heavy development but will have native support for Python 
+3, is recommended in future~\cite{ros2}.
 
 
 
@@ -126,17 +156,36 @@ This project currently uses Python 2.7, which will no longer be supported after 
 
 
 \subsection{Testing}\label{soft/ROS/test}
-In addition to each of the nodes being tested independently in a similar manner to how each of them were tested in isolation throughout the~\ref{elec} Section, the nodes were tested in a number of different configurations.
+In addition to each of the nodes being tested independently in a similar 
+manner to how each of them were tested in isolation throughout the~
+\ref{elec} Section, the nodes were tested in a number of different 
+configurations.
 \todo{David maybe needs to write this}
 
-Each of the topics can be tracked from the main graph of nodes in the ROS runtime using the command $rqt graph$. This produces the following output, \todo{put rqt grpah of nodes and topics in here and dicuss}.
+Each of the topics can be tracked from the main graph of nodes in the ROS 
+runtime using the command $rqt graph$. This produces the following output, 
+\todo{put rqt grpah of nodes and topics in here and dicuss}.
 
 
 \subsection{Deployment}\label{soft/ROS/deploy}
-Since system testing was closely tied to the hardware of the robot, the ability to rapidly deploy changes to the robot was crucial to the development process. To this end, a shell script (\verb|deploy.sh|) was written to copy any changes to robots connected to the network. The script uses \verb|rsync| to copy any modified source or configuration files in the Catkin workspace, and fetches any output files generated by previous executions of the code. Since the Raspberry Pis are unable to retain system time between boot cycles, and \verb|rsync| relies on system time to detect file modifications, the script additionally syncs the system time of the Pi to the host machine. The system time is set using UTC in order to prevent problems caused by time zones and daylight saving time.
+Since system testing was closely tied to the hardware of the robot, the 
+ability to rapidly deploy changes to the robot was crucial to the 
+development process. To this end, a shell script (\verb|deploy.sh|) was 
+written to copy any changes to robots connected to the network. The script 
+uses \verb|rsync| to copy any modified source or configuration files in 
+the Catkin workspace, and fetches any output files generated by previous 
+executions of the code. Since the Raspberry Pis are unable to retain 
+system time between boot cycles, and \verb|rsync| relies on system time to 
+detect file modifications, the script additionally syncs the system time 
+of the Pi to the host machine. The system time is set using UTC in order 
+to prevent problems caused by time zones and daylight saving time.
 
-The installation of software dependencies proved to be less trivial due to difficulties connecting to the internet and WANET simultaneously. Dependencies were initially installed manually on a single Pi connected to the internet, and were then transferred to the other robots by copying an image of the SD card. This method had the additional benefit of ensuring that all Pis were running the same versions of any dependencies.
-
+The installation of software dependencies proved to be less trivial due to 
+difficulties connecting to the internet and WANET simultaneously. 
+Dependencies were initially installed manually on a single Pi connected to 
+the internet, and were then transferred to the other robots by copying an 
+image of the SD card. This method had the additional benefit of ensuring 
+that all Pis were running the same versions of any dependencies.
 
 \section{Communication}\label{soft/comms}
 
