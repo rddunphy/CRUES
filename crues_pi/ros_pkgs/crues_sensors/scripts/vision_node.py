@@ -24,7 +24,7 @@ class RobotDetector:
 
         if pi:
             frameSize = (640, 480)
-            self.frame_rate = rospy.get_param('~framerate', 25)
+            self.frame_rate = rospy.get_param('~framerate', 10)
             self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frameSize,
                                    framerate=self.frame_rate).start()
             rospy.init_node("vision", anonymous=False)
@@ -113,10 +113,12 @@ class RobotDetector:
     def spin(self):
         try:
             while not rospy.is_shutdown():
+            #while self.cap.isOpened():
                 self._tick()
                 self.rate.sleep()
         finally:
-            self.recorder.release()
+            if self.recording:
+                self.recorder.release()
             # self._cleanup()
 
     def _tick(self):
@@ -125,19 +127,20 @@ class RobotDetector:
             frame = cv2.flip(frame, -1)
         else:
             _, frame = self.cap.read()
-        names, found, coords, outlines, highlight_colours = self.search(frame)
-        names_found = [names[i] for i in range(len(names)) if found[i]]
-        if self.recording:
-            for i, name in enumerate(names):
-                if found[i]:
-                    x, y, w, h = cv2.boundingRect(outlines[i])
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-                    cv2.putText(frame, name, (x - 20, y - 20),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
-            self.recorder.write(frame)
-        msg = Vision()
-        msg.robot_list = ",".join(names_found)
-        self.pub.publish(msg)
+        if frame is not None:
+            names, found, coords, outlines, highlight_colours = self.search(frame)
+            names_found = [names[i] for i in range(len(names)) if found[i]]
+            if self.recording:
+                for i, name in enumerate(names):
+                    if found[i]:
+                        x, y, w, h = cv2.boundingRect(outlines[i])
+                        cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
+                        cv2.putText(frame, name, (x - 20, y - 20),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+                self.recorder.write(frame)
+            msg = Vision()
+            msg.robot_list = ",".join(names_found)
+            self.pub.publish(msg)
 
 def _test():
     cap = cv2.VideoCapture(0)
