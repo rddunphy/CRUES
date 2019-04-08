@@ -1,23 +1,59 @@
 #!/usr/bin/env python
 import rospy
-from crues_comms.msg import Comms
+
 from crues.comms import send
 
-def send_message(data):
-    rospy.loginfo(rospy.get_caller_id() + "attempted to send " + data.data + " to " + data.destination)
-    try:
-        send(data.destination, data.data)
-        rospy.loginfo(rospy.get_caller_id() + "successfully sent " + data.data  +" t o" + data.destination)
-    except:
-        send_message(data)
+from crues_comms.msg import Comms
+from crues_sensors.msg import Vision
 
-def client_node():
-    rospy.init_node('client', anonymous=True)
+debug = False
 
-    rospy.Subscriber("send_message", Comms, send_message)
 
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+class Client:
+    def __init__(self):
+        rospy.init_node('client', anonymous=True)  # Why anonymous?
+        rospy.Subscriber('send_message', Comms, self._send_callback)
+        rospy.Subscriber('robots_detected', Vision, self._robots_detected_callback)
+        self._msg_queue = []
+        self._robots_in_view = []
+        self.rate = rospy.Rate(rospy.get_param('~rate', 50))
+
+    def spin(self):
+        while not rospy.is_shutdown():
+            self._send()
+            self.rate.sleep()
+
+    def _send(self):
+        # This blocks, so should maybe be on a new thread?
+        while self._msg_queue:
+            self._send_next()
+
+    def _send_next(self):
+        msg = self._msg_queue[0]
+        if msg.destination not in self._robots_in_view or debug:
+            rospy.logwarn("%s attempted to send %s to %s, but robot was not in view" %
+                          (rospy.get_caller_id(), msg.data, msg.destination))
+            del self._msg_queue[0]
+        else:
+            rospy.loginfo("%s attempting to send %s to %s" % (rospy.get_caller_id(), msg.data, msg.destination))
+            try:
+                send(msg.destination, msg.topic, msg.data)
+                del self._msg_queue[0]
+                rospy.loginfo("%s successfully sent %s to %s" % (rospy.get_caller_id(), msg.data, msg.destination))
+            except:  # What's this catching?
+                # Possibly have a limit for attempts - we don't want to loop forever.
+                pass
+
+    def _send_callback(self, msg):
+        self._msg_queue.append(msg)
+
+    def _robots_detected_callback(self, msg):
+        self._robots_in_view = [s.trim() for s in msg.robot_list.split(",")]
+
 
 if __name__ == '__main__':
-    client_node()
+    try:
+        client = Client()
+        client.spin()
+    except rospy.ROSInterruptException:
+        pass

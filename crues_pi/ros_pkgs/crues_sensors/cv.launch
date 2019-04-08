@@ -1,4 +1,5 @@
 <launch>
     <node name="cv" pkg="crues_sensors" type="vision_node.py">
+		<param name="recording" value="false"/> 
     </node>
 </launch>
