@@ -30,14 +30,21 @@ class Roomba:
         rospy.Subscriber('ur_range', Float32, self.range_callback, callback_args=RIGHT)
         rospy.Subscriber('/robots_detected', Vision, self.robots_callback)
         self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
+        self.motor_sleep_pub = rospy.Publisher('motor_sleep', Bool, queue_size=10)
         self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
         self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)
         self.gled_flash_pub = rospy.Publisher('green_led_flash', Int32, queue_size=10)
 
     def spin(self):
-        while not rospy.is_shutdown():
-            self.publish_cmd()
-            self.rate.sleep()
+        try:
+            while not rospy.is_shutdown():
+                self.publish_cmd()
+                self.rate.sleep()
+        except rospy.ROSInterruptException:
+            pass
+        finally:
+            self.twist_pub.publish(Twist())
+            self.motor_sleep_pub.publish(True)
 
     def publish_cmd(self):
         if self.stop:
@@ -48,6 +55,7 @@ class Roomba:
         if self.time_to_stop_turning > time.time():
             # Finish turning first
             self.twist_pub.publish(self.turn_twist)
+            self.motor_sleep_pub.publish(False)
             return
         else:
             if all([r > self.obstacle_range for r in self.last_ranges.values()]):
@@ -67,6 +75,7 @@ class Roomba:
         self.gled_pub.publish(True)
         self.rled_pub.publish(False)
         self.twist_pub.publish(out)
+        self.motor_sleep_pub.publish(False)
 
     def turn_right(self):
         self.turn_twist = Twist()
@@ -75,6 +84,7 @@ class Roomba:
         self.gled_pub.publish(False)
         self.rled_pub.publish(True)
         self.twist_pub.publish(self.turn_twist)
+        self.motor_sleep_pub.publish(False)
 
     def turn_left(self):
         self.turn_twist = Twist()
@@ -83,6 +93,7 @@ class Roomba:
         self.gled_pub.publish(False)
         self.rled_pub.publish(True)
         self.twist_pub.publish(self.turn_twist)
+        self.motor_sleep_pub.publish(False)
 
     def range_callback(self, msg, s):
         self.last_ranges[s] = msg.data
@@ -96,8 +107,5 @@ class Roomba:
 
 
 if __name__ == '__main__':
-    try:
-        roomba = Roomba()
-        roomba.spin()
-    except rospy.ROSInterruptException:
-        pass
+    roomba = Roomba()
+    roomba.spin()
