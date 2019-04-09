@@ -6,7 +6,7 @@
         <param name="turn_vel" type="double" value="2" />
         <param name="fwd_vel" type="double" value="0.2" />
         <param name="obstacle_range" type="double" value="100" />
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
     </node>
 
 </launch>

@@ -1,5 +1,5 @@
 <launch>
     <node name="imu" pkg="crues_sensors" type="imu_node.py">
-        <remap from="~rate" to="imu_rate" />
+        <remap from="~rate" to="imu/rate" />
     </node>
 </launch>
