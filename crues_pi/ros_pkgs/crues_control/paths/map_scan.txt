@@ -1,5 +1,5 @@
-turn_vel 0.078
-turn 720
+turn_vel 0.2
+turn 365
 
 # turn_vel 0.2
 # fwd_vel 0.1
