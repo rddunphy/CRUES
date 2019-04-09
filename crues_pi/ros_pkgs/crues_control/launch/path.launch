@@ -1,6 +1,6 @@
 <launch>
 
-    <include file="$(find crues_control)/robot.launch" />
+    <include file="$(find crues_control)/launch/robot.launch" />
 
     <node name="controller" pkg="crues_control" type="path_control.py" required="true">
         <param name="turn_vel" type="double" value="1" />

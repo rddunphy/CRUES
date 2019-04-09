@@ -4,7 +4,7 @@
     <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
 
     <!-- SENSORS -->
-    <include file="$(find crues_sensors)/sonar.launch" />
+    <include file="$(find crues_sensors)/launch/sonar.launch" />
 
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
         <remap from="~rate" to="encoder/rate" />
@@ -30,8 +30,8 @@
     </node>
 
     <!-- ACTUATORS -->
-    <include file="$(find crues_actuators)/motors.launch" />
-    <include file="$(find crues_actuators)/leds.launch" />
+    <include file="$(find crues_actuators)/launch/motors.launch" />
+    <include file="$(find crues_actuators)/launch/leds.launch" />
 
     <!-- CONTROL -->
     <node name="diff_tf" pkg="differential_drive" type="diff_tf.py">

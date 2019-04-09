@@ -18,8 +18,8 @@ class Client:
         self.hostname = rospy.get_param('hostname')
         self._ip_addresses = {}
         for robot in robots:
-            if robot.name != self.hostname:
-                self._ip_addresses[robot.name] = robot.ip
+            if robot["name"] != self.hostname:
+                self._ip_addresses[robot["name"]] = robot["ip"]
         self.rate = rospy.Rate(rospy.get_param('~rate', 50))
 
     def spin(self):

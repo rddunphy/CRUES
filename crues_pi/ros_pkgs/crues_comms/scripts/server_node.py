@@ -12,8 +12,8 @@ class Server:
         self.hostname = rospy.get_param('hostname')
         robots = rospy.get_param('robots')
         for robot in robots:
-            if robot.name == self.hostname:
-                self.ip = robot.ip
+            if robot["name"] == self.hostname:
+                self.ip = robot["ip"]
         self.sock = listen(self._msg_callback, self.ip)  # self._msg_callback :: msg -> void
 
     def spin(self):

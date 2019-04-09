@@ -1,6 +1,6 @@
 <launch>
 
-    <include file="$(find crues_control)/robot.launch" />
+    <include file="$(find crues_control)/launch/robot.launch" />
 
     <node name="roomba" pkg="crues_control" type="roomba_control.py">
         <param name="turn_vel" type="double" value="2" />
