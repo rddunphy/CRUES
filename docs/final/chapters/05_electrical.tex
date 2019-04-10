@@ -304,8 +304,8 @@ ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
 \end{lstlisting}
 
 The acceleration values can then be multiplied by the \verb|ACC_UNITS|
-constant and the result is the acceleration in $ms^{-2}$, and \verb|GYRO
-_UNITS| can be used similarly to find the rotation in $rads^{-1}$, as is
+constant and the result is the acceleration in $ms^{-2}$, and \verb|GYRO_UNITS|
+can be used similarly to find the rotation in $rads^{-1}$, as is
 shown in Code Listing \ref{lst:read_funcs}.
 
 
@@ -379,7 +379,7 @@ with the following physical design constraints:
         VCC & \SI{5}{\volt} supply   & 2  & 2  & 2  \\
         MLD & Left motor DIR         & 11 & 11 & 11 \\
         MLP & Left motor PWM         & 32 & 32 & 32 \\
-        MRD & Right motor DIR        & 15 & 21 & 23 \\
+        MRD & Right motor DIR        & 15 & 21 & 19 \\
         MRP & Right motor PWM        & 33 & 33 & 33 \\
         MS  & Motor SLP              & 13 & 13 & 13 \\
         ULT & Left ultrasonic TRIG   & 35 & 35 & 35 \\
@@ -388,8 +388,8 @@ with the following physical design constraints:
         UCE & Centre ultrasonic ECHO & 12 & 12 & 12 \\
         URT & Right ultrasonic TRIG  & 22 & 22 & 22 \\
         URE & Right ultrasonic ECHO  & 18 & 18 & 18 \\
-        ELA & Left encoder A         & 23 & 23 & 27 \\
-        ELB & Left encoder B         & 19 & 19 & 21 \\
+        ELA & Left encoder A         & 23 & 23 & 21 \\
+        ELB & Left encoder B         & 19 & 19 & 23 \\
         ERA & Right encoder A        & 24 & 24 & 24 \\
         ERB & Right encoder B        & 26 & 26 & 26 \\
         LG  & Green LED              & 31 & 31 & 31 \\
