@@ -4,6 +4,8 @@
     <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
 
     <!-- SENSORS -->
+    <include file="$(find crues_sensors)/us.launch" />
+
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
         <remap from="~rate" to="enc_rate" />
         <remap from="~pin_a" to="pins/ela" />
@@ -18,9 +20,9 @@
         <remap from="/wheel" to="/rwheel" />
     </node>
 
-    <node name="imu" pkg="crues_sensors" type="imu_node.py">
-        <remap from="~rate" to="imu_rate" />
-    </node>
+<!--    <node name="imu" pkg="crues_sensors" type="imu_node.py">-->
+<!--        <remap from="~rate" to="imu_rate" />-->
+<!--    </node>-->
 
     <!-- ACTUATORS -->
     <include file="$(find crues_actuators)/motors.launch" />
@@ -72,24 +74,29 @@
 <!--        <remap from="/cmd_vel" to="/twist" />-->
 <!--    </node>-->
 
-<!--    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">-->
-<!--        <param name="maxRange" value="4.0" />-->
-<!--        <param name="maxUrange" value="1.0" />-->
-<!--        <param name="xmax" value="4.0" />-->
-<!--        <param name="ymax" value="4.0" />-->
-<!--        <param name="delta" value="0.01" />-->
-<!--        <remap from="/scan" to="/us_scan" />-->
-<!--    </node>-->
+    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">
+        <param name="maxRange" value="4.0" />
+        <param name="maxUrange" value="2.0" />
+        <param name="xmin" value="-2.0" />
+        <param name="xmax" value="2.0" />
+        <param name="ymin" value="-2.0" />
+        <param name="ymax" value="2.0" />
+        <param name="delta" value="0.05" />
+        <param name="particles" value="30" />
+        <param name="map_update_interval" value="10" />
+        <remap from="/scan" to="/us_scan" />
+    </node>
 
     <!-- DATA RECORDING -->
-    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />
-    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /map" />
+<!--    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />-->
+<!--    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /map" />-->
+    <node name="rosbag" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /odometry/wheel /map" />
 
     <node name="controller" pkg="crues_control" type="path_control.py" required="true">
         <param name="turn_vel" type="double" value="1" />
         <param name="fwd_vel" type="double" value="0.15" />
         <remap from="~rate" to="enc_rate" />
-        <param name="path_file" value="$(find crues_control)/paths/square.txt" />
+        <param name="path_file" value="$(find crues_control)/paths/map_scan.txt" />
     </node>
 
 </launch>

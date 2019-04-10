@@ -26,11 +26,11 @@ ip_addresses:
   t430:   "192.168.1.5"
 ticks_meter: 6530
 base_width: 0.141
-enc_rate: 50
-us_rate: 5
+enc_rate: 20
+us_rate: 6.5
 us_angle: deg(30)
 us_time: 0.05
-imu_rate: 50
+imu_rate: 20
 pid:
   Kp: 0.176
   Ki: 0
