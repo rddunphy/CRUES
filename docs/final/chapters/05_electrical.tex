@@ -38,8 +38,6 @@ onto the boards as the robots were assembled.
 Once soldered, the power distribution board and motor driver board
 were continuity tested.
 
-
-
 \todo{motor drive system test circiut
 should test power distribrutionat somepoint???}
 
@@ -60,6 +58,7 @@ or visible light respectively.
 Of these three, LIDAR is generally considered to be the most effective
 as it is the most accurate and has a \ang{360} field of view However,
 it is both too expensive and too heavy for our application, especially
+
 considering that each robot would need one.
 \todo{infra red}
 Ultrasonic transceivers were therefore decided upon for use in this
@@ -253,7 +252,6 @@ forces acting on it can interfere and be measured as linear motion away
 from the centre.
 
 \subsection{Implementation}\label{elec/imu/impl}
-
 The IMU selected uses the I$^2$C protocol for data transmission, which
 integrates well with the RPi as it has dedicated I$^2$C GPIO pins and
 existing libraries to facilitate communication.
@@ -413,7 +411,6 @@ With these constraints the following PCB design shown in figure \ref{PCB_Design}
 Note that the peculiar shape is to allow room for the motors and encoders.
 
 \subsection{Testing}\label{elec/pcb/test}
-
 After the components were soldered into place on the PCB, manual
 continuity tests were performed with a multimeter to ensure that adjacent
 pins had not been connected in the soldering process.
