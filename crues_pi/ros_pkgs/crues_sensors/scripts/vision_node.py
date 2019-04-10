@@ -5,6 +5,7 @@ import numpy as np
 try:
     import RPi.GPIO as GPIO
     from crues_sensors.msg import Vision
+    from std_msgs.msg import Bool
     from imutils.video import VideoStream
     import rospy
     pi = True
@@ -15,10 +16,10 @@ except ImportError:
 class RobotDetector:
     def __init__(self):
         self.name = "Robot"
-        self.robot_colours = [("Inky", ([105, 80, 30], [145, 255, 255]),(255, 0, 0)),
-                              ("Clyde", ([15, 100, 80],[30, 255, 255]), (0, 255, 255)),
-                              ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255)),
-                              ("GOAL", ([35, 80, 80], [90, 255, 255]), (0, 255, 0))
+        self.robot_colours = [("inky", ([105, 80, 30], [145, 255, 255]),(255, 0, 0)),
+                              ("clyde", ([15, 100, 80],[30, 255, 255]), (0, 255, 255)),
+                              ("blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255)),
+                              ("goal", ([40, 140, 95], [70, 255, 255]), (0, 255, 0))
                               ]
 
         if pi:
@@ -29,6 +30,7 @@ class RobotDetector:
             rospy.init_node("vision", anonymous=False)
             self.recording = rospy.get_param("~recording", False)
             self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
+            self.goal_pub = rospy.Publisher('goal_detected', Bool, queue_size=10)
             self.rate = rospy.Rate(self.frame_rate)
             if self.recording:
                 # Define the codec and create VideoWriter object
@@ -141,16 +143,23 @@ class RobotDetector:
             msg.robot_list = ",".join(names_found)
             self.pub.publish(msg)
 
-def _test():
-    cap = cv2.VideoCapture(0)
-    rd = RobotDetector()
 
-    # Define the codec and create VideoWriter object
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+def _test():
+    rd = RobotDetector()
+    if pi:
+        cap = rd.cap
+    else:
+        cap = cv2.VideoCapture(0)
+        # Define the codec and create VideoWriter object
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+
     rec = False
-    while 1:
-        _, frame = cap.read()
+    while True:
+        if pi:
+            frame = cap.read()
+        else:
+            _, frame = cap.read()
         names, found, coords, outlines, highlight_colours = rd.search(frame)
 
         for i, name in enumerate(names):
@@ -162,18 +171,20 @@ def _test():
                 cv2.putText(frame, name, (x - 20, y - 20),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
         cv2.imshow('frame2', frame)
-        out.write(frame)
-        key = cv2.waitKey(10)
-        if key & 0xFF == ord('r'):
-            if rec:
-                out.release()
-                rec = False
-            else:
-                print("Recording")
-                rec = True
-        if key & 0xFF == ord('q'):
-            break
+        if not pi:
+            out.write(frame)
+            key = cv2.waitKey(10)
+            if key & 0xFF == ord('r'):
+                if rec:
+                    out.release()
+                    rec = False
+                else:
+                    print("Recording")
+                    rec = True
+            if key & 0xFF == ord('q'):
+                break
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     if pi:

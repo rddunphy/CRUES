@@ -24,13 +24,13 @@
         <remap from="~rate" to="imu/rate" />
     </node>
 
-<!--    <node name="cv" pkg="crues_sensors" type="vision_node.py">-->
-<!--	    <param name="recording" value="false" />-->
-<!--    </node>-->
+    <node name="cv" pkg="crues_sensors" type="vision_node.py">
+	    <param name="recording" value="false" />
+    </node>
 
     <!-- ACTUATORS -->
     <include file="$(find crues_actuators)/launch/motors.launch" />
-<!--    <include file="$(find crues_actuators)/launch/leds.launch" />-->
+    <include file="$(find crues_actuators)/launch/leds.launch" />
 
     <!-- CONTROL -->
     <node name="diff_tf" pkg="differential_drive" type="diff_tf.py">
@@ -78,23 +78,23 @@
 <!--        <remap from="/cmd_vel" to="/twist" />-->
 <!--    </node>-->
 
-    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">
-        <param name="maxRange" value="4.0" />
-        <param name="maxUrange" value="2.0" />
-        <param name="xmin" value="-2.0" />
-        <param name="xmax" value="2.0" />
-        <param name="ymin" value="-2.0" />
-        <param name="ymax" value="2.0" />
-        <param name="delta" value="0.05" />
-        <param name="particles" value="30" />
-        <param name="map_update_interval" value="5" />
-        <param name="temporalUpdate" value="0.15" />
-        <param name="minimumScore" value="50" />
-        <remap from="/scan" to="/sonar_scan" />
-    </node>
+<!--    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">-->
+<!--        <param name="maxRange" value="4.0" />-->
+<!--        <param name="maxUrange" value="2.0" />-->
+<!--        <param name="xmin" value="-2.0" />-->
+<!--        <param name="xmax" value="2.0" />-->
+<!--        <param name="ymin" value="-2.0" />-->
+<!--        <param name="ymax" value="2.0" />-->
+<!--        <param name="delta" value="0.05" />-->
+<!--        <param name="particles" value="30" />-->
+<!--        <param name="map_update_interval" value="5" />-->
+<!--        <param name="temporalUpdate" value="0.15" />-->
+<!--        <param name="minimumScore" value="50" />-->
+<!--        <remap from="/scan" to="/sonar_scan" />-->
+<!--    </node>-->
 
     <!-- DATA RECORDING -->
-<!--    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />-->
-    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /odometry/wheel /map" />
+    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel" />
+<!--    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /odometry/wheel /map" />-->
 
 </launch>
