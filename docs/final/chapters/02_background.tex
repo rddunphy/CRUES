@@ -21,58 +21,148 @@ related articles used to fill in any gaps in knowledge from the original
 searches. \todo{i dont think we need these paragraphs}
 
 \section{Robotics}\label{litreview/robotics}
-A robot is ``a machine capable of carrying out a complex series of actions automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. Robotics is the ``branch of technology which deals with the design, construction, operation, and application''~\cite{https://www.merriam-webster.com/dictionary/robotics} of robots. Robotics combines a number of fields from mechanical, electrical and software engineering within a single system to achieve its goals. By combining the three major disciplines of artificial intelligence, operations research, and control theory, a resultant intelligent control system is created~\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be used for a wide range of robotic applications.   
+A robot is ``a machine capable of carrying out a complex series of actions 
+automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. 
+Robotics is the ``branch of technology which deals with the design, construction, 
+operation, and application''~\cite{https://www.merriam-webster.com/dictionary/
+robotics} of robots. Robotics combines a number of fields from mechanical, 
+electrical and software engineering within a single system to achieve its goals. By 
+combining the three major disciplines of artificial intelligence, operations 
+research, and control theory, a resultant intelligent control system is created~
+\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be 
+used for a wide range of robotic applications.   
 
 \subsection{Control}\label{litreview/robotics/control}  
-As the robots in this study are homogeneous and should be able to complete tasks individually, control is limited to the control of a single robot in the complete system. Robotic mechanisms form the control system for a robot and connect the fixed parts of the robot together by joints to allow motion between fixed parts~\cite{lynch2017modern}.
-Actuation of the joints, usually by motors, imparts forces on the robot which allow it to move and perform a variety of tasks~\cite{lynch2017modern}.
-The movement of these ``actuators'' is influenced by a number of sensors which provide the system with information about its environment. These sensors can also influence the movement of the actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
+As the robots in this study are homogeneous and should be able to complete 
+tasks individually, control is limited to the control of a single robot in 
+the complete system. Robotic mechanisms form the control system for a robot 
+and connect the fixed parts of the robot together by joints to allow motion 
+between fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually 
+by motors, imparts forces on the robot which allow it to move and perform a 
+variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators'' 
+is influenced by a number of sensors which provide the system with information 
+about its environment. These sensors can also influence the movement of the 
+actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
 
-Sensors can take many forms and provide information about internal and external environmental factors of the robot. External sensors provide information which the robot would otherwise find significantly more difficult to discover, one such example being range sensing. This can take a number of different forms including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and binocular computer vision. Each of these sensors use unique methods to determine the distance from the robot to another object in its environment. Ultrasound sensors use high frequency sound waves which reflect from surfaces and return to the sensor in time t to calculate the distance to the object using the speed of sound. Infra-red sensors work in a similar fashion but with invisible light instead of sound. 
+Sensors can take many forms and provide information about internal and external 
+environmental factors of the robot. External sensors provide information which 
+the robot would otherwise find significantly more difficult to discover, one 
+such example being range sensing. This can take a number of different forms 
+including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and 
+binocular computer vision. Each of these sensors use unique methods to determine 
+the distance from the robot to another object in its environment. Ultrasound 
+sensors use high frequency sound waves which reflect from surfaces and return 
+to the sensor in time t to calculate the distance to the object using the speed 
+of sound. Infra-red sensors work in a similar fashion but with invisible light 
+instead of sound. 
 
-LIDAR is a more advanced use of invisible light to more accurately detect distance using more powerful and precise beams of light than in the infra-red case~\cite{LIDAR}. Binocular vision allows depth perception to take place similar to that allowed by human vision~\cite{read2005early} by perspective-based cues which can only be obtained from at least binocular vision~\cite{
+LIDAR is a more advanced use of invisible light to more accurately detect 
+distance using more powerful and precise beams of light than in the infra-red 
+case~\cite{LIDAR}. Binocular vision allows depth perception to take place similar 
+to that allowed by human vision~\cite{read2005early} by perspective-based cues 
+which can only be obtained from at least binocular vision~\cite{
 pfautz2002depth}. 
 
-Internal sensors can either be related to the actuators or fixed parts of the robot. Those sensors which are connected to the fixed parts of the robot provide feedback about the entire robot and its local environment. The Inertial Measurement Unit (IMU) provides feedback regarding the acceleration and angular velocity with relation to 6 different axis (x, y, z in both linear and angular planes) or Degrees of Freedom (DOF). This can be combined with information from other sensors in order to reduce the overall error in determining the robot's location with relation to its starting position.  
+Internal sensors can either be related to the actuators or fixed parts of the 
+robot. Those sensors which are connected to the fixed parts of the robot provide 
+feedback about the entire robot and its local environment. The Inertial 
+Measurement Unit (IMU) provides feedback regarding the acceleration and angular 
+velocity with relation to 6 different axis (x, y, z in both linear and angular 
+planes) or Degrees of Freedom (DOF). This can be combined with information from 
+other sensors in order to reduce the overall error in determining the robot's 
+location with relation to its starting position.  
 
-One such sensor is the encoder which is connected to the wheels and provides only feedback information about this actuator. These sensors are connected directly to the shaft of the motors and provide the control system with the actual distance moved by the motors. This allows adjustments to be made and each of the wheels to be maintained at a constant speed when utilised by the Proportional-Integral-Derivative(PID) controller of the robot.  
+One such sensor is the encoder which is connected to the wheels and provides 
+only feedback information about this actuator. These sensors are connected 
+directly to the shaft of the motors and provide the control system with the 
+actual distance moved by the motors. This allows adjustments to be made and each 
+of the wheels to be maintained at a constant speed when utilised by the 
+Proportional-Integral-Derivative(PID) controller of the robot.  
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
-As mentioned above the PID controller uses feedback from the encoders to maintain a straight line of movement and maintain each of wheels at a constant velocity. The PID controller is a feedback loop which is designed to eliminate errors in the actuator systems by the mathematical description \todo{add the mathematical formula for PID add wheres also}. By tuning $ K_p $, $ K_i $ and $ K_d $ for the system in question, the error in the system can be reduced.  \todo{maybe good intro to when we talk about imlementation of motor controller} 
+As mentioned above the PID controller uses feedback from the encoders to maintain 
+a straight line of movement and maintain each of wheels at a constant velocity. 
+The PID controller is a feedback loop which is designed to eliminate errors in 
+the actuator systems by the mathematical description \todo{add the mathematical 
+formula for PID add wheres also}. By tuning $ K_p $, $ K_i $ and $ K_d $ for the 
+system in question, the error in the system can be reduced.  \todo{maybe good intro 
+to when we talk about imlementation of motor controller} 
 
-PID controller are a very common solution to problems where the error of the system (the difference between the current state and the desired state) can be measured. PID stands for Proportional-Integral-Derivative, referring to the function of the error with which the output is calculated. The output of the system is the summation of a term which is proportional to the error, a term which is related to the error integrated over time, and a term which is proportional to the rate of change of the error. This is shown in equation \todo{equation}
+PID controller are a very common solution to problems where the error of the 
+system (the difference between the current state and the desired state) can be 
+measured. PID stands for Proportional-Integral-Derivative, referring to the 
+function of the error with which the output is calculated. The output of the 
+system is the summation of a term which is proportional to the error, a term 
+which is related to the error integrated over time, and a term which is 
+proportional to the rate of change of the error. This is shown in equation \todo{equation}
 
 $$ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}$$
 
-If $K_d$ and $K_i$ were both 0, and only the P term was active, the output would change to reduce the error in the system. Imagine a temperature controller, if the temperature was too low, the heater would turn on, and the heater would be turned up higher the greater the difference between the actual temperature and the required temperature. In many systems, this simple implementation is adequate, however it has several limitations. 
+If $K_d$ and $K_i$ were both 0, and only the P term was active, the output 
+would change to reduce the error in the system. Imagine a temperature controller, 
+if the temperature was too low, the heater would turn on, and the heater would 
+be turned up higher the greater the difference between the actual temperature 
+and the required temperature. In many systems, this simple implementation is 
+adequate, however it has several limitations. 
 
-Consider for instance the temperature controller example where heat is being lost in the system is equal to the P constant times the error. This would result in a stable state with a potentially large error. To prevent this, the I term can be increased. This will increase the longer an error is present, and preventing stable state errors. 
+Consider for instance the temperature controller example where heat is being lost 
+in the system is equal to the P constant times the error. This would result in a 
+stable state with a potentially large error. To prevent this, the I term can be 
+increased. This will increase the longer an error is present, and preventing 
+stable state errors. 
 
-Again, PI controllers are a common control mechanism, however they often have a problem with overshoot due to system inertia. Again considering the temperature controller, this is where the heater is set to increase the temperature, and the desired temperature is reached. The heater turns off, but is still hotter than the rest of the system, causing the system to get too hot. This is especially damaging in systems where the the control in one direction is passive, e.g. the system can actively heat up, but has to wait for heat loss to cool down. This problem can be mitigated by increasing the D component. This will push the state towards the desired state when the error is increasing (e.g. during over-shoot), and pushes the current state away from the desired state as the error is reducing as to minimise overshoot before the over shoot occurs. They do, however, reduce the response speed of the system~\cite{chen2007linear}.
+Again, PI controllers are a common control mechanism, however they often have 
+a problem with overshoot due to system inertia. Again considering the 
+temperature controller, this is where the heater is set to increase the 
+temperature, and the desired temperature is reached. The heater turns off, but 
+is still hotter than the rest of the system, causing the system to get too hot. 
+This is especially damaging in systems where the the control in one direction 
+is passive, e.g. the system can actively heat up, but has to wait for heat loss 
+to cool down. This problem can be mitigated by increasing the D component. 
+This will push the state towards the desired state when the error is increasing 
+(e.g. during over-shoot), and pushes the current state away from the desired 
+state as the error is reducing as to minimise overshoot before the over shoot 
+occurs. They do, however, reduce the response speed of the system~\cite{chen2007linear}.
 
-One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from prior to autonomous robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. These values can then be used to calculate $K_i$ and $K_d$ which results in a tuned system. However, many different formulae and definitions of the critical gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-Nichols method is mathematically imperfect and this will have to be explored experimentally during the project.     
+One method of tuning a PID controller is the Ziegler-Nichols method~
+\cite{ziegler1942optimum}. This principle originates from prior to autonomous 
+robotic control and has been adapted for this application~
+\cite{aastrom2004revisiting}. The method experimentally finds the critical gain 
+of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. 
+These values can then be used to calculate $K_i$ and $K_d$ which results in a 
+tuned system. However, many different formulae and definitions of the critical 
+gain of $K_p$ exist in literature. This leads to the conclusion that the Ziegler-
+Nichols method is mathematically imperfect and this will have to be explored 
+experimentally during the project.     
 
 \subsection{Rate Control}\label{litreview/robotics/ratecontrol}
-Opposed to traditional PID, Rate Control employs only the P and D portions of the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed more smoothly and fewer spikes in motor current are required for the required drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb more slowly from start-up and recover from dips in speed more slowly. This is mitigated, however, by using the current speed as the base and therefore, a high gain is not required to increase the speed to the required level. 
-
+Opposed to traditional PID, Rate Control employs only the P and D portions of 
+the equation and uses the current velocity as the base rate as opposed to 0~
+\cite{koditschek1987quadratic}. This allows the controller to maintain the speed 
+more smoothly and fewer spikes in motor current are required for the required 
+drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb 
+more slowly from start-up and recover from dips in speed more slowly. This is 
+mitigated, however, by using the current speed as the base and therefore, a high 
+gain is not required to increase the speed to the required level. 
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
 definition, which generalises co-operative behaviour in robotics, describes it as ``joint
 collaborative behaviour that is directed toward some goal in which there is a
 common interest or reward''~\cite{barnes1991behaviour}. This description fits the
-objectives of this study more appropriately than the specific term swarm robotics, which
-has a number of additional requirements, including
+objectives of this study more appropriately than the specific term swarm robotics, 
+which has a number of additional requirements, including
 that problem solving should be distributed across the swarm~\cite{sahin04}.
 This definition does not apply to this project, as the robots designed
 here are capable of operating autonomously and will be able to solve certain tasks
-individually. In this case, collaboration is used to deliver a performance improvement.
-For this reason, the more general term of co-operative robotics will
-be used throughout. The aim is to reduce the time taken or increase performance of the system over
-a single-robot system~\cite{premvuti1990consideration}. Additionally, by creating a decentralised
-and distributed system across a number of homogeneous agents, agent redundancy is introduced which
-can improve the completion rate of tasks, especially in potentially volatile
-environments~\cite{beckers1994local, parker95}.
+individually. In this case, collaboration is used to deliver a performance 
+improvement. For this reason, the more general term of co-operative robotics will
+be used throughout. The aim is to reduce the time taken or increase performance 
+of the system over a single-robot system~\cite{premvuti1990consideration}. 
+Additionally, by creating a decentralised and distributed system across a number 
+of homogeneous agents, agent redundancy is introduced which can improve the 
+completion rate of tasks, especially in potentially volatile environments~
+\cite{beckers1994local, parker95}.
 
 Co-operative robotics goes beyond the idea
 of collaborative robotics in requiring an additional aspect of intelligence in
@@ -174,11 +264,42 @@ frames given a translation matrix relating the two cameras.
 Computer vision can be well integrated with SLAM providing a means of both the measure
 of distance (if the CV system is bi-ocular) and the identification of distinctive
 features in the environment to allow loop closure\cite{CVho2006loop}.
+\subsection{Object Detection}\label{litreview/cv/objDet}
+\subsubsection{CNN}\label{litreview/cv/objDet/CNN}
+A common method for object detection is to use a Convolutional 
+Neural Network (CNN). This is a deep learning method that 
+considers the relative position of pixels in the image. It 
+works by scanning a Locally Receptive Field (LRF) across the 
+image, and searching this small group of pixels for patterns 
+at each position as it moves. This results in a set of 
+matrices of outputs, which can then be scanned again. With 
+each iteration the complexity of pattern which can be detected 
+increases. The output of these convolutional layers is then 
+pooled (combined to reduce size), and used as the input to a 
+neural network which can then classify the image.
+
+
+\subsubsection{Feature Based}\label{litreview/cv/objDet/fb}
+Another approach to object detection is feature based. This 
+involves the identification and comparison of key points in an 
+image of the target object and in the camera frame. There are 
+several key point detection algorithms - SIFT, BRISK and ORB, 
+to name a few - each of which has its own way of describing 
+patterns in the pixels and selecting which will be rarer and 
+therefore more useful when identifying objects. Each also has 
+a method of quantifying the similarity of two matches called a 
+distance metric. The algorithm then looks for features in both 
+the frame and the object image which score low in the distance 
+metric (indicating similarity), filters the matches to remove 
+false positives, and then uses the relative positions of the 
+matches to estimate an outline of the object in the image 
+frame. 
 
 \section{ROS}\label{litreview/ROS}
 The Robot Operating System (ROS) is a framework for developing robot
 software designed to allow flexible software design. It is a collection of tools, 
 libraries and conventions that aim to simplify creating complex and 
+
 robust robotic systems across a variety of platforms~\cite{aboutROS}. 
 It was designed with the objective of being as modular and distributed
 as possible. This modularity allows the user to be able to use as much or
@@ -193,6 +314,7 @@ a lookup mechanism to allow processes to find other process' addresses at
 runtime so as they can communicate. Nodes communicate by passing messages 
 that are data structures of typed fields which can include arbitrarily nested 
 structures and arrays~\cite{crick2017rosbridge}.
+
 
 Nodes can using two distinct ROS frameworks, services and topics. 
 Services are synchronous and perform like function
@@ -307,7 +429,7 @@ equivalent to search), one of the simplest algorithm
 is breadth-first search. This explores all neighbours at the same depth 
 before moving onto nodes at the next depth level. This would be guaranteed 
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
-where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}.
+where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}
 Breadth-first search searches the oldest discovered node first meaning 
 a large number of backtracks to reach the oldest discovered node. As 
 backtracking in physical space is expensive, this results in a very 
@@ -336,6 +458,7 @@ This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$
 \cite{xu2007improved}. An improvement to this original algorithm using a 
 min-priority queue implemented using a heap, runs in $\mathcal{O}
 (|E| + |V|log |V|)$ and was first proposed in~\cite{fredman1987fibonacci}.
+
 
 Developed initially as an extension of Dijkstra's algorithm, A* is a 
 pathfinding algorithm that typically achieves better performance by 
