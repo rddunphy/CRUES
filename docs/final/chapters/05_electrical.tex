@@ -3,60 +3,60 @@
 \chapter{Electrical}\label{electrical}
 
 \section{Power Distribution and Motor Drive}\label{elec/poweranddrive}
-The Pololu Power Distribution and Motor Drive board~\cite{pololupower} 
-was selected as the main circuit board for power distribution across 
-the robot. This board is the main accompanying part for the Romi 
-chassis chosen, and in addition to power distribution also provides 
-two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers built 
-in to control the motors. The board integrates with the chassis easily 
-and regulates the voltage provided by the 6 AA batteries, using an 
-MP4223H switching buck converter~\cite{mpbuck}, to \SI{5}{\volt} or 
-\SI{3.3}{\volt} at at a maximum of \SI{2.5}{\ampere}. This can be used 
-to power any microcontroller used by the robot, with the board 
-supplying the motors with the reverse protected voltage before 
-regulation. 
+The Pololu Power Distribution and Motor Drive board~\cite{pololupower}
+was selected as the main circuit board for power distribution across
+the robot. This board is the main accompanying part for the Romi
+chassis chosen, and in addition to power distribution also provides
+two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers built
+in to control the motors. The board integrates with the chassis easily
+and regulates the voltage provided by the 6 AA batteries, using an
+MP4223H switching buck converter~\cite{mpbuck}, to \SI{5}{\volt} or
+\SI{3.3}{\volt} at at a maximum of \SI{2.5}{\ampere}. This can be used
+to power any microcontroller used by the robot, with the board
+supplying the motors with the reverse protected voltage before
+regulation.
 
-The board was also configurable if required, allowing the supply to be 
-divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies 
-respectively dependent on the nominal voltage of the batteries used. 
-There are also a number of further jumper wires on the board which can 
-be cut for further voltage customisation. 
+The board was also configurable if required, allowing the supply to be
+divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies
+respectively dependent on the nominal voltage of the batteries used.
+There are also a number of further jumper wires on the board which can
+be cut for further voltage customisation.
 
-The DRV8838 Motor Driver takes two inputs of direction and Pulse Width 
-Modulation (PWM), which allows the motor speed to be controlled. The 
-driver also has a sleep input which can be used to coast the motors if 
-this would be beneficial. Each of the motors' respective sleep inputs 
-and are connected by default. These should not be driven at the same 
-time, as this results in short cases within the motor driver, however 
-the jumper wire between these can be cut to allow the sleep inputs to 
-be driven separately. 
+The DRV8838 Motor Driver takes two inputs of direction and Pulse Width
+Modulation (PWM), which allows the motor speed to be controlled. The
+driver also has a sleep input which can be used to coast the motors if
+this would be beneficial. Each of the motors' respective sleep inputs
+and are connected by default. These should not be driven at the same
+time, as this results in short cases within the motor driver, however
+the jumper wire between these can be cut to allow the sleep inputs to
+be driven separately.
 
-The power board also provides a power button and switch to control the 
-power supply. A separate board with only power distribution was 
-available, however, for the additional small cost, integration of 
-motor drivers was deemed a cost worthy addition. 
+The power board also provides a power button and switch to control the
+power supply. A separate board with only power distribution was
+available, however, for the additional small cost, integration of
+motor drivers was deemed a cost worthy addition.
 
-The boards were soldered to the battery contacts and headers soldered 
-onto the boards as the robots were assembled. 
+The boards were soldered to the battery contacts and headers soldered
+onto the boards as the robots were assembled.
 \subsection{Testing}\label{elec/poweranddrive/test}
-Once soldered, the power distribution board and motor driver board 
-were continuity tested.  
+Once soldered, the power distribution board and motor driver board
+were continuity tested.
 
 
 
 \todo{motor drive system test circiut
-should test power distribrutionat somepoint???} 
+should test power distribrutionat somepoint???}
 
 
 \section{Range Sensors}\label{elec/range}
-For the robot to localise itself, it needs to be able to measure the distance between itself and the surrounding environment. By recording the measurements relative to the robots current position, a point map can be built up over time and a general map of the environment can be constructed. 
+For the robot to localise itself, it needs to be able to measure the distance between itself and the surrounding environment. By recording the measurements relative to the robots current position, a point map can be built up over time and a general map of the environment can be constructed.
 
 \subsection{Design}\label{elec/range/design}
-Infra-red, ultrasound and LIDAR distance were all considered. These are all active sensors, meaning that they measure the effect of an output from the sensor, in these cases, IR light, ultrasonic waves or visible light respectively. 
+Infra-red, ultrasound and LIDAR distance were all considered. These are all active sensors, meaning that they measure the effect of an output from the sensor, in these cases, IR light, ultrasonic waves or visible light respectively.
 
-Of these three, LIDAR is generally considered to be the most effective as it is the most accurate and has a \ang{360} field of view However, it is both too expensive and too heavy for our application, especially considering that each robot would need one. 
+Of these three, LIDAR is generally considered to be the most effective as it is the most accurate and has a \ang{360} field of view However, it is both too expensive and too heavy for our application, especially considering that each robot would need one.
 \todo{infra red}
-Ultrasonic transceivers were therefore decided upon for use in this project. These work by transmitting sound at a particular frequency and measuring the time until the reflected wave returns to the sensor. These are also cheap, but produce a wider cone of transmission than the IR sensors, making them less likely to miss objects at the cost of accuracy in the direction of the measurement. 
+Ultrasonic transceivers were therefore decided upon for use in this project. These work by transmitting sound at a particular frequency and measuring the time until the reflected wave returns to the sensor. These are also cheap, but produce a wider cone of transmission than the IR sensors, making them less likely to miss objects at the cost of accuracy in the direction of the measurement.
 
 The ultrasonic sensor used was the HC-SR04
 \todo{merge with mech section}
@@ -74,7 +74,7 @@ Sensor selected and why
 \end{figure}
 
 \subsection{Implementation}\label{elec/range/impl}
-Sensor layout (3 deg cones) 
+Sensor layout (3 deg cones)
 circuit layout
 schematic
 
@@ -101,38 +101,38 @@ def get_scan():
     return USScan([rl, rc, rr])
 \end{lstlisting}
 
-This method allows the various readings to be taken without interfering with each other, as the second ultrasonic pulse isn't omitted until the first is received. 
+This method allows the various readings to be taken without interfering with each other, as the second ultrasonic pulse isn't omitted until the first is received.
 
 As \ref{lst:get_scan} shows,\textit{get\_range()} is used by \textit{get\_scan()} to find the distance measured by each sensor. This simply triggers the sensor and times how long until the echo pin turns high. The range is then calculated by the equation $ 2d = tv_s$ where $v_s$ is the speed of sound. It is then converted to mm.
 
 \subsection{Testing}\label{elec/range/test}
-The sensors were initially tested using a signal generator and an 
-oscilloscope. An object was then placed in front of the sensors 
+The sensors were initially tested using a signal generator and an
+oscilloscope. An object was then placed in front of the sensors
 and moved away. The expected output of this test was a linear increase
 in the width of the pulse width on the echo pin as the distance increased.
 This experiment allowed us to quickly identify 2 malfunctioning sensors. The pulse width could then be used to to calculate the measured distance
-and this compared to the distance found with a measuring tape. This found 
-approximately correct answers, however the precision with which we could 
-measure the pulse width was not great enough for effective testing. 
+and this compared to the distance found with a measuring tape. This found
+approximately correct answers, however the precision with which we could
+measure the pulse width was not great enough for effective testing.
 
-The wave forms produced are shown in Figure \ref{UltrasoundWaveform}. This shows the shorted echo pulse following the fall of the wider square wave on the trig pin, produced by the signal generator. 
+The wave forms produced are shown in Figure \ref{UltrasoundWaveform}. This shows the shorted echo pulse following the fall of the wider square wave on the trig pin, produced by the signal generator.
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Graphs/UltrasonicResponseGraph.jpg}
+	\includegraphics[width=0.5\textwidth]{graphs/UltrasonicResponseGraph.jpg}
 	\caption{Ultrasound Response Waveform}\label{UltrasoundWaveform}
 
 \end{figure}
 
-A circuit was then created to read the values using an Arduino microcontroller to allow the distance readings to be found quickly and the accuracy of the sensors measured. The readings from this were found to be approximately accurate (to at least within a half a cm, as measured with a tape measure), although rigorous testing was not performed as the accuracy would be dependant on the temperature due to changes in air pressure, and we had no way of accurately controlling this. 
+A circuit was then created to read the values using an Arduino microcontroller to allow the distance readings to be found quickly and the accuracy of the sensors measured. The readings from this were found to be approximately accurate (to at least within a half a cm, as measured with a tape measure), although rigorous testing was not performed as the accuracy would be dependant on the temperature due to changes in air pressure, and we had no way of accurately controlling this.
 
 The testing was then repeated using the RPi set-up as to test the software, with similar results obtained.
 
 \section{Encoders}\label{elec/encoder}
-Wheel encoders are required to measure the speed of each wheel independently. This gives the system far more control over its path as well as allowing it to perform dead reckoning through wheel odometry. 
+Wheel encoders are required to measure the speed of each wheel independently. This gives the system far more control over its path as well as allowing it to perform dead reckoning through wheel odometry.
 \subsection{Design}\label{elec/encoder/design}
- The motors selected had both incremental and absolute custom designed encoder, but as only the wheel speed is needed and not the position, the incremental rotary encoders were used. These were hall effect encoders, which measure the changing magnetic field of magnets which are attached to the motor shaft. It has two 6 pole magnets magnets which create 12 counts per revolution of the motor shaft, which, after scaling for the gear ratio of 120:1, results in 1440 counts per revolution of the robot wheel. 
- 
+ The motors selected had both incremental and absolute custom designed encoder, but as only the wheel speed is needed and not the position, the incremental rotary encoders were used. These were hall effect encoders, which measure the changing magnetic field of magnets which are attached to the motor shaft. It has two 6 pole magnets magnets which create 12 counts per revolution of the motor shaft, which, after scaling for the gear ratio of 120:1, results in 1440 counts per revolution of the robot wheel.
+
 The encoders are quadrature encoders, which represent the speed and direction of the wheels with two square waves where the frequency represents the speed and which of the two waves is leading shows the direction.
 
 \subsection{Implementation}\label{elec/encoder/impl}
@@ -160,41 +160,41 @@ def _callback_a(self, _):
 \subsection{Testing}\label{elec/encoder/test}
 The encoders were first tested to ensure that they functioned correctly using a test circuit and connecting the encoder outputs to an oscilloscope. All the encoders were shown to function correctly outputting square waves in both channels and with channel A leading B when the motor was moving forwards and B leading A when going forwards. \todo{check order}
 
-An example of the encoder output found is shown in Figure 
-\ref{EncoderGraph} below. This shows the two square waves produced by the 
+An example of the encoder output found is shown in Figure
+\ref{EncoderGraph} below. This shows the two square waves produced by the
 two encoder outputs a quarter wavelength out of phase.
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Graphs/EncoderGraph.jpg}
+	\includegraphics[width=0.5\textwidth]{graphs/EncoderGraph.jpg}
 	\caption{Encoder Output Test Waveforms}\label{EncoderGraph}
 
 \end{figure}
 
-This experiment allowed us to quickly confirm the correct functionality of 
-all 6 encoders, however did not allow us to test the accuracy. After this, 
-the motors were run at a low speed for several rotations while the system counted pulses. This was not an accurate test of the encoders, as the wheel could not be stopped at an exact integer multiple of rotations, however did verify that the system was approximately outputting 1440 counts per rotation. 
+This experiment allowed us to quickly confirm the correct functionality of
+all 6 encoders, however did not allow us to test the accuracy. After this,
+the motors were run at a low speed for several rotations while the system counted pulses. This was not an accurate test of the encoders, as the wheel could not be stopped at an exact integer multiple of rotations, however did verify that the system was approximately outputting 1440 counts per rotation.
 
 \section{IMU}\label{elec/imu}
-The IMU consists of a three axis accelerometer and a three axis gyroscope which can be used to measure both the linear acceleration and rotational velocity of the robot. This can be integrated and double integrated to track the robots position over time again performing dead reckoning. The system can then perform sensor fusion on this data and the encoder readings to get far more accurate results than possible with either system independently. 
+The IMU consists of a three axis accelerometer and a three axis gyroscope which can be used to measure both the linear acceleration and rotational velocity of the robot. This can be integrated and double integrated to track the robots position over time again performing dead reckoning. The system can then perform sensor fusion on this data and the encoder readings to get far more accurate results than possible with either system independently.
 
 \subsection{Design}\label{elec/imu/design}
 The IMU selected was the MPU-6050. It was the most accurate sensor of a similar budget with regards to noise, cross axis sensitivity and non linearity. Offset tolerance was also considered but this was less of a consideration as this can be compensated for as long as the offset is not so extreame as to limit the range. It was configured to operate in its smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$\cite{}\todo{citation}).
 
-The IMU was to be placed as close to the centre of the axis of the robot as possible, as when it is far from the centre of rotation the centripetal forces acting on it can interfere and be measured as linear motion away from the centre.  
+The IMU was to be placed as close to the centre of the axis of the robot as possible, as when it is far from the centre of rotation the centripetal forces acting on it can interfere and be measured as linear motion away from the centre.
 
 \subsection{Implementation}\label{elec/imu/impl}
 
-The IMU selected uses the I$^2$C protocol for data transmission, which integrates well with the RPi as it has dedicated I$^2$C GPIO pins and existing libraries to facilitate communication. 
+The IMU selected uses the I$^2$C protocol for data transmission, which integrates well with the RPi as it has dedicated I$^2$C GPIO pins and existing libraries to facilitate communication.
 
-It should be noted that, while this was the only I$^2$C device currently used, other devices with conflicting addresses can be handled as The IMU allows the address to be changed through a data pin from 0x68 to 0x69. This would most likely be used if the framework developed was being used on another, more complicated system requiring several IMUs. This pin was not connected to the RPi in this design as it was not yet required. 
+It should be noted that, while this was the only I$^2$C device currently used, other devices with conflicting addresses can be handled as The IMU allows the address to be changed through a data pin from 0x68 to 0x69. This would most likely be used if the framework developed was being used on another, more complicated system requiring several IMUs. This pin was not connected to the RPi in this design as it was not yet required.
 \todo{code description}
 
-An \verb|i2c_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device. 
+An \verb|i2c_object| class that used the smbus package was created to simplify the communication over the I\textsuperscript{2}C buses. These were initialised with an I\textsuperscript{2}C bus and an address, and contained various methods for reading and writing to the I\textsuperscript{2}C device.
 
 \todo{what code is interesting}
 
-An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write_byte()| call is essential to enable the IMU transmissions. 
+An \verb|IMU| class was then created to read the data from the IMU which and an \verb|i2c_object| instance. Code Listing \ref{lst:imu_init} shows the constructor for the IMU class. Note that the \verb|write_byte()| call is essential to enable the IMU transmissions.
 
 \begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
 def __init__(self, address, rate, channel=1):
@@ -205,7 +205,7 @@ def __init__(self, address, rate, channel=1):
     self.speed_vect = (0.0, 0.0, 0.0)
 \end{lstlisting}
 
-As the IMU returns arbitrary values between -32768 and 32767 \todo{source}, a constant was required to convert the results to meaningful values. The calculations for these is shown in Code Listing \ref{lst:imu_units}. 
+As the IMU returns arbitrary values between -32768 and 32767 \todo{source}, a constant was required to convert the results to meaningful values. The calculations for these is shown in Code Listing \ref{lst:imu_units}.
 
 \begin{lstlisting}[caption={Calculation for IMU Value to SI unit Conversion Constants},label={lst:imu_units} , language=python]
 GYRO_RANGE = 250  # deg/sec
@@ -217,7 +217,7 @@ ACC_DIVISIONS = 32768  # 2 ^15
 ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
 \end{lstlisting}
 
-The acceleration values can then be multiplied by the \textit{ACC\_UNITS} constant and the result is the acceleration in $ms^{-2}$, and \textit{GYRO\_UNITS} can be used similarly to find the rotation in $rads^{-1}$, as is shown in Code Listing \ref{lst:read_funcs}. 
+The acceleration values can then be multiplied by the \textit{ACC\_UNITS} constant and the result is the acceleration in $ms^{-2}$, and \textit{GYRO\_UNITS} can be used similarly to find the rotation in $rads^{-1}$, as is shown in Code Listing \ref{lst:read_funcs}.
 
 
 \begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
@@ -245,10 +245,10 @@ def get_speeds(self):
 
 
 \subsection{Testing}\label{elec/imu/test}
-Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame. 
+Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame.
 
 \section{PCB}\label{elec/pcb}
-As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board).  
+As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board).
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:
 \begin{itemize}
@@ -269,12 +269,44 @@ with the following physical design constraints:
   \item IMU chip in centre of axis
   \item Mounting holes for RPi and for mounting PCB to chassis
   \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
-  \item Motor drive connectors also at fixed position relative to centre 
+  \item Motor drive connectors also at fixed position relative to centre
 \end{itemize}
 
 \todo{maybe find coordinates of parts for fixed position components}
 
-\todo{pin constraints too??}
+\begin{table}[!ht]\centering
+\caption{Pin assignments for iterations of the PCB design
+\label{table:pin_assignments}}
+    \begin{tabular}{ccccc}
+        \toprule
+        \thead{Pin} & \thead{Description} & \thead{PCB v1\\(Blinky)} & \thead{PCB v2\\(Inky)} & \thead{PCB v3\\(Clyde)}\\
+        \midrule
+        GND & Ground                 & 9  & 9  & 9  \\
+        VCC & \SI{5}{\volt} supply   & 2  & 2  & 2  \\
+        MLD & Left motor DIR         & 11 & 11 & 11 \\
+        MLP & Left motor PWM         & 32 & 32 & 32 \\
+        MRD & Right motor DIR        & 15 & 21 & 23 \\
+        MRP & Right motor PWM        & 33 & 33 & 33 \\
+        MS  & Motor SLP              & 13 & 13 & 13 \\
+        ULT & Left ultrasonic TRIG   & 35 & 35 & 35 \\
+        ULE & Left ultrasonic ECHO   & 37 & 37 & 37 \\
+        UCT & Centre ultrasonic TRIG & 16 & 16 & 16 \\
+        UCE & Centre ultrasonic ECHO & 12 & 12 & 12 \\
+        URT & Right ultrasonic TRIG  & 22 & 22 & 22 \\
+        URE & Right ultrasonic ECHO  & 18 & 18 & 18 \\
+        ELA & Left encoder A         & 23 & 23 & 27 \\
+        ELB & Left encoder B         & 19 & 19 & 21 \\
+        ERA & Right encoder A        & 24 & 24 & 24 \\
+        ERB & Right encoder B        & 26 & 26 & 26 \\
+        LG  & Green LED              & 31 & 31 & 31 \\
+        LR  & Red LED                & 29 & 39 & 29 \\
+        SDA & \isc{} SDA (IMU)       & 3  & 3  & 3  \\
+        SCL & \isc{} SCL (IMU)       & 5  & 5  & 5  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\todo{Rationale for pin choices and why they were changed}
 
 With these constraints the following PCB design shown in figure \ref{PCB_Design}.
 
@@ -284,10 +316,10 @@ With these constraints the following PCB design shown in figure \ref{PCB_Design}
 	\caption{Final PCB Design}\label{PCB_Design}
 
 \end{figure}
-Note that the peculiar shape is to allow room for the motors and encoders. 
+Note that the peculiar shape is to allow room for the motors and encoders.
 
 \subsection{Testing}\label{elec/pcb/test}
 
 After the components were soldered into place on the PCB, manual continuity tests were performed with a multimeter to ensure that adjacent pins had not been connected in the soldering process.
 
-The PCB was then mounted and each module test was rerun to ensure that the connections were all correct. This process exposed a flaw as one of the ultrasonic sensors seemed to no longer work. After some investigation it was noticed that the screws being used had slightly larger heads than the screws used for mounting the test strip board and was connecting two tracks. A rubber washer was used as temporary fix and then this was corrected in the final PCB design. 
+The PCB was then mounted and each module test was rerun to ensure that the connections were all correct. This process exposed a flaw as one of the ultrasonic sensors seemed to no longer work. After some investigation it was noticed that the screws being used had slightly larger heads than the screws used for mounting the test strip board and was connecting two tracks. A rubber washer was used as temporary fix and then this was corrected in the final PCB design.
