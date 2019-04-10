@@ -23,7 +23,7 @@
     <node name="imu" pkg="crues_sensors" type="imu_node.py">
         <remap from="~rate" to="imu/rate" />
     </node>
-    
+
 <!--    <node name="cv" pkg="crues_sensors" type="vision_node.py">-->
 <!--	    <param name="recording" value="false" />-->
 <!--    </node>-->
