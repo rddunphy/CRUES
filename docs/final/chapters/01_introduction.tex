@@ -3,11 +3,11 @@
 \chapter{Introduction}\label{introduction}
 \section{Context}\label{introduction/context}
 Using multiple co-operating robots can be a useful strategy when attempting
-to complete tasks that can be parallelised, such as exploration of a large
-area. Usually, this requires a centralised system that can properly coordinate
+to complete tasks that can be divided and parallelised, such as exploration of a large
+area. Usually, this requires a centralised control system that can properly coordinate
 the efforts of the robots in accomplishing the task. However, in environments
 where radio communication is impossible or severely restricted, such as underground
-or in areas with high interference, the systems would be unable to complete
+or in areas with high interference, these systems would be unable to complete
 their task. In these circumstances, communication may be limited to
 non-telemetric sensors that require line-of-sight. Therefore, intelligent
 algorithms are required to co-operate effectively in environments where line-of-sight
@@ -25,15 +25,15 @@ non-autonomous agents~\cite{jimenez18}, or made use of extensive communication,
 such as by using the cloud~\cite{wensing2018cooperative}. This study will use
 restricted non-telemetric communication (i.e., local communication between
 neighbouring robots rather than communication over a central server). Co-operating
-well under this limitation poses additional challenges, which need to be overcome
+effectively under this limitation poses additional challenges, which need to be overcome
 in order to allow collaborative robotic exploration of environments such as caves.
 This application area was inspired in part by a recent incident necessitating cave
 exploration and rescue in Thailand~\cite{bbcthailand}.
 
-In order to abstract away the physical complexities of operating on difficult
+In order to remove the physical complexities of operating on difficult
 terrain and allow research to focus on communication and problem-solving algorithms,
 a toy problem has been devised for the robots to solve. This will take the form
-of a simple maze which contains an target that needs to be found and identified
+of a simple maze which contains a target that needs to be found and identified
 by the robots. The primary aim of the study is to construct multiple robots which can
 navigate this maze and co-ordinate their efforts to find the target more quickly than
 could be achieved by each robot individually.
