@@ -57,7 +57,7 @@ else
         echo "Fetching Rosbag files..."
         sshpass -p ${PWD} ssh crues@${IP} "mkdir -p ~/rosbag/"
         mkdir -p rosbag/${NAME}/
-        NUM="$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l)"
+        NUM=$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l)
         echo "Fetched ${NUM} files to rosbag/${NAME}/."
     done
 fi

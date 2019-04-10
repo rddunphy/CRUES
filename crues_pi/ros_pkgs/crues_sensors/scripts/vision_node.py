@@ -1,34 +1,44 @@
 #!/usr/bin/env python
 import cv2
 import numpy as np
-from imutils.video import VideoStream
-
-import rospy
-from crues_sensors.msg import Vision
+pi = False
 
 try:
     import RPi.GPIO as GPIO
     pi = True
 except ImportError:
     from crues import GPIO_MOCK as GPIO
-    pi = False
+
+if pi:
+    from crues_sensors.msg import Vision
+    from imutils.video import VideoStream
+    import rospy
 
 
 class RobotDetector:
     def __init__(self):
         self.name = "Robot"
-        self.robot_colours = [("Inky", ([110, 100, 40], [140, 255, 255]), (255, 0, 0)),
-                              ("Clyde", ([20, 120, 100], [50, 255, 255]), (0, 255, 255)),
-                              ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255))]
+        self.robot_colours = [("Inky", ([105, 80, 30], [145, 255, 255]),(255, 0, 0)),
+                              ("Clyde", ([15, 100, 80],[30, 255, 255]), (0, 255, 255)),
+                              ("Blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255)),
+                              ("GOAL", ([35, 80, 80], [90, 255, 255]), (0, 255, 0))
+                              ]
 
         if pi:
-            frameSize = (320, 240)
+            frameSize = (640, 480)
+            self.frame_rate = rospy.get_param('~framerate', 10)
             self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frameSize,
-                                   framerate=32).start()
+                                   framerate=self.frame_rate).start()
+            rospy.init_node("vision", anonymous=False)
+            self.recording = rospy.get_param("~recording", False)
+            self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
+            self.rate = rospy.Rate(self.frame_rate)
+            if self.recording:
+                # Define the codec and create VideoWriter object
+                fourcc = cv2.VideoWriter_fourcc(*'XVID')
+                self.recorder = cv2.VideoWriter('/home/crues/rosbag/output.avi', fourcc, self.frame_rate, (640, 480))
         else:
             self.cap = cv2.VideoCapture(1)
-        rospy.init_node("vision", anonymous=False)
-        self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
 
     def search(self, search_frame):
         """Search search_frame for other robots and return relevant information
@@ -46,7 +56,7 @@ class RobotDetector:
             cx, cy, outline = None, None, None
             obj_found = False
             for c in contours:
-                if cv2.contourArea(c) > max((300, maxsize)):  # & cv2.arcLength(c,True):
+                if cv2.contourArea(c) > max((10000, maxsize)):  # & cv2.arcLength(c,True):
                     maxsize = cv2.contourArea(c)
                     cx, cy = self.get_centre_point(c)
                     outline = self.get_outline(c)
@@ -103,36 +113,45 @@ class RobotDetector:
         return cX, cY
 
     def spin(self):
-        rate = rospy.Rate(rospy.get_param('~rate', 50))
         try:
             while not rospy.is_shutdown():
+            #while self.cap.isOpened():
                 self._tick()
-                rate.sleep()
+                self.rate.sleep()
         finally:
-            pass
+            if self.recording:
+                self.recorder.release()
             # self._cleanup()
 
     def _tick(self):
         if pi:
             frame = self.cap.read()
+            frame = cv2.flip(frame, -1)
         else:
             _, frame = self.cap.read()
-        names, found, coords, outlines, highlight_colours = self.search(frame)
-        names_found = [names[i] for i in range(len(names)) if found[i]]
-        # for i, name in enumerate(names):
-        #    if found[i]:
-        # x, y, w, h = cv2.boundingRect(outlines[i])
-        # cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-        # cv2.putText(frame, name, (x - 20, y - 20),
-        #            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
-        msg = Vision()
-        msg.robot_list = ",".join(names_found)
-        self.pub.publish(msg)
+        if frame is not None:
+            names, found, coords, outlines, highlight_colours = self.search(frame)
+            names_found = [names[i] for i in range(len(names)) if found[i]]
+            if self.recording:
+                for i, name in enumerate(names):
+                    if found[i]:
+                        x, y, w, h = cv2.boundingRect(outlines[i])
+                        cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
+                        cv2.putText(frame, name, (x - 20, y - 20),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+                self.recorder.write(frame)
+            msg = Vision()
+            msg.robot_list = ",".join(names_found)
+            self.pub.publish(msg)
 
-
-def show_labelled_video():
+def _test():
     cap = cv2.VideoCapture(0)
     rd = RobotDetector()
+
+    # Define the codec and create VideoWriter object
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    rec = False
     while 1:
         _, frame = cap.read()
         names, found, coords, outlines, highlight_colours = rd.search(frame)
@@ -144,18 +163,27 @@ def show_labelled_video():
                 x, y, w, h = cv2.boundingRect(outlines[i])
                 cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
                 cv2.putText(frame, name, (x - 20, y - 20),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
         cv2.imshow('frame2', frame)
-        if cv2.waitKey(10) & 0xFF == ord('q'):
+        out.write(frame)
+        key = cv2.waitKey(10)
+        if key & 0xFF == ord('r'):
+            if rec:
+                out.release()
+                rec = False
+            else:
+                print("Recording")
+                rec = True
+        if key & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
 
-
 if __name__ == '__main__':
-    try:
-        cv = RobotDetector()
-        cv.spin()
-    except rospy.ROSInterruptException:
-        if pi:
+    if pi:
+        try:
+            cv = RobotDetector()
+            cv.spin()
+        except rospy.ROSInterruptException:
             cv.cap.stop()
-        pass
+    else:
+        _test()

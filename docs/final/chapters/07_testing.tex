@@ -1,17 +1,196 @@
 % !TEX root = ../report.tex
 
 \chapter{System Testing}\label{systest}
+System testing took place following integration testing and 
+the full construction of the robot. The aim of system testing is to ensure that 
+each of the component parts work as expected when working together, and to test 
+and evaluate the system as a whole. A modular 
+maze testing environment was used throughout integration and 
+system testing to allow as many different maze configurations 
+as possible to be tested. Throughout integration the modular maze was used as a 
+``SLAM playground'', where various sized boxes or simple two area configurations 
+were used to test the robot's capabilities in these environments and assess the 
+SLAM maps built when using these configurations. 
+\section{Modular Maze}\label{test/maze}
+The modular maze environment was created with system testing of as many maze 
+configurations as possible in mind. By creating a modular environment, the maze 
+was also reusable in future iterations of the project, or similar projects which 
+required a secure area to test autonomous vehicles. 
+\subsection{Design}\label{test/maze/design}
+\todo{some page formatting??}
+With these broad specifications in mind, a list of requirements for the maze 
+environment was created. 
 
-\section{Modular Maze}\label{mech/maze}
+\begin{table}[!ht]\centering
+\caption{Modular Maze Requirements
+\label{maze_reqs}}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{Requirement} & \thead{Priority}\\
+        \midrule
+        Be easily modifiable & High\\
+        Have enough cells to allow varied mazes & High\\
+        Have minimum cell width $>$ diameter of the robot & High\\
+        Be accompanied by sufficient ``pegs'' and ``walls'' to build complex 		mazes & High\\
+        Wall material be non-translucent and non-reflective & Medium\\
+        Base material be non-reflective & Medium\\
+        Maze be easily transportable & Medium\\
+        Maze base be modular & Low\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\subsection{Design}\label{mech/maze/design}
+These requirements were then used to create a number of approximate ideas which 
+were presented to the mechanical workshop. The maze base would be \SI{1280 x 
+1690 x 18}{\mm}, giving 7 columns by 9 rows of peg holes each \SI{12}{\mm} in 
+diameter and \SI{210}{\mm} from centre to centre. The holes drilled into the 
+maze base would be \SI{15}{\mm} in depth leaving a \SI{3}{\mm} section of the 
+base board un-drilled within the hole for the peg to rest on. The ``pegs'' would 
+then be \SI{165}{\mm}, a protrusion of \SI{150}{\mm} from the top of the base 
+board, with a cross slit cut from the top to roughly \SI{75}{\mm} down the peg 
+(half the visible portion). These slits would be approximately \SI{3}{\mm} to 
+allow the walls to be slotted in. In order for this to be accomplished, the 
+walls would be winged --- \SI{208}{\mm} at the top and \SI{196}{\mm} \SI{75}
+{\mm} from the top. This gives \SI{6}{\mm} spaces at either side to allow for 
+the diameter of the peg and means the walls can be slotted between two pegs with 
+ease. 
 
-\subsection{Implementation}\label{mech/maze/impl}
+The materials required were researched in order to obtain the measurements 
+above, such as \SI{12}{\mm} being a standard size for wood dowel and \SI{3}{\mm} 
+and \SI{18}{\mm} respectively being depths of MDF which could be used for the 
+walls and base boards. These requirements, descriptions and accompanying 
+drawings were delivered to the mechanical workshop for construction to begin. 
 
+\subsection{Implementation}\label{test/maze/impl}
+The mechanical workshop required a number of changes to the original design in 
+order for the maze to be created.
 
+Foremost, the largest single item of solid wood which could be obtained from 
+suppliers was smaller than the requested measurements of \SI{1280 x 1690 x 18}
+{\mm}. Two resolutions were proposed to this by the mechanical workshop: reduce 
+the width of each cell, or remove a column of holes from the maze. Following 
+team consultation, it was decided that reducing the size of each cell would 
+result in more flexibility in the end product, as even if the robot couldn't 
+make a full turn in a single cell, 3 columns of two cell wide paths could still 
+be created. It is also worth noting that the reduced cell width of \SI{195}{\mm} 
+still met the requirement of the cell width being larger than the diameter of 
+the robot. 
 
+Secondly, the materials used for the walls and pegs would not be wood as this 
+would involve a number of man hours to create the slits in the dowel and 
+manually cut the walls to size. In order to streamline the process, it was 
+suggested that the walls be made of perspex\todo{is this right??} --- to allow 
+them to be laser cut --- and the pegs be 3D printed --- allowing mass printing 
+once a design had been finalised. The group agreed that this was a good idea and 
+in order for the pegs to be 3D printed they had to be made using CAD modelling 
+software. None of the group had particular experience using this software, hence 
+a steep learning curve was involved in carrying out this task. 
+
+A peg matching the original specifications was modelled, however upon delivery 
+to the mechanical workshop, the group were informed that this designed had 
+changed to allow the walls to be cut as rectangles only --- with no wings. A new 
+peg design was created which had slits at each \SI{90}{\degree} interval, 
+running the length of the peg. This allowed the wall to be dropped in without 
+the need for wings. This peg design was also modelled. 
+
+Upon returning to the mechanical workshop the group were once again informed 
+that the peg design had to be altered. The base board had been drilled through 
+and so the pegs now required a smaller peg on the bottom and a rim to ensure 
+that they did not fall through the base board. The agreed design was the same as 
+previously with the new peg diameter as \SI{15}{\mm} and the small peg at the 
+bottom, the original \SI{12}{\mm} diameter and \SI{15}{\mm} in length. The 
+design was agreed and the peg was modelled. 
+
+Midway through modelling the group were called by the mechanical workshop and 
+informed that the perspex which had been ordered was slightly greater than the 
+originally thought \SI{3}{\mm} and so the slits would have to be widened to 
+\SI{4}{\mm} to allow for this. The model was altered to account for this change. 
+This peg was delivered to the mechanical workshop and 3D printed. 
+
+Unfortunately, once printed it was discovered that the design resulted in a peg 
+which was unstable and often broke at the base. The mechanical workshop 
+attempted to resolve this issue by increasing the density of the printing, 
+however this was unsuccessful. Eventually, the mechanical workshop concluded 
+that ordering a pre-slitted rod of aluminium and attaching metal pegs to the 
+base to allow them to fit into the base board would be the best solution. This 
+solution was successful and the maze with \todo{with XX pegs and XX walls} was 
+delivered in full shortly afterwards. 
+
+As can be seen from the table below the requirements laid out in the design 
+phase (see Section~\ref{test/maze/design}) were largely met with the only two 
+requirements not met being of medium or low priority.  
+
+\begin{table}[!ht]\centering
+\caption{Modular Maze Requirements
+\label{maze_reqs_met}}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{Requirement} & \thead{Priority} & \thead{Met}\\
+        \midrule
+        Be easily modifiable & High & Met\\
+        Have enough cells to allow varied mazes & High & Met\\
+        Have minimum cell width $>$ diameter of the robot & High & Met\\
+        Be accompanied by sufficient ``pegs'' and ``walls'' to build complex 		mazes & High & Met\\
+        Wall material be non-translucent and non-reflective & Medium & Met\\
+        Base material be non-reflective & Medium & Met\\
+        Maze be easily transportable & Medium & Not Met\\
+        Maze base be modular & Low & Not Met\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 \section{Testing Strategy}\label{systest/strategy}
+The testing strategy designed for system testing was to develop a number of 
+increasingly difficult mazes and test the capability of the robot to find a goal 
+in each of these mazes. Additional robots will then be added to each of these 
+configurations and the time recorded for quantitative testing of the project. 
+Throughout the tests, qualitative results and conclusions will also be drawn to 
+determine if the robots are co-operating effectively when searching the various 
+maze configurations. 
 
+A number of maze configurations were drawn up to be used as the default test 
+cases for the robots. These configurations are shown below. \todo{add maze 
+diagram} It is worth noting that these configurations were created before the 
+cell width of the maze was reduced and therefore, maze configurations with 1 
+cell width paths are significantly more difficult to traverse than previously 
+thought. This will be taken into consideration when testing and adjusted 
+accordingly if required. 
 
 
 \section{Results}\label{systest/results}
+Due to the issues described with SLAM and PID tuning described in Sections~
+\ref{soft/SLAM/impl} and \todo{add PID tuning section}~\ref{} respectively, 
+minimal system testing took place. The system tests which did take place were 
+without SLAM/with poor SLAM and therefore could have no AI module as this is 
+dependent on knowing the world state (having a map built). Despite this, the 
+system as it was at the end of the project was tested on the maze configurations 
+and the results are as follows. \todo{Are we gpoing to do this?}
+
+\begin{table}[!ht]\centering
+\caption{Results
+\label{results}}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{Maze Configuration} & \thead{Number of Agents} & \thead{Time taken[\si{\second}]}\\
+        \midrule
+        1 & 1 & xx\\
+        1 & 2 & xx\\
+        2 & 1 & xx\\
+        2 & 2 & xx\\
+        3 & 1 & xx\\
+        3 & 2 & xx\\
+        4 & 1 & xx\\
+        4 & 2 & xx\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The results shown are not indicative of the project had it been completed in its 
+entirety, however these results give benchmark scores for the shown maze 
+configurations with what is essentially a random AI module on top. In practice 
+the robots performance is slightly worse than this as there is also no mapping, 
+and so a random AI could perform better. This is because in this case choices 
+regarding paths would still be being made and paths would not be being repeated 
+which can be the case in these results. Work detailed in further work (Section~
+\ref{furtherwork}) can use the results shown here as benchmark results and 
+measure the success of SLAM and AI implementations against these results to 
+evaluate progress being made.  \todo{add more when we have the results}
