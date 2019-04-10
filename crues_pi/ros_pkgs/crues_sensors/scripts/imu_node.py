@@ -59,6 +59,7 @@ class IMU:
         rospy.init_node("imu")
         self.pub = rospy.Publisher('imu_data', Imu, queue_size=10)
         self.freq = rospy.get_param('~rate', 5)
+        self.frame_id = rospy.get_param('~frame_id', 'base_link')
         self.rate = rospy.Rate(self.freq)
         self.address = address
         self.i2c = I2C(self.address, channel=channel)
@@ -102,6 +103,7 @@ class IMU:
         acc = self.read_accel()
         gyro = self.read_gyro()
         msg = Imu()
+        msg.header.frame_id = self.frame_id
         msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # indicate orientation unknown
         msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
         msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
