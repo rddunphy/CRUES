@@ -5,14 +5,14 @@ pins:
   mld: 11
   uce: 12
   ms:  13
-  mrd: 23
+  mrd: 19
   uct: 16
   ure: 18
   urt: 22
-  ela: 27
+  ela: 21
   era: 24
   erb: 26
-  elb: 21
+  elb: 23
   lg:  31
   lr:  29
   mlp: 32
