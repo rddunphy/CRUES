@@ -1,26 +1,31 @@
 % !TEX root = ../report.tex
 
 \begin{abstract}
-\noindent
-This project aims to develop co-operative robotic systems which effectively map and search an area using non-telemetric communication. This will allow the systems to perform even in environments which hinder telemetry, such as caves or tunnels. Each of these systems should be able to solve this problem individually; however, after the introduction of multiple robots to the area, they should be able coordinate their movements to distribute the task and the problem should be solved faster.
-The robots will be tested in a custom-made modular testing environment, which will be used to construct simple mazes in which a target is to be located, and evaluated based on
-their performance both individually and co-operatively.
-Detailed analysis of the electrical, software and mechanical design solutions made
-is presented. The robots will use a differential drive system and will be designed
-and constructed with the necessary hardware to complete the task of exploring
-their maze-like environment in a distributed fashion. Computer vision systems
-on the robots will be used in conjunction with ultrasonic sensors to perceive the
-environment and identify other robots in the group, and incremental encoders and an
-inertial measurement unit will be used to track the robots position and orientation.
-Communication will be conducted over Wi-Fi systems, which
-will be artificially restricted to require line-of-sight, so as to simulate situations
-where global communication is not possible.
-The report also contains extensive discussion of the project management
-approach used to properly coordinate the project team. The structure of the
-team and practices employed have been considered carefully and a detailed timeline
-developed to ensure minimum project risk.
-\todo{Testing outcomes}
-The outcomes of the testing were
-\todo{Evaluation}
-The project was evaluated as being overall success/failure.
+\noindent 
+%This is 283 words as of 19:08 Thursday, don't think we should add much to it length wise
+This project aims to develop co-operative robots which effectively map and 
+search an area using non-telemetric communication. This will allow the
+robotic systems to perform even in environments which hinder telemetry, such as
+caves or tunnels. Each of these systems should be able to solve this problem 
+individually; however, after the introduction of multiple robots to the area,
+they should be able to distribute the task to solve it quicker. The robots will
+be tested in a custom-made modular testing maze environment, in which a target
+is to be located, and their performance evaluated both individually and
+co-operatively. Detailed analysis of the electrical, software and mechanical design 
+solutions made is presented. The robots use computer vision software in 
+conjunction with ultrasonic sensors to perceive the environment and identify
+other robots in the group, and incremental encoders and an inertial measurement
+unit are used to track the robots position and orientation. Communication
+is conducted over ad-hoc Wi-Fi, which is artificially restricted to require 
+line-of-sight between robots, so as to simulate situations where global
+communication is not possible. The report also contains extensive discussion of
+the project management approach used to properly coordinate the project team. The 
+structure of the team and practices employed have been considered carefully and a 
+detailed timeline was developed to minimise potential risk. Each individual
+component was tested in isolation, before being integrated. Despite
+not all of the objectives being accomplished, the project can be deemed 
+successful. Unforeseen delays and technical difficulties delayed the completion
+of some latter objectives which has resulted in the AI module not being integrated. 
+However, the system implemented was to a high standard, with its modularity
+meaning it could easily be continued in the future.
 \end{abstract}
