@@ -440,7 +440,7 @@ Wheel Odometry is derived in two parts. Firstly, the speed
 
 As was discussed in Section~\ref{elec/imu}, the IMU can also be used to perform dead reckoning, and this can be fused with the wheel odometry to improve the accuracy of the system.
 
-For other nodes to use the IMU data, the readings had to be converted into a ROS IMU message~\cite{ROSIMUMsg} consisting of: a ROS header message~\cite{ROSHeaderMsg}; a quaternion representing the orientation; a 3 element vector for the rotational speed; a 3 element vector for the linear acceleration; and covariance matrices for each of these measurements. The code imu\_node uses to create an IMU messages is shown in Code Listing~\ref{lst:imu_message}
+For other nodes to use the IMU data, the readings had to be converted into a ROS IMU message~\cite[std\_msgs/Imu]{RosDocs} consisting of: a ROS header message; a quaternion representing the orientation; a 3 element vector for the rotational speed; a 3 element vector for the linear acceleration; and covariance matrices for each of these measurements. The code imu\_node uses to create an IMU messages is shown in Code Listing~\ref{lst:imu_message}
 
 
 \begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
@@ -455,7 +455,7 @@ def _publish_data(self):
         ...
 \end{lstlisting}
 
-There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to \textit{base\_link}.
+There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6-DOF IMU~\cite[std\_msgs/Imu]{RosDocs}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to \textit{base\_link}.
 
 The ROS spin functionality was used for the IMU, so
 \textit{\_publish\_data} is run at a set
@@ -479,7 +479,10 @@ To test the IMU integration with ROS, the ROS IMU visualisation software. The ro
 	\caption{IMU RVIZ Test}\label{fig:imu_test}
 \end{figure}
 
-\subsection{EKF}\label{soft/odometry/test}
+\subsection{EKF}\label{soft/odometry/ekf}
+
+
+
 
 
 \section{SLAM}\label{soft/SLAM}
