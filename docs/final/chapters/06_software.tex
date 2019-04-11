@@ -478,34 +478,32 @@ The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dotth
 \dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
 \end{align}
 
-
-
 \subsection{IMU}\label{soft/odometry/imu}
 
-As was discussed in Section \ref{elec/imu}, the IMU can also be used to perform dead reckoning, and this can be fused with the wheel odometry to improve the accuracy of the system. 
+As was discussed in Section~\ref{elec/imu}, the IMU can also be used to perform dead reckoning, and this can be fused with the wheel odometry to improve the accuracy of the system.
 
-For other nodes to use the IMU data, the readings had to be converted into a ROS IMU message\todo{cite} consisting of: a ROS header message \todo{cite}; a quaternion representing the orientation; a 3 element vector for the rotational speed; a 3 element vector for the linear acceleration; and covariance matrices for each of these measurements. The code imu\_node uses to create an IMU messages is shown in Code Listing \ref{lst:imu_message}
+For other nodes to use the IMU data, the readings had to be converted into a ROS IMU message~\cite[std\_msgs/Imu]{RosDocs} consisting of: a ROS header message; a quaternion representing the orientation; a 3 element vector for the rotational speed; a 3 element vector for the linear acceleration; and covariance matrices for each of these measurements. The code imu\_node uses to create an IMU messages is shown in Code Listing~\ref{lst:imu_message}
 
 
 \begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
-
 def _publish_data(self):
         ...
         msg = Imu()
         msg.header.frame_id = self.frame_id
-        msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # indicate orientation unknown
+        msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0]  # indicate orientation unknown
         msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
         msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
         ...
 \end{lstlisting}
 
-There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6dof IMU \todo{cite imu message}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section \ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to \textit{base\_link}.
+There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6-DOF IMU~\cite[std\_msgs/Imu]{RosDocs}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to \textit{base\_link}.
 
-The ROS spin functionality was used for the IMU, so 
-\textit{\_publish\_data} is run at a set 
-frequency. This frequency, along with the topic the 
-IMU is published to, is set in the launch file, as 
-shown in Code Listing \ref{lst:imu_launch}
+The ROS spin functionality was used for the IMU, so
+\textit{\_publish\_data} is run at a set
+frequency. This frequency, along with the topic the
+IMU is published to, is set in the launch file, as
+shown in Code Listing~\ref{lst:imu_launch}
 
 \begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
 <node name="imu" pkg="crues_sensors" type="imu_node.py">
@@ -521,7 +519,10 @@ shown in Code Listing \ref{lst:imu_launch}
 	\caption{IMU RVIZ Test}\label{fig:imu_test}
 \end{figure}
 
-\subsection{EKF}\label{soft/odometry/test}
+\subsection{EKF}\label{soft/odometry/ekf}
+
+
+
 
 
 \section{SLAM}\label{soft/SLAM}
@@ -567,28 +568,28 @@ true positives. It was decided that this would be too
 computationally intensive considering the strict constraint of
 using a Raspberry Pi.
 
-The method used was by far the simplest considered. It identified the other robots and target 
-by their colour. This was only possible as each robot used had a distinct coloured chassis, 
-which lacks scalability, but was considered an acceptable simplification as this was not the 
+The method used was by far the simplest considered. It identified the other robots and target
+by their colour. This was only possible as each robot used had a distinct coloured chassis,
+which lacks scalability, but was considered an acceptable simplification as this was not the
 focus of the project.
 
-This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space, 
-simplifying the colour detection as the hue of the pixel is determined by a single value 
-instead of the ratio of three values. A colour can then be identified by a range of H values 
-and then a minimum S and V values, which is far more intuitive than checking if it falls into a 
+This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space,
+simplifying the colour detection as the hue of the pixel is determined by a single value
+instead of the ratio of three values. A colour can then be identified by a range of H values
+and then a minimum S and V values, which is far more intuitive than checking if it falls into a
 range of ratios between R, G and B values.
 
 \subsection{Implementation}\label{soft/cv/impl}
-The \textit{vision\_node} works using a ROS spin setup, with a \textit{spin()} function being 
+The \textit{vision\_node} works using a ROS spin setup, with a \textit{spin()} function being
 called at a set frequency until ROS closes.
 
-A \textit{RobotDetector} object is declared which has the range of HSV values for each robot 
-and the goal, and has a video capture object. It contains a \textit{search()} function which 
-takes a frame as a parameter and returns various details about each robot's presence in the 
-frame. \textit{search()} first calls \textit{get\_colour\_mask()} for each range of colour 
-values. This converts the image to HSV, then makes a frame, \textit{mask}, which is white where 
-the pixel in range and and black for out of range. This is shown in Code Listing 
-\ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours 
+A \textit{RobotDetector} object is declared which has the range of HSV values for each robot
+and the goal, and has a video capture object. It contains a \textit{search()} function which
+takes a frame as a parameter and returns various details about each robot's presence in the
+frame. \textit{search()} first calls \textit{get\_colour\_mask()} for each range of colour
+values. This converts the image to HSV, then makes a frame, \textit{mask}, which is white where
+the pixel in range and and black for out of range. This is shown in Code Listing
+\ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
 \begin{lstlisting}[caption={get\_colour\_mask in RobotDetector},label={lst:get_colour_mask} , language=python]
@@ -609,13 +610,13 @@ def get_colour_mask(self, frame, lower_hsv_bound, higher_hsv_bound):
 
 \end{lstlisting}
 
-The function then uses erosion and dilation functions provided by opencv to reduce noise in the 
+The function then uses erosion and dilation functions provided by opencv to reduce noise in the
 mask.
 
-The contours in the mask are then iterated through to find the biggest, which is assumed to be 
-the object and the centre point and outline of the contour is found. If no contours are bigger 
-than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and 
-the corresponding \textit{obj\_found} variable is set to false. This process is shown in Code 
+The contours in the mask are then iterated through to find the biggest, which is assumed to be
+the object and the centre point and outline of the contour is found. If no contours are bigger
+than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and
+the corresponding \textit{obj\_found} variable is set to false. This process is shown in Code
 Listing \cite{lst:cv_search_loop}.
 
 \begin{lstlisting}[caption={Contour Iteration in search()},label={lst:cv_search_loop} , language=python]
@@ -629,22 +630,22 @@ for c in contours:
 ...
 \end{lstlisting}
 
-These parameters are then returned to the 
-\textit{\_tick()} function which was called by 
-\textit{spin()}. This then renders debug info to 
-the frame if it's performing a test, or publishes 
-the detected robot info via a ROS message 
-consisting of a comma separated list of objects 
-detected in the last frame. 
+These parameters are then returned to the
+\textit{\_tick()} function which was called by
+\textit{spin()}. This then renders debug info to
+the frame if it's performing a test, or publishes
+the detected robot info via a ROS message
+consisting of a comma separated list of objects
+detected in the last frame.
 
 \subsection{Testing}\label{soft/cv/test}
-Initial testing of the \textit{vision\_node} was 
-performed on a PC with a USB webcam. The testing 
-was performed by using the position information to 
-render labelled rectangles to a real time stream 
-highlighting the position of the objects. The code 
-for this is shown in Code Listing 
-\ref{lst:draw_rectangles}. 
+Initial testing of the \textit{vision\_node} was
+performed on a PC with a USB webcam. The testing
+was performed by using the position information to
+render labelled rectangles to a real time stream
+highlighting the position of the objects. The code
+for this is shown in Code Listing
+\ref{lst:draw_rectangles}.
 
 
 \begin{lstlisting}[caption={asd},label={lst:draw_rectangles} , language=python]
@@ -667,17 +668,17 @@ An example of this running is shown in Figure \ref{fig:cv_screenshot}
 
 \end{figure}
 
-The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to 
-test both the integration with the RPi and with ROS. Various detectable objects were moved in 
-and out of the frame and changes in the output were observed. This initially failed as the RPi 
-camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function 
-does not support. When running on the RPi, this was replaced with imutil's VideoStream package. 
-After this the test performed as expected, consistently identifying which objects were in 
+The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to
+test both the integration with the RPi and with ROS. Various detectable objects were moved in
+and out of the frame and changes in the output were observed. This initially failed as the RPi
+camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function
+does not support. When running on the RPi, this was replaced with imutil's VideoStream package.
+After this the test performed as expected, consistently identifying which objects were in
 frame.
 
-Functionality was then added to record the feed as to see how the computer vision responded as 
-the robot was traversing the maze, however there were issues with frame rate as it was too 
-computationally intensive for the RPi to perform the recording as well as all the other 
+Functionality was then added to record the feed as to see how the computer vision responded as
+the robot was traversing the maze, however there were issues with frame rate as it was too
+computationally intensive for the RPi to perform the recording as well as all the other
 computation.
 
 \section{AI \& Control Modules}\label{soft/ai}
