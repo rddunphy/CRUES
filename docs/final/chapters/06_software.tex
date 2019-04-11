@@ -433,8 +433,50 @@ was sufficiently thread-safe to be used.
 
 \subsection{Wheel Odometry}\label{soft/odometry/wheel}
 
-Wheel Odometry is derived in two parts. Firstly, the speed
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
+	\caption{The variables used to calculate wheel odometry}
+	\label{fig:diff_drive_diagram}
+\end{figure}
 
+Wheel Odometry is derived in two parts. Firstly, as discussed in section
+\ref{soft/PID/impl}, the velocity of each wheel is derived from the output of the
+encoders. Then, with only these values and the distance between the wheels
+(usually called the track of the wheels), the linear and angular velocities in two
+dimensions can be derived. Furthermore, by tracking both of these values over
+time, an estimate of global displacement can be attained, though due to the lack
+of reliability in the encoder data, this estimate is very likely to drift over
+time.
+
+Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
+wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
+and rotation from the origin. These values are reflected in figure \ref{fig:diff_drive_diagram}.
+
+The ideal differential drive system has only two ``states'' of movement, either
+moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
+the spot as a result of $u_l$ being the inverse of $u_r$. This makes derivation of
+equations for the odometry fairly simple. 
+
+When moving in a straight line, the linear velocity of the system is simply the
+velocity of either wheel, in the direction $\theta$, while rotational velocity
+should be $0$. To achieve the latter, the velocity used in the calculation is $0.5 (u_l + u_r)$, which is $0$ in the case where $u_l = -u_r$ and unchanged otherwise.
+Splitting the velocities across the axes with the cosine and sine of $\theta$ achieves a reasonable result for these velocities.
+
+Likewise, in the case of rotation, the linear velocities should be $0$. When the
+robot rotates at some rate, say $\phi$, around its centre, the wheel must move at $u_r = 0.5 L \phi$ ($u_l = -u_r$ as the axis of rotation is the centre of the
+robot). Like in the previous case, the velocity used in the calculation is to be 0
+in the case where $u_l = u_r$, so the value
+used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation. 
+
+The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dottheta}.
+
+
+\begin{align}
+\dot{x} & = \frac{(u_l + u_r)}{2} \cos(\theta) \label{eq:dotx} \\
+\dot{y} & = \frac{(u_l + u_r)}{2} \sin(\theta) \label{eq:doty} \\
+\dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
+\end{align}
 
 \subsection{IMU}\label{soft/odometry/imu}
 
@@ -470,8 +512,6 @@ shown in Code Listing~\ref{lst:imu_launch}
 \end{lstlisting}
 
 \subsubsection{IMU Testing}\label{soft/odometry/imu/test}
-
-To test the IMU integration with ROS, the ROS IMU visualisation software. The robot was then rotated in each axis, and the output visualised.  Figure \ref{fig:imu_test} shows the IMU RVIZ visualisation along side the corresponding position of the robot. Note that this only a small selection of the test data, but all results appeared to accurately reflect the movements performed.
 
 \begin{figure}[!ht]
 	\centering
