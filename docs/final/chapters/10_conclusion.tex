@@ -1,3 +1,64 @@
 % !TEX root = ../report.tex
 
 \chapter{Conclusion}\label{conclusion}
+
+As previously mentioned, tasks that can be parallelised can be solved more 
+effectively by using multiple co-operating robots, such as exploration of a large 
+area. However, in some environments, such as underground or in areas of high 
+interference, communication is severly restricted and the robots would not be able
+to co-operate to complete their task. Furthermore, usually systems of co-operating robots 
+use a centralised control node to coordinate. Our system was designed so each robot was 
+homogenous and operated without this central control unit. This introduced reduncency, 
+which is important given the dangerous environments they could be used in, allowing 
+the remaining robots to complete the task in the event of the failure of another. 
+The robots were also designed to strictly only be able to communicate with other robots 
+when they had line-of-sight with each other to simulate potentially restrictive 
+environments.  
+
+The mechanical design and implementation of each of the robots can be deemed as 
+successful as our key requirements were met. To ensure the system was  
+scalable the mechanical design had to be accurately reproduced. This would allow the 
+software to be used to be across all the robots without any alterations needed. As a 
+result, choosing to use a pre-built chassis was the correct decision. Although given 
+the unforeseen issues with regards the reliability of the Pololu kit, the 
+requirements to restrict the total cost means there likely is not a better 
+alternative. Similarly, the mechanical design of the modular maze environment can 
+also be deemed successful. It allowed the system to be tested easily on
+different maze configurations, which was essential for the project. Although it took 
+longer than expected to produce the maze, it is of a very high quality, is extremely 
+customisable and can be reused for any similar projects in the future.
+
+Although issues arose in the process, the end products of the electric deisgn
+and implementation were of a high standard. The decision to use the chassis'
+accompanying power distrubtion board was justified as it fit both
+mechanically and electronically with the other parts, allowing other areas to be 
+prioritised. Using ultrasonics was the best method of range detecting even if
+they are not perfect due to their wide cone of detection and
+cost compared to infrared sensors. The 6-DOF IMU and encoders successfully
+provided the neccessary odometry data to track the robot's movements around the
+maze. The design of the PCB can also be deemed a success. Although multiple 
+iterations of the PCB were designed to improve on the original design, the
+thorough planning and design resulted in the first PCB stil being fully functional 
+and not needing replaced. 
+
+Ultimately, the decision to use ROS was justified due to it being able to handle
+the overall architecture of the system with the publish/subscribe data model
+whilst providing accompanying libraries that provide some of the required 
+functionality. Although intergrating these libraries was not as simple as 
+initially thought, they provided a greater level of functionality than if 
+everything was implemented from scratch. The communication module was a great
+success with the testing showing it to be extremely thread-safe and allows for
+the robots to always being listening for incoming messages. The computer vision
+node also works fully within the constraints of the maze. For use in more complex 
+environments, a more detailed computer vision would be required.
+
+In summmary, the project delivered the majority of the objectives intitially set
+out where each individual components was designed, implemented and tested. Delays
+and unforeseen complications resulted in the AI modules not being fully implemented. 
+In addition, the complexity of SLAM results in this only being possible at lower 
+resolutions, coupled with the uncertainty and timeouts from the ultrasonic sensors, 
+the results for this were not as accurate as anticipated. However with greater 
+processing power and more time, it is believed this would have performed better.
+Despite these issues, the success of each of the earlier components
+such as the mechanical and electrical design, the communication software, odometry 
+software and computer vision results in the project being overall very successful.
