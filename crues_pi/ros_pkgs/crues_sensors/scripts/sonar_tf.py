@@ -15,7 +15,7 @@ def main():
         ts.header.frame_id = rospy.get_param('~base_frame_id', 'base_link')
         ts.child_frame_id = rospy.get_param('~scan_frame_id', 'us_scan_frame')
 
-        ts.transform.translation.x = rospy.get_param('~x_offset', -44)
+        ts.transform.translation.x = rospy.get_param('~x_offset', -0.044)
         ts.transform.translation.y = rospy.get_param('~y_offset', 0)
         ts.transform.translation.z = rospy.get_param('~z_offset', 0)
 

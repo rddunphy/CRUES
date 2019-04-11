@@ -1,15 +1,13 @@
 <launch>
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf" />
-
-    <include file="$(find crues_control)/robot.launch" />
+    <include file="$(find crues_control)/launch/robot.launch" />
 
     <node name="controller" pkg="crues_control" type="polygon_control.py">
         <param name="turn_vel" type="double" value="1" />
         <param name="fwd_vel" type="double" value="0.2" />
         <param name="obstacle_range" type="double" value="100" />
         <param name="startup_delay" type="int" value="5" />
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
     </node>
 
 </launch>

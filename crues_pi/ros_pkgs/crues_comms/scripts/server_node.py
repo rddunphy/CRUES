@@ -2,23 +2,25 @@
 import rospy
 
 from std_msgs.msg import String
-from crues_comms.msg import Comms
-from crues.comms import listen, killServer
-
-
+from comms import listen, kill_server
 
 
 class Server:
     def __init__(self):
         rospy.init_node('server')
         self.pubs = {}
-        self.sock = listen(self._msg_callback) # self._msg_callback :: msg -> void
+        self.hostname = rospy.get_param('hostname')
+        robots = rospy.get_param('robots')
+        for robot in robots:
+            if robot["name"] == self.hostname:
+                self.ip = robot["ip"]
+        self.sock = listen(self._msg_callback, self.ip)  # self._msg_callback :: msg -> void
 
     def spin(self):
         try:
             rospy.spin()
         finally:
-            killServer(self.sock)
+            kill_server(self.sock)
 
     def _msg_callback(self, msg):
         if msg[0] not in self.pubs:

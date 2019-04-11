@@ -24,20 +24,29 @@ class Roomba:
         self.time_to_stop_turning = -1
         self.turn_twist = None
         self.stop = False
+        self.goal_in_view = False
         self.last_ranges = {LEFT: None, CENTRE: None, RIGHT: None}
         rospy.Subscriber('ul_range', Float32, self.range_callback, callback_args=LEFT)
         rospy.Subscriber('uc_range', Float32, self.range_callback, callback_args=CENTRE)
         rospy.Subscriber('ur_range', Float32, self.range_callback, callback_args=RIGHT)
         rospy.Subscriber('/robots_detected', Vision, self.robots_callback)
         self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
+        self.motor_sleep_pub = rospy.Publisher('motor_sleep', Bool, queue_size=10)
         self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
         self.rled_pub = rospy.Publisher('red_led', Bool, queue_size=10)
         self.gled_flash_pub = rospy.Publisher('green_led_flash', Int32, queue_size=10)
 
     def spin(self):
-        while not rospy.is_shutdown():
-            self.publish_cmd()
-            self.rate.sleep()
+        try:
+            while not rospy.is_shutdown() and not self.termination_condition():
+                self.publish_cmd()
+                self.rate.sleep()
+            self.terminate()
+        except rospy.ROSInterruptException:
+            pass
+        finally:
+            self.twist_pub.publish(Twist())
+            self.motor_sleep_pub.publish(True)
 
     def publish_cmd(self):
         if self.stop:
@@ -45,9 +54,10 @@ class Roomba:
         if any([r is None for r in self.last_ranges.values()]):
             # Still waiting for first reading from another sensor
             return
-        if self.time_to_stop_turning > time.time():
+        if self.is_turning():
             # Finish turning first
             self.twist_pub.publish(self.turn_twist)
+            self.motor_sleep_pub.publish(False)
             return
         else:
             if all([r > self.obstacle_range for r in self.last_ranges.values()]):
@@ -67,37 +77,57 @@ class Roomba:
         self.gled_pub.publish(True)
         self.rled_pub.publish(False)
         self.twist_pub.publish(out)
+        self.motor_sleep_pub.publish(False)
 
     def turn_right(self):
         self.turn_twist = Twist()
         self.turn_twist.angular.z = -self.turn_vel
-        self.time_to_stop_turning = time.time() + random.uniform(0.2, 0.6)
+        self.time_to_stop_turning = time.time() + random.uniform(0.5, 0.9)
         self.gled_pub.publish(False)
         self.rled_pub.publish(True)
         self.twist_pub.publish(self.turn_twist)
+        self.motor_sleep_pub.publish(False)
 
     def turn_left(self):
         self.turn_twist = Twist()
         self.turn_twist.angular.z = self.turn_vel
-        self.time_to_stop_turning = time.time() + random.uniform(0.2, 0.6)
+        self.time_to_stop_turning = time.time() + random.uniform(0.5, 0.9)
         self.gled_pub.publish(False)
         self.rled_pub.publish(True)
         self.twist_pub.publish(self.turn_twist)
+        self.motor_sleep_pub.publish(False)
 
     def range_callback(self, msg, s):
         self.last_ranges[s] = msg.data
 
     def robots_callback(self, msg):
-        robots = [x.strip().lower() for x in msg.robot_list.split(',')]
-        if 'clyde' in robots:
-            self.gled_flash_pub.publish(5)
-            self.stop = True
+        tokens = [x.strip().lower() for x in msg.robot_list.split(',')]
+        self.goal_in_view = 'goal' in tokens
 
+    def is_turning(self):
+        return self.time_to_stop_turning > time.time()
+
+    def termination_condition(self):
+        if self.last_ranges[CENTRE] is None:
+            return False
+        return self.goal_in_view and self.last_ranges[CENTRE] < self.obstacle_range
+
+    def terminate(self):
+        # Turn on the spot for a bit, flash the LED, then shutdown
+        self.gled_flash_pub.publish(5)
+        self.stop = True
+        twist = Twist()
+        for i in range(10):
+            self.time_to_stop_turning = time.time() + 0.3
+            while time.time() < self.time_to_stop_turning:
+                twist.angular.z = 1.5 * (self.turn_vel if i % 2 == 0 else -self.turn_vel)
+                self.twist_pub.publish(twist)
+                self.rate.sleep()
+        self.gled_flash_pub.publish(0)
+        self.twist_pub.publish(Twist())
+        rospy.signal_shutdown("Found goal")
 
 
 if __name__ == '__main__':
-    try:
-        roomba = Roomba()
-        roomba.spin()
-    except rospy.ROSInterruptException:
-        pass
+    roomba = Roomba()
+    roomba.spin()

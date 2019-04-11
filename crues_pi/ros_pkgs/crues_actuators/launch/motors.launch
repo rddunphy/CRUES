@@ -1,6 +1,6 @@
 <launch>
 
-    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
 
     <node name="motor_sleep" pkg="crues_actuators" type="motor_sleep_node.py" />
 

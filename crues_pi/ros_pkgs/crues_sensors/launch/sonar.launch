@@ -1,0 +1,17 @@
+<launch>
+
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
+
+    <node name="sonar_tf_broadcaster" pkg="crues_sensors" type="sonar_tf.py" />
+    <node name="ultrasonic" pkg="crues_sensors" type="us_node.py">
+        <remap from="~offset_left" to="ultrasonic/left/offset" />
+        <remap from="~response_left" to="ultrasonic/left/response" />
+        <remap from="~offset_centre" to="ultrasonic/centre/offset" />
+        <remap from="~response_centre" to="ultrasonic/centre/response" />
+        <remap from="~offset_right" to="ultrasonic/right/offset" />
+        <remap from="~response_right" to="ultrasonic/right/response" />
+        <remap from="~range_max" to="ultrasonic/range_max" />
+        <remap from="~rate" to="ultrasonic/rate" />
+    </node>
+
+</launch>

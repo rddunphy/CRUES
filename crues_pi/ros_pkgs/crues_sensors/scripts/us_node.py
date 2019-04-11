@@ -52,12 +52,12 @@ class Ultrasonic:
         time.sleep(self.pulse_duration)
         GPIO.output(self.trig_pin, GPIO.LOW)
         time.sleep(self.sensor_timeout)
-        if self.start_time == -1 or self.stop_time == -1:
+        if self.start_time < 0 or self.stop_time < 0:
+            if self.start_time < 0 and self.stop_time < 0:
+                rospy.logerr("Missed rising edge in %s ultrasonic sensor" % self.name)
             raise UltrasonicTimeout(self.name, self.sensor_timeout)
-        if self.start_time == -1 and self.stop_time != -1:
-            rospy.logwarn("AAAAARRRRGGGHH")
         duration = self.stop_time - self.start_time
-        distance = duration * SPEED_OF_SOUND * 500
+        distance = duration * SPEED_OF_SOUND * 0.5
         return self.response * distance - self.offset
 
     def _log_time(self, _):
@@ -84,21 +84,21 @@ class UltrasonicScanner:
         self.range_max = rospy.get_param('~range_max', 1.0) + self.offset_outer
         self.scan_frame_id = rospy.get_param('~scan_frame_id', 'us_scan_frame')
         self.left = Ultrasonic("Left", rospy.get_param('pins/ult'), rospy.get_param('pins/ule'), timeout,
-                               response=rospy.get_param('~response_left', 1),
-                               offset=rospy.get_param('~offset_left', 20))
+                               response=rospy.get_param('~response_left', 1.0),
+                               offset=rospy.get_param('~offset_left', 0.02))
         self.centre = Ultrasonic("Centre", rospy.get_param('pins/uct'), rospy.get_param('pins/uce'), timeout,
-                                 response=rospy.get_param('~response_centre', 1),
-                                 offset=rospy.get_param('~offset_centre', 20))
+                                 response=rospy.get_param('~response_centre', 1.0),
+                                 offset=rospy.get_param('~offset_centre', 0.02))
         self.right = Ultrasonic("Right", rospy.get_param('pins/urt'), rospy.get_param('pins/ure'), timeout,
-                                response=rospy.get_param('~response_right', 1),
-                                offset=rospy.get_param('~offset_right', 20))
+                                response=rospy.get_param('~response_right', 1.0),
+                                offset=rospy.get_param('~offset_right', 0.02))
         f = rospy.get_param('~rate', 5)
         self.rate = rospy.Rate(f)
         self.scan_time = 1.0 / f
         self.pub_l = rospy.Publisher('ul_range', Float32, queue_size=10)
         self.pub_c = rospy.Publisher('uc_range', Float32, queue_size=10)
         self.pub_r = rospy.Publisher('ur_range', Float32, queue_size=10)
-        self.scan_pub = rospy.Publisher('us_scan', LaserScan, queue_size=10)
+        self.scan_pub = rospy.Publisher('sonar_scan', LaserScan, queue_size=10)
 
     def spin(self):
         try:
@@ -122,7 +122,7 @@ class UltrasonicScanner:
         if time_remaining > 0:
             time.sleep(time_remaining)
         range_l = self._publish_range(self.left, self.pub_l)
-        self._publish_scan(range_r / 1000, range_c / 1000, range_l / 1000, stamp)
+        self._publish_scan(range_r, range_c, range_l, stamp)
 
     def _publish_scan(self, range_r, range_c, range_l, timestamp):
         scan = LaserScan()

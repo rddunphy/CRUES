@@ -1,6 +1,6 @@
 <launch>
 
-<param name="robot_description" textfile="$(find differential_drive)/blinky.urdf"/>
+<param name="robot_description" textfile="$(find crues_control)/config/crues.urdf" />
 <rosparam param="ticks_meter">529</rosparam>
 
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
