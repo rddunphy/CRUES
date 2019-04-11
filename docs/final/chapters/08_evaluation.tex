@@ -62,16 +62,41 @@ the individual components were made to a high standard of design and constructio
 \section{Electrical}\label{eval/elec}
 Each of the sensors and actuators of the robot have been researched fully and a 
 parts list created for ease of replication. The parts chosen meet the 
-specification and carry out the task required to the required specification. 
+specification and carry out the task required to specification. 
 Each of the modules of the robot --- sensors and actuators --- has a fully 
 tested and integrable ROS node associated with it. The sensors and actuators are 
-also fully connected as part of the mechanical design of the robot with the PCB 
-designed for this purpose. The PCB design was iterated upon and therefore 
-improved over the course of the project. Having multiple robots allowed an 
-iterative design process to be carried out and this greatly improved the outcome 
+also fully connected as part of the mechanical design through the PCB. 
+
+The pre-built power distribution board chosen had several advantages over a custom built solution. Firstly, it was very easily integrated with the Polulu chassis. Secondly, it saved the significant amount of time it would have taken to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB, there was very little remaining space on the systems main PCB, so using a custom build system would have required the design of a second. 
+
+The range sensors used proved to be largely successful, with some caveats. 
+During the unit testing phase, the sensors performed well, giving consistent 
+readings accurate to within our required uncertainty. During the SLAM testing, 
+they mostly measured accurate results, however, their limitations started to 
+show. As the distance increased, the widening cone of detection cause some 
+erroneous data to be measured. This is assumed to be the cause of the corners 
+appearing to be rounded in the maze in Figure~\todo{reference slam diagram}. 
+Another issue with using the ultrasonic sensors is that the RPi used a time 
+shared OS, which meant that the readings from timing the pulse from the 
+ultrasonic sensor are sometimes inexact. This could be improved with the use of 
+a dedicated timing circuit. Finally, as there were several range sensors on each 
+robot, taking one measurement sweep took a relatively long time. This is 
+especially the case when multiple robots are synchronising their sweeps to avoid 
+interference. This would have been mitigated if we had used an infra-red sensor. 
+This would cost more, but it could be possible to mount the sensor on a servo 
+motor, and move it through \ang{180} sweeps as to not require more than one. 
+This would also remove the timing issue, as they generally return an analogue 
+voltage instead of a pulse time. Initially, this design concept was discounted 
+to due the additional mechanical complexities of mounting the components and 
+cost, however without the time and budget restrictions, this solution would 
+likely improve the systems performance. 
+
+While using an IMU to supplement wheel odometry is a common solution, the effectiveness of the solution in this project has not been proven. The IMU returned reasonable results in testing, and the visualisation produced using IMU data when integrated with ROS shows promise. However, as the EKF is not functioning correctly, the sensor fused results are have not been obtained to measure their accuracy. 
+
+Having multiple robots allowed an 
+iterative design process to be carried out, significantly improving the outcome 
 of the PCB. Connections and vias were altered following the first design to be 
-more easily integrable with the mechanical design and mean the final robot is 
-constructed of an iterated and tested final design. 
+more easily integrable with the mechanical layout. 
 
 Time and care was take to ensure the electrical design of the PCB and any other 
 connections between parts on the robot --- such as the ribbon cable connection 
@@ -94,9 +119,8 @@ blocking tasks in the middle stages of the project required unforeseen parts to 
 ordered such as ribbon cable and 40-pin IDC connectors which it was thought would 
 be found within the department. This was not the case as 40-pin ribbon cable and 
 connectors are used predominantly for Raspberry Pis, making them more expensive 
-and therefore, not a common order for the department as Raspberry Pis are not often 
-used. Hence, these parts had to be ordered in and resulted in the task blocking 
-others longer than expected. Towards the end of the project, a Raspberry Pi was 
+and therefore, not a common order for the department. Hence, these parts had to be ordered in and resulted in the task blocking 
+others longer than expected as these were required for system testing. Towards the end of the project, a Raspberry Pi was 
 shorted --- cause unknown, despite investigations --- and ceased to function, 
 meaning time was lost to finding issues that were caused by the Raspberry Pi not 
 being functional.    
