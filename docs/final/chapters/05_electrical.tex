@@ -247,7 +247,7 @@ similar budget with regards to noise, cross axis sensitivity and non
 linearity. Offset tolerance was also considered but this was less of a
 consideration as this can be compensated for as long as the offset is not
 so extreame as to limit the range. It was configured to operate in its
-smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$\cite{}\todo{citation}).
+smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 
 The IMU was to be placed as close to the centre of the axis of the robot
 as possible, as when it is far from the centre of rotation the centripetal
@@ -289,8 +289,7 @@ def __init__(self, address, rate, channel=1):
     self.speed_vect = (0.0, 0.0, 0.0)
 \end{lstlisting}
 
-As the IMU returns arbitrary values between -32768 and 32767
-\todo{source}, a constant was required to convert the results to
+As the IMU returns arbitrary values between -32768 and 32767~\cite{MPU6050Datasheet}, a constant was required to convert the results to
 meaningful values. The calculations for these is shown in Code
 Listing~\ref{lst:imu_units}.
 
