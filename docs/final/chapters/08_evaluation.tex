@@ -8,7 +8,7 @@ the ``Optional'' objectives. In addition to this, it is believed that with a
 small number of additional weeks, the two remaining ``Major'' objectives could 
 be completed. Given the project as a whole aimed to combine 3 engineering 
 disciplines and tackle a number of complex problems simultaneously, a strong 
-effort \todo{This doesn't sound right, couldn't think what did} has been made. 
+effort has been made. 
 As detailed in various previous sections of the report, a number of small setbacks in 
 various aspects of the project caused the latter stages of the project to be 
 uncompleted. This was magnified as many of the latter elements were sequential, 
@@ -24,34 +24,42 @@ issues feature and protected merging used to ensure all members of the team were
 working on a task and completion of tasks could be monitored by the project 
 manager. 
 
-A series of benchmark results have also been obtained by can be used by future iterations of the project to measure success. The 
-objectives which have been completed were also iterated upon multiple times to complete for each of the robots and hence the design has 
+\todo{remove if we have no results}
+A series of benchmark results have also been obtained and can be used by future 
+iterations of the project to measure success. The 
+objectives which have been completed were also iterated upon multiple times to 
+complete for each of the robots and hence the design has 
 been improved by using an iterative design process. 
 
-
-\todo{Overall eval in here before individual sections}
-\todo{evaluate pm structure and agile methods etc.} 
 \section{Mechanical}\label{eval/mech}
 Despite a lack of prior knowledge in the mechanical engineering field, the 
 mechanical aspects of the project have been completed to a 
-high standard. This is mainly due to the decision to complete these tasks first 
-with a higher priority and allow time for the designs to 
-be iterated upon throughout the project. The first robot was measured for each 
-of the parts required to mechanically fit the robot 
-together and this was improved between robots, leading to a final construction 
-which was consistent and simple. Given the eventual 
-incompletion of the project, the decision taken to purchase a pre-built chassis 
-as opposed to create a bespoke chassis was justified. 
-This would have added unnecessary complication and a blocking task to the 
-beginning of the project which could have caused future tasks 
-to be delayed further. 
+high standard. This can be determined from the robustness of the robots when in 
+motion and the robustness and modularity of the maze. This is mainly due to the 
+decision to complete these tasks first with a higher priority and allow time for the 
+designs to be iterated upon throughout the project. The first robot was measured for 
+each of the parts required to mechanically fit the robot together and this was 
+improved between robots, leading to a final construction which was consistent and 
+simple. Given not all objectives were met at the end of the project --- and the electrical and software aspects were to be the focus ---, the decision taken in the 
+early stages to purchase a pre-built chassis as opposed to create a bespoke chassis 
+was justified, due to the time saved. This would have added unnecessary complication 
+and a blocking task to the beginning of the project which could have caused future 
+tasks to be delayed further. 
 
-Aside from the robots, the other main mechanical component was the modular maze testing environment. Although constructed by the mechanical workshop, a great deal of effort was put into the design and subsequent iterations to obtain the best outcome possible. The modular maze is a reusable ``SLAM playground'' and is a major successful outcome of the project. Although not particularly transportable, the maze is robust and durable and intended to last --- and be used --- for future projects.
+Aside from the robots, the other main mechanical component was the modular maze 
+testing environment. Although constructed by the mechanical workshop, a great deal of 
+effort was put into the design and subsequent iterations to obtain the best outcome 
+possible. The modular maze is a reusable ``SLAM playground'' and is a major 
+successful outcome of the project. Although not particularly transportable, the maze 
+is robust and durable and intended to last --- and be used --- for future projects.
 
-In addition, although not used in the final design a great deal was learned from using CAD to create designs of pegs which were intended for use in the maze. It was also worth noting that the CAD designed pegs were unusable, not due to a design flaw, but a flaw in the printing/construction process.  
-
-
-\todo{talk about success of maze and CAD}  
+In addition, although not used in the final design a great deal was learned from 
+using CAD to create designs of pegs which were intended for use in the maze. A number 
+of designs were created, which were not only improved in terms of the specification 
+requested by the mechanical workshop, but also in terms of the use of the CAD 
+software. It was also worth noting that the CAD designed pegs were unusable, not due 
+to a design flaw, but a flaw in the printing/construction process. The mechanical portion of the project can therefore overall be deemed a success as 
+the individual components were made to a high standard of design and construction. 
 
 \section{Electrical}\label{eval/elec}
 Each of the sensors and actuators of the robot have been researched fully and a 
@@ -65,7 +73,7 @@ improved over the course of the project. Having multiple robots allowed an
 iterative design process to be carried out and this greatly improved the outcome 
 of the PCB. Connections and vias were altered following the first design to be 
 more easily integrable with the mechanical design and mean the final robot is 
-constructed of a tried and tested final design. 
+constructed of an iterated and tested final design. 
 
 Time and care was take to ensure the electrical design of the PCB and any other 
 connections between parts on the robot --- such as the ribbon cable connection 
@@ -75,7 +83,48 @@ easily with time and parts. The robots which possess prototype parts, used in
 interim stages of the iterative design process, remain functional and usable. 
 This demonstrates the careful selection and design of each of the parts. 
 
-\todo{talk about all the good components and their code. Talk about successful PCB} 
+The use of AA batteries throughout the middle stages of the project when the PID 
+controller was being tuned, resulted in a great deal of batteries being consumed. 
+This was due to the high current spikes which were being caused by motor stalls and 
+fewer batteries could have been used if this prolonged process had been foreseen. The 
+consistent current draw of the motors throughout this phase of testing should have 
+been monitored more closely and action to prevent this taken sooner.   
 
+Overall, the electrical portion of the project was carried out effectively but did 
+cause some delays which had a knock on effect later in the project. A number of 
+blocking tasks in the middle stages of the project required unforeseen parts to be 
+ordered such as ribbon cable and 40-pin IDC connectors which it was thought would 
+be found within the department. This was not the case as 40-pin ribbon cable and 
+connectors are used predominantly for Raspberry Pis, making them more expensive 
+and therefore, not a common order for the department as Raspberry Pis are not often 
+used. Hence, these parts had to be ordered in and resulted in the task blocking 
+others longer than expected. Towards the end of the project, a Raspberry Pi was 
+shorted --- cause unknown, despite investigations --- and ceased to function, 
+meaning time was lost to finding issues that were caused by the Raspberry Pi not 
+being functional.    
+ 
 \section{Software}\label{eval/soft}
-\todo{write software eval}
+The software architecture was well designed and thought-out making use of the 
+libraries and tools available. By using the ROS library, the architecture was predominantly handled
+and did not need to be managed further. Using the ROS library also provided 
+access to other tools and libraries such as ``differential-drive'', ``robot-
+localization'' and ``g-mapping''. It was thought that these libraries would be ``plug 
+and play'' with the modules created as part of the Electrical sections. Despite, 
+designing and implementing the Electrical modules to integrate with these libraries, 
+problems were still encountered with integration. 
+
+The libraries were far more complex than first thought and were also not designed for 
+the configuration of sensors used in this project. Additional modules had to be 
+created as ``adapters'' with additional parameters between the libraries and the 
+originally created modules. Each of the libraries used therefore also had to be fully 
+understood, at a source code level, in order to construct the ``adapters'' and alter 
+the original modules. This took longer than expected, however did result in more in 
+depth knowledge of each of the component parts of the software. As the libraries were 
+designed for a variety of other sensors, mainly LIDAR instead of ultrasound, the 
+results obtained were not of as high quality as expected and this impacted the time 
+taken to tune parameters to achieve the best possible outcome. Although this was 
+somewhat achieved for SLAM, this left no time in the project to convert the SLAM map 
+to a world state which could then be used by an implemented AI to solve the maze 
+intelligently. 
+
+

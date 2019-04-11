@@ -74,7 +74,7 @@ interface with ROS functionality.
 
 Each of the individual modules discussed in Section~\ref{elec} was
 implemented as a ROS node, generally encapsulated in a single Python
-script. In order to adhere to best practices and ensure consitency across
+script. In order to adhere to best practices and ensure consistency across
 the code base, each node was represented as class, with an
 \verb|__init__()| method initialising the node and a \verb|spin()| method
 which is called to run the node's main loop. In nodes which perform
@@ -149,12 +149,6 @@ it was decided to use the older version. Migration to ROS 2, which is
 currently under heavy development but will have native support for Python
 3, is recommended in future~\cite{ros2}.
 
-
-
-
-  \todo{David needs to write this i think}
-
-
 \subsection{Testing}\label{soft/ROS/test}
 In addition to each of the nodes being tested independently in a similar
 manner to how each of them were tested in isolation throughout the~\ref{elec}
@@ -164,7 +158,7 @@ configurations.
 
 Each of the topics can be tracked from the main graph of nodes in the ROS
 runtime using the command $rqt graph$. This produces the following output,
-\todo{put rqt grpah of nodes and topics in here and dicuss}.
+\todo{put rqt graph of nodes and topics in here and dicuss}.
 
 
 \subsection{Deployment}\label{soft/ROS/deploy}
@@ -286,7 +280,7 @@ def fromjson(packet):
 \end{lstlisting}
 The header created includes the IP and name of both the sender and the
 receiver as well as the type of python object the data is. The header along
-with the data to be sent is converted to json and returned as a string. When  converting from JSON it checks that it was the intended recipient of the
+with the data to be sent is converted to JSON and returned as a string. When  converting from JSON it checks that it was the intended recipient of the
 message, returning $-1$ to indicate it was not, before returning the data
 object located at index 1 (header is index 0). These are the four helper
 methods used by the send and listen methods.
@@ -345,11 +339,11 @@ working.
 
 When undertaking more extensive testing, an important issue with the previous
 code was found. When nodes were sending messages to each other simultaneously
-at least one of the nodes would fail. For example, if Blinky sends a message to
-Clyde but before the message has finished sending, Clyde sends a message to
-Blinky then the receiver of Clyde crashes and Blinky never receives the message.
-If Clyde were to send to a third robot, Inky, then Clyde's receiver would still
-fail as would one of either Blinky or Inky.
+at least one of the nodes would fail. For example, if robot A sends a message to
+robot B but before the message has finished sending, robot B sends a message to
+robot A then the receiver of robot B crashes and robot A never receives the message.
+If robot B were to send to a third robot, C, then robot B's receiver would still
+fail as would one of either robot B or C.
 
 As a result of this bug, the implementation would have to be changed to handle
 multiple connections properly. Various potential solutions were discussed,
@@ -399,7 +393,7 @@ message contents so the relevant subscribers can use the data received
 from the other agent. As a new thread is being created for each request
 there should be no node crashes from having the process interrupted as
 it will be happening on a different thread.
-\todo{Is testing for just the final designed testing - cause this goes impl - testing  impl - testing and not sure how we want to handle that}
+\todo{Is testing for just the final designed testing - cause this goes impl - testing  impl - testing and not sure how we want to handle that. All writing is here just where the heading goes?}
 
 \subsection{Testing}\label{soft/comms/test}
 
@@ -408,12 +402,12 @@ working functionality from the previous version still worked. Therefore
 the same initial tests were applied to this implementation which passed
 as expected. In order to test whether this was thread-safe, a number of
 tests were executed. The first test involved creating a loop that would
-send 100 messages from Blinky to Clyde. When this succeeded without any
-node crashes, the test was repeat but with Clyde sending messages to Blinky
+send 100 messages from robot A to robot B. When this succeeded without any
+node crashes, the test was repeat but with robot B sending messages to robot A
 simultaneously. This previously would have crashed the nodes but with the
 server's listening on separate threads for each request, this was handled
-successfully. This test was repeated with Clyde sending messages to Inky
-instead of Clyde. This too was successful with the messages being received
+successfully. This test was repeated with robot B sending messages to robot C
+instead of robot B. This too was successful with the messages being received
 without any being lost. The test was repeated but the limit on the number of
 messages being send was removed, and so the messages would, in theory,
 continue to create new threads to listen to the incoming messages. This
@@ -424,6 +418,15 @@ over 50 thousand messages in quick succession (due to no delay). As a result,
 this was determined to be the upper limit of this system, that with this set
 up would never be close to reached and so it was determined that the system
 was sufficiently thread-safe to be used.
+
+\section{PID Controller}\label{soft/PID}
+
+\subsection{Design}\label{soft/PID/design}
+
+\subsection{Implementation}\label{soft/PID/impl}
+
+\subsection{Testing}\label{soft/PID/test}
+
 
 
 \section{Odometry Sensor Fusion}\label{soft/odometry}
@@ -520,14 +523,29 @@ true positives. It was decided that this would be too
 computationally intensive considering the strict constraint of
 using a Raspberry Pi.
 
-The method used was by far the simplest considered. It identified the other robots and target by their colour. This was only possible as each robot used had a distinct coloured chassis, which lacks scalability, but was considered an acceptable simplification as this was not the focus of the project.
+The method used was by far the simplest considered. It identified the other robots and target 
+by their colour. This was only possible as each robot used had a distinct coloured chassis, 
+which lacks scalability, but was considered an acceptable simplification as this was not the 
+focus of the project.
 
-This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space, simplifying the colour detection as the hue of the pixel is determined by a single value instead of the ratio of three values. A colour can then be identified by a range of H values and then a minimum S and V values, which is far more intuitive than checking if it falls into a range of ratios between R, G and B values.
+This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space, 
+simplifying the colour detection as the hue of the pixel is determined by a single value 
+instead of the ratio of three values. A colour can then be identified by a range of H values 
+and then a minimum S and V values, which is far more intuitive than checking if it falls into a 
+range of ratios between R, G and B values.
 
 \subsection{Implementation}\label{soft/cv/impl}
-The \textit{vision\_node} works using a ROS spin setup, with a \textit{spin()} function being called at a set frequency until ROS closes.
+The \textit{vision\_node} works using a ROS spin setup, with a \textit{spin()} function being 
+called at a set frequency until ROS closes.
 
-A \textit{RobotDetector} object is declared which has the range of HSV values for each robot and the goal, and has a video capture object. It contains a \textit{search()} function which takes a frame as a parameter and returns various details about each robot's presence in the frame. \textit{search()} first calls \textit{get\_colour\_mask()} for each range of colour values. This converts the image to HSV, then makes a frame, \textit{mask}, which is white where the pixel in range and and black for out of range. This is shown in Code Listing \ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours crosses the zero point (as zero is adjacent to 255 in the hue value).
+A \textit{RobotDetector} object is declared which has the range of HSV values for each robot 
+and the goal, and has a video capture object. It contains a \textit{search()} function which 
+takes a frame as a parameter and returns various details about each robot's presence in the 
+frame. \textit{search()} first calls \textit{get\_colour\_mask()} for each range of colour 
+values. This converts the image to HSV, then makes a frame, \textit{mask}, which is white where 
+the pixel in range and and black for out of range. This is shown in Code Listing 
+\ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours 
+crosses the zero point (as zero is adjacent to 255 in the hue value).
 
 \begin{lstlisting}[caption={get\_colour\_mask in RobotDetector},label={lst:get_colour_mask} , language=python]
 
@@ -547,9 +565,14 @@ def get_colour_mask(self, frame, lower_hsv_bound, higher_hsv_bound):
 
 \end{lstlisting}
 
-The function then uses erosion and dilation functions provided by opencv to reduce noise in the mask.
+The function then uses erosion and dilation functions provided by opencv to reduce noise in the 
+mask.
 
-The contours in the mask are then iterated through to find the biggest, which is assumed to be the object and the centre point and outline of the contour is found. If no contours are bigger than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and the corresponding \textit{obj\_found} variable is set to false. This process is shown in Code Listing \cite{lst:cv_search_loop}.
+The contours in the mask are then iterated through to find the biggest, which is assumed to be 
+the object and the centre point and outline of the contour is found. If no contours are bigger 
+than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and 
+the corresponding \textit{obj\_found} variable is set to false. This process is shown in Code 
+Listing \cite{lst:cv_search_loop}.
 
 \begin{lstlisting}[caption={Contour Iteration in search()},label={lst:cv_search_loop} , language=python]
 ...
@@ -579,6 +602,7 @@ highlighting the position of the objects. The code
 for this is shown in Code Listing 
 \ref{lst:draw_rectangles}. 
 
+
 \begin{lstlisting}[caption={asd},label={lst:draw_rectangles} , language=python]
 for i, name in enumerate(names):
     if found[i]:
@@ -599,9 +623,18 @@ An example of this running is shown in Figure \ref{fig:cv_screenshot}
 
 \end{figure}
 
-The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to test both the integration with the RPi and with ROS. Various detectable objects were moved in and out of the frame and changes in the output were observed. This initially failed as the RPi camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function does not support. When running on the RPi, this was replaced with imutil's VideoStream package. After this the test performed as expected, consistently identifying which objects were in frame.
+The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to 
+test both the integration with the RPi and with ROS. Various detectable objects were moved in 
+and out of the frame and changes in the output were observed. This initially failed as the RPi 
+camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function 
+does not support. When running on the RPi, this was replaced with imutil's VideoStream package. 
+After this the test performed as expected, consistently identifying which objects were in 
+frame.
 
-Functionality was then added to record the feed as to see how the computer vision responded as the robot was traversing the maze, however there were issues with frame rate as it was too computationally intensive for the RPi to perform the recording as well as all the other computation.
+Functionality was then added to record the feed as to see how the computer vision responded as 
+the robot was traversing the maze, however there were issues with frame rate as it was too 
+computationally intensive for the RPi to perform the recording as well as all the other 
+computation.
 
 \section{AI \& Control Modules}\label{soft/ai}
 
