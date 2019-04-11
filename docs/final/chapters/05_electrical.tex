@@ -33,14 +33,8 @@ available, however, for the additional small cost, integration of
 motor drivers was deemed to be a cost effective addition given our space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
-onto the boards as the robots were assembled.
-\subsection{Testing}\label{elec/poweranddrive/test}
-Once soldered, the power distribution board and motor driver board
-were continuity tested.
-
-\todo{motor drive system test circiut
-should test power distribrutionat somepoint???}
-
+onto the boards as the robots were assembled. Once soldered, the power distribution board and 
+motor driver board were continuity tested.
 
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
@@ -58,9 +52,10 @@ or visible light respectively.
 Of these three, LIDAR is generally considered to be the most effective
 as it is the most accurate and has a \ang{360} field of view However,
 it is both too expensive and too heavy for our application, especially
-
 considering that each robot would need one.
+
 \todo{infra red}
+
 Ultrasonic transceivers were therefore decided upon for use in this
 project. These work by transmitting sound at a particular frequency
 and measuring the time until the reflected wave returns to the sensor.
@@ -71,9 +66,9 @@ of accuracy in the direction of the measurement.
 The ultrasonic sensor used was the HC-SR04
 \todo{merge with mech section}
 
-other considerations +tives and -tives
-Ultrasonic system theory
-Sensor selected and why
+\todo{other considerations +tives and -tives}
+\todo{Ultrasonic system theory}
+\todo{Sensor selected and why}
 
 
 \begin{figure}[!ht]
@@ -88,9 +83,16 @@ Sensor layout (3 deg cones)
 circuit layout
 schematic
 
-The hardware required for the ultrasonic sensors is relatively straight forwards. They are each connected to a 5V supply and ground, and the other two pins are connected to standard GPIO pins on the RPi. The echo pin has to be connected through a voltage divider as the RPi is only rated at 3.3V compared to the sensor's 5V. The trig pin can be connected directly to the RPi, however, as 3.3V was found to be above the threshold voltage.
+The hardware required for the ultrasonic sensors is relatively straightforward. 
+They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are 
+connected to standard GPIO pins on the RPi. The echo pin has to be connected through 
+a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The 
+trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above 
+the threshold voltage.
 
-The distances are measured by an \textit{USScan} class. This has a \textit{get\_scan()} function which iterates through each ultrasonic sensor and takes a reading, as shown below in Code Listing \ref{lst:get_scan}
+The distances are measured by an \textit{USScan} class. This has a \textit{get
+\_scan()} function which iterates through each ultrasonic sensor and takes a reading, 
+as shown below in Code Listing \ref{lst:get_scan}
 
 \begin{lstlisting}[caption={get\_scanFunction in USScan},label={lst:get_scan} , language=python]
 def get_scan():
@@ -159,6 +161,7 @@ software, with similar results obtained.
 Wheel encoders are required to measure the speed of each wheel
 independently. This gives the system far more control over its path
 as well as allowing it to perform dead reckoning through wheel odometry.
+
 \subsection{Design}\label{elec/encoder/design}
 The motors selected had both incremental and absolute custom designed
 encoder, but as only the wheel speed is needed and not the position,
@@ -340,7 +343,8 @@ def get_speeds(self):
 Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame.
 
 \section{PCB}\label{elec/pcb}
-As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board).
+As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board). The following describes the rationale and design decision taken when carrying out the 3-iteration design process for designing the PCB. The final PCB design can be found in the git repository (see Section~\ref{appendix/a}).\todo{ensure this is where the git link is}
+
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:
 \begin{itemize}
@@ -363,8 +367,6 @@ with the following physical design constraints:
   \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
   \item Motor drive connectors also at fixed position relative to centre
 \end{itemize}
-
-\todo{maybe find coordinates of parts for fixed position components}
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
