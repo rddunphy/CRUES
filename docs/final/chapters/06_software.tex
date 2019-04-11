@@ -155,8 +155,8 @@ currently under heavy development but will have native support for Python
 
 \subsection{Testing}\label{soft/ROS/test}
 In addition to each of the nodes being tested independently in a similar
-manner to how each of them were tested in isolation throughout the~\ref{electrical}
-Section, the nodes were tested in a number of different
+manner to how each of them were tested in isolation throughout
+Section~\ref{electrical}, the nodes were tested in a number of different
 configurations.
 \todo{David maybe needs to write this}
 
@@ -434,8 +434,7 @@ the system in question, the error in the system can be reduced.
 \subsection{Design}\label{soft/PID/design}
 The PID controller of the system was handled by an external library --- 
 ``differential-drive''~\cite{diffdrivelib}. The library is specifically 
-designed for differential drive robots and takes a ROS twist message
-\todo{Twist Message cite}, converting this to a motor command for each 
+designed for differential drive robots and takes a ROS twist message~\cite[geometry\_msgs/Twist.msg]{ROSDocs}, converting this to a motor command for each 
 motor. It then uses the feedback from the encoders to monitor the movement 
 of the wheels and adjust future motor commands accordingly, in an attempt 
 to maintain a straight line of movement. The library has a number of nodes 
@@ -586,8 +585,8 @@ improve the accuracy of the system.
 
 
 For other nodes to use the IMU data, the readings had to be converted into 
-a ROS IMU message~\cite{ROSIMUMsg} consisting of: a ROS header message~
-\cite{ROSHeaderMsg}; a quaternion representing the orientation; a 3 
+a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
+\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3 
 element vector for the rotational speed; a 3 element vector for the linear 
 acceleration; and covariance matrices for each of these measurements. The 
 code imu\_node uses to create an IMU messages is shown in Code Listing~
