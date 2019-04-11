@@ -83,11 +83,11 @@ Sensor layout (3 deg cones)
 circuit layout
 schematic
 
-The hardware required for the ultrasonic sensors is relatively straight forwards. 
-They are each connected to a 5V supply and ground, and the other two pins are 
+The hardware required for the ultrasonic sensors is relatively straightforward. 
+They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are 
 connected to standard GPIO pins on the RPi. The echo pin has to be connected through 
-a voltage divider as the RPi is only rated at 3.3V compared to the sensor's 5V. The 
-trig pin can be connected directly to the RPi, however, as 3.3V was found to be above 
+a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The 
+trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above 
 the threshold voltage.
 
 The distances are measured by an \textit{USScan} class. This has a \textit{get
