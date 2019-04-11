@@ -10,13 +10,14 @@ try:
     import rospy
     pi = True
 except ImportError:
+    import GPIO_MOCK as GPIO
     pi = False
 
 
 class RobotDetector:
     def __init__(self):
         self.name = rospy.get_param('hostname', 'robot')
-        self.robots = rospy.get_param('robots', [])
+        self.robots = [r for r in rospy.get_param('robots', []) if r['name'] != self.name]
         self.goals = rospy.get_param('goals', [])
         if pi:
             frame_size = (640, 480)
