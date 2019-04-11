@@ -527,7 +527,7 @@ line of motion.
 
 \section{Odometry Sensor Fusion}\label{soft/odometry}
 
-\subsection{Wheel Odometry}\label{soft/odometry/design}
+\subsection{Wheel Odometry}\label{soft/odometry/wheel}
 
 \begin{figure}[!ht]
 	\centering
@@ -619,10 +619,10 @@ frequency. This frequency, along with the topic the
 IMU is published to, is set in the launch file, as
 shown in Code Listing~\ref{lst:imu_launch}
 
-\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
+\begin{lstlisting}[caption={\texttt{\_publish\_data} in \texttt{imu\_node}}, label={lst:imu_message}, style=xml]
 <node name="imu" pkg="crues_sensors" type="imu_node.py">
-        <remap from="~rate" to="imu/rate" />
-    </node>
+    <remap from="~rate" to="imu/rate" />
+</node>
 \end{lstlisting}
 
 \subsubsection{IMU Testing}\label{soft/odometry/imu/test}
@@ -641,6 +641,67 @@ movements performed.
 \end{figure}
 
 \subsection{EKF}\label{soft/odometry/ekf}
+
+The ROS \verb|robot_localization| package~\cite{RosRobotLocalization} was used
+to fuse the sensors of the for sensor fusion. This package contains implementations of
+an EKF and a UKF (Unscented Kalman Filter). The latter has the advantage of higher
+accuracy, particularly for highly non-linear transformations at the expense of
+greater computational complexity~\cite{wan_unscented_2000}. In order to limit
+computational overhead, the EKF implementation (\verb|ekf_localization_node|) was
+chosen for use with this project. Listings~\ref{lst:ekf_launch} shows how an EKF
+node is created in the main launch file.
+
+\begin{lstlisting}[caption={EKF node in ROS launch file}, label={lst:ekf_launch}, style=xml]
+<node name="ekf" pkg="robot_localization" type="ekf_localization_node"
+      clear_params="true">
+    <rosparam command="load" file="$(find crues_control)/config/ekf.yaml" />
+    <remap from="/cmd_vel" to="/twist" />
+</node>
+\end{lstlisting}
+
+The parameters used in the EKF are loaded from the \verb|ekf.yaml| file, which
+specifies topics and configurations for each of the input sources. The
+\verb|source_config| parameter for each source (i.e.\ wheel odometry and IMU data)
+specifies which of the filter's 15 states the source updates. In the case of
+odometry, the differential drive restrictions outlined in
+Section~\ref{soft/odometry/wheel} mean that only the velocity in the $X$ direction
+and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
+The IMU provides values for the yaw velocity and acceleration in the $X$ and
+$Y$ directions.
+
+\begin{lstlisting}[caption={EKF YAML file}, label={lst:ekf_yaml}, style=yaml]
+frequency: 50  # Frequency at which odometry is published in Hz
+two_d_mode: true  # Ignore movement in three dimensions
+publish_tf: true
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+
+odom0: odometry/wheel  # Topic on which wheel odometry is published
+# Which values are provided by wheel odometry
+# [x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az]
+odom0_config: [false, false, false, false, false, false, true, false, false, false, false, true, false, false, false]
+odom0_queue_size: 2
+odom0_pose_rejection_threshold: 5
+odom0_twist_rejection_threshold: 1
+
+imu0: imu/data  # Topic on which IMU data is published
+imu0_config: [false, false, false, false, false, false, false, false, false, false, false, true, true,  false, false]
+imu0_queue_size: 5
+imu0_pose_rejection_threshold: 0.8
+imu0_twist_rejection_threshold: 0.8
+imu0_linear_acceleration_rejection_threshold: 0.8
+# True iff IMU returns acceleration without gravitational offset
+imu0_remove_gravitational_acceleration: true
+
+use_control: true
+stamped_control: false
+control_timeout: 0.2
+# Which velocities are being controlled [vx, vy, vz, vroll, vpitch, vyaw]
+control_config: [true, false, false, false, false, true]
+\end{lstlisting}
 
 
 
