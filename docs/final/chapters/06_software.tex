@@ -34,11 +34,20 @@ individual modules within a system and uses a central control node named
 \subsection{Design}\label{soft/ROS/design}
 Following the decision to use ROS to implement our chosen architecture, a modular
 approach was adopted for the design of each of the components within the system~
-\ref{elec}. Hence, a system block diagram was developed to visualise data flow
-within the system. \todo{put in block diagram} The block diagram in Figure~
+\ref{electrical}. Hence, a system block diagram was developed to visualise data flow
+within the system. The block diagram in Figure~
 \ref{BlockDiagram} demonstrates the modularisation of the system and also the
 expectation that the AI module at the top of the system will be completely
-independent from the other components of the system. By making the control module
+independent from the other components of the system. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{diagrams/software_diagram.png}
+	\caption{Software Block Diagram}\label{BlockDiagram}
+
+\end{figure}
+
+By making the control module
 an API, AI algorithms can be interchanged easily for testing. The modular
 approach also means sensor and actuator modules can be plugged in and out as
 desired and could easily be changed if needed at any point in the project.
@@ -60,11 +69,6 @@ and requires a strict directory structure in order to build each of the
 individual modules within the project. Packages within ROS allow code to be
 maintained and compartmentalised, and by using packages throughout existing
 packages can be added easily.
-
-Considerations of appropriate packages were made and a final design UML diagram
-created\todo{UML~\ref{UMLDiagram}}. This demonstrates a full system
-implementation and the expected interactions between each of the modules within
-the program.
 
 
 \subsection{Implementation}\label{soft/ROS/impl}
@@ -151,14 +155,14 @@ currently under heavy development but will have native support for Python
 
 \subsection{Testing}\label{soft/ROS/test}
 In addition to each of the nodes being tested independently in a similar
-manner to how each of them were tested in isolation throughout the~\ref{elec}
-Section, the nodes were tested in a number of different
+manner to how each of them were tested in isolation throughout
+Section~\ref{electrical}, the nodes were tested in a number of different
 configurations.
 \todo{David maybe needs to write this}
 
 Each of the topics can be tracked from the main graph of nodes in the ROS
 runtime using the command $rqt graph$. This produces the following output,
-\todo{put rqt graph of nodes and topics in here and dicuss}.
+\todo{put rqt graph of nodes and topics in here and discuss}.
 
 
 \subsection{Deployment}\label{soft/ROS/deploy}
@@ -559,10 +563,52 @@ accuracy in output velocities.
 
 \section{Odometry Sensor Fusion}\label{soft/odometry}
 
-\subsection{Wheel Odometry}\label{soft/odometry/design}
+\subsection{Wheel Odometry}\label{soft/odometry/wheel}
 
-Wheel Odometry is derived in two parts. Firstly, the speed
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
+	\caption{The variables used to calculate wheel odometry}
+	\label{fig:diff_drive_diagram}
+\end{figure}
 
+Wheel Odometry is derived in two parts. Firstly, as discussed in section
+\ref{soft/PID/impl}, the velocity of each wheel is derived from the output of the
+encoders. Then, with only these values and the distance between the wheels
+(usually called the track of the wheels), the linear and angular velocities in two
+dimensions can be derived. Furthermore, by tracking both of these values over
+time, an estimate of global displacement can be attained, though due to the lack
+of reliability in the encoder data, this estimate is very likely to drift over
+time.
+
+Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
+wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
+and rotation from the origin. These values are reflected in figure \ref{fig:diff_drive_diagram}.
+
+The ideal differential drive system has only two ``states'' of movement, either
+moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
+the spot as a result of $u_l$ being the inverse of $u_r$. This makes derivation of
+equations for the odometry fairly simple. 
+
+When moving in a straight line, the linear velocity of the system is simply the
+velocity of either wheel, in the direction $\theta$, while rotational velocity
+should be $0$. To achieve the latter, the velocity used in the calculation is $0.5 (u_l + u_r)$, which is $0$ in the case where $u_l = -u_r$ and unchanged otherwise.
+Splitting the velocities across the axes with the cosine and sine of $\theta$ achieves a reasonable result for these velocities.
+
+Likewise, in the case of rotation, the linear velocities should be $0$. When the
+robot rotates at some rate, say $\phi$, around its centre, the wheel must move at $u_r = 0.5 L \phi$ ($u_l = -u_r$ as the axis of rotation is the centre of the
+robot). Like in the previous case, the velocity used in the calculation is to be 0
+in the case where $u_l = u_r$, so the value
+used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation. 
+
+The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dottheta}.
+
+
+\begin{align}
+\dot{x} & = \frac{(u_l + u_r)}{2} \cos(\theta) \label{eq:dotx} \\
+\dot{y} & = \frac{(u_l + u_r)}{2} \sin(\theta) \label{eq:doty} \\
+\dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
+\end{align}
 
 \subsection{IMU}\label{soft/odometry/imu}
 
@@ -570,11 +616,11 @@ As was discussed in Section~\ref{elec/imu}, the IMU can also be used to
 perform dead reckoning, and this can be fused with the wheel odometry to
 improve the accuracy of the system.
 
-For other nodes to use the IMU data, the readings had to be converted into
-a ROS IMU message~\cite{ROSIMUMsg} consisting of: a ROS header message~
-\cite{ROSHeaderMsg}; a quaternion representing the orientation; a 3
-element vector for the rotational speed; a 3 element vector for the linear
-acceleration; and covariance matrices for each of these measurements. The
+For other nodes to use the IMU data, the readings had to be converted into 
+a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
+\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3 
+element vector for the rotational speed; a 3 element vector for the linear 
+acceleration; and covariance matrices for each of these measurements. The 
 code imu\_node uses to create an IMU messages is shown in Code Listing~
 \ref{lst:imu_message}
 
@@ -591,16 +637,17 @@ def _publish_data(self):
         ...
 \end{lstlisting}
 
-There are a couple points to notice in this excerpt. Firstly, the
-covariance matrix for the orientation is set to a $-1$ followed by 0's.
-This indicates that values for the orientation are unknown as we are only
-using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the
-x and y axes are negative the measured value. This is because, as
-discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
-\ang{180} relative to the robot frame (i.e. the x axis in the IMU faced
-towards the back of the robot). While this would be possible to correct by
-declaring a transform frame describing the IMU frame relative to the base
-frame, this was thought to be a simpler solution. Because of this, the
+There are a couple points to notice in this excerpt. Firstly, the 
+covariance matrix for the orientation is set to a $-1$ followed by 0's. 
+This indicates that values for the orientation are unknown as we are only 
+using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the 
+x and y axes are negative the measured value. This is because, as 
+discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at 
+\ang{180} relative to the robot frame (i.e. the x axis in the IMU faced 
+towards the back of the robot). While this would be possible to correct by 
+declaring a transform frame describing the IMU frame relative to the base 
+frame, this was thought to be a simpler solution. Because of this, the 
+
 frame in the header is set to \textit{base\_link}.
 
 The ROS spin functionality was used for the IMU, so
@@ -609,10 +656,10 @@ frequency. This frequency, along with the topic the
 IMU is published to, is set in the launch file, as
 shown in Code Listing~\ref{lst:imu_launch}
 
-\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
+\begin{lstlisting}[caption={\texttt{\_publish\_data} in \texttt{imu\_node}}, label={lst:imu_message}, style=xml]
 <node name="imu" pkg="crues_sensors" type="imu_node.py">
-        <remap from="~rate" to="imu/rate" />
-    </node>
+    <remap from="~rate" to="imu/rate" />
+</node>
 \end{lstlisting}
 
 \subsubsection{IMU Testing}\label{soft/odometry/imu/test}
@@ -630,7 +677,78 @@ movements performed.
 	\caption{IMU RVIZ Test}\label{fig:imu_test}
 \end{figure}
 
-\subsection{EKF}\label{soft/odometry/test}
+\subsection{EKF}\label{soft/odometry/ekf}
+
+The ROS \verb|robot_localization| package~\cite{RosRobotLocalization} was used
+to fuse the sensor data. This package contains implementations of
+an EKF and a UKF (Unscented Kalman Filter). The latter has the advantage of higher
+accuracy, particularly for highly non-linear transformations at the expense of
+greater computational complexity~\cite{wan_unscented_2000}. In order to limit
+computational overhead, the EKF implementation (\verb|ekf_localization_node|) was
+chosen for use with this project. Listings~\ref{lst:ekf_launch} shows how an EKF
+node is created in the main launch file.
+
+\todo{sort your shit out you German bastard. P.S add the xml style to report.tex PP.S.. add yaml also P.S.P.SS.p I'm doing this to annoy you
+
+
+
+
+-p}
+
+\begin{lstlisting}[caption={EKF node in ROS launch file}, label={lst:ekf_launch}, style=xml]
+<node name="ekf" pkg="robot_localization" type="ekf_localization_node"
+      clear_params="true">
+    <rosparam command="load" file="$(find crues_control)/config/ekf.yaml" />
+    <remap from="/cmd_vel" to="/twist" />
+</node>
+\end{lstlisting}
+
+The parameters used in the EKF are loaded from the \verb|ekf.yaml| file, which
+specifies topics and configurations for each of the input sources. The
+\verb|source_config| parameter for each source (i.e.\ wheel odometry and IMU data)
+specifies which of the filter's 15 states the source updates. In the case of
+odometry, the differential drive restrictions outlined in
+Section~\ref{soft/odometry/wheel} mean that only the velocity in the $X$ direction
+and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
+The IMU provides values for the yaw velocity and acceleration in the $X$ and
+$Y$ directions.
+
+\begin{lstlisting}[caption={EKF YAML file}, label={lst:ekf_yaml}, style=yaml]
+frequency: 50  # Frequency at which odometry is published in Hz
+two_d_mode: true  # Ignore movement in three dimensions
+publish_tf: true
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+
+odom0: odometry/wheel  # Topic on which wheel odometry is published
+# Which values are provided by wheel odometry
+# [x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az]
+odom0_config: [false, false, false, false, false, false, true, false, false, false, false, true, false, false, false]
+odom0_queue_size: 2
+odom0_pose_rejection_threshold: 5
+odom0_twist_rejection_threshold: 1
+
+imu0: imu/data  # Topic on which IMU data is published
+imu0_config: [false, false, false, false, false, false, false, false, false, false, false, true, true,  false, false]
+imu0_queue_size: 5
+imu0_pose_rejection_threshold: 0.8
+imu0_twist_rejection_threshold: 0.8
+imu0_linear_acceleration_rejection_threshold: 0.8
+# True iff IMU returns acceleration without gravitational offset
+imu0_remove_gravitational_acceleration: true
+
+use_control: true
+stamped_control: false
+control_timeout: 0.2
+# Which velocities are being controlled [vx, vy, vz, vroll, vpitch, vyaw]
+control_config: [true, false, false, false, false, true]
+\end{lstlisting}
+
+
+
 
 
 \section{SLAM}\label{soft/SLAM}
