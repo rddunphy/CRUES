@@ -428,10 +428,46 @@ eliminate errors in the actuator systems by the mathematical description
 the system in question, the error in the system can be reduced. 
 
 \subsection{Design}\label{soft/PID/design}
-The PID controller of the system was handled by an external library --- ``differential-drive''~\cite{diffdrivelib}. 
+The PID controller of the system was handled by an external library --- ``differential-drive''~\cite{diffdrivelib}. The library is specifically designed for differential drive robots and takes a ROS twist message\todo{~\cite{}Twist Message}, converting this to a motor command for each motor. It then uses the feedback from the encoders to monitor the movement of the wheels and adjust future motor commands accordingly, in an attempt to maintain a straight line of movement. The library has a number of nodes which each  carry out different tasks within the motor control of the system. The library has the parameters $ K_p $, $ K_i $ and $ K_d $ to tune the PID appropriately. 
+
+In addition to this, the library has a simulator node named ``wheel-loopback'' which can be used to simulate the movement of wheels and also therefore to tune the PID. Although the PID tuning parameters would be different in practise as the weight, inertia and torque of the robot are contributing factors, methodologies for tuning the PID were tested using the simulation. The various methods discussed (see Section~\ref{litreview/robotics/pid} were attempted and outcomes recorded. 
 
 \subsection{Implementation}\label{soft/PID/impl}
+As most of the research carried out pointed towards the Ziegler-Nichols method being an effective way of tuning PID, this was tried first directly on the robot. In order to tune the PID in real time, the values of $ K_p $, $ K_i $ and $ K_d $ were published to the ROS system from a terminal while ``roscore'' was running. $K_p$ was increased until oscillations were seen in the system --- the determination of an oscillation was vaguely defined across literature and hence this was done by eye --- and this was set as the critical gain of the system $K_u$. The period of oscillation $T_u$ was then measured from $K_u$. From these values, a tuning table~\cite{mccormack1998rule} of tuning rules was used to calculate values for $K_p$, $ K_i $ and $ K_d $.  This was carried out with the results shown in Table~\ref{zn_pid_tuning}.
 
+\begin{table}[!ht]\centering
+\caption{Ziegler-Nichols PID Tuning
+\label{zn_pid_tuning}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{method} & \thead{$K_u$} & \thead{$T_u$[\si{\second}]} & \thead{$K_p$} & \thead{$K_i$} & & \thead{$K_d$}\\
+        \midrule
+		ZN & 775 & 0.14 & 465 & 6642 & 8.13\\
+		ZN & 800 & 0.14 & 480 & 6857 & 8.4\\
+		NO-OV & 775 & 0.14 & 155 & 2214 & 7.49\\
+		NO-OV & 800 & 0.14 & 160 & 2240 & 7.47\\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+In practice, these values for $K_p$, $ K_i $ and $ K_d $ were not accurate and produced an aggressive stop-start motion in the movement of the robot. This was due to these methods providing an aggressive gain and overshoot which resulted in the motors being run at high speed followed quickly by low speed to average the correct speed. Due to the high current drawn by the motors when stopping and starting this was not suitable for this project's application. 
+
+Due to the high current spikes during testing of these methods, batteries were being drained rapidly and hence, the library simulation was used to find a usable tuning method. A more practical solution was found~\cite{practicalPID}, which approached the problem without calculating values. Using the simulation and output graphs --- obtained using the ROS function \verb|rqt_graph| --- to determine correct behaviour, $K_p$ was increased until the system oscillated. $K_p$ was then halved and $K_i$ introduced to increase the rate of change in the system\todo{???}. $K_d$ could then be slowly increased to minimise the overshoot in the system. Follwoing one iteration of this process the velocity scaling was reduced and the process repeated. The results are shown in Table~\ref{
+
+\begin{table}[!ht]\centering
+\caption{Manual PID 
+\label{manual_pid_tuning}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{method} & \thead{$K_p$} & \thead{$K_i$} & & \thead{$K_d$}\\
+        \midrule
+		Before Velocity Scaling & 775 & 0.14 & 465 & 6642 & 8.13\\
+		ZN & 800 & 0.14 & 480 & 6857 & 8.4\\
+		NO-OV & 775 & 0.14 & 155 & 2214 & 7.49\\
+		NO-OV & 800 & 0.14 & 160 & 2240 & 7.47\\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
 \subsection{Testing}\label{soft/PID/test}
 
 
