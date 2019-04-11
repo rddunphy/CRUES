@@ -492,7 +492,8 @@ find a usable tuning method. A more practical solution was found~
 \cite{practicalPID}, which approached the problem without calculating 
 values. Using the simulation and output graphs --- obtained using the ROS 
 function \verb|rqt_graph| --- to determine correct behaviour, $K_p$ was 
-increased until the system oscillated. $K_p$ was then halved and $K_i$ 
+increased until the system oscillated with a constant amplitude. 
+$K_p$ was then halved and $K_i$ 
 introduced to increase the rate of change in the system\todo{???}. $K_d$ 
 could then be slowly increased to minimise the overshoot in the system. 
 Following one iteration of this process the velocity scaling was reduced 
