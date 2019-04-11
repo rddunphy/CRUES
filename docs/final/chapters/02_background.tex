@@ -22,14 +22,13 @@ searches. \todo{i dont think we need these paragraphs}
 
 \section{Robotics}\label{litreview/robotics}
 A robot is ``a machine capable of carrying out a complex series of actions 
-automatically''~\cite{https://en.oxforddictionaries.com/definition/robot}. 
+automatically''~\cite{robotdef}. 
 Robotics is the ``branch of technology which deals with the design, construction, 
-operation, and application''~\cite{https://www.merriam-webster.com/dictionary/
-robotics} of robots. Robotics combines a number of fields from mechanical, 
+operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical, 
 electrical and software engineering within a single system to achieve its goals. By 
 combining the three major disciplines of artificial intelligence, operations 
 research, and control theory, a resultant intelligent control system is created~
-\cite{https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1103278} which can be 
+\cite{saridis1983intelligent} which can be 
 used for a wide range of robotic applications.   
 
 \subsection{Control}\label{litreview/robotics/control}  
@@ -80,13 +79,6 @@ of the wheels to be maintained at a constant speed when utilised by the
 Proportional-Integral-Derivative(PID) controller of the robot.  
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
-%As mentioned above the PID controller uses feedback from the encoders to maintain 
-%a straight line of movement and maintain each of wheels at a constant velocity. 
-%The PID controller is a feedback loop which is designed to eliminate errors in 
-%the actuator systems by the mathematical description. By tuning $ K_p $, $ K_i $ %and $ K_d $ for the 
-%system in question, the error in the system can be reduced. 
-\todo{move to intro of soft/pid} 
-
 As mentioned above, PID controllers are a very common solution to problems where the error of the 
 system (the difference between the current state and the desired state) can be 
 measured. Proportional-Integral-Derivative refers to the 
@@ -96,6 +88,7 @@ which is related to the error integrated over time, and a term which is
 proportional to the rate of change of the error. This is shown by \todo{is this equation??}
 
 \begin{equation}
+\label{eqn:pid}
 O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}
 \end{equation}
 
