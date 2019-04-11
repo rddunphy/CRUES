@@ -647,13 +647,20 @@ movements performed.
 \subsection{EKF}\label{soft/odometry/ekf}
 
 The ROS \verb|robot_localization| package~\cite{RosRobotLocalization} was used
-to fuse the sensors of the for sensor fusion. This package contains implementations of
+to fuse the sensor data. This package contains implementations of
 an EKF and a UKF (Unscented Kalman Filter). The latter has the advantage of higher
 accuracy, particularly for highly non-linear transformations at the expense of
 greater computational complexity~\cite{wan_unscented_2000}. In order to limit
 computational overhead, the EKF implementation (\verb|ekf_localization_node|) was
 chosen for use with this project. Listings~\ref{lst:ekf_launch} shows how an EKF
 node is created in the main launch file.
+
+\todo{sort your shit out you German bastard. P.S add the xml style to report.tex PP.S.. add yaml also P.S.P.SS.p I'm doing this to annoy you
+
+
+
+
+-p}
 
 \begin{lstlisting}[caption={EKF node in ROS launch file}, label={lst:ekf_launch}, style=xml]
 <node name="ekf" pkg="robot_localization" type="ekf_localization_node"
