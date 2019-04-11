@@ -45,6 +45,25 @@ was justified, due to the time saved. This would have added unnecessary complica
 in the beginning of the project which could have caused future 
 tasks to be delayed further. 
 
+The only issue which was encountered with the pre-built chassis was the 
+accompanying motors, which were identified as the possible cause of 
+issues throughout the electrical and software implementations. When used 
+for a reasonable period of time, the motors began to leak grease from 
+their plastic casing. This meant that the gearing system was not greased 
+and resulted in gears grinding and occasionally slipping. As the 
+encoders are on the motor shaft and not the drive shaft, this affected 
+the feedback from the encoders. It is thought that this contributed to 
+increased differences between robots at the end of the project and 
+increased difficulty in tuning the PID controller. This could have been 
+mitigated sooner by applying more grease, however this would have meant 
+opening the casing of each motor as opposed to just two. If this issue 
+had been known from the start, the motors would have been either rotated 
+in testing to balance the degradation, or different motors would have 
+been used with a bespoke chassis, as finding motors to fit the pre-
+existing chassis would not have been a suitable solution. 
+
+\todo{shitty motors, increased diff between robots, made PID tuning harder, in future try different motors}
+
 Aside from the robots, the other main mechanical component was the modular maze 
 testing environment. Although constructed by the mechanical workshop, a great deal of 
 effort was put into the design and subsequent iterations to obtain the best outcome 
@@ -56,7 +75,9 @@ In addition, although not used in the final maze design a great deal was learned
 using CAD to create designs of pegs which were intended for use in the maze. A number 
 of designs were created, which were not only improved in terms of the specification 
 requested by the mechanical workshop, but also in terms of the use of the CAD 
-software. It was also worth noting that the CAD designed pegs were not unusable because of a design flaw, but due to limitations in the printing/construction process. The mechanical portion of the project can therefore overall be deemed a success as 
+software. It was also worth noting that the CAD designed pegs were not unusable 
+because of a design flaw, but due to limitations in the printing/construction process. 
+The mechanical portion of the project can therefore overall be deemed a success as 
 the individual components were made to a high standard of design and construction. 
 
 \section{Electrical}\label{eval/elec}
@@ -70,7 +91,7 @@ designed for this purpose. The PCB design was iterated upon and therefore
 improved over the course of the project. Having multiple robots allowed an 
 iterative design process to be carried out and this greatly improved the outcome 
 of the PCB. Connections and vias were altered following the first design to be 
-more easily integrable with the mechanical design and mean the final robot is 
+more easily integrable with the mechanical design and the result is that the final robot is 
 constructed of an iterated and tested final design. 
 
 Time and care was take to ensure the electrical design of the PCB and any other 
