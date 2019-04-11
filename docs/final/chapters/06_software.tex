@@ -612,8 +612,8 @@ movements performed.
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a very cheap and effective way of gaining a high level 
-understanding of the environment. It was used to allow the agents to 
-identify other robots and objectives in in the system. Detecting the other 
+understanding of the environment. In this system, it was used to allow the agents to 
+identify other robots and objectives in the maze. Detecting the other 
 robots was an essential component to allow communication between robots, 
 prevent agents mistakenly mapping other agents,and to recognise when 
 ultrasonic interference would occur.
@@ -644,7 +644,7 @@ frame image, which results in an O($n^2$) complexity (although
 this can be streamlined, for instance if it becomes impossible
 for the distance to be low enough for a pair to be the best
 match part way through the distance calculation, it does not
-need to be finished). The calculations for deciding the best
+need to be finished)~\cite{opencv_library}. The calculations for deciding the best
 outline of the object also become more complicated, as there
 will be a lower true positive to false positive ratio as the
 best matches (which are found first) are more likely to be
