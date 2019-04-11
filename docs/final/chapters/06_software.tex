@@ -431,7 +431,7 @@ the system in question, the error in the system can be reduced.
 The PID controller of the system was handled by an external library --- 
 ``differential-drive''~\cite{diffdrivelib}. The library is specifically 
 designed for differential drive robots and takes a ROS twist message
-\todo{~\cite{}Twist Message}, converting this to a motor command for each 
+\todo{Twist Message cite}, converting this to a motor command for each 
 motor. It then uses the feedback from the encoders to monitor the movement 
 of the wheels and adjust future motor commands accordingly, in an attempt 
 to maintain a straight line of movement. The library has a number of nodes 
@@ -445,7 +445,7 @@ therefore to tune the PID. Although the PID tuning parameters would be
 different in practise as the weight, inertia and torque of the robot are 
 contributing factors, methodologies for tuning the PID were tested using 
 the simulation. The various methods discussed (see Section~\ref{litreview/
-robotics/pid} were attempted and outcomes recorded. 
+robotics/pid}) were attempted and outcomes recorded. 
 
 \subsection{Ziegler-Nichols}\label{soft/PID/zn}
 As most of the research carried out pointed towards the Ziegler-Nichols 
@@ -463,10 +463,10 @@ in Table~\ref{zn_pid_tuning}.
 
 \begin{table}[!ht]\centering
 \caption{Ziegler-Nichols PID Tuning
-\label{zn_pid_tuning}
-    \begin{tabular}{ccc}
+\label{zn_pid_tuning}}
+    \begin{tabular}{cccccc}
         \toprule
-        \thead{method} & \thead{$K_u$} & \thead{$T_u$[\si{\second}]} & \thead{$K_p$} & \thead{$K_i$} & & \thead{$K_d$}\\
+        \thead{Method} & \thead{$K_u$} & \thead{$T_u$[\si{\second}]} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
 		ZN & 775 & 0.14 & 465 & 6642 & 8.13\\
 		ZN & 800 & 0.14 & 480 & 6857 & 8.4\\
@@ -496,14 +496,14 @@ increased until the system oscillated. $K_p$ was then halved and $K_i$
 introduced to increase the rate of change in the system\todo{???}. $K_d$ 
 could then be slowly increased to minimise the overshoot in the system. 
 Following one iteration of this process the velocity scaling was reduced 
-and the process repeated. The results are shown in Table~\ref{
+and the process repeated. The results are shown in Table~\ref{manual_pid_tuning}.
 
 \begin{table}[!ht]\centering
 \caption{Manual PID 
-\label{manual_pid_tuning}
-    \begin{tabular}{ccc}
+\label{manual_pid_tuning}}
+    \begin{tabular}{cccc}
         \toprule
-        \thead{method} & \thead{$K_p$} & \thead{$K_i$} & & \thead{$K_d$}\\
+        \thead{Method} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
 		Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
 		After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
