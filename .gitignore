@@ -35,6 +35,7 @@ CRUES_VENV_2/
 *.log
 *.tex.bak
 *.synctex.gz
+*.synctex(busy)
 *.toc
 *.bbl
 *.bcf
