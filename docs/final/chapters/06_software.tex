@@ -433,6 +433,13 @@ was sufficiently thread-safe to be used.
 
 \subsection{Wheel Odometry}\label{soft/odometry/design}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
+	\caption{The variables used to calculate wheel odometry}
+	\label{fig:diff_drive_diagram}
+\end{figure}
+
 Wheel Odometry is derived in two parts. Firstly, as discussed in section
 \ref{soft/PID/impl}, the velocity of each wheel is derived from the output of the
 encoders. Then, with only these values and the distance between the wheels
@@ -445,13 +452,6 @@ time.
 Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
 wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
 and rotation from the origin. These values are reflected in figure \ref{fig:diff_drive_diagram}.
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
-	\caption{The variables used to calculate wheel odometry}
-	\label{fig:diff_drive_diagram}
-\end{figure}
 
 The ideal differential drive system has only two ``states'' of movement, either
 moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
