@@ -34,11 +34,20 @@ individual modules within a system and uses a central control node named
 \subsection{Design}\label{soft/ROS/design}
 Following the decision to use ROS to implement our chosen architecture, a modular
 approach was adopted for the design of each of the components within the system~
-\ref{elec}. Hence, a system block diagram was developed to visualise data flow
-within the system. \todo{put in block diagram} The block diagram in Figure~
+\ref{electrical}. Hence, a system block diagram was developed to visualise data flow
+within the system. The block diagram in Figure~
 \ref{BlockDiagram} demonstrates the modularisation of the system and also the
 expectation that the AI module at the top of the system will be completely
-independent from the other components of the system. By making the control module
+independent from the other components of the system. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{diagrams/software_diagram.png}
+	\caption{Software Block Diagram}\label{BlockDiagram}
+
+\end{figure}
+
+By making the control module
 an API, AI algorithms can be interchanged easily for testing. The modular
 approach also means sensor and actuator modules can be plugged in and out as
 desired and could easily be changed if needed at any point in the project.
@@ -60,11 +69,6 @@ and requires a strict directory structure in order to build each of the
 individual modules within the project. Packages within ROS allow code to be
 maintained and compartmentalised, and by using packages throughout existing
 packages can be added easily.
-
-Considerations of appropriate packages were made and a final design UML diagram
-created\todo{UML~\ref{UMLDiagram}}. This demonstrates a full system
-implementation and the expected interactions between each of the modules within
-the program.
 
 
 \subsection{Implementation}\label{soft/ROS/impl}
@@ -151,14 +155,14 @@ currently under heavy development but will have native support for Python
 
 \subsection{Testing}\label{soft/ROS/test}
 In addition to each of the nodes being tested independently in a similar
-manner to how each of them were tested in isolation throughout the~\ref{elec}
+manner to how each of them were tested in isolation throughout the~\ref{electrical}
 Section, the nodes were tested in a number of different
 configurations.
 \todo{David maybe needs to write this}
 
 Each of the topics can be tracked from the main graph of nodes in the ROS
 runtime using the command $rqt graph$. This produces the following output,
-\todo{put rqt graph of nodes and topics in here and dicuss}.
+\todo{put rqt graph of nodes and topics in here and discuss}.
 
 
 \subsection{Deployment}\label{soft/ROS/deploy}
