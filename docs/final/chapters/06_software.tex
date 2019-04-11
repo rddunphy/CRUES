@@ -438,24 +438,39 @@ As was discussed in Section \ref{elec/imu}, the IMU can also be used to perform 
 For other nodes to use the IMU data, the readings had to be converted into a ROS IMU message\todo{cite} consisting of: a ROS header message \todo{cite}; a quaternion representing the orientation; a 3 element vector for the rotational speed; a 3 element vector for the linear acceleration; and covariance matrices for each of these measurements. The code imu\_node uses to create an IMU messages is shown in Code Listing \ref{lst:imu_message}
 
 
-\begin{lstlisting}[caption={setup\_imu\_message in imu\_node},label={lst:imu_message} , language=python]
+\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
 
-def setup_imu_message((a_x, a_y, a_z), (roll_v, pitch_v, yaw_v)):
-    msg = Imu()
-    msg.orientation_covariance = [-1.0, 0.0, 0.0,
-                                  0.0, 0.0, 0.0,
-                                  0.0, 0.0, 0.0]  # indicate orientation unknown
-    msg.linear_acceleration = Vector3(-a_x, -a_y, a_z)
-    msg.angular_velocity = Vector3(-roll_v, -pitch_v, yaw_v)
-    return msg
+def _publish_data(self):
+        ...
+        msg = Imu()
+        msg.header.frame_id = self.frame_id
+        msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # indicate orientation unknown
+        msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
+        msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
+        ...
 \end{lstlisting}
 
-There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6dof IMU \todo{cite imu message}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section \ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to bas
+There are a couple points to notice in this excerpt. Firstly, the covariance matrix for the orientation is set to a $-1$ followed by 0's. This indicates that values for the orientation are unknown as we are only using a 6dof IMU \todo{cite imu message}. Secondly, the published values for the x and y axes are negative the measured value. This is because, as discussed in Section \ref{elec/pcb}, the IMU had to be mounted at \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced towards the back of the robot). While this would be possible to correct by declaring a transform frame describing the IMU frame relative to the base frame, this was thought to be a simpler solution. Because of this, the frame in the header is set to \textit{base\_link}.
 
+The ROS spin functionality was used for the IMU, so 
+\textit{\_publish\_data} is run at a set 
+frequency. This frequency, along with the topic the 
+IMU is published to, is set in the launch file, as 
+shown in Code Listing \ref{lst:imu_launch}
 
+\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
+<node name="imu" pkg="crues_sensors" type="imu_node.py">
+        <remap from="~rate" to="imu/rate" />
+    </node>
+\end{lstlisting}
 
 \subsubsection{IMU Testing}\label{soft/odometry/imu/test}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{IMUtest.png}
+	\caption{IMU RVIZ Test}\label{fig:imu_test}
+\end{figure}
 
 \subsection{EKF}\label{soft/odometry/test}
 
@@ -545,10 +560,22 @@ for c in contours:
 ...
 \end{lstlisting}
 
-These parameters are then returned to the \textit{\_tick()} function which was called by \textit{spin()}. This then renders debug info to the frame if it's performing a test, or publishes the detected robot info via a ROS message consisting of a comma separated list of objects detected in the last frame. 
+These parameters are then returned to the 
+\textit{\_tick()} function which was called by 
+\textit{spin()}. This then renders debug info to 
+the frame if it's performing a test, or publishes 
+the detected robot info via a ROS message 
+consisting of a comma separated list of objects 
+detected in the last frame. 
 
 \subsection{Testing}\label{soft/cv/test}
-Initial testing of the \textit{vision\_node} was performed on a PC with a USB webcam. The testing was performed by using the position information to render labelled rectangles to a real time stream highlighting the position of the objects. The code for this is shown in Code Listing \ref{lst:draw_rectangles}. 
+Initial testing of the \textit{vision\_node} was 
+performed on a PC with a USB webcam. The testing 
+was performed by using the position information to 
+render labelled rectangles to a real time stream 
+highlighting the position of the objects. The code 
+for this is shown in Code Listing 
+\ref{lst:draw_rectangles}. 
 
 \begin{lstlisting}[caption={asd},label={lst:draw_rectangles} , language=python]
 for i, name in enumerate(names):
