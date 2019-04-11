@@ -1,0 +1,12 @@
+<launch>
+
+    <include file="$(find crues_control)/launch/robot.launch" />
+
+    <node name="controller" pkg="crues_control" type="path_control.py" required="true">
+        <param name="turn_vel" type="double" value="1" />
+        <param name="fwd_vel" type="double" value="0.15" />
+        <remap from="~rate" to="encoder/rate" />
+        <param name="path_file" value="$(find crues_control)/paths/fwd.txt" />
+    </node>
+
+</launch>

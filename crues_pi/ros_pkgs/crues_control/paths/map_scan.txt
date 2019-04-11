@@ -1,14 +1,17 @@
 turn_vel 0.2
-fwd_vel 0.1
-turn 360
-fwd 200
-turn 360
-fwd 200
-turn 360
-fwd 200
-turn 360
-fwd 200
-turn 360
-fwd 200
-turn 360
+turn 365
+
+# turn_vel 0.2
+# fwd_vel 0.1
+# turn 360
+# fwd 200
+# turn 360
+# fwd 200
+# turn 360
+# fwd 200
+# turn 360
+# fwd 200
+# turn 360
+# fwd 200
+# turn 360
 exit 1

@@ -27,7 +27,7 @@ class Controller:
             with open(path_file, 'r') as f:
                 i = 1
                 for line in f:
-                    tokens = line.split()
+                    tokens = line.split('#')[0].split()
                     if len(tokens) > 0:
                         if len(tokens) != 2:
                             raise IOError("Syntax error in path file: %d tokens in line %d" % (len(tokens), i))

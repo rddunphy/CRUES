@@ -1,42 +1,41 @@
 <launch>
 
-    <param name="robot_description" textfile="$(find differential_drive)/blinky.urdf" />
-    <rosparam command="load" file="/home/crues/crues_pi/config/params.yaml" />
+<!--    <param name="robot_description" textfile="$(find crues_control)/config/crues.urdf" />-->
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
 
     <!-- SENSORS -->
-    <include file="$(find crues_sensors)/us.launch" />
+    <include file="$(find crues_sensors)/launch/sonar.launch" />
 
     <node name="left_encoder" pkg="crues_sensors" type="enc_node.py">
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
         <remap from="~pin_a" to="pins/ela" />
         <remap from="~pin_b" to="pins/elb" />
         <remap from="/wheel" to="/lwheel"/>
     </node>
 
     <node name="right_encoder" pkg="crues_sensors" type="enc_node.py">
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
         <remap from="~pin_a" to="pins/era" />
         <remap from="~pin_b" to="pins/erb" />
         <remap from="/wheel" to="/rwheel" />
     </node>
 
     <node name="imu" pkg="crues_sensors" type="imu_node.py">
-        <remap from="~rate" to="imu_rate" />
+        <remap from="~rate" to="imu/rate" />
     </node>
 
-
     <node name="cv" pkg="crues_sensors" type="vision_node.py">
-	<param name="recording" value="true"/>
+	    <param name="recording" value="false" />
     </node>
 
     <!-- ACTUATORS -->
-    <include file="$(find crues_actuators)/motors.launch" />
-    <include file="$(find crues_actuators)/leds.launch" />
+    <include file="$(find crues_actuators)/launch/motors.launch" />
+    <include file="$(find crues_actuators)/launch/leds.launch" />
 
     <!-- CONTROL -->
     <node name="diff_tf" pkg="differential_drive" type="diff_tf.py">
-        <remap from="~rate" to="enc_rate" />
-        <param name="base_width" type="double" value="0.149" />
+        <remap from="~rate" to="encoder/rate" />
+        <remap from="~base_width" to="base_width" />
         <remap from="/odom" to="/odometry/wheel" />
     </node>
 
@@ -47,7 +46,7 @@
         <remap from="~Kp" to="pid/Kp" />
         <remap from="~Ki" to="pid/Ki" />
         <remap from="~Kd" to="pid/Kd" />
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
         <remap from="/wheel" to="/lwheel" />
         <remap from="/motor_cmd" to="/lmotor_cmd" />
         <remap from="/wheel_vtarget" to="/lwheel_vtarget" />
@@ -61,7 +60,7 @@
         <remap from="~Kp" to="pid/Kp" />
         <remap from="~Ki" to="pid/Ki" />
         <remap from="~Kd" to="pid/Kd" />
-        <remap from="~rate" to="enc_rate" />
+        <remap from="~rate" to="encoder/rate" />
         <remap from="/wheel" to="/rwheel" />
         <remap from="/motor_cmd" to="/rmotor_cmd" />
         <remap from="/wheel_vtarget" to="/rwheel_vtarget" />
@@ -69,27 +68,33 @@
     </node>
 
     <node name="twist_to_motors" pkg="differential_drive" type="twist_to_motors.py" output="screen">
-        <param name="base_width" type="double" value="0.141" />
-        <param name="rate" type="double" value="50" />
+        <remap from="~base_width" to="base_width" />
+        <remap from="~rate" to="encoder/rate" />
         <param name="timeout_ticks" type="int" value="7" />
     </node>
 
 <!--    <node name="ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">-->
-<!--        <rosparam command="load" file="/home/crues/crues_pi/config/ekf.yaml" />-->
+<!--        <rosparam command="load" file="$(find crues_control)/config/ekf.yaml" />-->
 <!--        <remap from="/cmd_vel" to="/twist" />-->
 <!--    </node>-->
 
 <!--    <node name="slam" pkg="gmapping" type="slam_gmapping" output="screen">-->
 <!--        <param name="maxRange" value="4.0" />-->
-<!--        <param name="maxUrange" value="1.0" />-->
-<!--        <param name="xmax" value="4.0" />-->
-<!--        <param name="ymax" value="4.0" />-->
-<!--        <param name="delta" value="0.01" />-->
-<!--        <remap from="/scan" to="/us_scan" />-->
+<!--        <param name="maxUrange" value="2.0" />-->
+<!--        <param name="xmin" value="-2.0" />-->
+<!--        <param name="xmax" value="2.0" />-->
+<!--        <param name="ymin" value="-2.0" />-->
+<!--        <param name="ymax" value="2.0" />-->
+<!--        <param name="delta" value="0.05" />-->
+<!--        <param name="particles" value="30" />-->
+<!--        <param name="map_update_interval" value="5" />-->
+<!--        <param name="temporalUpdate" value="0.15" />-->
+<!--        <param name="minimumScore" value="50" />-->
+<!--        <remap from="/scan" to="/sonar_scan" />-->
 <!--    </node>-->
 
     <!-- DATA RECORDING -->
-    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />
-    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /map" />
+    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel" />
+<!--    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /odometry/wheel /map" />-->
 
 </launch>

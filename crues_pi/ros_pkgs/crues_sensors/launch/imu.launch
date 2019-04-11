@@ -1,0 +1,7 @@
+<launch>
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
+    <node name="imu" pkg="crues_sensors" type="imu_node.py">
+        <remap from="~rate" to="imu/rate" />
+    </node>
+    <node name="rosbag_imu" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/imu /tf /imu_data" />
+</launch>

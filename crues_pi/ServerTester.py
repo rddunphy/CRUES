@@ -1,4 +1,4 @@
-from crues.comms import send
+from ros_pkgs.crues_comms.scripts.comms import send
 import threading
 import time
 import random

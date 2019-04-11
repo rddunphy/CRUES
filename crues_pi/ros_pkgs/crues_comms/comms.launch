@@ -1,4 +1,0 @@
-<launch>
-    <node name="client" pkg="crues_comms" type="client_node.py" respawn="true"/>
-    <node name="server" pkg="crues_comms" type="server_node.py" respawn="true"/>
-</launch>
