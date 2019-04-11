@@ -1,4 +1,4 @@
-	\documentclass[12pt, fleqn]{report}
+\documentclass[12pt, fleqn]{report}
 \usepackage[british,UKenglish]{babel}
 \usepackage[utf8]{inputenc}
 
@@ -58,92 +58,26 @@
 
 % Code listings packages, including syntax highlighting for Python
 % (probably not needed for interim report)
-\usepackage{listings}
-\usepackage{xcolor}
-\definecolor{codegreen}{rgb}{0, 0.6, 0}
-\definecolor{codeblue}{rgb}{0, 0, 0.6}
-\definecolor{codegrey}{rgb}{0.4, 0.4, 0.4}
-\definecolor{codebrown}{rgb}{0.5, 0, 0}
-\lstdefinestyle{pystyle}{
-    basicstyle=\small\ttfamily,
-    language=Python,
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{codeblue},
-    numberstyle=\tiny\color{codegrey},
-    stringstyle=\color{codebrown},
-    breakatwhitespace=false,
-    breaklines=true,
-    showstringspaces=false,
-    captionpos=b,
-    numbers=left,
-    numbersep=10pt
-}
-\lstdefinestyle{xml}{
-    basicstyle=\small\ttfamily,
-    language=XML,
-    morekeywords={node, rosparam, remap, param, launch, include},
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{codeblue},
-    numberstyle=\tiny\color{codegrey},
-    stringstyle=\color{codebrown},
-    breakatwhitespace=false,
-    breaklines=true,
-    showstringspaces=false,
-    captionpos=b,
-    numbers=left,
-    numbersep=10pt
-}
-\lstdefinestyle{bash}{
-    basicstyle=\small\ttfamily,
-    language=bash,
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{codeblue},
-    numberstyle=\tiny\color{codegrey},
-    stringstyle=\color{codebrown},
-    breakatwhitespace=false,
-    breaklines=true,
-    showstringspaces=false,
-    captionpos=b,
-    numbers=left,
-    numbersep=10pt
-}
-\newcommand\YAMLcolonstyle{\color{black}}
-\newcommand\YAMLkeystyle{\small\ttfamily\color{codeblue}}
-\newcommand\YAMLvaluestyle{\color{codebrown}}
-\makeatletter
-\newcommand\language@yaml{yaml}
-\expandafter\expandafter\expandafter\lstdefinelanguage
-\expandafter{\language@yaml}
-{
-  keywords={true,false,null,y,n},
-  keywordstyle=\color{darkgray},
-  basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
-  sensitive=false,
-  comment=[l]{\#},
-  morecomment=[s]{/*}{*/},
-  commentstyle=\color{codegreen}\ttfamily,
-  stringstyle=\YAMLvaluestyle\ttfamily,
-  moredelim=[l][\color{orange}]{\&},
-  moredelim=[l][\color{magenta}]{*},
-  moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:},   % switch to value style at :
-  morestring=[b]',
-  morestring=[b]",
-  literate =    {---}{{\ProcessThreeDashes}}3
-                {>}{{\textcolor{red}\textgreater}}1
-                {|}{{\textcolor{red}\textbar}}1
-                {\ -\ }{{\mdseries\ -\ }}3,
-}
-\lst@AddToHook{EveryLine}{\ifx\lst@language\language@yaml\YAMLkeystyle\fi}
-\makeatother
-\newcommand\ProcessThreeDashes{\llap{\color{cyan}-{-}-}}
-\lstdefinestyle{yaml}{
-    language=yaml,
-    numberstyle=\tiny\color{codegrey},
-    showstringspaces=false,
-    captionpos=b,
-    numbers=left,
-    numbersep=10pt
-}
+ \usepackage{listings}
+ \usepackage{xcolor}
+ \definecolor{codegreen}{rgb}{0, 0.6, 0}
+ \definecolor{codeblue}{rgb}{0, 0, 0.6}
+ \definecolor{codegrey}{rgb}{0.4, 0.4, 0.4}
+ \definecolor{codebrown}{rgb}{0.5, 0, 0}
+ \lstdefinestyle{pystyle}{
+     basicstyle=\small\ttfamily,
+     language=Python,
+     commentstyle=\color{codegreen},
+     keywordstyle=\color{codeblue},
+     numberstyle=\tiny\color{codegrey},
+     stringstyle=\color{codebrown},
+     breakatwhitespace=false,
+     breaklines=true,
+     showstringspaces=false,
+     captionpos=b,
+     numbers=left,
+     numbersep=10pt
+ }
 \usepackage{textcomp}
 \usepackage[T1]{fontenc}
 \usepackage[scaled=0.85]{beramono}
