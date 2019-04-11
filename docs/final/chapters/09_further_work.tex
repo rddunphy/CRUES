@@ -1,4 +1,32 @@
 % !TEX root = ../report.tex
 
 \chapter{Further Work}\label{furtherwork}
-As not all of the major objectives of the project were completed, the main aspect of further work is to implement various AI algorithms and investigate their effectiveness in solving mazes co-operatively.  
+As not all of the major objectives of the project were completed, the main 
+aspect of further work is to implement various AI algorithms and investigate 
+their effectiveness in solving mazes co-operatively. A series of benchmark 
+results have been provided in Section~\ref{systest/results} to evaluate 
+these by. Various improvements could also be made to the SLAM (see Section~
+\ref{soft/SLAM}) and Odometry (see Section~\ref{soft/odometry})\todo{change 
+and change this ref if needed}. The exploration through testing of other 
+libraries and methods of improving this system when using ultrasonic sensors 
+and limited feedback methods, could take place and may provide improvements 
+to the mapping capabilities of the robot. 
+
+Subsequent to these improvement related aspects of further work, more robots 
+could be added to the system in order to stress test the scalability of the 
+project and its components such as ultrasonic synchronisation, 
+communications and path-finding. If these stress tests were successful the 
+maze environment could be altered to have walls and a floor which more 
+closely simulate a real life environment. These changes may include adding 
+texture to the walls to evaluate the response of the ultrasonic sensors; 
+using the maze in a darkened environment to evaluate the response of the 
+computer vision node and if additional lighting is required on the robots; 
+and altering the texture of the floor to evaluate the response of the motor 
+control system and the stability of the robots. 
+
+Following these evaluations, the system could then either be upscaled in 
+mechanical terms to perform in the field or used directly and tested in the 
+field. Explorations of different real-life environments could be evaluated 
+and the challenges which come with those tackled. This could lead the 
+project to being a cheap, modular option which could be used in a variety of 
+applications such as those described in this report. 
