@@ -69,7 +69,7 @@ The ultrasonic sensor used was the HC-SR04~\cite{HCSR04datasheet}, as
 previously mentioned in Section~\ref{mech/sensors}. This sensor has a 
 range of up to \SI{4}{\m} and ranging accuracy of up to \SI{3}{\mm}. A 
 small dead-band exists in its range at $<$~\SI{30}{\mm}, however this is 
-mitigated by the placement of the sensor $~$~\SI{30}{\mm} from the edge of 
+mitigated by the placement of the sensor $\approx{\SI{30}{\mm}}$ from the edge of 
 the robot chassis. The sensor is also widely used and available within the 
 department, mitigating any risks surrounding delivery lead times. 
 
@@ -397,7 +397,21 @@ with the following physical design constraints:
     \end{tabular}
 \end{table}
 
-\todo{Rationale for pin choices and why they were changed}
+The majority of the pin choices were made arbitrarily as generic GPIO 
+pins could be used for a variety of purposes. When designing the PCB in 
+the first iteration, the an attempt was made to mimic the orientation of 
+the PCB on the robot to achieve the neatest possible design --- fewest 
+crossing wires and vias. The IMU pins had to be connected to two I2C 
+pins of the Raspberry Pi and, similarly, the motor PWM pins were 
+connected to the hardware PWM pins of the RPi. 
+
+Changes were made in subsequent iterations of the PCB design as the 
+layout had to be altered slightly to eliminate the need for insulating 
+washers beneath screws to ensure screws were not shorting paths or 
+``live'' when the robot was in use. This resulted in some minor 
+shuffling of the generic GPIO pins in versions 2 and 3 of the PCB, as 
+can be seen in Table~\ref{table:pin_assignments}, in order to minimise 
+via and path crossing. 
 
 With these constraints the following PCB design shown in figure \ref{PCB_Design}.
 
