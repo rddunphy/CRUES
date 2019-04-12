@@ -595,7 +595,18 @@ class Motor:
 These values resulted in far less aggressive motion in the movement of the
 robot. Despite this, velocity spikes still occurred, and following a
 consultation with Dr Gordon Dobie (c.f.\ Section~\ref{pm/consultations}) a
-rate control implementation was used. This involved modifying the source
+rate control implementation was used. 
+
+Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of 
+the equation and uses the current velocity as the base rate as opposed to 0~
+\cite{koditschek1987quadratic}. This allows the controller to maintain the speed 
+more smoothly and fewer spikes in motor current are required for the required 
+drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb 
+more slowly from start-up and recover from dips in speed more slowly. This is 
+mitigated, however, by using the current speed as the base and therefore, a high 
+gain is not required to increase the speed to the required level.
+
+Implementing this involved modifying the source
 code for the \verb|differential_drive| package to add an adjustment term to the
 previous output value. This eliminated the need for steady-state correction,
 allowing $K_i$ to be set to $0$. Tuning the remaining values gave a proportional
