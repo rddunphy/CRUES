@@ -647,10 +647,10 @@ discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
 towards the back of the robot). While this would be possible to correct by
 declaring a transform frame describing the IMU frame relative to the base
 frame, this was thought to be a simpler solution. Because of this, the
-frame in the header is set to \textit{base\_link}.
+frame in the header is set to \verb|base_link|.
 
 The ROS spin functionality was used for the IMU, so
-\textit{\_publish\_data} is run at a set
+\verb|_publish_data| is run at a set
 frequency. This frequency, along with the topic the
 IMU is published to, is set in the launch file, as
 shown in Code Listing~\ref{lst:imu_launch}
@@ -814,14 +814,14 @@ and then a minimum S and V values, which is far more intuitive than checking if 
 range of ratios between R, G and B values.
 
 \subsection{Implementation}\label{soft/cv/impl}
-The \textit{vision\_node} works using a ROS spin setup, with a \textit{spin()} function being
+The \verb|vision_node| works using a ROS spin setup, with a \verb|spin()| function being
 called at a set frequency until ROS closes.
 
-A \textit{RobotDetector} object is declared which has the range of HSV values for each robot
-and the goal, and has a video capture object. It contains a \textit{search()} function which
+A \verb|RobotDetector| object is declared which has the range of HSV values for each robot
+and the goal, and has a video capture object. It contains a \verb|search()| function which
 takes a frame as a parameter and returns various details about each robot's presence in the
-frame. \textit{search()} first calls \textit{get\_colour\_mask()} for each range of colour
-values. This converts the image to HSV, then makes a frame, \textit{mask}, which is white where
+frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
+values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
 the pixel in range and and black for out of range. This is shown in Code Listing
 \ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
@@ -850,8 +850,8 @@ mask.
 The contours in the mask are then iterated through to find the biggest, which is assumed to be
 the object and the centre point and outline of the contour is found. If no contours are bigger
 than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and
-the corresponding \textit{obj\_found} variable is set to false. This process is shown in Code
-Listing \cite{lst:cv_search_loop}.
+the corresponding \verb|obj_found| variable is set to false. This process is shown in Code
+Listing~\ref{lst:cv_search_loop}.
 
 \begin{lstlisting}[caption={Contour Iteration in search()},label={lst:cv_search_loop} , language=python]
 ...
@@ -864,13 +864,13 @@ for c in contours:
 ...
 \end{lstlisting}
 
-These parameters are then returned to the \textit{\_tick()} function which was called by
-\textit{spin()}. This then renders debug info to the frame if it's performing a test, or
+These parameters are then returned to the \verb|_tick()| function which was called by
+\verb|spin()|. This then renders debug info to the frame if it's performing a test, or
 publishes the detected robot info via a ROS message consisting of a comma separated list of
 objects detected in the last frame.
 
 \subsection{Testing}\label{soft/cv/test}
-Initial testing of the \textit{vision\_node} was performed on a PC with a USB webcam. The
+Initial testing of the \verb|vision_node| was performed on a PC with a USB webcam. The
 testing was performed by using the position information to render labelled rectangles to a real
 time stream highlighting the position of the objects. The code for this is shown in Code
 Listing \ref{lst:draw_rectangles}.
@@ -895,7 +895,7 @@ An example of this running is shown in Figure \ref{fig:cv_screenshot}
 
 \end{figure}
 
-The system was then tested on the RPi by monitoring the ROS topic \textit{robots\_detected} to
+The system was then tested on the RPi by monitoring the ROS topic \verb|robots_detected| to
 test both the integration with the RPi and with ROS. Various detectable objects were moved in
 and out of the frame and changes in the output were observed. This initially failed as the RPi
 camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function
