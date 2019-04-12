@@ -3,8 +3,8 @@
 \chapter{System Testing}\label{systest}
 System testing took place following integration testing and 
 the full construction of the robot. The aim of system testing is to ensure that 
-each of the component parts work as expected when working together, and to test 
-and evaluate the system as a whole. A modular 
+each of the component parts work as expected when integrated together, and to 
+test and evaluate the system as a whole. A modular 
 maze testing environment was used throughout integration and 
 system testing to allow as many different maze configurations 
 as possible to be tested. Throughout integration the modular maze was used as a 
@@ -12,14 +12,13 @@ as possible to be tested. Throughout integration the modular maze was used as a
 were used to test the robot's capabilities in these environments and assess the 
 SLAM maps built when using these configurations. 
 \section{Modular Maze}\label{test/maze}
-The modular maze environment was created with system testing of as many maze 
-configurations as possible in mind. By creating a modular environment, the maze 
-was also reusable in future iterations of the project, or similar projects which 
-required a secure area to test autonomous vehicles. 
+The modular maze environment was designed with the aim of being able to system 
+test on as many maze configurations as possible. By creating a modular 
+environment, the maze was also reusable in future iterations of the project, or 
+similar projects which required a secure area to test autonomous vehicles. 
 \subsection{Design}\label{test/maze/design}
-\todo{some page formatting??}
 With these broad specifications in mind, a list of requirements for the maze 
-environment was created. 
+environment was created (see Table~\ref{maze_reqs}). 
 
 \begin{table}[!ht]\centering
 \caption{Modular Maze Requirements
@@ -41,19 +40,17 @@ environment was created.
 \end{table}
 
 These requirements were then used to create a number of approximate ideas which 
-were presented to the mechanical workshop. The maze base would be \SI{1280 x 
-1690 x 18}{\mm}, giving 7 columns by 9 rows of peg holes each \SI{12}{\mm} in 
-diameter and \SI{210}{\mm} from centre to centre. The holes drilled into the 
-maze base would be \SI{15}{\mm} in depth leaving a \SI{3}{\mm} section of the 
-base board un-drilled within the hole for the peg to rest on. The ``pegs'' would 
-then be \SI{165}{\mm}, a protrusion of \SI{150}{\mm} from the top of the base 
-board, with a cross slit cut from the top to roughly \SI{75}{\mm} down the peg 
-(half the visible portion). These slits would be approximately \SI{3}{\mm} to 
-allow the walls to be slotted in. In order for this to be accomplished, the 
-walls would be winged --- \SI{208}{\mm} at the top and \SI{196}{\mm} \SI{75}
-{\mm} from the top. This gives \SI{6}{\mm} spaces at either side to allow for 
-the diameter of the peg and means the walls can be slotted between two pegs with 
-ease. 
+were presented to the mechanical workshop. The maze base would be \SI{1280}{\mm}
+$\times$ \SI{1690}{\mm} $\times$ \SI{18}{\mm}, giving 7 columns by 9 rows of
+peg holes each \SI{12}{\mm} in diameter and \SI{210}{\mm} from centre to
+centre. The holes drilled into the maze base would be \SI{15}{\mm} in depth 
+leaving a \SI{3}{\mm} section of the base board un-drilled within the hole for the peg to rest on. The ``pegs'' would then be 
+\SI{165}{\mm} in height, a protrusion of \SI{150}{\mm} from the top of the base board, with a cross slit cut from the top to 
+roughly \SI{75}{\mm} down the peg 
+(half the visible portion). These slits would be approximately \SI{3}{\mm} wide to allow the walls to be slotted in. In order for 
+this to be accomplished, the walls would be winged --- \SI{208}{\mm} in length at the top and \SI{196}{\mm} in length, 
+\SI{75}{\mm} from the top. This gives \SI{6}{\mm} spaces at either side to allow for the diameter of the peg and means the walls 
+can be slotted between two pegs with ease. 
 
 The materials required were researched in order to obtain the measurements 
 above, such as \SI{12}{\mm} being a standard size for wood dowel and \SI{3}{\mm} 
@@ -67,7 +64,7 @@ order for the maze to be created.
 
 Foremost, the largest single item of solid wood which could be obtained from 
 suppliers was smaller than the requested measurements of \SI{1280 x 1690 x 18}
-{\mm}. Two resolutions were proposed to this by the mechanical workshop: reduce 
+{\mm}. Two resolutions were proposed by the mechanical workshop: reduce 
 the width of each cell, or remove a column of holes from the maze. Following 
 team consultation, it was decided that reducing the size of each cell would 
 result in more flexibility in the end product, as even if the robot couldn't 
@@ -79,9 +76,9 @@ the robot.
 Secondly, the materials used for the walls and pegs would not be wood as this 
 would involve a number of man hours to create the slits in the dowel and 
 manually cut the walls to size. In order to streamline the process, it was 
-suggested that the walls be made of perspex\todo{is this right??} --- to allow 
+suggested that the walls be made of acrylic --- to allow 
 them to be laser cut --- and the pegs be 3D printed --- allowing mass printing 
-once a design had been finalised. The group agreed that this was a good idea and 
+once a design had been finalised. It was agreed that this was a good idea and 
 in order for the pegs to be 3D printed they had to be made using CAD modelling 
 software. None of the group had particular experience using this software, hence 
 a steep learning curve was involved in carrying out this task. 
@@ -97,18 +94,17 @@ Upon returning to the mechanical workshop the group were once again informed
 that the peg design had to be altered. The base board had been drilled through 
 and so the pegs now required a smaller peg on the bottom and a rim to ensure 
 that they did not fall through the base board. The agreed design was the same as 
-previously with the new peg diameter as \SI{15}{\mm} and the small peg at the 
-bottom, the original \SI{12}{\mm} diameter and \SI{15}{\mm} in length. The 
-design was agreed and the peg was modelled. 
+previously with the peg now having a diameter of \SI{15}{\mm} with the small peg 
+at the bottom having the original \SI{12}{\mm} diameter and \SI{15}{\mm} in 
+height. The design was agreed and the peg was modelled. 
 
 Midway through modelling the group were called by the mechanical workshop and 
-informed that the perspex which had been ordered was slightly greater than the 
+informed that the perspex which had been ordered was slightly wider than the 
 originally thought \SI{3}{\mm} and so the slits would have to be widened to 
-\SI{4}{\mm} to allow for this. The model was altered to account for this change. 
-This peg was delivered to the mechanical workshop and 3D printed. 
+\SI{4}{\mm} to allow for this. The model was altered to account for this change and delivered to the mechanical workshop to be 3D printed. 
 
 Unfortunately, once printed it was discovered that the design resulted in a peg 
-which was unstable and often broke at the base. The mechanical workshop 
+that was unstable and often broke at the base. The mechanical workshop 
 attempted to resolve this issue by increasing the density of the printing, 
 however this was unsuccessful. Eventually, the mechanical workshop concluded 
 that ordering a pre-slitted rod of aluminium and attaching metal pegs to the 
@@ -128,7 +124,7 @@ As can be seen from the table below the requirements laid out in the design
 phase (see Section~\ref{test/maze/design}) were largely met with the only two 
 requirements not met being of medium or low priority.  
 
-\begin{table}[!ht]\centering
+\begin{table}[H]\centering
 \caption{Modular Maze Requirements Met
 \label{maze_reqs_met}}
     \begin{tabular}{ccc}

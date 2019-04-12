@@ -163,7 +163,7 @@ libraries and tools available. By using the ROS library, the architecture was pr
 and did not need to be managed further. Using the ROS library also provided 
 access to other tools and libraries such as ``differential-drive'', ``robot-
 localization'' and ``g-mapping''. It was thought that these libraries would be ``plug 
-and play'' with the modules created as part of the Electrical sections. Despite, 
+and play'' with the modules created as part of the Electrical sections. Despite  
 designing and implementing the Electrical modules to integrate with these libraries, 
 problems were still encountered with integration. 
 
@@ -180,5 +180,7 @@ taken to tune parameters to achieve the best possible outcome. Although this was
 somewhat achieved for SLAM, this left no time in the project to convert the SLAM map 
 to a world state which could then be used by an implemented AI to solve the maze 
 intelligently. 
+
+Furthermore, the combination of packages and demanding software made it very difficult to run all the code at once on the Raspberry Pi. The ROS framework together with demanding functions like SLAM and Sensor Fusion proved to be too much for the limited memory and processing power, which made testing fully integrated systems extremely challenging.
 
 
