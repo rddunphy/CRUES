@@ -12,7 +12,7 @@ Agile methodologies were employed to manage the team over the course of
 the project and were proven successful with 5 out of 6 Major objectives 
 completed. Influenced by the design decisions, a pre-built chassis was 
 used as the basis for a mechanically functional robot using odometry, 
-exteroreceptive sensors and actuators to explore its environment. 
+exteroceptive sensors and actuators to explore its environment. 
 
 These sensors included ultrasonic sensors, an IMU, encoders and a basic 
 camera each of which were mounted on the robot via a bespoke PCB. The PCB 
@@ -38,76 +38,6 @@ be completed.
 
 As a consequence, system testing results obtained can only be analysed as 
 benchmark results which provide a baseline for future work going forward. 
-Despite this, overall the project had a myriad of successful outcomes and 
+Despite this, overall the project had a myriad of successful outcomes --- including 
+the construction of a modular testing environment --- and 
 valuable lessons learned.      
-\todo{Does need something else}
-
-\todo{not a complete conclusion, two versions above and below}
-
-
-
-
-
-
-
-
-
-
-
-
-Tasks that can be parallelised can be solved more 
-effectively by using multiple co-operating robots, such as exploration of a large 
-area. However, in some environments, such as underground or in areas of high 
-interference, communication is severely restricted and the robots would not be able
-to co-operate to complete their task. Furthermore, usually systems of co-operating robots 
-use a centralised control node to coordinate. The system described was designed so each robot was 
-homogeneous and operated without a central control unit. This introduced redundancy ---
-an important consideration given the potentially dangerous environments of operation --- allowing 
-the remaining robots to complete the task in the event of the failure of another. 
-The robots were also designed to strictly only be able to communicate with other robots 
-when they had line-of-sight with each other to simulate potentially restrictive 
-environments.  
-
-The mechanical design and implementation of each of the robots was 
-successful as our key requirements were met. To ensure the system was  
-scalable the mechanical design had to be reproducible to a high standard, thus allowing the software to be used to be across all robots without any alterations. As a 
-result, choosing to use a pre-built chassis was the correct decision. Although given 
-the unforeseen issues with regards to the reliability of the motors bundled in the Pololu kit, the 
-requirements to restrict the total cost to allow scalability reduce possible alternatives. Similarly, the mechanical design of the modular maze environment was also successful. It allowed the system to be tested easily on
-different maze configurations, which was essential for the project. The maze is of a very high quality, is highly 
-customisable and can be reused for any similar projects in the future.
-
-Although issues arose in the process, the end products of the electric 
-and implementation were of a high standard. The decision to use the chassis'
-accompanying power distribution board was justified as it fit both
-mechanically and electronically with the other parts, allowing other areas to be 
-prioritised. Using ultrasonic sensors was the best method of range detecting even if
-they are not perfect due to their wide cone of detection and
-cost compared to infrared sensors. The 6-DOF IMU and encoders successfully
-provided the neccessary odometry data to track the robot's movements around the
-maze. The design of the PCB can also be deemed a success. Although multiple 
-iterations of the PCB were designed to improve on the original design, the
-thorough planning and design resulted in the first PCB stil being fully functional 
-and not needing replaced. 
-
-Ultimately, the decision to use ROS was justified due to it being able to handle
-the overall architecture of the system with the publish/subscribe data model
-whilst providing accompanying libraries that provide some of the required 
-functionality. Although intergrating these libraries was not as simple as 
-initially thought, they provided a greater level of functionality than if 
-everything was implemented from scratch. The communication module was a great
-success with the testing showing it to be extremely thread-safe and allows for
-the robots to always being listening for incoming messages. The computer vision
-node also works fully within the constraints of the maze. For use in more complex 
-environments, a more detailed computer vision would be required.
-
-In summmary, the project delivered the majority of the objectives intitially set
-out where each individual components was designed, implemented and tested. Delays
-and unforeseen complications resulted in the AI modules not being fully implemented. 
-In addition, the complexity of SLAM results in this only being possible at lower 
-resolutions, coupled with the uncertainty and timeouts from the ultrasonic sensors, 
-the results for this were not as accurate as anticipated. However with greater 
-processing power and more time, it is believed this would have performed better.
-Despite these issues, the success of each of the earlier components
-such as the mechanical and electrical design, the communication software, odometry 
-software and computer vision results in the project being overall very successful.
