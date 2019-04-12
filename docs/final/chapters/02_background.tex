@@ -131,15 +131,6 @@ gain of $K_p$ exist in literature. This leads to the conclusion that the
 Ziegler-Nichols method is mathematically imperfect and this will have to be 
 explored experimentally during the project.     
 
-\subsection{Rate Control}\label{litreview/robotics/ratecontrol}
-Opposed to traditional PID, Rate Control employs only the P and D portions of 
-the equation and uses the current velocity as the base rate as opposed to 0~
-\cite{koditschek1987quadratic}. This allows the controller to maintain the speed 
-more smoothly and fewer spikes in motor current are required for the required 
-drive~\cite{kawamura1988local}. By removing the $I$ term, the speed will climb 
-more slowly from start-up and recover from dips in speed more slowly. This is 
-mitigated, however, by using the current speed as the base and therefore, a high 
-gain is not required to increase the speed to the required level. 
 
 \section{Cooperative Robotics}\label{litreview/coop}
 Co-operative robotics has varied definitions across different papers. One such
