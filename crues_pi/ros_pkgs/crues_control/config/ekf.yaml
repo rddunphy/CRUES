@@ -81,7 +81,7 @@ odom0: odometry/wheel
 # if unspecified, effectively making this parameter required for each sensor.
 odom0_config: [false, false, false,
                false, false, false,
-               true,  true,  false,
+               true,  false, false,
                false, false, true,
                false, false, false]
 
@@ -124,7 +124,7 @@ imu0_config: [false, false, false,
               false, false, false,
               false, false, false,
               false, false, true,
-              true,  false, false]
+              true,  true,  false]
 imu0_nodelay: false
 imu0_differential: false
 imu0_relative: true
