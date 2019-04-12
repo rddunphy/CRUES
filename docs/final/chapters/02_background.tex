@@ -243,16 +243,16 @@ both the location of landmarks in the map and the robot pose~\cite{huang2007conv
 
 
 \section{Computer Vision}\label{litreview/cv}
-Computer vision is the analysis of digital image or video data to allow a computer
+Computer vision is the analysis of digital image or video frames to allow a computer
 system to gain a high-level understanding of the 3D environment contained within
-the image\cite{CVBallard}.A common application for computer vision is the identification and classification
+the image\cite{CVBallard}. A common application for computer vision is the identification and classification
 of objects. Identification generally involves the recognition of features of the
 object and the comparison of these features and their relative positions to a
 known model of the object. Classification usually involves machine learning
 algorithms to build up a definition of the object based on its visible properties\cite{CVpaoletti2018new}.
 
 Computer vision can also be used to triangulate the position of objects in the
-field of view by measuring the discrepancy in the objects position in the two camera
+field of view by measuring the discrepancy in the object's position in the two camera
 frames given a translation matrix relating the two cameras.
 
 Computer vision can be well integrated with SLAM providing a means of both the measure
@@ -267,7 +267,7 @@ works by scanning a Locally Receptive Field (LRF) across the
 image, and searching this small group of pixels for patterns 
 at each position as it moves. This results in a set of 
 matrices of outputs, which can then be scanned again. With 
-each iteration the complexity of pattern which can be detected 
+each iteration, the complexity of pattern which can be detected 
 increases. The output of these convolutional layers is then 
 pooled (combined to reduce size), and used as the input to a 
 neural network which can then classify the image.
@@ -277,8 +277,8 @@ neural network which can then classify the image.
 Another approach to object detection is feature based. This 
 involves the identification and comparison of key points in an 
 image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are 
-several key point detection algorithms - SIFT, BRISK and ORB, 
-to name a few - each of which has its own way of describing 
+several key point detection algorithms --- SIFT, BRISK and ORB, 
+to name a few --- each of which has its own way of describing 
 patterns in the pixels and selecting which will be rarer and 
 therefore more useful when identifying objects. Each also has 
 a method of quantifying the similarity of two matches called a 
