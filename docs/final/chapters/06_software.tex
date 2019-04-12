@@ -797,11 +797,11 @@ control_config: [true, false, false, false, false, true]
 
 
 \section{Computer Vision}\label{soft/cv}
-Computer vision is a very cheap and effective way of gaining a high level
-understanding of the environment. In this system, it was used to allow the agents to
-identify other robots and objectives in the maze. Detecting the other
+Computer vision is a cheap and effective way of gaining a high level
+understanding of the environment (see Section~\ref{litreview/cv}). In this system, it was used to allow the robots to
+identify other robots and objectives in the maze. Detecting other
 robots was an essential component to allow communication between robots,
-prevent agents mistakenly mapping other agents,and to recognise when
+prevent robots mistakenly mapping other robots, and to recognise when
 ultrasonic interference would occur.
 
 \subsection{Design}\label{soft/cv/design}
@@ -810,27 +810,26 @@ The first detection system considered was a CNN, as discussed in Section
 the advantage of
 being able to classify instances of objects that it has not
 seen before. This would be essential if the target objects of
-the robot was not consistent, for instance if it had to find
-people in the search space. This was, however, not essential
+the robot were not consistent, for instance if it had to find
+people in the search space. This was, however, not required
 in the scope of this project. The major downside to this
 system would be the time to implement. To construct a CNN for
 this application would require the collection of a large data
 set of images of the robots and goals, as well as the time
 consuming process of tuning the CNN.
 
-Feature Based Object detection was also considered. As described in
+Feature Based object detection was also considered. As described in
 Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be
 taken of the object and therefore takes far less time to
 implement than the CNN solution. However, the accuracy and
-consistency are largely dependant on the number of features
+consistency are largely dependent on the number of features
 detected, and the algorithm's complexity grows relatively
 quickly. The basic brute force algorithm involves comparing
 every key point in the object image to every key point in the
-frame image, which results in an O($n^2$) complexity (although
-this can be streamlined, for instance if it becomes impossible
+frame image, which results in O($n^2$) complexity. This can be streamlined, for instance, if it becomes impossible
 for the distance to be low enough for a pair to be the best
 match part way through the distance calculation, it does not
-need to be finished)~\cite{opencv_library}. The calculations for deciding the best
+need to be finished~\cite{opencv_library}. The calculations for deciding the best
 outline of the object also become more complicated, as there
 will be a lower true positive to false positive ratio as the
 best matches (which are found first) are more likely to be
@@ -846,7 +845,7 @@ focus of the project.
 This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space,
 simplifying the colour detection as the hue of the pixel is determined by a single value
 instead of the ratio of three values. A colour can then be identified by a range of H values
-and then a minimum S and V values, which is far more intuitive than checking if it falls into a
+and then minimum S and V values, which is far more intuitive than checking if it falls into a
 range of ratios between R, G and B values.
 
 \subsection{Implementation}\label{soft/cv/impl}
@@ -854,11 +853,11 @@ The \verb|vision_node| works using a ROS spin setup, with a \verb|spin()| functi
 called at a set frequency until ROS closes.
 
 A \verb|RobotDetector| object is declared which has the range of HSV values for each robot
-and the goal, and has a video capture object. It contains a \verb|search()| function which
+and the goal, and also has a video capture object. It contains a \verb|search()| function which
 takes a frame as a parameter and returns various details about each robot's presence in the
 frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
 values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
-the pixel in range and and black for out of range. This is shown in Code Listing
+the pixel is in range and and black when out of range. This is shown in Code Listing
 \ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
@@ -901,8 +900,8 @@ for c in contours:
 \end{lstlisting}
 
 These parameters are then returned to the \verb|_tick()| function which was called by
-\verb|spin()|. This then renders debug info to the frame if it's performing a test, or
-publishes the detected robot info via a ROS message consisting of a comma separated list of
+\verb|spin()|. This then renders debug information to the frame if it's performing a test, or
+publishes the detected robot information via a ROS message consisting of a comma separated list of
 objects detected in the last frame.
 
 \subsection{Testing}\label{soft/cv/test}
@@ -922,7 +921,7 @@ for i, name in enumerate(names):
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
 \end{lstlisting}
 
-An example of this running is shown in Figure \ref{fig:cv_screenshot}
+An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
 \begin{figure}[!ht]
 	\centering
@@ -936,14 +935,16 @@ test both the integration with the RPi and with ROS. Various detectable objects 
 and out of the frame and changes in the output were observed. This initially failed as the RPi
 camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function
 does not support. When running on the RPi, this was replaced with imutil's VideoStream package.
-After this the test performed as expected, consistently identifying which objects were in
+Following this small change, the test performed as expected, consistently identifying which objects were in
 frame.
 
-Functionality was then added to record the feed as to see how the computer vision responded as
-the robot was traversing the maze, however there were issues with frame rate as it was too
-computationally intensive for the RPi to perform the recording as well as all the other
-computation.
+Functionality was then added to record the feed to observe how the computer vision responded as
+the robot was traversing the maze, however issues were encountered with frame rate, namely: the functionality being too
+computationally intensive for the RPi in addition to all other computation.
+\todo{Is this definitely finished Matt? Maybe a sentence, "this functionality was therefore removed in release builds of the code"}
 
+
+\todo{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
 \section{AI \& Control Modules}\label{soft/ai}
 
 \subsection{Design}\label{soft/ai/design}
