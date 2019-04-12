@@ -66,11 +66,11 @@ detection and also a large range~\cite{HCSR04datasheet}. In addition to
 this, they are also cheaper than both infra-red and LIDAR systems. 
 
 Ultrasonic transceivers were therefore decided upon for use in this
-project. These work by transmitting sound at a particular frequency
+project. These work by emitting sound at a particular frequency
 and measuring the time until the reflected wave returns to the sensor. 
-Ultrasonic sensors have the chance to interfere with each other, 
-however, infra-red could also interfere with each other and are also 
-more likely to be affected by external interference. A possible solution 
+Multiple ultrasonic sensors of the same design have a significant chance to interfere with each other, 
+however, infra-red could also has this limitation 
+while also being more susceptible to external interference. A possible solution 
 was to make a cheap LIDAR unit using a single infra-red sensor and a 
 servo motor mounted on top of the robot. This was, however, dismissed as 
 the two PWM pins of the Raspberry Pi would be assigned to each of the 
@@ -84,7 +84,6 @@ the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~
 ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its 
 range at $<$~\SI{30}{\mm}, however this is mitigated by the placement of 
 the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis. 
-
 
 The sensor is also widely used and available within the 
 department, mitigating any risks surrounding delivery lead times. 
@@ -130,7 +129,7 @@ def get_scan():
 This method allows the various readings to be taken without interfering with
 each other, as the second ultrasonic pulse isn't omitted until the first is received.
 
-As \ref{lst:get_scan} shows,\textit{get\_range()} is used by
+As \ref{lst:get_scan} shows, \textit{get\_range()} is used by
 \textit{get\_scan()} to find the distance measured by each sensor.
 This simply triggers the sensor and times how long until the echo
 pin turns high. The range is then calculated by the equation
