@@ -18,7 +18,7 @@ class Roomba:
         rospy.init_node('roomba')
         self.turn_vel = rospy.get_param('~turn_vel', 1)
         self.fwd_vel = rospy.get_param('~fwd_vel', 0.2)
-        self.obstacle_range = rospy.get_param('~obstacle_range', 100)
+        self.obstacle_range = rospy.get_param('~obstacle_range', 0.1)
         self.rate = rospy.Rate(rospy.get_param('~rate', 50))
         self.time_to_stop_turning = -1
         self.turn_twist = None
@@ -37,6 +37,7 @@ class Roomba:
 
     def spin(self):
         try:
+            time.sleep(5)
             while not rospy.is_shutdown() and not self.termination_condition():
                 self.publish_cmd()
                 self.rate.sleep()
@@ -62,6 +63,8 @@ class Roomba:
             if all([r > self.obstacle_range for r in self.last_ranges.values()]):
                 # All clear, just go for it
                 self.forward()
+            elif self.turn_twist:
+                self.twist_pub.publish(self.turn_twist)
             elif self.last_ranges[LEFT] < self.last_ranges[RIGHT]:
                 # Obstacle more on left, so turn right
                 self.turn_right()
@@ -70,9 +73,13 @@ class Roomba:
                 self.turn_left()
 
     def forward(self):
+        self.turn_twist = None
         out = Twist()
         self.time_to_stop_turning = -1
-        out.linear.x = self.fwd_vel
+        space = min(self.last_ranges.values())
+        breaking_distance = 0.2
+        vel = self.fwd_vel if space > breaking_distance else self.fwd_vel * space / breaking_distance
+        out.linear.x = vel
         self.gled_pub.publish(True)
         self.rled_pub.publish(False)
         self.twist_pub.publish(out)
@@ -106,9 +113,10 @@ class Roomba:
         return self.time_to_stop_turning > time.time()
 
     def termination_condition(self):
-        if self.last_ranges[CENTRE] is None:
-            return False
-        return self.goal_in_view and self.last_ranges[CENTRE] < self.obstacle_range
+        return self.goal_in_view
+        # if self.last_ranges[CENTRE] is None:
+        #     return False
+        # return self.goal_in_view and self.last_ranges[CENTRE] < self.obstacle_range
 
     def terminate(self):
         # Turn on the spot for a bit, flash the LED, then shutdown
