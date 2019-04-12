@@ -12,6 +12,7 @@
         <remap from="~response_right" to="ultrasonic/right/response" />
         <remap from="~range_max" to="ultrasonic/range_max" />
         <remap from="~rate" to="ultrasonic/rate" />
+        <remap from="~pulse_offset" to="ultrasonic/pulse_offset" />
     </node>
 
 </launch>
