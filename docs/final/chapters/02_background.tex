@@ -244,16 +244,16 @@ both the location of landmarks in the map and the robot pose~\cite{huang2007conv
 
 
 \section{Computer Vision}\label{litreview/cv}
-Computer vision is the analysis of digital image or video data to allow a computer
+Computer vision is the analysis of digital image or video frames to allow a computer
 system to gain a high-level understanding of the 3D environment contained within
-the image\cite{CVBallard}.A common application for computer vision is the identification and classification
+the image\cite{CVBallard}. A common application for computer vision is the identification and classification
 of objects. Identification generally involves the recognition of features of the
 object and the comparison of these features and their relative positions to a
 known model of the object. Classification usually involves machine learning
 algorithms to build up a definition of the object based on its visible properties\cite{CVpaoletti2018new}.
 
 Computer vision can also be used to triangulate the position of objects in the
-field of view by measuring the discrepancy in the objects position in the two camera
+field of view by measuring the discrepancy in the object's position in the two camera
 frames given a translation matrix relating the two cameras.
 
 Computer vision can be well integrated with SLAM providing a means of both the measure
@@ -268,7 +268,7 @@ works by scanning a Locally Receptive Field (LRF) across the
 image, and searching this small group of pixels for patterns 
 at each position as it moves. This results in a set of 
 matrices of outputs, which can then be scanned again. With 
-each iteration the complexity of pattern which can be detected 
+each iteration, the complexity of pattern which can be detected 
 increases. The output of these convolutional layers is then 
 pooled (combined to reduce size), and used as the input to a 
 neural network which can then classify the image.
@@ -278,8 +278,8 @@ neural network which can then classify the image.
 Another approach to object detection is feature based. This 
 involves the identification and comparison of key points in an 
 image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are 
-several key point detection algorithms - SIFT, BRISK and ORB, 
-to name a few - each of which has its own way of describing 
+several key point detection algorithms --- SIFT, BRISK and ORB, 
+to name a few --- each of which has its own way of describing 
 patterns in the pixels and selecting which will be rarer and 
 therefore more useful when identifying objects. Each also has 
 a method of quantifying the similarity of two matches called a 
@@ -348,7 +348,7 @@ development of computer systems able to perform tasks normally requiring human i
 \cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a 
 common branch of artificial intelligence into which much research has been undertaken. Search 
 algorithms and optimisation algorithms can be thought of as highly similar, and in the case of 
-a weighted tree search either can be used to solve the problem~\cite{kanal2012search}. 
+a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}. 
 
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
 The exploration of an unknown environment is a well researched problem in 
@@ -365,12 +365,25 @@ algorithm is guaranteed to reach a goal/exit if there is one. Otherwise, the
 algorithm will return to the starting point having traversed every corridor at 
 least once~\cite{wallFollowerArcBotics}. The steps of the algorithm are 
 relatively straightforward. If using the right-hand rule:
-\begin{enumerate}
-\item If the robot can turn right, turn right
-\item \textbf{Else} continue going straight on
-\item \textbf{Else} turn left if possible
-\item \textbf{Else} a dead end is reached, so turn $180^{\circ}$
-\end{enumerate}
+
+\begin{algorithm}
+\caption{Wall Follower Algorithm}
+\begin{algorithmic}
+\REPEAT
+\IF{robot can turn right}
+  \STATE turn right
+\ELSIF{robot can go straight on}
+  \STATE go straight on
+\ELSIF{robot can turn left}
+  \STATE turn left
+\ELSE
+  \STATE dead end reached, turn 
+\ENDIF
+\UNTIL{goal is reached}
+
+\end{algorithmic}
+\end{algorithm}
+
 These steps ensure to keep a wall on the right hand side of the robot at 
 all times. The left-rule is just the opposite where the robot turns left 
 if at all possible to keep the wall on the robots' left. Therefore,
@@ -403,9 +416,9 @@ travel. \cite{klein2011pledge}
 \UNTIL {exit found;}
 \end{algorithmic}
 \end{algorithm}
+
 Using the initial direction and counting the turns made, allows the 
-algorithm to avoid traps such as an upper case letter "G" that simpler 
-algorithms struggle with.
+algorithm to avoid traps such as loops which simple wall followers can be caught in, such as an approximate ``G'' or ``6'' shape.
 
 The Trémaux maze-solving algorithm requires the robot to record its 
 path and mark the routes it has taken throughout its navigation routine. Any 
@@ -439,22 +452,42 @@ decreases as less backtracking would take place.
 
 In the case where the edges have a weighting, which in our case would be the 
 distance to next junction, Dijkstra's algorithm is one 
-of the most commonly used methods for finding the shortest path between a 
-specified pair of nodes in the graph. The steps for Dijkstra's algorithm are:
-\begin{enumerate}
-\item Assign the start node to have a distance of 0 and all other nodes to 
-have a distance of $\infty$
-\item Choose the node with the smallest distance (i.e closest to start node) 
-from the list of unvisited nodes. This node will now be labelled as the 
-current node and removed from the unvisited list. If the closest unvisited 
-node has a distance of $\infty$ that means there is no path to from start 
-node to destination.
-\item For each node adjacent to the new current that is unvisited, update 
-the saved distance to be the sum of the edge weight and the distance from 
-start to the current node if this is less than the saved total distance to 
-that node. 
-\item Repeat the process from Step 2, doing as many iterations as required.
-\end{enumerate}
+of the most commonly used methods for finding the length of shortest path between a specified pair of nodes in the graph. The steps for Dijkstra's algorithm are outlined in Algorithm \ref{alg:Djikstra}.
+
+\begin{algorithm}
+\caption{Dijkstra's Algorithm}
+\label{alg:Djikstra}
+\begin{algorithmic}
+\REQUIRE{G = \{vs, es\} : G :: Graph, vs :: List(Vertex), es :: List(Edge)}
+\REQUIRE{initial $\in$ vs : initial :: Vertex}
+\REQUIRE{successors :: Vertex $\to$ List(Vertex); Finds vertices connected to input}
+\REQUIRE{weight :: Edge $\to$ Int; Weighting factor applied to edge}
+\REQUIRE{edge :: Vertex $\to$ Vertex $\to$ Edge; Finds edge which links vertices}
+\FORALL{v $\in$ vs}
+  \STATE{distance[v] $\gets \infty$}
+  \STATE{visited[v] $\gets$ False}
+\ENDFOR
+\STATE {distance[initial] $\gets 0$}
+\REPEAT
+  \STATE{next $\gets$ v : distance[v] = min(distance) \AND visited[next] = False}
+  \IF{no available next}
+  	\RETURN distance
+  \ENDIF
+  \IF{distance[next] = $\infty$}
+    \RETURN null
+  \ENDIF
+  
+  \STATE{visited[next] $\gets$ True}
+  \FORALL{v $\in$ successors(next) : visited[v] = False}
+    \IF{distance[next] + weight(edge(next, v)) < distance[v]}
+      \STATE{distance[v] = distance[next] + weight(edge(next, v))}
+    \ENDIF
+  \ENDFOR
+  
+\UNTIL{return condition reached}
+\end{algorithmic}
+\end{algorithm}
+
 This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
 \cite{xu2007improved}. An improvement to this original algorithm using a 
 min-priority queue implemented using a heap, runs in $\mathcal{O}

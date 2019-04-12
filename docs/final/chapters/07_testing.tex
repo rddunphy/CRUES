@@ -114,7 +114,16 @@ however this was unsuccessful. Eventually, the mechanical workshop concluded
 that ordering a pre-slitted rod of aluminium and attaching metal pegs to the 
 base to allow them to fit into the base board would be the best solution. This 
 solution was successful and the maze with 53 pegs and 52 walls was
-delivered in full shortly afterwards. 
+delivered in full shortly afterwards. An example configuration of the maze is shown in Figure~\ref{MazePicture}.
+
+\todo{uncomment when maze pic exists and change path}
+%\begin{figure}[!ht]
+%	\centering
+%	\includegraphics[width=1\textwidth]{}
+%	\caption{An example maze configuration constructed using the maze}\label{fig:maze_pic}
+%
+%\end{figure}
+ 
 
 As can be seen from the table below the requirements laid out in the design 
 phase (see Section~\ref{test/maze/design}) were largely met with the only two 
@@ -162,8 +171,15 @@ Due to the issues described with SLAM and PID tuning described in Sections~
 minimal system testing took place. The system tests which did take place were 
 without SLAM/with poor SLAM and therefore could have no AI module as this is 
 dependent on knowing the world state (having a map built). Despite this, the 
-system as it was at the end of the project was tested on the maze configurations 
-and the results are as follows. \todo{Are we going to do this?}
+system as it was at the end of the project was tested on the maze configurations shown in Figure~\ref{fig:maze_configs}
+and the results are shown in Table~\ref{results}. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{diagrams/MazeConfigs}
+	\caption{Example Maze Configurations}\label{fig:maze_configs}
+
+\end{figure}
 
 \begin{table}[!ht]\centering
 \caption{Results

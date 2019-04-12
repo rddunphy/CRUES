@@ -7,34 +7,38 @@ The Pololu Power Distribution and Motor Drive board~\cite{pololupower}
 was selected for power distribution across
 the robot. This board is the main accompanying part for the Romi
 chassis chosen, and in addition to power distribution also provides
-two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers to control the motors. The board integrates with the chassis easily
+two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers to control
+the motors. The board integrates with the chassis easily
 and regulates the voltage provided by the 6 AA batteries, using an
 MP4223H switching buck converter~\cite{mpbuck}, to \SI{5}{\volt} or
 \SI{3.3}{\volt} at a maximum of \SI{2.5}{\ampere}. This can be used
-to power the microcontroller and peripherals used by the robot, with the motors being supplied with the reverse protected voltage before
-regulation.
+to power the microcontroller and peripherals used by the robot, with the 
+motors being supplied with the reverse protected voltage before regulation.
 
 The board was also configurable if required, allowing the supply to be
-divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies dependent on the voltage of the batteries used.
-There are also a number of further jumper connections on the board which can
-be cut for further voltage customisation.
+divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies dependent on
+the voltage of the batteries used. There are also a number of further jumper
+connections on the board which can be cut for further voltage customisation.
 
-The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse Width
-Modulation (PWM), which allows the motor speed to be controlled. The
+The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse
+Width Modulation (PWM), which allows the motor speed to be controlled. The
 driver also has a sleep input which can be used to coast the motors if
 this would be beneficial. Each of the motors' respective sleep inputs
-and are connected by default and therefore should not be driven at the same time, as this could result in short cases within the motor driver, however
-the jumper connection between these can be cut to allow the sleep inputs to
+and are connected by default and therefore should not be driven at the same time,
+as this could result in short cases within the motor driver, however the
+jumper connection between these can be cut to allow the sleep inputs to
 be driven separately.
 
 The power board also provides a power button and switch to control the
 power supply. A separate board with only power distribution was
 available, however, for the additional small cost, integration of
-motor drivers was deemed to be a cost effective addition given our space and time limitations.
+motor drivers was deemed to be a cost effective addition given our 
+space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
-onto the boards as the robots were assembled. Once soldered, the power distribution board and 
-motor driver board were continuity tested.
+onto the boards as the robots were assembled. Once soldered, the power 
+distribution board and motor driver board were continuity tested and
+subsequently continually monitored to ensure correct functionality.  
 
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
@@ -123,7 +127,8 @@ def get_scan():
     return USScan([rl, rc, rr])
 \end{lstlisting}
 
-This method allows the various readings to be taken without interfering with each other, as the second ultrasonic pulse isn't omitted until the first is received.
+This method allows the various readings to be taken without interfering with
+each other, as the second ultrasonic pulse isn't omitted until the first is received.
 
 As \ref{lst:get_scan} shows,\textit{get\_range()} is used by
 \textit{get\_scan()} to find the distance measured by each sensor.
@@ -296,9 +301,9 @@ def __init__(self, address, rate, channel=1):
     self.speed_vect = (0.0, 0.0, 0.0)
 \end{lstlisting}
 
-As the IMU returns arbitrary values between -32768 and 32767~\cite{MPU6050Datasheet}, a constant was required to convert the results to
-meaningful values. The calculations for these is shown in Code
-Listing~\ref{lst:imu_units}.
+As the IMU returns arbitrary values between -32768 and 32767~\cite{MPU6050Datasheet},
+a constant was required to convert the results tomeaningful values. The calculations for
+these is shown in Code Listing~\ref{lst:imu_units}.
 
 \begin{lstlisting}[caption={Calculation for IMU Value to SI unit Conversion Constants},label={lst:imu_units} , language=python]
 GYRO_RANGE = 250  # deg/sec
@@ -346,10 +351,18 @@ def get_speeds(self):
 
 
 \subsection{Testing}\label{elec/imu/test}
-Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame.
+Initial work was performed with the IMU and an Arduino microcontroller
+before the RPis were acquired. The IMU was connected up and various
+movements were recorded. Python code was then written to interpret and
+visualise the data as a moving frame.
 
 \section{PCB}\label{elec/pcb}
-As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board). The following describes the rationale and design decision taken when carrying out the 3-iteration design process for designing the PCB. The final PCB design can be found in the git repository (see Appendix~\ref{appendix/a}).
+As precise and consistent placement of components was required to ensure
+homogeneity of the robots, it was decided to develop a PCB for the connection
+and mounting of the parts (as opposed to using strip board). The following
+describes the rationale and design decision taken when carrying out the
+3-iteration design process for designing the PCB. The final PCB design can
+be found in the git repository (see Appendix~\ref{appendix/a}).
 
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:
@@ -370,19 +383,24 @@ with the following physical design constraints:
   \item the other ultrasonic sensors symmetrical about the y axis
   \item IMU chip in centre of x and y axes
   \item Mounting holes for RPi and for mounting PCB to chassis
-  \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
+  \item Power connectors at fixed position relative to centre to ensure it
+  connects to header on power distribution board
   \item Motor drive connectors also at fixed position relative to centre
 \end{itemize}
 
-
 When designing the PCB in 
-the first iteration, an attempt was made to use pins closest to the positions of the components on the robot to achieve the neatest possible design, and minimise 
+the first iteration, an attempt was made to use pins closest to the positions
+of the components on the robot to achieve the neatest possible design, and minimise 
 crossing wires and vias. The IMU pins had to be connected to the two \isc{} 
 pins of the Raspberry Pi and, similarly, the motor PWM pins were 
-connected to the two hardware PWM pins of the RPi. The remaining pin choices were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
+connected to the two hardware PWM pins of the RPi. The remaining pin choices
+were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
-Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise 
+Some minor changes were made in the connection of the generic GPIO pins in versions
+git2 and 3 of the PCB in order to minimise 
 via and path crossing. This can be seen in Table~\ref{table:pin_assignments}, 
+
+
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
