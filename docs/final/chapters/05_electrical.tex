@@ -103,8 +103,8 @@ a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the se
 trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above 
 the threshold voltage.
 
-The distances are measured by an \textit{USScan} class. This has a \textit{get
-\_scan()} function which iterates through each ultrasonic sensor and takes a reading, 
+The distances are measured by an \verb|USScan| class. This has a \verb|get
+\_scan()| function which iterates through each ultrasonic sensor and takes a reading, 
 as shown below in Code Listing \ref{lst:get_scan}.
 
 \begin{lstlisting}[caption={get\_scanFunction in USScan},label={lst:get_scan} , language=python]
@@ -129,7 +129,7 @@ def get_scan():
 This method allows the various readings to be taken without interfering with
 each other, as the second ultrasonic pulse isn't omitted until the first is received.
 
-As \ref{lst:get_scan} shows, \textit{get\_range()} is used by
+As \ref{lst:get_scan} shows, \verb|get\_range()| is used by
 \textit{get\_scan()} to find the distance measured by each sensor.
 This simply triggers the sensor and times how long until the echo
 pin turns high. The range is then calculated by the equation
