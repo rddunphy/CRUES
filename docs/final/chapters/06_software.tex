@@ -30,7 +30,7 @@ the rest of the time, but in a dynamic environment such as a robot with many
 topics being published many times per second, it is inefficient and unsafe to have
 large amounts of code in the callback functions, as these functions could be
 interrupted by themselves. With this in mind, it is necessary for each individual
-module to have a polling loop in which it handles it's heavier functionality, with
+module to have a polling loop in which it handles its heavier functionality, with
 callbacks only setting up the data necessary for this loop.
 
 \section{ROS}\label{soft/ROS}
