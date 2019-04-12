@@ -2,51 +2,54 @@
 
 \chapter{Introduction}\label{introduction}
 \section{Context}\label{introduction/context}
-Using multiple co-operating robots (named and referred to as Blinky, Inky and Clyde) can be a useful strategy when attempting
-to complete tasks that can be divided and parallelised, such as exploration of a large
-area. Usually, this requires a centralised control system that can properly coordinate
-the efforts of the robots in accomplishing the task. However, in environments
-where radio communication is impossible or severely restricted, such as underground
-or in areas with high interference, these systems would be unable to complete
-their task. In these circumstances, communication may be limited to
-non-telemetric sensors that require line-of-sight. Therefore, intelligent
-algorithms are required to co-operate effectively in environments where line-of-sight
-is not always available.
-Co-operative robotics can be used to solve a variety of tasks
-more effectively than a more complex individual robot and introduces
-distribution and redundancy into the system which can be
-highly advantageous over single agent systems~\cite{dudek96}. This redundancy
-can be mission critical in scenarios where a hazardous environment poses risks
-to individual robots, and means that the loss of a single robot is not fatal to
-the mission.
+Using multiple co-operating robots (named and referred to as Blinky, Inky
+and Clyde) can be a useful strategy when attempting to complete tasks that
+can be divided and parallelised, such as exploration of a large area.
+Usually, this requires a centralised control system that can
+coordinate the robots to accomplish the task. However, in
+environments where radio communication is impossible or severely restricted,
+such as underground or in areas with high interference, these systems would
+be unable to complete their task. In these circumstances, communication may
+be limited to non-telemetric sensors that require line-of-sight. Therefore,
+intelligent systems are required so they can co-operate effectively.
+
+Co-operative robotics can be used to solve a variety of tasks more 
+effectively than a more complex individual robot, introducing distribution
+and redundancy into the system which can be highly advantageous over single 
+agent systems~\cite{dudek96}. This redundancy can be mission critical in 
+scenarios where a hazardous environment poses risks to individual robots, and 
+means that the loss of a single robot is not fatal to the mission.
 
 Previous research into co-operative robotics has focused on UAVs~\cite{khan18},
-non-autonomous agents~\cite{jimenez18}, or made use of extensive communication,
-such as by using the cloud~\cite{wensing2018cooperative}. This study will use
-restricted non-telemetric communication (i.e., local communication between
-neighbouring robots rather than communication over a central server). Co-operating
-effectively under this limitation poses additional challenges, which need to be overcome
-in order to allow collaborative robotic exploration of environments such as caves.
-This application area was inspired in part by a recent incident necessitating cave
+non-autonomous agents~\cite{jimenez18}, or made use of extensive
+communication, such as by using the cloud~\cite{wensing2018cooperative}.
+This study will use restricted non-telemetric communication (i.e. local 
+communication between neighbouring robots rather than communication over a 
+central server). Co-operating effectively under this limitation poses
+additional challenges, which need to be overcome to allow
+collaborative robotic exploration of environments such as caves. This
+application area was inspired in part by a recent incident necessitating cave 
 exploration and rescue in Thailand~\cite{bbcthailand}.
 
 In order to remove the physical complexities of operating on difficult
-terrain and allow research to focus on communication and problem-solving algorithms,
-a toy problem has been devised for the robots to solve. This will take the form
-of a simple maze which contains a target that needs to be found and identified
-by the robots. The primary aim of the study is to construct multiple robots which can
-navigate this maze and co-ordinate their efforts to find the target more quickly than
-could be achieved by each robot individually.
+terrain and allow research to focus on communication and problem-solving 
+algorithms, a toy problem has been devised for the robots to solve. This
+will take the form of a simple maze which contains a target that needs to
+be found and identified by the robots. The primary aim of the study is to
+construct multiple robots which can navigate this maze and co-ordinate their
+efforts to find the target more quickly than could be achieved by each robot 
+individually.
 
 An additional requirement is that the robots should be constructed using
-inexpensive components. This is necessitated by the increased cost implied by the
-need for multiple robots.
+inexpensive components. This is necessitated by the increased cost implied
+by the need for multiple robots, in addition to mitigating the risk in the 
+event of the robot failure given the potentially dangerous environments.
 
 \section{Objectives}\label{introduction/objectives}
 \begin{itemize}
 \item{Design a simple differential drive robot capable of exploring and perceiving its environment---Major Objective}
     \item{Construct two robots using this design---Major Objective}
-    \item{Develop SLAM algorithm to allow the robots to explore an area---Major Objective}
+    \item{Develop a Simultaneous Localisation and Mapping (SLAM) algorithm to allow the robots to explore an area---Major Objective}
     \item{Develop a system to allow the robots to interact and communicate with each other---Major Objective}
     \item{Develop algorithms to search a maze which can be dynamically parallelised over any number of agents---Major Objective}
     \item{Develop a test environment and evaluate the robots’ performance---Major Objective}

@@ -368,11 +368,21 @@ with the following physical design constraints:
 \begin{itemize}
   \item Central ultrasonic sensor at the centre of the robot in the x axis
   \item the other ultrasonic sensors symmetrical about the y axis
-  \item IMU chip in centre of axis
+  \item IMU chip in centre of x and y axes
   \item Mounting holes for RPi and for mounting PCB to chassis
   \item Power connectors at fixed position relative to centre to ensure it connects to header on power distribution board
   \item Motor drive connectors also at fixed position relative to centre
 \end{itemize}
+
+
+When designing the PCB in 
+the first iteration, an attempt was made to use pins closest to the positions of the components on the robot to achieve the neatest possible design, and minimise 
+crossing wires and vias. The IMU pins had to be connected to the two \isc{} 
+pins of the Raspberry Pi and, similarly, the motor PWM pins were 
+connected to the two hardware PWM pins of the RPi. The remaining pin choices were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
+
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise 
+via and path crossing. This can be seen in Table~\ref{table:pin_assignments}, 
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
@@ -405,22 +415,6 @@ with the following physical design constraints:
         \bottomrule
     \end{tabular}
 \end{table}
-
-The majority of the pin choices were made arbitrarily as generic GPIO 
-pins could be used for a variety of purposes. When designing the PCB in 
-the first iteration, the an attempt was made to mimic the orientation of 
-the PCB on the robot to achieve the neatest possible design --- fewest 
-crossing wires and vias. The IMU pins had to be connected to two \isc{} 
-pins of the Raspberry Pi and, similarly, the motor PWM pins were 
-connected to the hardware PWM pins of the RPi. 
-
-Changes were made in subsequent iterations of the PCB design as the 
-layout had to be altered slightly to eliminate the need for insulating 
-washers beneath screws to ensure screws were not shorting paths or 
-``live'' when the robot was in use. This resulted in some minor 
-shuffling of the generic GPIO pins in versions 2 and 3 of the PCB, as 
-can be seen in Table~\ref{table:pin_assignments}, in order to minimise 
-via and path crossing. 
 
 With these constraints the following PCB design shown in figure \ref{PCB_Design}.
 
