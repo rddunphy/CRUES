@@ -176,32 +176,41 @@ and the results are shown in Table~\ref{results}.
 
 \end{figure}
 
+\todo{table goes off the page?}
+
 \begin{table}[!ht]\centering
 \caption{Results
 \label{results}}
-    \begin{tabular}{ccc}
+    \begin{tabular}{cccccc}
         \toprule
-        \thead{Maze Configuration} & \thead{Number of Agents} & \thead{Time taken[\si{\second}]}\\
+        \thead{Maze Configuration} & \thead{Number of Agents} & \thead{Run 1[\si{\second}]} & \thead{Run 2[\si{\second}]} & \thead{Run 3[\si{\second}]} & \thead{Avg. Time Taken[\si{\second}]}\\
         \midrule
-        1 & 1 & xx\\
-        1 & 2 & xx\\
-        2 & 1 & xx\\
-        2 & 2 & xx\\
-        3 & 1 & xx\\
-        3 & 2 & xx\\
-        4 & 1 & xx\\
-        4 & 2 & xx\\
+        1 & 1 & 109.0 & 41.4 & 23.0 & 57.8\\
+        1 & 2 & 20.4 & 37.9 & 9.7 & 22.7\\
+        2 & 1 & 34.6 & 71.0 & 150.0 & 85.2\\
+        2 & 2 & 79.0 & 137.0 & 29.7 & 81.9\\
+        3 & 1 & 51.1 & 110.0 & N/A & 80.6\\
+        3 & 2 & 60.3 & 82.0 & N/A & 71.2\\
+        4 & 1 & 180.4 & 88.0 & N/A & 134.2\\
+        4 & 2 & 138.3 & N/A & N/A & 138.3\\
         \bottomrule
     \end{tabular}
 \end{table}
 
 The results shown are not indicative of the project had it been completed in its 
 entirety, however these results give benchmark scores for the shown maze 
-configurations with what is essentially a random AI module on top. In practice 
-the robots performance is slightly worse than this as there is also no mapping, 
+configurations with what is essentially a random AI module. In practice 
+the robots performance is slightly worse than this as there is also no 
+effective mapping, 
 and so a random AI could perform better. This is because in this case choices 
 regarding paths would still be being made and paths would not be being repeated 
-which can be the case in these results. Work detailed in further work (Section~
+which can be the case in these results. The results do broadly show, however, 
+that multiple agents perform better than a single agent in terms of speed of 
+the goal. In these cases, this is a simple case of ``many hands make light 
+work'' rather than anything intelligent that the robots are doing. 
+Nevertheless, the results demonstrate the successful outcomes of the project 
+and vindicate the time taken to research the field of co-operative robotics. 
+Work detailed in further work (Section~
 \ref{furtherwork}) can use the results shown here as benchmark results and 
 measure the success of SLAM and AI implementations against these results to 
-evaluate progress being made.  \todo{add more when we have the results}
+evaluate progress being made. 
