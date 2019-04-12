@@ -616,7 +616,6 @@ As was discussed in Section~\ref{elec/imu}, the IMU can also be used to
 perform dead reckoning, and this can be fused with the wheel odometry to
 improve the accuracy of the system.
 
-
 For other nodes to use the IMU data, the readings had to be converted into
 a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
 \cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3
@@ -637,6 +636,7 @@ def _publish_data(self):
         msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
         ...
 \end{lstlisting}
+
 There are a couple of points to notice in this excerpt. Firstly, the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
