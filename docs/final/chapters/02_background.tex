@@ -95,13 +95,17 @@ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d
 \end{equation}
 
 If $K_d$ and $K_i$ were both 0, and only the P term was active, the output 
-would change to reduce the error in the system. For example with a temperature controller, if the temperature was too low the heater would turn on, with the difference between the actual temperature and the required temperature used to adjust how high it was set. In many systems, this simple implementation is adequate, however it has several limitations. 
+would change to reduce the error in the system. For example with a
+temperature controller, if the temperature was too low the heater would
+turn on, with the difference between the actual temperature and the required 
+temperature used to adjust how high it was set. In many systems, this simple 
+implementation is adequate, however it has several limitations. 
 
-Consider for instance the temperature controller example where heat is being lost 
-in the system is equal to the P constant times the error. This would result in a 
-stable state with a potentially large error. To prevent this, the I term can be 
-increased. This will increase the longer an error is present, and preventing 
-stable state errors. 
+Consider for instance the temperature controller example where heat is being
+lost in the system is equal to the P constant times the error. This would
+result in a stable state with a potentially large error. To prevent this,
+the I term can be increased. This will increase the longer an error is
+present, and preventing stable state errors. 
 
 Again, PI controllers are a common control mechanism, however they often have 
 a problem with overshoot due to system inertia. Again considering the 
