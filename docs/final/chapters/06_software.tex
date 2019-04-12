@@ -539,8 +539,8 @@ and the process repeated. The results are shown in Table~\ref{manual_pid_tuning}
         \toprule
         \thead{Method} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
-		Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
-		After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
+        Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
+        After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -686,13 +686,6 @@ greater computational complexity~\cite{wan_unscented_2000}. In order to limit
 computational overhead, the EKF implementation (\verb|ekf_localization_node|) was
 chosen for use with this project. Listings~\ref{lst:ekf_launch} shows how an EKF
 node is created in the main launch file.
-
-\todo{sort your shit out you German bastard. P.S add the xml style to report.tex PP.S.. add yaml also P.S.P.SS.p I'm doing this to annoy you
-
-
-
-
--p}
 
 \begin{lstlisting}[caption={EKF node in ROS launch file}, label={lst:ekf_launch}, style=xml]
 <node name="ekf" pkg="robot_localization" type="ekf_localization_node"
