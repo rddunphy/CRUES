@@ -38,7 +38,7 @@ approach was adopted for the design of each of the components within the system~
 within the system. The block diagram in Figure~
 \ref{BlockDiagram} demonstrates the modularisation of the system and also the
 expectation that the AI module at the top of the system will be completely
-independent from the other components of the system. 
+independent from the other components of the system.
 
 \begin{figure}[!ht]
 	\centering
@@ -432,7 +432,6 @@ motor. By tuning the gain terms $K_p$, $K_i$ and $K_d$ for the system in
 question, a target velocity can quickly be approached without overshooting.
 
 \subsection{Design}\label{soft/PID/design}
-<<<<<<< HEAD
 The PID control node from the ROS \verb|differential_drive| package was used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
 which sets the target velocity of a wheel and a \verb|/wheel| topic which provides
 the actual current speed of the wheel as determined by the encoders, and publishes
@@ -479,25 +478,6 @@ In addition to the PID node, the library has a \verb|wheel-loopback|
 simulator node, which simulates the movement of wheels. This node was used in
 order to evalutate PID tuning methodoloties ahead of the slower process of tuning
 the actual values on the physical robot. The various methods discussed in Section~\ref{litreview/robotics/pid} were attempted and outcomes recorded.
-=======
-The PID controller of the system was handled by an external library --- 
-``differential-drive''~\cite{diffdrivelib}. The library is specifically 
-designed for differential drive robots and takes a ROS twist message~\cite[geometry\_msgs/Twist.msg]{ROSDocs}, converting this to a motor command for each 
-motor. It then uses the feedback from the encoders to monitor the movement 
-of the wheels and adjust future motor commands accordingly, in an attempt 
-to maintain a straight line of movement. The library has a number of nodes 
-which each  carry out different tasks within the motor control of the 
-system. The library has the parameters $ K_p $, $ K_i $ and $ K_d $ to 
-tune the PID appropriately. 
-
-In addition to this, the library has a simulator node named ``wheel-
-loopback'' which can be used to simulate the movement of wheels and also 
-therefore to tune the PID. Although the PID tuning parameters would be 
-different in practise as the weight, inertia and torque of the robot are 
-contributing factors, methodologies for tuning the PID were tested using 
-the simulation. The various methods discussed (see Section~\ref{litreview/
-robotics/pid}) were attempted and outcomes recorded. 
->>>>>>> 694b4b5b30e2c92b120320adf3f62eedeb37d616
 
 \subsection{Ziegler-Nichols}\label{soft/PID/zn}
 As most of the research carried out pointed towards the Ziegler-Nichols
@@ -608,7 +588,7 @@ and rotation from the origin. These values are reflected in figure \ref{fig:diff
 The ideal differential drive system has only two ``states'' of movement, either
 moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
 the spot as a result of $u_l$ being the inverse of $u_r$. This makes derivation of
-equations for the odometry fairly simple. 
+equations for the odometry fairly simple.
 
 When moving in a straight line, the linear velocity of the system is simply the
 velocity of either wheel, in the direction $\theta$, while rotational velocity
@@ -619,7 +599,7 @@ Likewise, in the case of rotation, the linear velocities should be $0$. When the
 robot rotates at some rate, say $\phi$, around its centre, the wheel must move at $u_r = 0.5 L \phi$ ($u_l = -u_r$ as the axis of rotation is the centre of the
 robot). Like in the previous case, the velocity used in the calculation is to be 0
 in the case where $u_l = u_r$, so the value
-used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation. 
+used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation.
 
 The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dottheta}.
 
@@ -636,20 +616,12 @@ As was discussed in Section~\ref{elec/imu}, the IMU can also be used to
 perform dead reckoning, and this can be fused with the wheel odometry to
 improve the accuracy of the system.
 
-<<<<<<< HEAD
+
 For other nodes to use the IMU data, the readings had to be converted into
-a ROS IMU message~\cite{ROSIMUMsg} consisting of: a ROS header message~
-\cite{ROSHeaderMsg}; a quaternion representing the orientation; a 3
+a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
+\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3
 element vector for the rotational speed; a 3 element vector for the linear
 acceleration; and covariance matrices for each of these measurements. The
-=======
-
-For other nodes to use the IMU data, the readings had to be converted into 
-a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
-\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3 
-element vector for the rotational speed; a 3 element vector for the linear 
-acceleration; and covariance matrices for each of these measurements. The 
->>>>>>> 694b4b5b30e2c92b120320adf3f62eedeb37d616
 code imu\_node uses to create an IMU messages is shown in Code Listing~
 \ref{lst:imu_message}
 
@@ -665,8 +637,6 @@ def _publish_data(self):
         msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
         ...
 \end{lstlisting}
-<<<<<<< HEAD
-
 There are a couple points to notice in this excerpt. Firstly, the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
@@ -677,18 +647,6 @@ discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
 towards the back of the robot). While this would be possible to correct by
 declaring a transform frame describing the IMU frame relative to the base
 frame, this was thought to be a simpler solution. Because of this, the
-=======
-There are a couple points to notice in this excerpt. Firstly, the 
-covariance matrix for the orientation is set to a $-1$ followed by 0's. 
-This indicates that values for the orientation are unknown as we are only 
-using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the 
-x and y axes are negative the measured value. This is because, as 
-discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at 
-\ang{180} relative to the robot frame (i.e. the x axis in the IMU faced 
-towards the back of the robot). While this would be possible to correct by 
-declaring a transform frame describing the IMU frame relative to the base 
-frame, this was thought to be a simpler solution. Because of this, the 
->>>>>>> 694b4b5b30e2c92b120320adf3f62eedeb37d616
 frame in the header is set to \textit{base\_link}.
 
 The ROS spin functionality was used for the IMU, so
