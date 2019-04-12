@@ -10,26 +10,23 @@ try:
     import rospy
     pi = True
 except ImportError:
+    import crues.GPIO_MOCK as GPIO
     pi = False
 
 
 class RobotDetector:
     def __init__(self):
-        self.name = "Robot"
-        self.robot_colours = [("inky", ([105, 80, 30], [145, 255, 255]),(255, 0, 0)),
-                              ("clyde", ([15, 100, 80],[30, 255, 255]), (0, 255, 255)),
-                              ("blinky", ([170, 110, 60], [10, 255, 255]), (0, 0, 255)),
-                              ("goal", ([40, 140, 95], [70, 255, 255]), (0, 255, 0))
-                              ]
-
+        self.name = rospy.get_param('hostname', 'robot')
+        self.robots = [r for r in rospy.get_param('robots', []) if r['name'] != self.name]
+        self.goals = rospy.get_param('goals', [])
         if pi:
-            frameSize = (640, 480)
+            frame_size = (640, 480)
             self.frame_rate = rospy.get_param('~framerate', 10)
-            self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frameSize,
+            self.cap = VideoStream(src=0, usePiCamera=pi, resolution=frame_size,
                                    framerate=self.frame_rate).start()
             rospy.init_node("vision", anonymous=False)
             self.recording = rospy.get_param("~recording", False)
-            self.pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
+            self.robot_pub = rospy.Publisher('robots_detected', Vision, queue_size=10)
             self.goal_pub = rospy.Publisher('goal_detected', Bool, queue_size=10)
             self.rate = rospy.Rate(self.frame_rate)
             if self.recording:
@@ -39,17 +36,15 @@ class RobotDetector:
         else:
             self.cap = cv2.VideoCapture(1)
 
-    def search(self, search_frame):
-        """Search search_frame for other robots and return relevant information
-        @:returns names - list of robot name
-        @:returns found - list, true if the object is in the frame
+    def search(self, search_frame, objects):
+        """Search search_frame for objects and return relevant information
+        @:returns found - list of objects found
         @:returns coords - list of (x, y) tuples of centre of mass of objects
         @:returns outlines - list of object outlines
-        @:returns highlight_colours - for rendering to frame, colour of text and highlighting box
         """
-        names, found, coords, outlines, highlight_colours = [], [], [], [], []
-        for (name, colour_bounds, highlight_colour) in self.robot_colours:
-            colour_mask = self.get_colour_mask(search_frame, colour_bounds[0], colour_bounds[1])
+        found, coords, outlines = [], [], []
+        for o in objects:
+            colour_mask = self.get_colour_mask(search_frame, o['hsv_min'], o['hsv_max'])
             _, contours, _ = cv2.findContours(colour_mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             maxsize = 0
             cx, cy, outline = None, None, None
@@ -60,20 +55,17 @@ class RobotDetector:
                     cx, cy = self.get_centre_point(c)
                     outline = self.get_outline(c)
                     obj_found = True
-            names.append(name)
-            found.append(obj_found)
-            coords.append((cx, cy))
-            outlines.append(outline)
-            highlight_colours.append(highlight_colour)
-        return names, found, coords, outlines, highlight_colours
+            if obj_found:
+                found.append(o)
+                coords.append((cx, cy))
+                outlines.append(outline)
+        return found, coords, outlines
 
     def get_colour_mask(self, frame, lower_hsv_bound, higher_hsv_bound):
         """Return a Boolean mask the size of frame, where 1's
         are where 'frames' pixel is within the colour range"""
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-        # define range of blue color in HSV
-        if (lower_hsv_bound[0] > higher_hsv_bound[0]):
+        if lower_hsv_bound[0] > higher_hsv_bound[0]:
             mask1 = cv2.inRange(hsv_frame, np.array([0, lower_hsv_bound[1], lower_hsv_bound[2]]),
                                 np.array(higher_hsv_bound))
             mask2 = cv2.inRange(hsv_frame, np.array(lower_hsv_bound),
@@ -83,13 +75,6 @@ class RobotDetector:
             lower = np.array(lower_hsv_bound)
             upper = np.array(higher_hsv_bound)
             mask = cv2.inRange(hsv_frame, lower, upper)
-
-        # lower_green = np.array([50, 80, 50])
-        # upper_green = np.array([100, 255, 255])
-        # mask = cv2.inRange(hsv_frame, lower_green, upper_green)
-        #
-
-        # GBMask = cv2.GaussianBlur(mask, (5, 5), 0)
         kernel = np.ones((5, 5), np.uint8)
         mask = cv2.erode(mask, kernel, iterations=1)
         mask = cv2.dilate(mask, kernel, iterations=1)
@@ -114,13 +99,19 @@ class RobotDetector:
     def spin(self):
         try:
             while not rospy.is_shutdown():
-            #while self.cap.isOpened():
                 self._tick()
                 self.rate.sleep()
         finally:
             if self.recording:
                 self.recorder.release()
-            # self._cleanup()
+
+    def _draw_bounding_rects(self, frame, objects, outlines):
+        for i, o in enumerate(objects):
+            x, y, w, h = cv2.boundingRect(outlines[i])
+            cv2.rectangle(frame, (x, y), (x + w, y + h), tuple(o['rgb']), 2)
+            cv2.putText(frame, o['name'], (x - 20, y - 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, tuple(o['rgb']), 2)
+        self.recorder.write(frame)
 
     def _tick(self):
         if pi:
@@ -129,19 +120,14 @@ class RobotDetector:
         else:
             _, frame = self.cap.read()
         if frame is not None:
-            names, found, coords, outlines, highlight_colours = self.search(frame)
-            names_found = [names[i] for i in range(len(names)) if found[i]]
-            if self.recording:
-                for i, name in enumerate(names):
-                    if found[i]:
-                        x, y, w, h = cv2.boundingRect(outlines[i])
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-                        cv2.putText(frame, name, (x - 20, y - 20),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
-                self.recorder.write(frame)
+            robots, _, r_outlines = self.search(frame, self.robots)
+            goals, _, g_outlines = self.search(frame, self.goals)
             msg = Vision()
-            msg.robot_list = ",".join(names_found)
-            self.pub.publish(msg)
+            msg.robot_list = ", ".join([robot['name'] for robot in robots])
+            self.robot_pub.publish(msg)
+            self.goal_pub.publish(True if goals else False)
+            if self.recording:
+                self._draw_bounding_rects(frame, robots + goals, r_outlines + g_outlines)
 
 
 def _test():
@@ -160,16 +146,12 @@ def _test():
             frame = cap.read()
         else:
             _, frame = cap.read()
-        names, found, coords, outlines, highlight_colours = rd.search(frame)
-
-        for i, name in enumerate(names):
-            if found[i]:
-                #cv2.drawContours(frame, [outline], -1, (0, 255, 0), 2)
-                #cv2.circle(frame, (cx, cy), 7, (255, 255, 255), -1)
-                x, y, w, h = cv2.boundingRect(outlines[i])
-                cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-                cv2.putText(frame, name, (x - 20, y - 20),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+        objects, coords, outlines = rd.search(frame, rd.robots)
+        for i, o in enumerate(objects):
+            x, y, w, h = cv2.boundingRect(outlines[i])
+            cv2.rectangle(frame, (x, y), (x + w, y + h), o['rgb'], 2)
+            cv2.putText(frame, o, (x - 20, y - 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, o['rgb'], 2)
         cv2.imshow('frame2', frame)
         if not pi:
             out.write(frame)

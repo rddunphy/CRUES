@@ -5,7 +5,6 @@ import time
 
 import rospy
 from std_msgs.msg import Bool, Float32, Int32
-from crues_sensors.msg import Vision
 from geometry_msgs.msg import Twist
 
 
@@ -29,7 +28,7 @@ class Roomba:
         rospy.Subscriber('ul_range', Float32, self.range_callback, callback_args=LEFT)
         rospy.Subscriber('uc_range', Float32, self.range_callback, callback_args=CENTRE)
         rospy.Subscriber('ur_range', Float32, self.range_callback, callback_args=RIGHT)
-        rospy.Subscriber('/robots_detected', Vision, self.robots_callback)
+        rospy.Subscriber('/goal_detected', Bool, self.goal_callback)
         self.twist_pub = rospy.Publisher('twist', Twist, queue_size=10)
         self.motor_sleep_pub = rospy.Publisher('motor_sleep', Bool, queue_size=10)
         self.gled_pub = rospy.Publisher('green_led', Bool, queue_size=10)
@@ -100,9 +99,8 @@ class Roomba:
     def range_callback(self, msg, s):
         self.last_ranges[s] = msg.data
 
-    def robots_callback(self, msg):
-        tokens = [x.strip().lower() for x in msg.robot_list.split(',')]
-        self.goal_in_view = 'goal' in tokens
+    def goal_callback(self, msg):
+        self.goal_in_view = msg.data
 
     def is_turning(self):
         return self.time_to_stop_turning > time.time()

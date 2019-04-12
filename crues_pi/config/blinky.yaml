@@ -24,7 +24,8 @@ base_width: 0.141
 encoder:
   rate: 20
 ultrasonic:
-  rate: 6.5
+  rate: 2
+  pulse_offset: 0
   angle: deg(30)
   time: 0.05
   range_max: 4.0

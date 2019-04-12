@@ -18,10 +18,15 @@ SPEED_OF_SOUND = 343
 class UltrasonicTimeout(Exception):
     """Error for indicating that an ultrasonic sensor has timed out (e.g. because GPIO missed an edge)."""
 
-    def __init__(self, name, timeout):
-        super(UltrasonicTimeout, self).__init__("%s ultrasonic sensor timed out after %f s" % (name, timeout))
+    def __init__(self, name, timeout, is_on_rising_edge):
+        if is_on_rising_edge:
+            msg = "%s ultrasonic sensor timed out after %f s" % (name, timeout)
+        else:
+            msg = "%s ultrasonic sensor missed rising edge" % name
+        super(UltrasonicTimeout, self).__init__(msg)
         self.name = name
         self.timeout = timeout
+        self.is_on_rising_edge = is_on_rising_edge
 
 
 class Ultrasonic:
@@ -41,9 +46,9 @@ class Ultrasonic:
         GPIO.add_event_detect(echo_pin, GPIO.BOTH, callback=self._log_time)
 
     def get_range(self):
-        """Get range from ultrasonic sensor in millimetres.
+        """Get range from ultrasonic sensor in metres.
 
-        :return: (float) Approx. range in millimetres
+        :return: (float) Approx. range in metres
         :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
         """
         self.start_time = -1
@@ -53,9 +58,7 @@ class Ultrasonic:
         GPIO.output(self.trig_pin, GPIO.LOW)
         time.sleep(self.sensor_timeout)
         if self.start_time < 0 or self.stop_time < 0:
-            if self.start_time < 0 and self.stop_time < 0:
-                rospy.logerr("Missed rising edge in %s ultrasonic sensor" % self.name)
-            raise UltrasonicTimeout(self.name, self.sensor_timeout)
+            raise UltrasonicTimeout(self.name, self.sensor_timeout, self.start_time < 0)
         duration = self.stop_time - self.start_time
         distance = duration * SPEED_OF_SOUND * 0.5
         return self.response * distance - self.offset
@@ -95,16 +98,24 @@ class UltrasonicScanner:
         f = rospy.get_param('~rate', 5)
         self.rate = rospy.Rate(f)
         self.scan_time = 1.0 / f
+        self.pulse_offset = rospy.get_param('~pulse_offset', 0)
         self.pub_l = rospy.Publisher('ul_range', Float32, queue_size=10)
         self.pub_c = rospy.Publisher('uc_range', Float32, queue_size=10)
         self.pub_r = rospy.Publisher('ur_range', Float32, queue_size=10)
         self.scan_pub = rospy.Publisher('sonar_scan', LaserScan, queue_size=10)
 
+    def _duration_till_next_tick(self):
+        now = rospy.get_time()
+        next_tick = math.floor(now) + self.pulse_offset
+        while next_tick < now:
+            next_tick += self.scan_time
+        return next_tick - now
+
     def spin(self):
         try:
             while not rospy.is_shutdown():
                 self._scan()
-                self.rate.sleep()
+                rospy.sleep(self._duration_till_next_tick())
         finally:
             self.left.cleanup()
             self.centre.cleanup()
@@ -145,7 +156,10 @@ class UltrasonicScanner:
         try:
             r = sensor.get_range()
         except UltrasonicTimeout as e:
-            rospy.logwarn(str(e))
+            if e.is_on_rising_edge:
+                rospy.logerr(str(e))
+            else:
+                rospy.logwarn(str(e))
         else:
             rospy.logdebug("%s ultrasonic node range: %d", sensor.name, r)
         finally:
