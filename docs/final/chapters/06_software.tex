@@ -34,18 +34,19 @@ module to have a polling loop in which it handles its heavier functionality, wit
 callbacks only setting up the data necessary for this loop.
 
 \section{ROS}\label{soft/ROS}
-In order to implement this architecture, and following extensive research(see
-Section~\ref{litreview/ROS}, the Robot Operating System (ROS) library was
-selected as a framework. The ROS library makes it simple to design and implement
-individual modules within a system and uses a central control node named
-``roscore'' to manage publish and subscribe ``topics'' between modules.
+In order to implement this architecture, and following extensive research
+(c.f.\ Section~\ref{litreview/ROS}), the Robot Operating System (ROS) was
+selected as a platform. The ROS framework makes it simple to design and implement
+individual modules as nodes, and uses a central \verb|roscore| control
+node to manage interactions between nodes, which communicate by publishing and
+subscribing to topics.
 
 \subsection{Design}\label{soft/ROS/design}
 Following the decision to use ROS to implement our chosen architecture, a modular
-approach was adopted for the design of each of the components within the system~
-\ref{electrical}. Hence, a system block diagram was developed to visualise data flow
-within the system. The block diagram in Figure~
-\ref{BlockDiagram} demonstrates the modularisation of the system and also the
+approach was adopted for the design of each of the components within the system.
+Hence, a system block diagram was developed to visualise data flow
+within the system. The block diagram in Figure~\ref{BlockDiagram}
+demonstrates the modularisation of the system and also the
 expectation that the AI module at the top of the system will be completely
 independent from the other components of the system.
 
@@ -56,10 +57,9 @@ independent from the other components of the system.
 
 \end{figure}
 
-By making the control module
-an API, AI algorithms can be interchanged easily for testing. The modular
-approach also means sensor and actuator modules can be plugged in and out as
-desired and could easily be changed if needed at any point in the project.
+This modular approach means that sensor and actuator modules can be plugged in
+and out as desired and could easily be changed if needed at any point in the
+project.
 
 Each module can be programmed in a different language before being converted to a
 ROS node, which publishes and subscribes, using the appropriate methods for that
@@ -260,9 +260,9 @@ robot to send and receive messages simultaneously.
 To implement these requirements a \verb|comms.py| file was created which contained
 the function definitions and address lookup table that the ``server'' and
 ``client'' nodes would use to communicate. Firstly, a python dictionary of the
-robot's IP addresses as well as our laptop for testing purposes was created.
+robot's IP addresses and a laptop's IP address for testing purposes was created.
 A \verb|lookupIP(name)| function and a \verb|lookupname(ip)| function were created for
-modularity and maintainability. Secondly, function were required that could
+modularity and maintainability. Secondly, functions were required that could
 create the JSON message (\verb|tojson()|) and extract the data from
 the message (\verb|fromjson()|).
 
@@ -289,14 +289,17 @@ def fromjson(packet):
 \end{lstlisting}
 
 The header created includes the IP and name of both the sender and the
-receiver as well as the type of Python object the data is. The header and the data to be sent are converted to JSON and returned as a single string. When  converting from JSON, the receiver checks that it was the intended recipient of the
-message, returning $-1$ if it was not, before returning the data
-object located at index 1 (header is index 0). These are the four helper
-methods used by the \verb|send()| and \verb|listen()| methods.
+receiver as well as the type of Python object the data is. The header 
+and the data to be sent are converted to JSON and returned as a single
+string. When  converting from JSON, the receiver checks that it was the
+intended recipient of the message, returning $-1$ if it was not, before
+returning the data object located at index 1 (header is index 0). These
+are the four helper methods used by the \verb|send()| and \verb|listen()|
+methods.
 
 In order to physically send and receive the data the Python Socket library
-is used~\cite{socketServerDocs}. This interface's \verb|socket()| function returns a Socket object whose
-methods implement the Unix socket system calls.
+is used~\cite{socketServerDocs}. This interface's \verb|socket()| function 
+returns a Socket object whose methods implement the Unix socket system calls.
 
 \begin{lstlisting}
 # data is python object to send
@@ -310,10 +313,10 @@ def send(hostname, data):
         s.close()
 \end{lstlisting}
 
-The \verb|send()| function looks up the IP of the destination and gets the JSON object
-of the message. It then attempts to connect using the \verb|connect_ex()| which
-returns 0 if successful. If so, it can then use the Socket methods to send the
-data and then close the connection.
+The \verb|send()| function looks up the IP of the destination and gets the JSON
+object of the message. It then attempts to connect using the \verb|connect_ex()|
+which returns 0 if successful. If so, it can then use the Socket methods to send
+the data and then close the connection.
 
 \begin{lstlisting}
 def listen():
@@ -334,16 +337,21 @@ def listen():
 \end{lstlisting}
 
 When listening for incoming messages, the created Socket object must bind to
-an IP address and port number. The address 0.0.0.0 allows the node to listen to any incoming messages. The \verb|listen()| function starts the node listening
-whilst setting the number of queued connections allowed (set to 2 here but can be increased when scaling the system to use more agents). Once the socket accepts a connection, packets received can continually be stored
+an IP address and port number. The address 0.0.0.0 allows the node to listen
+to any incoming messages. The \verb|listen()| function starts the node listening
+whilst setting the number of queued connections allowed (set to 2 here but can
+be increased when scaling the system to use more agents). Once the socket
+accepts a connection, packets received can continually be stored
 until no more data is received, after which the connection can be closed and
 the data read from the JSON strings and returned.
 
 
 \subsection{Initial Testing}\label{soft/comms/initest}
-This implementation was set up and initially tested between a laptop and a Raspberry Pi
-by remotely connecting to the RPi. When this succeeded in sending multiple
-messages between each device, a further RPi was remotely connected to and an attempt was made to send messages between RPis. Again this was successful, demonstrating the basic functionality of the communication system.
+This implementation was set up and initially tested between a laptop and a 
+Raspberry Pi by remotely connecting to the RPi. When this succeeded in sending
+multiple messages between each device, a further RPi was remotely connected to and
+an attempt was made to send messages between RPis. Again this was successful, 
+demonstrating the basic functionality of the communication system.
 
 During more extensive testing, an important issue with the previous
 code was found. When nodes were sending messages to each other simultaneously
@@ -360,12 +368,15 @@ attempting to connect again --- or to use a multi-connection selector as part of
 the server to handle multiple requests \cite{multiconnectionServer}.
 Alternatively, if the server can always be listening for incoming messages by
 utilising multiple threads then there would be no system downtime and
-thus, each message would be successfully sent. As a result, a multi-threaded version of the existing code was implemented.
+thus, each message would be successfully sent. As a result, a multi-threaded version
+of the existing code was implemented.
 
 
 \subsection{Multi-Threaded Implementation}\label{soft/comms/mtimpl}
 
-This was implemented by defining two classes, namely: \verb|ThreadedTCPServer| and \verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
+This was implemented by defining two classes, namely: \verb|ThreadedTCPServer| and
+\verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in 
+SocketServer documentation~\cite{socketServerDocs}.
 
 \begin{lstlisting}
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
@@ -401,29 +412,34 @@ def listen(handler):
     return server
 \end{lstlisting}
 
-The handler object passed is a function that will publish the
-message contents so relevant subscribers can use the data received
-from the other robot. As a new thread is being created for each request, node crashes from interruptions no longer occur.
+The handler object passed is a function that will publish the message contents so
+relevant subscribers can use the data received from the other robot. As a new
+thread is being created for each request, node crashes from interruptions no longer occur.
 
 \subsection{Multi-Threaded Testing}\label{soft/comms/mttest}
 In order to test this version it was important to first ensure that the
 previously successful tests remained successful. Therefore,
-the same initial tests were applied to this implementation and were successful as expected. In order to test whether the new implementation was thread-safe, a number of
-tests were executed. 
+the same initial tests were applied to this implementation and were 
+successful as expected. In order to test whether the new implementation was
+thread-safe, a number of tests were executed. 
 
-The first test involved creating a loop that would
-send 100 messages from robot A to robot B. When this succeeded without any
-node crashes, the test was repeated but with robot B sending messages to robot A
-at the same time. This test would have previously crashed each of the robot's nodes but with each new connection request handled in a different thread, the test was successful. The test was then repeated once more with robot B sending messages to robot C
-instead of robot A; again resulting in a successful test with no messages lost.
+The first test involved creating a loop that would send 100 messages from robot
+A to robot B. When this succeeded without any node crashes, the test was repeated
+but with robot B sending messages to robot A at the same time. This test would
+have previously crashed each of the robot's nodes but with each new connection
+request handled in a different thread, the test was successful. The test was then
+repeated once more with robot B sending messages to robot C instead of robot A;
+again resulting in a successful test with no messages lost.
 
-Finally, a stress test was carried out. The previous test was executed again with the limit on the number of
-messages being sent removed, and so the node would, in theory,
-continue to create new threads to listen to the incoming messages. Initially, this worked, however, due to there being no delay between sent messages,
+Finally, a stress test was carried out. The previous test was executed again with
+the limit on the number of messages being sent removed, and so the node would,
+in theory, continue to create new threads to listen to the incoming messages.
+Initially, this worked, however, due to there being no delay between sent messages,
 thousands of threads were being created rapidly. This resulted in the node
-crashing as the thread limit had been reached, however, this happened after
-over 50 thousand messages. As a result,
-this was determined to be the upper limit of the system, which is excessive for both this project's and any reasonable purposes, hence, it was determined that the system was sufficiently thread-safe to be used.
+crashing as the thread limit had been reached, however, this happened after over
+50,000 messages. As a result, this was determined to be the upper limit of the system,
+which is excessive for both this project's and any reasonable purposes, hence, it was
+determined that the system was sufficiently thread-safe to be used.
 
 \section{PID Controller}\label{soft/PID}
 A PID controller was used for each wheel in order to ensure a constant output
@@ -434,7 +450,8 @@ motor. By tuning the gain terms $K_p$, $K_i$ and $K_d$ for the system in
 question, a target velocity can quickly be approached without overshooting.
 
 \subsection{Design}\label{soft/PID/design}
-The PID control node from the ROS \verb|differential_drive| package was used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
+The PID control node from the ROS \verb|differential_drive| package was 
+used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
 which sets the target velocity of a wheel and a \verb|/wheel| topic which provides
 the actual current speed of the wheel as determined by the encoders, and publishes
 a command value to \verb|/motor_cmd|, which is subscribed to by the corresponding
@@ -531,23 +548,47 @@ increased until the system oscillated with a constant amplitude.
 $K_p$ was then halved and $K_i$
 introduced to increase the rate of change in the system. $K_d$
 could then be slowly increased to minimise the overshoot in the system.
-Following one iteration of this process the velocity scaling was reduced
-and the process repeated. The results are shown in Table~\ref{manual_pid_tuning}.
+
+Additional improvements were achieved by scaling the output of the PID loop
+in the drive node. As the PWM values used by \verb|RPi.GPIO| are in the range
+$[0; 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
+(with a typical range of $[0; 0.5]$), high gain values are required to ensure
+the output is on the correct order of magnitude. A scale factor and an offset
+were therefore introduced in the motor drive node as shown in
+Listing~\ref{lst:pid_scaling} in order to map inputs from an arbitrary
+input range to the range $[-100; 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
+for \verb|~range_max| resulted in the lower gain values shown in
+Table~\ref{manual_pid_tuning}, and appeared to result in a slight reduction in
+overshoot.
+
+\begin{lstlisting}[caption={Output scale factor in drive node}, label={lst:pid_scaling}]
+class Motor:
+    def __init__(self):
+        # ...
+        self.range_min = rospy.get_param('~range_min', -1.0)
+        self.range_max = rospy.get_param('~range_max', 1.0)
+        self.scale_factor = 200.0 / (self.range_max - self.range_min)
+        self.offset = (self.range_min + self.range_max) / 2
+        # ...
+
+    def _tick(self):
+        # ...
+        pwm_val = (self.cmd - self.offset) * self.scale_factor
+        # ...
+\end{lstlisting}
 
 \begin{table}[!ht]\centering
-\caption{Manual PID
+\caption{Manual PID tuning results
 \label{manual_pid_tuning}}
     \begin{tabular}{cccc}
         \toprule
         \thead{Method} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
-        Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
-        After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
+        Before PID scaling & 102.5 & 2.5 & 0.88\\
+        After PID scaling & 0.2775 & 0.0075 & 0.007\\
         \bottomrule
     \end{tabular}
 \end{table}
-
-\todo{Paragraph about output scaling required}
 
 \subsection{Rate control}
 
