@@ -1,4 +1,6 @@
 <launch>
+    <rosparam command="load" file="$(find crues_control)/config/robots.yaml" />
+    <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
     <node name="cv" pkg="crues_sensors" type="vision_node.py">
 		<param name="recording" value="false" />
     </node>
