@@ -637,7 +637,7 @@ def _publish_data(self):
         msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
         ...
 \end{lstlisting}
-There are a couple points to notice in this excerpt. Firstly, the
+There are a couple of points to notice in this excerpt. Firstly, the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
 using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the
