@@ -194,8 +194,6 @@ Python. This worked by connecting call back methods to both the A and B
 channel pins. How this is initialised is shown in Code Listing
 \ref{lst:enc_event_detect}
 
-\todo{format listings}
-
 \begin{lstlisting}[caption={encoder callback set-up},label={lst:enc_event_detect} , language=python]
 GPIO.add_event_detect(self.pin$_$a, GPIO.BOTH, callback=self._callback_a)
 \end{lstlisting}
@@ -220,8 +218,7 @@ The encoders were first tested to ensure that they functioned correctly
 using a test circuit and connecting the encoder outputs to an
 oscilloscope. All the encoders were shown to function correctly
 outputting square waves in both channels and with channel A leading B
-when the motor was moving forwards and B leading A when going forwards.
-\todo{check order}
+when the motor was moving forwards and B leading A when going backwards.
 
 An example of the encoder output found is shown in Figure
 \ref{EncoderGraph} below. This shows the two square waves produced by the
@@ -270,7 +267,7 @@ integrates well with the RPi as it has dedicated I$^2$C GPIO pins and
 existing libraries to facilitate communication.
 
 It should be noted that, while this was the only I$^2$C device currently
-used, other devices with conflicting addresses can be handled as The IMU
+used, other devices with conflicting addresses can be handled as the IMU
 allows the address to be changed through a data pin from 0x68 to 0x69.
 This would most likely be used if the framework developed was being used
 on another, more complicated system requiring several IMUs. This pin was
@@ -352,7 +349,7 @@ def get_speeds(self):
 Initial work was performed with the IMU and an Arduino microcontroller before the RPis were acquired. The IMU was connected up and various movements were recorded. Python code was then written to interpret and visualise the data as a moving frame.
 
 \section{PCB}\label{elec/pcb}
-As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board). The following describes the rationale and design decision taken when carrying out the 3-iteration design process for designing the PCB. The final PCB design can be found in the git repository (see Section~\ref{appendix/a}).\todo{ensure this is where the git link is}
+As precise and consistent placement of components was required to ensure homogeneity of the robots, it was decided to develop a PCB for the connection and mounting of the parts (as opposed to using strip board). The following describes the rationale and design decision taken when carrying out the 3-iteration design process for designing the PCB. The final PCB design can be found in the git repository (see Appendix~\ref{appendix/a}).
 
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:

@@ -256,19 +256,15 @@ for listening for incoming messages. As these would be separate nodes,
 these would work independently of each other and so would allow for the
 robot to send and receive messages simultaneously.
 
-\subsection{Implementation}\label{soft/comms/impl}
-Look-up table
-First copy of send/receive that caused multi-message issues
-The new implementation with the thread-safe code
-
-To implement these requirements a $comms.py$ file was created which contain
-the function definitions and address lookup table that the ROS server and
-client nodes would use to communicate. Firstly a python dictionary of the
+\subsection{Initial Implementation}\label{soft/comms/iniimpl}
+To implement these requirements a \verb|comms.py| file was created which contained
+the function definitions and address lookup table that the ``server'' and
+``client'' nodes would use to communicate. Firstly, a python dictionary of the
 robot's IP addresses as well as our laptop for testing purposes was created.
-A $lookupIP(name)$ function and a $lookupname(ip)$ function were created for
-readability and maintainability. Secondly, a function were needed that could
-create the JSON message ($tojsn()$) and one that could extract the data from
-the message ($fromjson()$).
+A \verb|lookupIP(name)| function and a \verb|lookupname(ip)| function were created for
+modularity and maintainability. Secondly, function were required that could
+create the JSON message (\verb|tojson()|) and extract the data from
+the message (\verb|fromjson()|).
 
 \begin{lstlisting}
 def tojson(host_ip, hostname, data):
@@ -291,16 +287,17 @@ def fromjson(packet):
     except IndexError:
         return -2
 \end{lstlisting}
+
 The header created includes the IP and name of both the sender and the
-receiver as well as the type of python object the data is. The header along
-with the data to be sent is converted to JSON and returned as a string. When  converting from JSON it checks that it was the intended recipient of the
-message, returning $-1$ to indicate it was not, before returning the data
+receiver as well as the type of Python object the data is. The header and the data to be sent are converted to JSON and returned as a single string. When  converting from JSON, the receiver checks that it was the intended recipient of the
+message, returning $-1$ if it was not, before returning the data
 object located at index 1 (header is index 0). These are the four helper
-methods used by the send and listen methods.
+methods used by the \verb|send()| and \verb|listen()| methods.
 
 In order to physically send and receive the data the Python Socket library
-is used. This interface's $sockett()$ function returns a socket object whose
+is used~\cite{socketServerDocs}. This interface's \verb|socket()| function returns a Socket object whose
 methods implement the Unix socket system calls.
+
 \begin{lstlisting}
 # data is python object to send
 def send(hostname, data):
@@ -312,9 +309,10 @@ def send(hostname, data):
         s.sendall(message) # Sends string (of JSON)
         s.close()
 \end{lstlisting}
-The send function looks up the IP of the destination and gets the JSON object
-of the message. It then attempts to connect using the $connect_ex()$ which
-returns 0 if successful. If so then it can use the socket methods to send the
+
+The \verb|send()| function looks up the IP of the destination and gets the JSON object
+of the message. It then attempts to connect using the \verb|connect_ex()| which
+returns 0 if successful. If so, it can then use the Socket methods to send the
 data and then close the connection.
 
 \begin{lstlisting}
@@ -334,23 +332,20 @@ def listen():
     message = fromjson(packets)
     return message
 \end{lstlisting}
-When listening for incoming messages, the created socket object must bind to
-an IP address and port number. The address of 0.0.0.0 results in it listening
-to any incoming messages. The $listen()$ function starts the node listening
-whilst setting the number of queued connections allowed. In this case it is
-set to 2 but can be increased when scaling the system to use many more agents.
-Once the socket  accepts a connection, we can continually store the packets
-until no more data is received. After which the connection can be closed and
+
+When listening for incoming messages, the created Socket object must bind to
+an IP address and port number. The address 0.0.0.0 allows the node to listen to any incoming messages. The \verb|listen()| function starts the node listening
+whilst setting the number of queued connections allowed (set to 2 here but can be increased when scaling the system to use more agents). Once the socket accepts a connection, packets received can continually be stored
+until no more data is received, after which the connection can be closed and
 the data read from the JSON strings and returned.
 
-This implementation was set up and initially tested between a laptop and a Pi
-by remotely connecting to the Pi. When this succeeded in sending multiple
-messages between them, we remotely connected to another Pi and attempted to
-have them send messages back and forth to each other. Again this was successful
-and so this demonstrated the basic functionality of the communication system was
-working.
 
-When undertaking more extensive testing, an important issue with the previous
+\subsection{Initial Testing}\label{soft/comms/initest}
+This implementation was set up and initially tested between a laptop and a Raspberry Pi
+by remotely connecting to the RPi. When this succeeded in sending multiple
+messages between each device, a further RPi was remotely connected to and an attempt was made to send messages between RPis. Again this was successful, demonstrating the basic functionality of the communication system.
+
+During more extensive testing, an important issue with the previous
 code was found. When nodes were sending messages to each other simultaneously
 at least one of the nodes would fail. For example, if robot A sends a message to
 robot B but before the message has finished sending, robot B sends a message to
@@ -358,18 +353,20 @@ robot A then the receiver of robot B crashes and robot A never receives the mess
 If robot B were to send to a third robot, C, then robot B's receiver would still
 fail as would one of either robot B or C.
 
-As a result of this bug, the implementation would have to be changed to handle
+As a result of this bug, the implementation had to be changed to handle
 multiple connections properly. Various potential solutions were discussed,
-such as using multiple ports so as not to kill the socket connection when
-attempting to connect again or to use a multi-connection selector as part of
+such as using multiple ports --- so as not to kill the socket connection when
+attempting to connect again --- or to use a multi-connection selector as part of
 the server to handle multiple requests \cite{multiconnectionServer}.
 Alternatively, if the server can always be listening for incoming messages by
-utilising multiple threads then there would be no downtime of the system and
-thus each message would be successfully sent. As a result, we choose to
-design a thread-safe version of the existing code base.
+utilising multiple threads then there would be no system downtime and
+thus, each message would be successfully sent. As a result, a multi-threaded version of the existing code was implemented.
 
-This was implemented by defining ThreadedTCPServer and ThreadedTCPRequestHandler
-classes to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
+
+\subsection{Multi-Threaded Implementation}\label{soft/comms/mtimpl}
+
+This was implemented by defining two classes, namely: \verb|ThreadedTCPServer| and \verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
+
 \begin{lstlisting}
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
     def messageHandler(self, x):
@@ -383,10 +380,12 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 \end{lstlisting}
-The $listen()$ function is changed to take in a handler parameter. This is
-passed a function which is used instead of the messageHandler function in
-the ThreadedTCPRequetHandler before it is used to create a ThreadedTCPServer
+
+The \verb|listen()| function was changed to take in a handler parameter. This was
+passed a function which is used instead of the \verb|messageHandler()| function in
+the \verb|ThreadedTCPRequetHandler| before it is used to create a \verb|ThreadedTCPServer|
 object as shown.
+
 \begin{lstlisting}
 def listen(handler):
     ThreadedTCPRequestHandler.messageHandler = handler
@@ -401,36 +400,30 @@ def listen(handler):
     server_thread.start()
     return server
 \end{lstlisting}
-The handler object passed is a function that will solely publish the
-message contents so the relevant subscribers can use the data received
-from the other agent. As a new thread is being created for each request
-there should be no node crashes from having the process interrupted as
-it will be happening on a different thread.
-\todo{Is testing for just the final designed testing - cause this goes impl - testing  impl - testing and not sure how we want to handle that. All writing is here just where the heading goes?}
 
-\subsection{Testing}\label{soft/comms/test}
+The handler object passed is a function that will publish the
+message contents so relevant subscribers can use the data received
+from the other robot. As a new thread is being created for each request, node crashes from interruptions no longer occur.
 
+\subsection{Multi-Threaded Testing}\label{soft/comms/mttest}
 In order to test this version it was important to first ensure that the
-working functionality from the previous version still worked. Therefore
-the same initial tests were applied to this implementation which passed
-as expected. In order to test whether this was thread-safe, a number of
-tests were executed. The first test involved creating a loop that would
+previously successful tests remained successful. Therefore,
+the same initial tests were applied to this implementation and were successful as expected. In order to test whether the new implementation was thread-safe, a number of
+tests were executed. 
+
+The first test involved creating a loop that would
 send 100 messages from robot A to robot B. When this succeeded without any
-node crashes, the test was repeat but with robot B sending messages to robot A
-simultaneously. This previously would have crashed the nodes but with the
-server's listening on separate threads for each request, this was handled
-successfully. This test was repeated with robot B sending messages to robot C
-instead of robot B. This too was successful with the messages being received
-without any being lost. The test was repeated but the limit on the number of
-messages being send was removed, and so the messages would, in theory,
-continue to create new threads to listen to the incoming messages. This
-worked initially, but due to there being no delay in between sending messages,
-thousands of threads were being created quickly. This resulted in the node
+node crashes, the test was repeated but with robot B sending messages to robot A
+at the same time. This test would have previously crashed each of the robot's nodes but with each new connection request handled in a different thread, the test was successful. The test was then repeated once more with robot B sending messages to robot C
+instead of robot A; again resulting in a successful test with no messages lost.
+
+Finally, a stress test was carried out. The previous test was executed again with the limit on the number of
+messages being sent removed, and so the node would, in theory,
+continue to create new threads to listen to the incoming messages. Initially, this worked, however, due to there being no delay between sent messages,
+thousands of threads were being created rapidly. This resulted in the node
 crashing as the thread limit had been reached, however, this happened after
-over 50 thousand messages in quick succession (due to no delay). As a result,
-this was determined to be the upper limit of this system, that with this set
-up would never be close to reached and so it was determined that the system
-was sufficiently thread-safe to be used.
+over 50 thousand messages. As a result,
+this was determined to be the upper limit of the system, which is excessive for both this project's and any reasonable purposes, hence, it was determined that the system was sufficiently thread-safe to be used.
 
 \section{PID Controller}\label{soft/PID}
 A PID controller was used for each wheel in order to ensure a constant output
