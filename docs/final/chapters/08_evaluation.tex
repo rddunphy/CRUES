@@ -92,14 +92,14 @@ The pre-built power distribution board chosen had several advantages over a
 custom built solution. Firstly, it was very easily integrated with the Polulu 
 chassis. Secondly, it saved the significant amount of time it would have taken 
 to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB, 
-there was very little remaining space on the systems main PCB, so using a custom 
+there was very little remaining space on the system's main PCB, so using a custom 
 build system would have required the design of a second. 
 
 The range sensors used proved to be largely successful, with some caveats. 
 During the unit testing phase, the sensors performed well, giving consistent 
 readings accurate to within our required uncertainty. During the SLAM testing, 
 they mostly measured accurate results, however, their limitations started to 
-show. As the distance increased, the widening cone of detection cause some 
+become apparent. As the distance increased, the widening cone of detection caused some 
 erroneous data to be measured. This is assumed to be the cause of the corners 
 appearing to be rounded in the maze in Figure~\todo{reference slam diagram}. 
 Another issue with using the ultrasonic sensors is that the RPi used a time 
@@ -115,14 +115,15 @@ This would also remove the timing issue, as they generally return an analogue
 voltage instead of a pulse time. Initially, this design concept was discounted 
 to due the additional mechanical complexities of mounting the components and 
 cost, however without the time and budget restrictions, this solution would 
-likely improve the systems performance. 
+likely improve the system's performance. 
 
-While using an IMU to supplement wheel odometry is a common solution, the 
-effectiveness of the solution in this project has not been proven. The IMU 
+While using an IMU to supplement wheel odometry is a common solution, its 
+effectiveness in this project has not been proven. The IMU 
 returned reasonable results in testing, and the visualisation produced using 
-IMU data when integrated with ROS shows promise. However, as the EKF is not 
-functioning correctly, the sensor fused results are have not been obtained to 
+IMU data integrated with ROS shows promise. However, as the EKF is not 
+functioning correctly, the sensor-fused results have not been obtained to 
 measure their accuracy. 
+\todo{This sounds strange and a bit confusing?? Remove?}
 
 Having multiple robots allowed an 
 iterative design process to be carried out, significantly improving the outcome 
