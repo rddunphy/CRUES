@@ -529,23 +529,47 @@ increased until the system oscillated with a constant amplitude.
 $K_p$ was then halved and $K_i$
 introduced to increase the rate of change in the system. $K_d$
 could then be slowly increased to minimise the overshoot in the system.
-Following one iteration of this process the velocity scaling was reduced
-and the process repeated. The results are shown in Table~\ref{manual_pid_tuning}.
+
+Additional improvements were achieved by scaling the output of the PID loop
+in the drive node. As the PWM values used by \verb|RPi.GPIO| are in the range
+$[0; 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
+(with a typical range of $[0; 0.5]$), high gain values are required to ensure
+the output is on the correct order of magnitude. A scale factor and an offset
+were therefore introduced in the motor drive node as shown in
+Listing~\ref{lst:pid_scaling} in order to map inputs from an arbitrary
+input range to the range $[-100; 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
+for \verb|~range_max| resulted in the lower gain values shown in
+Table~\ref{manual_pid_tuning}, and appeared to result in a slight reduction in
+overshoot.
+
+\begin{lstlisting}[caption={Output scale factor in drive node}, label={lst:pid_scaling}]
+class Motor:
+    def __init__(self):
+        # ...
+        self.range_min = rospy.get_param('~range_min', -1.0)
+        self.range_max = rospy.get_param('~range_max', 1.0)
+        self.scale_factor = 200.0 / (self.range_max - self.range_min)
+        self.offset = (self.range_min + self.range_max) / 2
+        # ...
+
+    def _tick(self):
+        # ...
+        pwm_val = (self.cmd - self.offset) * self.scale_factor
+        # ...
+\end{lstlisting}
 
 \begin{table}[!ht]\centering
-\caption{Manual PID
+\caption{Manual PID tuning results
 \label{manual_pid_tuning}}
     \begin{tabular}{cccc}
         \toprule
         \thead{Method} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
-        Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
-        After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
+        Before PID scaling & 102.5 & 2.5 & 0.88\\
+        After PID scaling & 0.2775 & 0.0075 & 0.007\\
         \bottomrule
     \end{tabular}
 \end{table}
-
-\todo{Paragraph about output scaling required}
 
 \subsection{Rate control}
 
