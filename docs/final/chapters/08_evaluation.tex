@@ -88,7 +88,12 @@ Each of the modules of the robot --- sensors and actuators --- has a fully
 tested and integrable ROS node associated with it. The sensors and actuators are 
 also fully connected as part of the mechanical design through the PCB. 
 
-The pre-built power distribution board chosen had several advantages over a custom built solution. Firstly, it was very easily integrated with the Polulu chassis. Secondly, it saved the significant amount of time it would have taken to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB, there was very little remaining space on the systems main PCB, so using a custom build system would have required the design of a second. 
+The pre-built power distribution board chosen had several advantages over a 
+custom built solution. Firstly, it was very easily integrated with the Polulu 
+chassis. Secondly, it saved the significant amount of time it would have taken 
+to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB, 
+there was very little remaining space on the systems main PCB, so using a custom 
+build system would have required the design of a second. 
 
 The range sensors used proved to be largely successful, with some caveats. 
 During the unit testing phase, the sensors performed well, giving consistent 
@@ -112,7 +117,12 @@ to due the additional mechanical complexities of mounting the components and
 cost, however without the time and budget restrictions, this solution would 
 likely improve the systems performance. 
 
-While using an IMU to supplement wheel odometry is a common solution, the effectiveness of the solution in this project has not been proven. The IMU returned reasonable results in testing, and the visualisation produced using IMU data when integrated with ROS shows promise. However, as the EKF is not functioning correctly, the sensor fused results are have not been obtained to measure their accuracy. 
+While using an IMU to supplement wheel odometry is a common solution, the 
+effectiveness of the solution in this project has not been proven. The IMU 
+returned reasonable results in testing, and the visualisation produced using 
+IMU data when integrated with ROS shows promise. However, as the EKF is not 
+functioning correctly, the sensor fused results are have not been obtained to 
+measure their accuracy. 
 
 Having multiple robots allowed an 
 iterative design process to be carried out, significantly improving the outcome 
