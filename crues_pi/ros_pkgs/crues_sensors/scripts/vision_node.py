@@ -10,7 +10,7 @@ try:
     import rospy
     pi = True
 except ImportError:
-    import GPIO_MOCK as GPIO
+    import crues.GPIO_MOCK as GPIO
     pi = False
 
 
@@ -146,14 +146,12 @@ def _test():
             frame = cap.read()
         else:
             _, frame = cap.read()
-        names, found, coords, outlines, highlight_colours = rd.search(frame)
-
-        for i, name in enumerate(names):
-            if found[i]:
-                x, y, w, h = cv2.boundingRect(outlines[i])
-                cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
-                cv2.putText(frame, name, (x - 20, y - 20),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+        objects, coords, outlines = rd.search(frame, rd.robots)
+        for i, o in enumerate(objects):
+            x, y, w, h = cv2.boundingRect(outlines[i])
+            cv2.rectangle(frame, (x, y), (x + w, y + h), o['rgb'], 2)
+            cv2.putText(frame, o, (x - 20, y - 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, o['rgb'], 2)
         cv2.imshow('frame2', frame)
         if not pi:
             out.write(frame)
