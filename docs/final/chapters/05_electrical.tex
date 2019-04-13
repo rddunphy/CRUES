@@ -232,36 +232,37 @@ this, the motors were run at a low speed for several rotations while the
 system counted pulses. This was not an accurate test of the encoders, as
 the wheel could not be stopped at an exact integer multiple of rotations,
 however did verify that the system was approximately outputting 1440
-counts per rotation.
+counts per revolution.
 
 \section{IMU}\label{elec/imu}
 The IMU consists of a three axis accelerometer and a three axis gyroscope
 which can be used to measure both the linear acceleration and rotational
-velocity of the robot. This can be integrated and double integrated to
-track the robots position over time again performing dead reckoning. The
+velocity of the robot. This can be integrated to obtain velocity and integrated again 
+to obtain displacement in order to track the robot's position over time, again by performing dead reckoning. It is worth noting 
+that the additional calculation here adds to the probability of error within the measurement. However, the
 system can then perform sensor fusion on this data and the encoder
-readings to get far more accurate results than possible with either system
+readings to get far more accurate results than is possible with either system
 independently.
 
 \subsection{Design}\label{elec/imu/design}
-The IMU selected was the MPU-6050. It was the most accurate sensor of a
+The IMU selected was the MPU-6050~\cite{MPU6050Datasheet}. It was the most accurate sensor of a
 similar budget with regards to noise, cross axis sensitivity and non
 linearity. Offset tolerance was also considered but this was less of a
 consideration as this can be compensated for as long as the offset is not
 so extreame as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 
-The IMU was to be placed as close to the centre of the axis of the robot
+The IMU was placed as close to the centre of the axis of the robot
 as possible, as when it is far from the centre of rotation the centripetal
-forces acting on it can interfere and be measured as linear motion away
-from the centre.
+forces acting upon it can interfere and be measured as linear motion away
+from the centre of the robot.
 
 \subsection{Implementation}\label{elec/imu/impl}
-The IMU selected uses the I$^2$C protocol for data transmission, which
-integrates well with the RPi as it has dedicated I$^2$C GPIO pins and
+The IMU selected uses the \isc{} protocol for data transmission, which
+integrates well with the RPi as it has dedicated \isc{} GPIO pins and
 existing libraries to facilitate communication.
 
-It should be noted that, while this was the only I$^2$C device currently
+It should be noted that, while this was the only \isc{} device currently
 used, other devices with conflicting addresses can be handled as the IMU
 allows the address to be changed through a data pin from 0x68 to 0x69.
 This would most likely be used if the framework developed was being used
@@ -269,16 +270,15 @@ on another, more complicated system requiring several IMUs. This pin was
 not connected to the RPi in this design as it was not yet required.
 \todo{code description}
 
-An \verb|i2c_object| class that used the smbus package was created to
-simplify the communication over the I\textsuperscript{2}C buses. These
-were initialised with an I\textsuperscript{2}C bus and an address, and
-contained various methods for reading and writing to the I
-\textsuperscript{2}C device.
+An \verb|i2c_object| class that used the ``smbus'' package was created to
+simplify the communication over the \isc{} buses. These
+were initialised with an \isc{} bus and an address, and
+contained various methods for reading and writing to the \isc{} device.
 
 \todo{what code is interesting}
 
 An \verb|IMU| class was then created to read the data from the IMU which
-and an \verb|i2c_object| instance. Code Listing \ref{lst:imu_init} shows
+and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
@@ -292,8 +292,7 @@ def __init__(self, address, rate, channel=1):
 \end{lstlisting}
 
 As the IMU returns arbitrary values between -32768 and 32767~\cite{MPU6050Datasheet},
-a constant was required to convert the results tomeaningful values. The calculations for
-these is shown in Code Listing~\ref{lst:imu_units}.
+a constant was required to convert the results to meaningful values. These calculations are shown in Listing~\ref{lst:imu_units}.
 
 \begin{lstlisting}[caption={Calculation for IMU Value to SI unit Conversion Constants},label={lst:imu_units} , language=python]
 GYRO_RANGE = 250  # deg/sec
@@ -306,9 +305,9 @@ ACC_UNITS = ACC_RANGE / ACC_DIVISIONS  # m/s^2
 \end{lstlisting}
 
 The acceleration values can then be multiplied by the \verb|ACC_UNITS|
-constant and the result is the acceleration in $ms^{-2}$, and \verb|GYRO_UNITS|
-can be used similarly to find the rotation in $rads^{-1}$, as is
-shown in Code Listing \ref{lst:read_funcs}.
+constant and the result is the acceleration in \si{\metre\per\second\squared}, and \verb|GYRO_UNITS|
+can be used similarly to find the rotation in \si{\radian\per\second}, as is
+shown in Listing~\ref{lst:read_funcs}.
 
 
 \begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
@@ -324,11 +323,8 @@ shown in Code Listing \ref{lst:read_funcs}.
 \end{lstlisting}
 
 The final step in reading the IMU results is to integrate the acceleration
-data as to get the linear velocities. This makes use of the \textit{speed
-\_vect} variable declared in the IMU constructor shown in Code Listing
-\ref{lst:imu_init}. \textit{speed\_vect} is incremented by the
-acceleration multiplied by the IMU rate, as shown in
-\ref{lst:imu_integration}.
+data as to get the linear velocities. This makes use of the \verb|speed_vect| variable declared in the IMU constructor shown in Listing~\ref{lst:imu_init}. \verb|speed_vect| is incremented by the
+acceleration multiplied by the IMU rate, as shown in~\ref{lst:imu_integration}.
 
 \begin{lstlisting}[caption={Integrating Linear Acceleration},label={lst:imu_integration} , language=python]
 
@@ -344,13 +340,14 @@ def get_speeds(self):
 Initial work was performed with the IMU and an Arduino microcontroller
 before the RPis were acquired. The IMU was connected up and various
 movements were recorded. Python code was then written to interpret and
-visualise the data as a moving frame.
+visualise the data as a moving frame. 
+\todo{This seems short?}
 
 \section{PCB}\label{elec/pcb}
 As precise and consistent placement of components was required to ensure
-homogeneity of the robots, it was decided to develop a PCB for the connection
-and mounting of the parts (as opposed to using strip board). The following
-describes the rationale and design decision taken when carrying out the
+homogeneity of the robots, a PCB was developed for the connection
+and mounting of the parts. The following
+describes the rationale and design decisions taken when carrying out the
 3-iteration design process for designing the PCB. The final PCB design can
 be found in the git repository (see Appendix~\ref{appendix/a}).
 
@@ -358,8 +355,8 @@ be found in the git repository (see Appendix~\ref{appendix/a}).
 The PCB required to contain the following components:
 \begin{itemize}
   \item Raspberry Pi ribbon cable connector
-  \item Three ultrasonic sensors
-  \item IMU
+  \item Three HC-SR04 ultrasonic sensors
+  \item MPU-6050 IMU
   \item Left and right encoder connectors
   \item Motor drive connectors
   \item Power connectors
@@ -370,7 +367,7 @@ with the following physical design constraints:
 
 \begin{itemize}
   \item Central ultrasonic sensor at the centre of the robot in the x axis
-  \item the other ultrasonic sensors symmetrical about the y axis
+  \item Other ultrasonic sensors symmetrical about the y axis
   \item IMU chip in centre of x and y axes
   \item Mounting holes for RPi and for mounting PCB to chassis
   \item Power connectors at fixed position relative to centre to ensure it
@@ -386,9 +383,8 @@ pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
-Some minor changes were made in the connection of the generic GPIO pins in versions
-git2 and 3 of the PCB in order to minimise 
-via and path crossing. This can be seen in Table~\ref{table:pin_assignments}, 
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise 
+via and path crossing. This can be seen in Table~\ref{table:pin_assignments}. 
 
 
 
@@ -424,7 +420,7 @@ via and path crossing. This can be seen in Table~\ref{table:pin_assignments},
     \end{tabular}
 \end{table}
 
-With these constraints the following PCB design shown in figure \ref{PCB_Design}.
+With these constraints the following PCB design shown in Figure \ref{PCB_Design} was created.
 
 \begin{figure}[!ht]
 	\centering
@@ -443,6 +439,6 @@ The PCB was then mounted and each module test was rerun to ensure that the
 connections were all correct. This process exposed a flaw as one of the
 ultrasonic sensors seemed to no longer work. After some investigation it
 was noticed that the screws being used had slightly larger heads than the
-screws used for mounting the test strip board and was connecting two
-tracks. A rubber washer was used as temporary fix and then this was
+screws used for mounting the test strip board and connected two
+tracks of the PCB. A rubber washer was used as temporary fix and this was
 corrected in the final PCB design.
