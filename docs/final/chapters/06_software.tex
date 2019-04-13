@@ -752,7 +752,7 @@ odometry, the differential drive restrictions outlined in
 Section~\ref{soft/odometry/wheel} mean that only the velocity in the $X$ direction
 and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
 The IMU provides values for the yaw velocity and acceleration in the $X$ and
-$Y$ directions.
+$Y$ directions. \todo{discuss this, not technically true}
 
 \begin{lstlisting}[caption={EKF YAML file}, label={lst:ekf_yaml}, style=yaml]
 frequency: 50  # Frequency at which odometry is published in Hz
@@ -794,13 +794,17 @@ control_config: [true, false, false, false, false, true]
 
 \section{SLAM}\label{soft/SLAM}
 
-\subsection{Design}\label{soft/SLAM/design}
+As discussed in section \ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively researched and challenging topic. As a result of this, there are many existing implementations of a wide variety of SLAM algorithms. The most commonly used package for this when working within the ROS framework is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework, simply taking and producing standard ROS message types. It also provides a very rich suite of settings which can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety of settings available in particular, is the somewhat poor documentation it provides, which necessitated a great deal of experimentation to achieve reasonable results, which will be discussed going forward.
 
-\subsection{Implementation}\label{soft/SLAM/impl}
+\subsection{Package Overview}\label{soft/SLAM/package}
 
-\subsection{Testing}\label{soft/SLAM/test}
+The \verb|gmapping| package takes in a \verb|LaserScan| message, as well as odometry data in the form of a transformation frame (\verb|tf|). The odometry data is already produced by the sensor fusion module, so the input parameter of \verb|gmapping| simply needs to be bound the same topic as the output of the EKF.
+
+The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different methods of active range finding are similar enough, however, that a rudimentary laser scan message could be created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of each sensor will allow it to find the walls of a corner earlier than the point.
 
 
+
+\subsection{Tuning}\label{soft/SLAM/tuning}
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
