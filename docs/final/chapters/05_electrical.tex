@@ -237,8 +237,9 @@ counts per revolution.
 \section{IMU}\label{elec/imu}
 The IMU consists of a three axis accelerometer and a three axis gyroscope
 which can be used to measure both the linear acceleration and rotational
-velocity of the robot. This can be integrated to
-track the robot's position over time again by performing dead reckoning. The
+velocity of the robot. This can be integrated to obtain velocity and integrated again 
+to obtain displacement in order to track the robot's position over time, again by performing dead reckoning. It is worth noting 
+that the additional calculation here adds to the probability of error within the measurement. However, the
 system can then perform sensor fusion on this data and the encoder
 readings to get far more accurate results than is possible with either system
 independently.
@@ -251,7 +252,7 @@ consideration as this can be compensated for as long as the offset is not
 so extreame as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 
-The IMU was be placed as close to the centre of the axis of the robot
+The IMU was placed as close to the centre of the axis of the robot
 as possible, as when it is far from the centre of rotation the centripetal
 forces acting upon it can interfere and be measured as linear motion away
 from the centre of the robot.
@@ -412,7 +413,7 @@ via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
         ERA & Right encoder A        & 24 & 24 & 24 \\
         ERB & Right encoder B        & 26 & 26 & 26 \\
         LG  & Green LED              & 31 & 31 & 31 \\
-        LR  & Red LED                & 29 & 39 & 29 \\
+        LR  & Red LED                & 29 & 29 & 29 \\
         SDA & \isc{} SDA (IMU)       & 3  & 3  & 3  \\
         SCL & \isc{} SCL (IMU)       & 5  & 5  & 5  \\
         \bottomrule
