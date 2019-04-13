@@ -2,27 +2,7 @@
 
 \chapter{Background}\label{litreview}
 
-\todo{Decide if this is being used for a LitReview subsection}
-%A literature review was undertaken on all aspects of the project including
-%co-operative robotics, computer vision and SLAM both in general and more
-%specifically using basic sensors. This was done initially using the Google
-%Scholar search engine to search for articles which would be of relevance to
-%these topics in isolation and also collectively. These articles, which mainly
-%consisted of a variety of journal articles and conference proceedings from
-%the IEEE, were then screened further based on their titles and abstracts.
-%Priority was given to those with direct relation to the study---for example
-%those using ultrasonic sensors to do SLAM or those also using ground vehicles.
-%Related articles were also found through citations used within these articles
-%in addition to the related articles feature provided by Google Scholar. These
-%searches resulted in full investigations of around 4 articles for each of the main
-%review topics. When more specific information was required e.g., for specific
-%algorithms related to the study, the search term was altered to refine the
-%relevant articles. If at any point throughout the study it was felt that more
-%reading was required, the selection of articles here were revisited, with
-%related articles used to fill in any gaps in knowledge from the original
-%searches. \todo{i dont think we need these paragraphs}
-
-\section{Robotics}\label{litreview/robotics}
+\section{Co-operative Robotics}\label{litreview/robotics}
 A robot is ``a machine capable of carrying out a complex series of actions 
 automatically''~\cite{robotdef}. 
 Robotics is the ``branch of technology which deals with the design, construction, 
@@ -31,9 +11,51 @@ electrical and software engineering within a single system to achieve its goals.
 combining the three major disciplines of artificial intelligence, operations 
 research, and control theory, a resultant intelligent control system is created~
 \cite{saridis1983intelligent} which can be 
-used for a wide range of robotic applications.   
+used for a wide range of robotic applications.
 
-\subsection{Control}\label{litreview/robotics/control}  
+Co-operative robotics has varied definitions across different papers. One such
+definition, which generalises co-operative behaviour in robotics, describes it 
+as ``joint collaborative behaviour that is directed toward some goal in which 
+there is a common interest or reward''~\cite{barnes1991behaviour}. This 
+description fits the objectives of this study more appropriately than the 
+specific term swarm robotics,  which has a number of additional requirements, 
+including that problem solving should be distributed across the swarm~
+\cite{sahin04}. This definition does not apply to this project, as the robots 
+designed here are capable of operating autonomously and will be able to solve 
+certain tasks individually. In this case, collaboration is used to deliver a 
+performance improvement. For this reason, the more general term of co-operative 
+robotics will be used throughout. The aim is to reduce the time taken or 
+increase performance  of the system over a single-robot system~
+\cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
+distributed system across a number of homogeneous agents, agent redundancy is 
+introduced which can improve the completion rate of tasks, especially in 
+potentially volatile environments~\cite{beckers1994local, parker95}.
+Co-operative robotics goes beyond the idea of collaborative robotics in 
+requiring an additional aspect of intelligence in the communication and 
+coordination of the individual agents~\cite{cao1995cooperative}. 
+
+Co-operative is an area of active research, and is growing in popularity --- as the
+capabilities of the technology increases --- as they can be used in a wide-variety of
+situations. In 2011, co-operative robotics were used as part of the
+response to the Great Eastern Japan Earthquake. A team from Kyoto University
+used co-operating remotely operated underwater vehicles to search for submerged
+debris to assist with resuming fishing in the region~\cite{matsuno2014utilization}.
+Although, co-operative, their systems still required a level of human control.
+Dr Nithin Mathews' research in 2012 provided a communication system without
+human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
+to co-ordinate to complete tasks that one could not on its own, such as push a
+larger object. Their system. however, requires a global view of the area so to 
+co-ordinate their efforts. However, even since these findings, the progress
+in the field has accelarated. An excellent example is Sebastien de Rivas' work at
+Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
+team have spent the last eight developing very lightweight co-operating robots.
+Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
+four-legged micro-robots have eight degrees of freedom, and are being developed with
+the aim of reducing their size so they can inspect the internal workings of an engine.
+
+%INSERT Current Co-operative Robotics Work
+
+\section{Robotic Control} \label{litreview/robotics/control}  
 As the robots in this study are homogeneous and should be able to complete 
 tasks individually, control is limited to the control of a single robot in the 
 complete system. Robotic mechanisms form the control system for a robot and 
@@ -131,27 +153,7 @@ gain of $K_p$ exist in literature. This leads to the conclusion that the
 Ziegler-Nichols method is mathematically imperfect and this will have to be 
 explored experimentally during the project.
 
-\section{Cooperative Robotics}\label{litreview/coop}
-Co-operative robotics has varied definitions across different papers. One such
-definition, which generalises co-operative behaviour in robotics, describes it 
-as ``joint collaborative behaviour that is directed toward some goal in which 
-there is a common interest or reward''~\cite{barnes1991behaviour}. This 
-description fits the objectives of this study more appropriately than the 
-specific term swarm robotics,  which has a number of additional requirements, 
-including that problem solving should be distributed across the swarm~
-\cite{sahin04}. This definition does not apply to this project, as the robots 
-designed here are capable of operating autonomously and will be able to solve 
-certain tasks individually. In this case, collaboration is used to deliver a 
-performance improvement. For this reason, the more general term of co-operative 
-robotics will be used throughout. The aim is to reduce the time taken or 
-increase performance  of the system over a single-robot system~
-\cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
-distributed system across a number of homogeneous agents, agent redundancy is 
-introduced which can improve the completion rate of tasks, especially in 
-potentially volatile environments~\cite{beckers1994local, parker95}.
-Co-operative robotics goes beyond the idea of collaborative robotics in 
-requiring an additional aspect of intelligence in the communication and 
-coordination of the individual agents~\cite{cao1995cooperative}.
+
 
 \section{SLAM}\label{litreview/slam}
 A key challenge in mobile robotics is for the robot to know its own position in the
