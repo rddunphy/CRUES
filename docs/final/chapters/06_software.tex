@@ -501,8 +501,8 @@ method as being an effective way of tuning PID, this was first tried directly
 on the robot. In order to tune the PID in real time, the values of $ K_p
 $, $ K_i $ and $ K_d $ were published to the ROS system from a terminal
 while \verb|roscore| was running. $K_p$ was increased until oscillations were
-seen in the system---the determination of an oscillation was vaguely
-defined across literature and hence this was done by eye---and this was
+seen in the system --- the determination of an oscillation was vaguely
+defined across literature and hence this was done by eye --- and this was
 set as the critical gain $K_u$ of the system. The period of oscillation
 $T_u$ was then measured. From these values, a tuning table~\cite{mccormack1998rule}
 of tuning rules was used to calculate values for the gains. The results of this
@@ -527,8 +527,8 @@ In practice, these values were found to be inaccurate
 and produce an uneven stop-start motion in the movement of the robot.
 This was due to these methods providing an aggressive gain and overshoot
 which resulted in the motors being run at high speed followed quickly by
-low speed to average the correct speed. Due to the high current drawn by
-the motors when stopping and starting this additionally had implications on
+low speed to average to the correct speed. Due to the high current drawn by
+the motors when stopping and starting, this additionally had implications on
 the power consumption of the robots, with batteries being drained rapidly.
 The NO-OV tuning rules, which are intended to limit the amount of overshoot,
 mitigated this effect slightly, but still did not result in accurate
@@ -536,7 +536,7 @@ velocities.
 
 
 \subsection{Manual Tuning}\label{soft/PID/man}
-Due to the problems outlined above and the library simulation was used to
+Due to the problems outlined above, the library simulation was used to
 find a usable tuning method. A more practical solution was
 found~\cite{practicalPID}, which approached the problem without calculating
 values. Using the simulation and output graphs obtained from the ROS
@@ -595,8 +595,7 @@ consultation with Dr Gordon Dobie (c.f.\ Section~\ref{pm/consultations}) a
 rate control implementation was used.
 
 Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of
-the equation and uses the current velocity as the base rate as opposed to 0~
-\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
+the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
 more smoothly and fewer spikes in motor current are required for the required
 drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb
 more slowly from start-up and recover from dips in speed more slowly. This is
@@ -624,12 +623,11 @@ accuracy in output velocities.
 	\label{fig:diff_drive_diagram}
 \end{figure}
 
-Wheel Odometry is derived in two parts. Firstly, as discussed in section
-\ref{soft/PID/impl}, the velocity of each wheel is derived from the output of the
+Wheel Odometry is derived in two parts. Firstly, as discussed in Section~\ref{soft/PID}, the velocity of each wheel is derived from the output of the
 encoders. Then, with only these values and the distance between the wheels
 (usually called the track of the wheels), the linear and angular velocities in two
 dimensions can be derived. Furthermore, by tracking both of these values over
-time, an estimate of global displacement can be attained, though due to the lack
+time, an estimate of global displacement can be attained. However, due to the lack
 of reliability in the encoder data, this estimate is very likely to drift over
 time.
 
@@ -818,7 +816,7 @@ The first detection system considered was a CNN, as discussed in Section
 the advantage of
 being able to classify instances of objects that it has not
 seen before. This would be essential if the target objects of
-the robot were not consistent, for instance if it had to find
+the robot were not consistent, for instance if it was required to find
 people in the search space. This was, however, not required
 in the scope of this project. The major downside to this
 system would be the time to implement. To construct a CNN for
@@ -830,7 +828,7 @@ Feature Based object detection was also considered. As described in
 Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be
 taken of the object and therefore takes far less time to
 implement than the CNN solution. However, the accuracy and
-consistency are largely dependent on the number of features
+consistency are largely dependant on the number of features
 detected, and the algorithm's complexity grows relatively
 quickly. The basic brute force algorithm involves comparing
 every key point in the object image to every key point in the
@@ -839,7 +837,7 @@ for the distance to be low enough for a pair to be the best
 match part way through the distance calculation, it does not
 need to be finished~\cite{opencv_library}. The calculations for deciding the best
 outline of the object also become more complicated, as there
-will be a lower true positive to false positive ratio as the
+is a lower true positive to false positive ratio as the
 best matches (which are found first) are more likely to be
 true positives. It was decided that this would be too
 computationally intensive considering the strict constraint of
@@ -865,7 +863,7 @@ and the goal, and also has a video capture object. It contains a \verb|search()|
 takes a frame as a parameter and returns various details about each robot's presence in the
 frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
 values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
-the pixel is in range and and black when out of range. This is shown in Code Listing
+the pixel is in range and and black when out of range. This is shown inListing
 \ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
@@ -893,8 +891,7 @@ mask.
 The contours in the mask are then iterated through to find the biggest, which is assumed to be
 the object and the centre point and outline of the contour is found. If no contours are bigger
 than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and
-the corresponding \verb|obj_found| variable is set to false. This process is shown in Code
-Listing~\ref{lst:cv_search_loop}.
+the corresponding \verb|obj_found| variable is set to false. This process is shown in Listing~\ref{lst:cv_search_loop}.
 
 \begin{lstlisting}[caption={Contour Iteration in search()},label={lst:cv_search_loop} , language=python]
 ...
@@ -915,8 +912,7 @@ objects detected in the last frame.
 \subsection{Testing}\label{soft/cv/test}
 Initial testing of the \verb|vision_node| was performed on a PC with a USB webcam. The
 testing was performed by using the position information to render labelled rectangles to a real
-time stream highlighting the position of the objects. The code for this is shown in Code
-Listing \ref{lst:draw_rectangles}.
+time stream highlighting the position of the objects. The code for this is shown in Listing~\ref{lst:draw_rectangles}.
 
 \begin{lstlisting}[caption={asd},label={lst:draw_rectangles} , language=python]
 for i, name in enumerate(names):
