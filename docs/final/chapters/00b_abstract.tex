@@ -3,29 +3,28 @@
 \begin{abstract}
 \noindent 
 %This is 283 words as of 19:08 Thursday, don't think we should add much to it length wise
-This project aims to develop co-operative robots which effectively map and 
-search an area using non-telemetric communication. This will allow the
-robotic systems to perform even in environments which hinder telemetry, such as
-caves or tunnels. Each of these systems should be able to solve this problem 
+
+Several co-operating agents can coordinate to solve many tasks faster than a single agent.
+However, most existing multi-agent systems involve centralised control and telemetric
+communication. This project aimed to develop co-operative robots which effectively map and 
+search an area using non-telemetric communication and distributed control. This will allow 
+therobotic systems to perform even in environments which hinder telemetry, such as
+caves or tunnels. Each agent was to be able to solve this problem 
 individually; however, after the introduction of multiple robots to the area,
 they should be able to distribute the task to solve it quicker. The robots will
 be tested in a custom-made modular testing maze environment, in which a target
 is to be located, and their performance evaluated both individually and
-co-operatively. Detailed analysis of the electrical, software and mechanical design 
-solutions made is presented. The robots use computer vision software in 
-conjunction with ultrasonic sensors to perceive the environment and identify
-other robots in the group, and incremental encoders and an inertial measurement
-unit are used to track the robots position and orientation. Communication
-is conducted over ad-hoc Wi-Fi, which is artificially restricted to require 
-line-of-sight between robots, so as to simulate situations where global
-communication is not possible. The report also contains extensive discussion of
-the project management approach used to properly coordinate the project team. The 
-structure of the team and practices employed have been considered carefully and a 
-detailed timeline was developed to minimise potential risk. Each individual
-component was tested in isolation, before being integrated. Despite
-not all of the objectives being accomplished, the project can be deemed 
-successful. Unforeseen delays and technical difficulties delayed the completion
-of some latter objectives which has resulted in the AI module not being integrated. 
-However, the system implemented was to a high standard, with its modularity
-meaning it could easily be continued in the future.
+co-operatively. The robots use incremental encoders and an inertial measurement
+unit are used to track the robots position and orientation as it moves through its environment.
+Computer vision is used in conjunction with ultrasonic sensors to perceive the environment,
+identify other robots and produce a map of the area. Communication is conducted over 
+ad-hoc Wi-Fi, which is artificially restricted to require  line-of-sight between robots, so
+as to simulate situations where global communication is not possible. The report presents a
+detailed analysis of these electrical, software and mechanical design solutions as well as
+an extensive discussion of the project management approach and practices employed used to
+properly coordinate the project team and minimise potential risk. The rigorous testing process
+of each subsystem and higher level system testing is also described. Unforeseen setbacks and
+technical difficulties delayed the completion of some latter objectives which has resulted in
+the AI module not being fully integrated. The system  was, however, implemented to a high standard,
+and its modularity would allow it could easily be continued in the future.
 \end{abstract}
