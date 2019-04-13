@@ -4,13 +4,11 @@
 
 \section{Co-operative Robotics}\label{litreview/robotics}
 A robot is ``a machine capable of carrying out a complex series of actions 
-automatically''~\cite{robotdef}. 
-Robotics is the ``branch of technology which deals with the design, construction, 
+automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction, 
 operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical, 
 electrical and software engineering within a single system to achieve its goals. By 
 combining the three major disciplines of artificial intelligence, operations 
-research, and control theory, a resultant intelligent control system is created~
-\cite{saridis1983intelligent} which can be 
+research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be 
 used for a wide range of robotic applications.
 
 Co-operative robotics has varied definitions across different papers. One such
@@ -18,13 +16,14 @@ definition, which generalises co-operative behaviour in robotics, describes it
 as ``joint collaborative behaviour that is directed toward some goal in which 
 there is a common interest or reward''~\cite{barnes1991behaviour}. This 
 description fits the objectives of this study more appropriately than the 
-specific term swarm robotics,  which has a number of additional requirements, 
-including that problem solving should be distributed across the swarm~
-\cite{sahin04}. This definition does not apply to this project, as the robots 
-designed here are capable of operating autonomously and will be able to solve 
+specific term ``swarm robotics'',  which has a number of additional requirements, 
+including that problem solving should be distributed across the swarm~\cite{sahin04}. This definition does not apply to this project, as the robots 
+designed herein are capable of operating autonomously and will be able to solve 
 certain tasks individually. In this case, collaboration is used to deliver a 
 performance improvement. For this reason, the more general term of co-operative 
-robotics will be used throughout. The aim is to reduce the time taken or 
+robotics will be used throughout. 
+
+The aim of co-operative robotics is to reduce the time taken or 
 increase performance  of the system over a single-robot system~
 \cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
 distributed system across a number of homogeneous agents, agent redundancy is 
@@ -34,26 +33,24 @@ Co-operative robotics goes beyond the idea of collaborative robotics in
 requiring an additional aspect of intelligence in the communication and 
 coordination of the individual agents~\cite{cao1995cooperative}. 
 
-Co-operative is an area of active research, and is growing in popularity --- as the
-capabilities of the technology increases --- as they can be used in a wide-variety of
-situations. In 2011, co-operative robotics were used as part of the
+Co-operative robotics is an area of active research, and is growing in popularity --- as the
+capabilities of the technology increases --- as it can be used in a wide-variety of
+situations. In 2011, co-operative robotics was used as part of the
 response to the Great Eastern Japan Earthquake. A team from Kyoto University
-used co-operating remotely operated underwater vehicles to search for submerged
+used co-operating, remotely operated, underwater vehicles to search for submerged
 debris to assist with resuming fishing in the region~\cite{matsuno2014utilization}.
-Although, co-operative, their systems still required a level of human control.
+Although co-operative, their systems still required a level of human control.
 Dr Nithin Mathews' research in 2012 provided a communication system without
 human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
 to co-ordinate to complete tasks that one could not on its own, such as push a
-larger object. Their system. however, requires a global view of the area so to 
+larger object. Their system, however, requires a global view of the area to 
 co-ordinate their efforts. However, even since these findings, the progress
 in the field has accelarated. An excellent example is Sebastien de Rivas' work at
 Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
-team have spent the last eight developing very lightweight co-operating robots.
+team have spent the last eight years developing very lightweight co-operating robots.
 Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
 four-legged micro-robots have eight degrees of freedom, and are being developed with
 the aim of reducing their size so they can inspect the internal workings of an engine.
-
-%INSERT Current Co-operative Robotics Work
 
 \section{Robotic Control} \label{litreview/robotics/control}  
 As the robots in this study are homogeneous and should be able to complete 
@@ -76,14 +73,13 @@ binocular computer vision. Each of these sensors use unique methods to determine
 the distance from the robot to another object in its environment. Ultrasound 
 sensors use high frequency sound waves which reflect from surfaces and return 
 to the sensor. The time taken to return and the speed of sound is used to 
-calculate the distance to the object. Infra-red sensors work in a similar 
+calculate the distance to the object. Infrared sensors work in a similar 
 fashion but with invisible light instead of sound. 
 
 LIDAR is a more advanced use of invisible light to more accurately detect 
-distance using more powerful and precise beams of light than in the infra-red 
+distance using more powerful and precise beams of light than in the infrared 
 case~\cite{lidar}. Binocular vision allows depth perception to take place 
-similar to that allowed by human vision~\cite{read2005early} by perspective-
-based cues which can only be obtained from at least binocular 
+similar to that allowed by human vision~\cite{read2005early} by perspective-based cues which can only be obtained from at least binocular 
 vision~\cite{pfautz2002depth}. 
 
 Internal sensors can either be related to the actuators or fixed parts of the 
@@ -127,10 +123,10 @@ Consider for instance the temperature controller example where heat is being
 lost in the system is equal to the P constant times the error. This would
 result in a stable state with a potentially large error. To prevent this,
 the I term can be increased. This will increase the longer an error is
-present, and preventing stable state errors. 
+present, thus preventing stable state errors. 
 
 Again, PI controllers are a common control mechanism, however they often have 
-a problem with overshoot due to system inertia. Again considering the 
+a problem with overshoot due to system inertia. Once more considering the 
 temperature controller, this is where the heater is set to increase the 
 temperature, and the desired temperature is reached. The heater turns off, but 
 is still hotter than the rest of the system, causing the system to get too hot. 
@@ -140,12 +136,10 @@ to cool down. This problem can be mitigated by increasing the D component.
 This will push the state towards the desired state when the error is increasing 
 (e.g. during over-shoot), and pushes the current state away from the desired 
 state as the error is reducing as to minimise overshoot before it 
-occurs. They do, however, reduce the response speed of the system~\cite{chen2007linear}.
+occurs. This does, however, reduce the response speed of the system~\cite{chen2007linear}.
 
-One method of tuning a PID controller is the Ziegler-Nichols method~
-\cite{ziegler1942optimum}. This principle originates from before autonomous 
-robotic control and has been adapted for this application~
-\cite{aastrom2004revisiting}. The method experimentally finds the critical gain 
+One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from before autonomous 
+robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain 
 of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. 
 These values can then be used to calculate $K_i$ and $K_d$ which results in a 
 tuned system. However, many different formulae and definitions of the critical 
@@ -168,7 +162,7 @@ over time. To rectify this, a map with distinctive landmarks can reduce its
 localisation error by revisiting these known areas. This is known as loop closure.
 
 SLAM implementations rely on sensor fusion algorithms as part of their implementation. 
-This takes in readings from an array of sensors and calculates an estimated state change
+These take in readings from an array of sensors and calculate an estimated state change
 based on the probability of error for each sensor. This effectively allows errors between 
 multiple sensors to be cancelled out, resulting in more reliable estimates. A standard 
 approach is to use sensor fusion to combine odometry readings from wheel encoders with 
@@ -285,9 +279,7 @@ frame.
 \section{ROS}\label{litreview/ROS}
 The Robot Operating System (ROS) is a framework for developing robot
 software designed to allow flexible software design. It is a collection of tools, 
-libraries and conventions that aim to simplify creating complex and 
-
-robust robotic systems across a variety of platforms~\cite{aboutROS}. 
+libraries and conventions that aim to simplify creating complex and robust robotic systems across a variety of platforms~\cite{aboutROS}. 
 It was designed with the objective of being as modular and distributed
 as possible. This modularity allows the user to be able to use as much or
 as little of ROS as they desire, where their own implementation can be
@@ -298,7 +290,7 @@ throughout the system. These systems consist of a number of processes
 that perform the system's computation called nodes which can  
 run across multiple machines. The peer-to-peer topology requires 
 a lookup mechanism to allow processes to find other process' addresses at 
-runtime so as they can communicate. Nodes communicate by passing messages 
+runtime so they can communicate. Nodes communicate by passing messages 
 that are data structures of typed fields which can include arbitrarily nested 
 structures and arrays~\cite{crick2017rosbridge}.
 
@@ -331,14 +323,14 @@ written in C++ and does not support other languages \cite{aboutYARP}.
 The YARP model of communication is transport-neutral, meaning the details 
 of the underlying networks and protocols in use are decoupled from the 
 data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
-As a result it does not have the same extensive a range of libraries available 
+As a result it does not have the same extensive range of libraries available 
 which implement commonly required functionality for a robotic system.
 
 \section{AI}\label{litreview/maze}
 Artificial intelligence is another component of intelligent robotic control and is the 
 development of computer systems able to perform tasks normally requiring human intelligence~
 \cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a 
-common branch of artificial intelligence into which much research has been undertaken. Search 
+common branch of artificial intelligence, into which much research has been undertaken. Search 
 algorithms and optimisation algorithms can be thought of as highly similar, and in the case of 
 a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}. 
 
@@ -350,15 +342,15 @@ algorithms that can be used for exploration such as Wall Follower,
 Trémaux's and Pledge.
 
 One of the simplest exploration algorithms is the Wall Follower algorithm, 
-also known as the right-hand rule, when prioritising turning right or 
-left-hand rule when prioritising turning left. If the maze is simply 
-connected, that is, there are no loops in the maze then the Wall Follower 
-algorithm is guaranteed to reach a goal/exit if there is one. Otherwise, the 
+also known as the right-hand rule, when prioritising turning right, or 
+left-hand rule, when prioritising turning left. If the maze is simply 
+connected, that is there are no loops in the maze, then the Wall Follower 
+algorithm is guaranteed to reach a goal/exit if one exists. Otherwise, the 
 algorithm will return to the starting point having traversed every corridor at 
 least once~\cite{wallFollowerArcBotics}. The steps of the algorithm are 
-relatively straightforward. If using the right-hand rule:
+relatively straightforward. If using the right-hand rule, the algorithm is shown in Algorithm~\ref{alg:wf}. 
 
-\begin{algorithm}
+\begin{algorithm}\label{alg:wf}
 \caption{Wall Follower Algorithm}
 \begin{algorithmic}
 \REPEAT
@@ -376,19 +368,19 @@ relatively straightforward. If using the right-hand rule:
 \end{algorithmic}
 \end{algorithm}
 
-These steps ensure to keep a wall on the right hand side of the robot at 
-all times. The left-rule is just the opposite where the robot turns left 
-if at all possible to keep the wall on the robots' left. Therefore,
-this algorithm is inherently inefficiently as it exhaustively searches the
+These steps ensure to a wall is maintained on the right hand side of the robot at 
+all times. The left-rule is simply the opposite where the robot turns left 
+if at all possible to keep the wall on the robot's left. Therefore,
+this algorithm is inherently inefficient as it exhaustively searches the
 maze. In many cases, one of these algorithms would be significantly quicker
-than the other but that is impossible to know without prior knowledge of 
+than the other but which cannot be determined without prior knowledge of 
 the maze.
 
 An alternative to the Wall Follower algorithm is Pledge's algorithm. This
 aims to solve the problem where Wall Follower could be stuck in a loop. An 
-example of which is if walls form to create a rectangle in the centre of 
+example of which is: if walls form to create a rectangle in the centre of 
 the maze, the robot would continually turn right or left (depending on
-algorithm) around that rectangle, never to find the exit. Pledge solves this
+algorithm) around that rectangle, never finding the exit. Pledge solves this
 by keeping a count of the number of turns made (if not right-angled turns,
 then the angle of turn is used instead) as well as the initial direction of
 travel. \cite{klein2011pledge}
