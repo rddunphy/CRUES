@@ -4,7 +4,7 @@
 Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed as somewhat of a success. 5 out of 6 of 
 the original ``Major'' objectives have been completed, as well as 1 of 2 of 
 the ``Optional'' objectives. In addition to this, it is believed that with a 
-small number of additional weeks, the two remaining ``Major'' objectives could 
+small number of additional weeks, the remaining ``Major'' objective could 
 be completed. Given the project as a whole aimed to combine 3 engineering 
 disciplines and tackle a number of complex problems simultaneously, a strong 
 effort has been made. 
@@ -57,8 +57,8 @@ mitigated sooner by applying more grease, however this would have meant
 opening the casing of each motor as opposed to just two. If this issue 
 had been known from the start, the motors would have been either rotated 
 in testing to balance the degradation, or different motors would have 
-been used with a bespoke chassis, as finding motors to fit the pre-
-existing chassis would not have been a suitable solution. 
+been used with a bespoke chassis, as finding motors to fit the pre-existing 
+chassis would not have been a suitable solution. 
 
 Aside from the robots, the other main mechanical component was the modular maze 
 testing environment. Although constructed by the mechanical workshop, a great deal of 
@@ -76,29 +76,28 @@ the individual components were made to a high standard of design and constructio
 
 \section{Electrical}\label{eval/elec}
 The electrical components of the project were completed to a high standard, 
-however some unforeseen complications, caused the completion of these to be delayed.
-
-The pre-built power distribution board chosen had several advantages over a 
+however some unforeseen complications caused the completion of these to be delayed. The pre-built power distribution board chosen had several advantages over a 
 custom built solution. Firstly, it was very easily integrated with the Polulu 
 chassis. Secondly, it saved the significant amount of time it would have taken 
 to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB, 
 there was very little remaining space on the system's main PCB, so using a custom 
-build system would have required the design of a second. 
+build system would have required the design of a second PCB. 
 
 The range sensors used proved to be largely successful, with some caveats. 
 During the unit testing phase, the sensors performed well, giving consistent 
-readings that were accurate to within our required uncertainty. During the SLAM testing, 
+readings that were accurate to within the desired uncertainty. During the SLAM testing, 
 they mostly measured accurate results, however, their limitations started to 
 become apparent. As the distance increased, the widening cone of detection caused some 
 erroneous data to be measured. This is assumed to be the cause of the corners 
-appearing to be rounded in the maze in Figure~\todo{reference slam diagram}. 
-Another issue with using the ultrasonic sensors is that the RPi used a time 
+appearing to be rounded in the maze in Figure~\todo{reference slam diagram}. Another issue with using the ultrasonic sensors is that the RPi used a time 
 shared OS, which meant that the readings from timing the pulse from the 
 ultrasonic sensor are sometimes inexact. This could be improved with the use of 
-a dedicated timing circuit. Finally, as there were several range sensors on each 
+a dedicated timing circuit. 
+
+Finally, as there were several range sensors on each 
 robot, taking one measurement sweep took a relatively long time. This is 
 especially the case when multiple robots are synchronising their sweeps to avoid 
-interference. This would have been mitigated if we had used an infrared sensor. 
+interference. This would have been mitigated if an infrared sensor had been used. 
 This would cost more, but it could be possible to mount the sensor on a servo 
 motor, and move it through \ang{180} sweeps as to not require more than one. 
 This would also remove the timing issue, as they generally return an analogue 
@@ -107,12 +106,10 @@ cost, however without the time and budget restrictions, this solution would
 likely improve the system's performance. 
 
 While using an IMU to supplement wheel odometry is a common solution, its 
-effectiveness in this project has not been proven. The IMU 
+effectiveness in this project has not been evident. The IMU 
 returned reasonable results in testing, and the visualisation produced using 
-IMU data integrated with ROS shows promise. However, as the EKF is not 
-functioning correctly, the sensor-fused results have not been obtained to 
-measure their accuracy. 
-\todo{Now EKF kind of works can we change this}
+IMU data integrated with ROS shows promise. However, as the EKF was was one of the last aspects of the project to be functional, results from its sensor fusion were not been obtained to 
+measure their accuracy.
 
 Having multiple robots allowed an 
 iterative design process to be carried out, significantly improving the outcome 
@@ -135,7 +132,7 @@ consistent current draw of the motors throughout this phase of testing should ha
 been monitored more closely and action to prevent this taken sooner.   
 
 Overall, the electrical portion of the project was carried out effectively but did 
-cause some delays which had a knock on effect later in the project. A number of 
+cause some delays which compounded later in the project. A number of 
 blocking tasks in the middle stages of the project required unforeseen parts to be 
 ordered such as ribbon cable and 40-pin IDC connectors which it was thought would 
 be found within the department. This was not the case as 40-pin ribbon cable and 
