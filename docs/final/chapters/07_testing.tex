@@ -44,7 +44,7 @@ were presented to the mechanical workshop. The maze base would be \SI{1280}{\mm}
 $\times$ \SI{1690}{\mm} $\times$ \SI{18}{\mm}, giving 7 columns by 9 rows of
 peg holes each \SI{12}{\mm} in diameter and \SI{210}{\mm} from centre to
 centre. The holes drilled into the maze base would be \SI{15}{\mm} in depth
-leaving a \SI{3}{\mm} section of the base board un-drilled within the hole for the peg to rest on. The ``pegs'' would then be
+leaving a \SI{3}{\mm} section of the base board un-drilled within the hole for the peg to rest on. The pegs would then be
 \SI{165}{\mm} in height, a protrusion of \SI{150}{\mm} from the top of the base board, with a cross slit cut from the top to
 roughly \SI{75}{\mm} down the peg
 (half the visible portion). These slits would be approximately \SI{3}{\mm} wide to allow the walls to be slotted in. In order for
@@ -84,7 +84,7 @@ software. None of the group had particular experience using this software, hence
 a steep learning curve was involved in carrying out this task.
 
 A peg matching the original specifications was modelled, however upon delivery
-to the mechanical workshop, the group were informed that this designed had
+to the mechanical workshop, the group were informed that this design had to be 
 changed to allow the walls to be cut as rectangles only --- with no wings. A new
 peg design was created which had slits at each \SI{90}{\degree} interval,
 running the length of the peg. This allowed the wall to be dropped in without
@@ -152,8 +152,7 @@ determine if the robots are co-operating effectively when searching the various
 maze configurations.
 
 A number of maze configurations were drawn up to be used as the default test
-cases for the robots. These configurations are shown below. \todo{add maze
-diagram} It is worth noting that these configurations were created before the
+cases for the robots. These configurations are shown in Figure~\ref{fig:maze_configs}. It is worth noting that these configurations were created before the
 cell width of the maze was reduced and therefore, maze configurations with 1
 cell width paths are significantly more difficult to traverse than previously
 thought. This will be taken into consideration when testing and adjusted
@@ -161,8 +160,7 @@ accordingly if required.
 
 
 \section{Results}\label{systest/results}
-Due to the issues described with SLAM and PID tuning described in Sections~
-\ref{soft/SLAM/impl} and ~\ref{soft/PID} respectively, 
+Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/impl} and ~\ref{soft/PID} respectively, 
 minimal system testing took place. The system tests which did take place were 
 without SLAM/with poor SLAM and therefore could have no AI module as this is 
 dependent on knowing the world state (having a map built). Despite this, the 
