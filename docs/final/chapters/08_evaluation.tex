@@ -148,11 +148,11 @@ meaning time was lost to finding the cause of this issue.
 \section{Software}\label{eval/soft}
 The software architecture was well designed and thought-out making use of the 
 libraries and tools available. By using the ROS library, the architecture was predominantly handled
-and did not need to be managed further. Using the ROS library also provided 
+and did not need to be managed further. The ROS library also provided 
 access to other tools and libraries such as ``differential-drive'', ``robot-
-localization'' and ``g-mapping''. It was thought that these libraries would be ``plug 
-and play'' with the modules created as part of the Electrical sections. Despite  
-designing and implementing the Electrical modules to integrate with these libraries, 
+localization'' and ``gmapping''. It was thought that these libraries would be ``plug 
+and play'' with the modules created as part of the electrical sections. Despite  
+designing and implementing the electrical modules to integrate with these libraries, 
 problems were still encountered with integration. 
 
 The libraries were far more complex than first thought and were also not designed for 
@@ -160,8 +160,7 @@ the configuration of sensors used in this project. Additional modules had to be
 created as ``adapters'' with additional parameters between the libraries and the 
 originally created modules. Each of the libraries used therefore also had to be fully 
 understood, at a source code level, in order to construct the ``adapters'' and alter 
-the original modules. This took longer than expected, however did result in more in 
-depth knowledge of each of the component parts of the software. As the libraries were 
+the original modules. This took longer than expected, however did result in more in-depth knowledge of each of the component parts of the software. As the libraries were 
 designed for a variety of other sensors, mainly LIDAR instead of ultrasound, the 
 results obtained were not of as high quality as expected and this impacted the time 
 taken to tune parameters to achieve the best possible outcome. Although this was 
