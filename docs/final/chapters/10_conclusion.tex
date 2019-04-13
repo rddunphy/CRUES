@@ -2,29 +2,30 @@
 
 \chapter{Conclusion}\label{conclusion}
 This project aimed to investigate co-operative robotics within 
-communication restricted environments by constructing several robots, 
+communication restricted environments by constructing several robots 
 which used scalable methods to map and explore their surroundings and find 
-a goal. The project was divided into three main aspects, each related to 
-their own engineering discipline, namely: Mechanical, Electrical and 
-Software. Research into these topics provided knowledge which allowed 
+a goal. The project required the the mechanical construction and 
+electrical design of the robot as well as the development of sensor and 
+control software.  Research into these topics provided knowledge which 
+allowed 
 design decisions to be taken for each of the main aspects of the project. 
 Agile methodologies were employed to manage the team over the course of 
 the project and were proven successful with 5 out of 6 Major objectives 
-completed. Influenced by the design decisions, a pre-built chassis was 
-used as the basis for a mechanically functional robot using odometry, 
-exteroceptive sensors and actuators to explore its environment. 
+completed. 
 
-These sensors included ultrasonic sensors, an IMU, encoders and a basic 
+Influenced by the design decisions, a pre-built chassis was 
+used as the basis for a mechanically functional robot using odometry, 
+exteroceptive sensors and actuators to explore its environment. These sensors included ultrasonic sensors, an IMU, encoders and a basic 
 camera each of which were mounted on the robot via a bespoke PCB. The PCB 
-design was iterated upon throughout the project to achieve a final PCB 
-which connected each of the components in the most mechanically and 
+design was iterated upon throughout the project to achieve a final design 
+which connected each of the components in a mechanically and 
 electrically sound manner. 
 
 In order for each of the components to function together, a software 
 architecture based on data-oriented software design principles was 
 created. This architecture centred on the Robot Operating System (ROS) 
 library which uses a ``publish-subscribe'' model to allow modules in the 
-system to communicate. For each of the aforementioned components of the 
+system to communicate while minimising coupling. For each of the aforementioned components of the 
 system, a software module was written based on ROS node design principles. 
 Each of these modules was independently tested extensively. 
 
@@ -33,11 +34,10 @@ sensor-fusion and Simultaneous Localisation and Mapping (SLAM) were used.
 Introducing each of these libraries added complexity to the project and 
 issues were encountered throughout integration. Although a number of these 
 issues were overcome, the delay in completing these objectives meant that 
-the final objective --- pertaining to an AI control module --- could not 
+the final objective --- the development of an AI control module --- could not 
 be completed. 
 
-As a consequence, system testing results obtained can only be analysed as 
+As a consequence, system testing results obtained using the custom designed testing environment can only be analysed as 
 benchmark results which provide a baseline for future work going forward. 
-Despite this, overall the project had a myriad of successful outcomes --- including 
-the construction of a modular testing environment --- and 
+Despite this, overall the project had a myriad of successful outcomes and 
 valuable lessons learned.      
