@@ -23,9 +23,9 @@ connections on the board which can be cut for further voltage customisation.
 The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse
 Width Modulation (PWM), which allows the motor speed to be controlled. The
 driver also has a sleep input which can be used to coast the motors if
-this would be beneficial. Each of the motors' respective sleep inputs
+required. Each of the motors' respective sleep inputs
 and are connected by default and therefore should not be driven at the same time,
-as this could result in short cases within the motor driver, however the
+as this could result in a short circuit within the motor driver, however the
 jumper connection between these can be cut to allow the sleep inputs to
 be driven separately.
 
@@ -43,35 +43,34 @@ subsequently continually monitored to ensure correct functionality.
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
 distance between itself and the surrounding environment. By recording
-the measurements relative to the robots current position, a point map
+the measurements relative to the robot's current position, a point map
 can be built up over time and a general map of the environment can be
 constructed.
 
 \subsection{Design}\label{elec/range/design}
-Infra-red, ultrasound and LIDAR distance sensors were all considered. These
+Infrared (IR), ultrasound and LIDAR distance sensors were all considered. These
 are all active sensors, meaning that they measure the effect of an
 output from the sensor, in these cases, IR light, ultrasonic waves
 and visible light respectively.
 
 Of these three, LIDAR is generally considered to be the most effective
 as it is the most accurate and has a \ang{360} field of view. However,
-it is both too expensive and too heavy for our application, especially
-considering the scalability requirement of the project. 
+it is both too expensive and too heavy for the applications of this project, especially
+considering scalability requirements. 
 
-Infra-red transceivers are far more affordable but have a limited cone of 
+IR transceivers are far more affordable but have a limited cone of 
 vision per sensor as light deviates very little through air and the 
-maximum range of these sensors is approximately \SI{0.5}{\m}~
-\cite{InfraredDatasheet}. Ultrasonic transceivers have a wider cone of 
+maximum range of these sensors is approximately \SI{0.5}{\m}~\cite{InfraredDatasheet}. 
+Ultrasonic transceivers have a wider cone of 
 detection and also a large range~\cite{HCSR04datasheet}. In addition to 
-this, they are also cheaper than both infra-red and LIDAR systems. 
+this, they are also cheaper than both IR and LIDAR systems. 
 
-Ultrasonic transceivers were therefore decided upon for use in this
-project. These work by emitting sound at a particular frequency
+Ultrasonic transceivers work by emitting sound at a particular frequency
 and measuring the time until the reflected wave returns to the sensor. 
 Multiple ultrasonic sensors of the same design have a significant chance to interfere with each other, 
-however, infra-red could also has this limitation 
+however, IR also has this limitation 
 while also being more susceptible to external interference. A possible solution 
-was to make a cheap LIDAR unit using a single infra-red sensor and a 
+was to make a budget LIDAR unit using a single IR sensor and a 
 servo motor mounted on top of the robot. This was, however, dismissed as 
 the two PWM pins of the Raspberry Pi would be assigned to each of the 
 motors respectively. This solution would also require a budget and 
@@ -79,11 +78,10 @@ software implementation commitment prior to testing which was not deemed
 worth the potential added risk to the project.   
 
 Hence ultrasonic sensors were chosen and the ultrasonic sensor used was 
-the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~
-\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and 
+the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and 
 ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its 
 range at $<$~\SI{30}{\mm}, however this is mitigated by the placement of 
-the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis. 
+the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown in Figure~\ref{UltraSoundSensorDiagram}. 
 
 The sensor is also widely used and available within the 
 department, mitigating any risks surrounding delivery lead times. 
@@ -96,18 +94,18 @@ department, mitigating any risks surrounding delivery lead times.
 \end{figure}
 
 \subsection{Implementation}\label{elec/range/impl}
-The hardware required for the ultrasonic sensors is relatively straightforward. 
+The hardware required for the ultrasonic sensors chosen is relatively straightforward. 
 They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are 
 connected to standard GPIO pins on the RPi. The echo pin has to be connected through 
 a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The 
 trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above 
 the threshold voltage.
 
-The distances are measured by an \verb|USScan| class. This has a 
+The distances are measured by a class named \verb|USScan|. This has a 
 \verb|get_scan()| function which iterates through each ultrasonic sensor and takes a reading, 
-as shown below in Code Listing \ref{lst:get_scan}.
+as shown below in Listing~\ref{lst:get_scan}.
 
-\begin{lstlisting}[caption={get\_scanFunction in USScan},label={lst:get_scan} , language=python]
+\begin{lstlisting}[caption={get\_scan() Function in USScan},label={lst:get_scan} , language=python]
 def get_scan():
     """Get scan of ranges from all ultrasonic sensors.
     :return: (USScan) Scan of ranges
@@ -127,29 +125,27 @@ def get_scan():
 \end{lstlisting}
 
 This method allows the various readings to be taken without interfering with
-each other, as the second ultrasonic pulse isn't omitted until the first is received.
+each other, as the second ultrasonic pulse isn't emitted until the first is received.
 
-As \ref{lst:get_scan} shows, \verb|get\_range()| is used by
-\textit{get\_scan()} to find the distance measured by each sensor.
+As Listing~\ref{lst:get_scan} shows, \verb|get_range()| is used by
+\verb|get_scan()| to find the distance measured by each sensor.
 This simply triggers the sensor and times how long until the echo
 pin turns high. The range is then calculated by the equation
 $ 2d = tv_s$ where $v_s$ is the speed of sound. It is then converted
-to mm.
+to \si{\mm}.
 
 \subsection{Testing}\label{elec/range/test}
 The sensors were initially tested using a signal generator and an
 oscilloscope. An object was then placed in front of the sensors
 and moved away. The expected output of this test was a linear increase
-in the width of the pulse width on the echo pin as the distance
-increased. This experiment allowed us to quickly identify 2
-malfunctioning sensors. The pulse width could then be used to to
+in the pulse width on the echo pin as the distance
+increased. This test allowed two malfunctioning sensors to be quickly identified. The pulse width could then be used to
 calculate the measured distance and this compared to the distance
 found with a measuring tape. This found approximately correct answers,
 however the precision with which we could measure the pulse width was
-not great enough for effective testing.
+not great enough for complete testing.
 
-The wave forms produced are shown in Figure~\ref{UltrasoundWaveform}.
-This shows the shorted echo pulse following the fall of the wider
+The wave forms produced are shown in Figure~\ref{UltrasoundWaveform}. This shows the shorter echo pulse following the fall of the wider
 square wave on the trig pin, produced by the signal generator.
 
 \begin{figure}[!ht]
@@ -162,50 +158,47 @@ square wave on the trig pin, produced by the signal generator.
 A circuit was then created to read the values using an Arduino
 microcontroller to allow the distance readings to be found quickly
 and the accuracy of the sensors measured. The readings from this were
-found to be approximately accurate (to at least within a half a cm,
+found to be approximately accurate (to within a half a \si{\cm},
 as measured with a tape measure), although rigorous testing was not
 performed as the accuracy would be dependant on the temperature due
-to changes in air pressure, and we had no way of accurately controlling
-this.
+to changes in air pressure, and there was no way of accurately controlling this.
 
-The testing was then repeated using the RPi set-up as to test the
+The testing was then repeated using the RPi setup to test the
 software, with similar results obtained.
 
 \section{Encoders}\label{elec/encoder}
 Wheel encoders are required to measure the speed of each wheel
-independently. This gives the system far more control over its path
-as well as allowing it to perform dead reckoning through wheel odometry.
+independently. This gives the system more control over its path
+as well as allowing it to perform dead reckoning --- meaning an approximate position can be maintained over time --- through wheel odometry.
 
 \subsection{Design}\label{elec/encoder/design}
 The motors selected had both incremental and absolute custom designed
-encoder, but as only the wheel speed is needed and not the position,
+encoders, but as only the wheel speed is needed and not the position,
 the incremental rotary encoders were used. These were hall effect
 encoders, which measure the changing magnetic field of magnets which
-are attached to the motor shaft. It has two 6 pole magnets magnets
+are attached to the motor shaft. It has two 6 pole magnets
 which create 12 counts per revolution of the motor shaft, which, after
 scaling for the gear ratio of 120:1, results in 1440 counts per
 revolution of the robot wheel.
 
 The encoders are quadrature encoders, which represent the speed and
-direction of the wheels with two square waves where the frequency
-represents the speed and which of the two waves is leading shows the
-direction.
+direction of the wheels with two square waves, where the frequency
+represents the speed and the leading wave indicates direction.
 
 \subsection{Implementation}\label{elec/encoder/impl}
 
 The encoder data was read into the RPi by an encoder class written in
 Python. This worked by connecting call back methods to both the A and B
-channel pins. How this is initialised is shown in Code Listing
-\ref{lst:enc_event_detect}
+channel pins. This initialisation is shown in Listing~\ref{lst:enc_event_detect}
 
 \begin{lstlisting}[caption={encoder callback set-up},label={lst:enc_event_detect} , language=python]
 GPIO.add_event_detect(self.pin$_$a, GPIO.BOTH, callback=self._callback_a)
 \end{lstlisting}
 
 This then either increments or decrements a count depending on the
-direction, as shown in Code Listing \ref{lst:enc_callback}. Note that
-\textit{\_callback\_b()} is identical but with \textit{self.\_inc()} and
-\textit{self.\_dec()} switched.
+direction, as shown in Listing~\ref{lst:enc_callback}. Note that
+\verb|_callback_b()| is identical but with \verb|self._inc()| and
+\verb|self._dec()| switched.
 
 \begin{lstlisting}[caption={Encoder Callback Function},label={lst:enc_callback} , language=python]
 def _callback_a(self, _):
@@ -218,15 +211,13 @@ def _callback_a(self, _):
 
 
 \subsection{Testing}\label{elec/encoder/test}
-The encoders were first tested to ensure that they functioned correctly
-using a test circuit and connecting the encoder outputs to an
+The encoders were first tested to ensure correct functionality using a test circuit and connecting the encoder outputs to an
 oscilloscope. All the encoders were shown to function correctly
-outputting square waves in both channels and with channel A leading B
-when the motor was moving forwards and B leading A when going backwards.
+outputting square waves in both channels.Channel A led channel B
+when the motor was moving forwards and B led A when going backwards.
 
-An example of the encoder output found is shown in Figure
-\ref{EncoderGraph} below. This shows the two square waves produced by the
-two encoder outputs a quarter wavelength out of phase.
+An example of the encoder output measured is shown in Figure~\ref{EncoderGraph} below. This shows the two square waves produced by the
+two encoder, outputs a quarter wavelength out of phase.
 
 \begin{figure}[!ht]
 	\centering

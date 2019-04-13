@@ -64,7 +64,7 @@ potential pitfalls which could be encountered throughout
 the project.
 
 Dr James Irvine, EEE Department, was consulted informally  
-regarding the use of Sockets for communication using a Wireless 
+regarding the use of sockets for communication using a Wireless 
 Ad-hoc Network (WANET). Dr Irvine was approached with an 
 assumption that using the Python Socket library to send 
 serialised data between the Raspberry Pis would be a robust 
@@ -77,11 +77,10 @@ Dr Gordon Dobie, EEE Department, was consulted towards the end
 of the project regarding the tuning of the PID controller. 
 Members of the group met with Dr Dobie and explained the PID tuning 
 processes undertook to that point. He explained that although 
-PID was conceptually useful, a more simple PD rate control system 
-\ref{litreview/control/ratecontrol} would be more appropriate 
+PID was conceptually useful, a more simple PD rate control system (see Section~\ref{soft/PID/rate}) would be more appropriate 
 in this particular case. Following the in-depth investigations made 
-into PID controllers, the group was fairly confident following some 
-basic guidance, provided by Dr Dobie, on implementing the 
+into PID controllers, the group was fairly confident, following some 
+basic guidance provided by Dr Dobie, on implementing the 
 recommended system. 
 
 Prior to the arrangement of the meeting with Dr Dobie, Dr Phil 
@@ -93,8 +92,7 @@ Dr Dobie, a specialist in PID control, Dr Rogers advice was
 followed and SLAM was progressed in the interim.   
 
 \subsection{Mechanical Workshop}\label{pm/mechshop}
-The construction of the modular maze used for testing \ref{mech/
-maze} was outsourced to the mechanical workshop located in the 
+The construction of the modular maze used for testing was outsourced to the mechanical workshop located in the 
 EEE department at the university. A number of discussions with 
 the mechanical workshop were used to specify the design  
 before and during construction. The design was iterated upon multiple times to achieve the best 
@@ -102,8 +100,7 @@ possible outcome. More information can be found in Section~\ref{test/maze}.
 
 \section{Timeline}\label{pm/timeline}
 The Gantt chart shown here in Figure~\ref{figure:gantt} was created 
-using the objectives and their respective sub-objectives (Section~
-\ref{introduction/objectives}). The timescales were determined 
+using the objectives and their respective sub-objectives (Section~\ref{introduction/objectives}). The timescales were determined 
 approximately using knowledge obtained from research and 
 consultations, with additional time added to account for possible 
 technical risks. In line with the agile methodology adopted, the tasks 
@@ -127,7 +124,7 @@ Figure~\ref{figure:gantt} shows a Gantt chart of the project timeline.
 
 The Gantt chart was adhered to for the most part in the early to 
 mid stages of the project. Towards the latter stages of the 
-project slippage occurred in the timelines which meant that some 
+project, slippage occurred in the timelines which meant that some 
 of the later objectives were not completed fully. A number 
 of the slippages in the latter stages were due to unforeseeable 
 electrical or mechanical issues. Multiple issues arose and had to 
@@ -135,7 +132,7 @@ be handled in the latter stages of the project including motors
 leaking grease, standard AA batteries being drained at an 
 excessive rate and one Raspberry Pi being shorted and killed 
 during the testing phase. Several technical slippages occurred in the Gantt 
-chart in the latter stages namely: PID tuning (see Section~\ref{soft/PID}) and SLAM, which was eventually spilt into 2 parts (see Sections~\ref{soft/odometry} \& ~\ref{soft/SLAM}).
+chart in the latter stages namely: PID tuning (see Section~\ref{soft/PID}) and SLAM, which was eventually spilt into 2 parts (see Sections~\ref{soft/odometry} \&~\ref{soft/SLAM}).
 
 \section{Risk Evaluation}\label{pm/riskeval}
 A risk evaluation took place at the beginning of the project and 
