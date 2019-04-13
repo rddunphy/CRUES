@@ -22,7 +22,7 @@ In robotic systems, this architecture is highly beneficial as each of the sensor
 and actuator systems can run independently publishing their data for feedback,
 using event driven implicit invocation through data oriented programming. This
 reduces the risk of system crashes as module crashes are isolated, improving
-robustness. 
+robustness.
 
 A true implementation of the event driven implicit invocation style would have all
 actions being taken only in the callback responses, with modules being inactive
@@ -289,7 +289,7 @@ def fromjson(packet):
 \end{lstlisting}
 
 The header created includes the IP and name of both the sender and the
-receiver as well as the type of Python object the data is. The header 
+receiver as well as the type of Python object the data is. The header
 and the data to be sent are converted to JSON and returned as a single
 string. When  converting from JSON, the receiver checks that it was the
 intended recipient of the message, returning $-1$ if it was not, before
@@ -298,7 +298,7 @@ are the four helper methods used by the \verb|send()| and \verb|listen()|
 methods.
 
 In order to physically send and receive the data the Python Socket library
-is used~\cite{socketServerDocs}. This interface's \verb|socket()| function 
+is used~\cite{socketServerDocs}. This interface's \verb|socket()| function
 returns a Socket object whose methods implement the Unix socket system calls.
 
 \begin{lstlisting}
@@ -347,10 +347,10 @@ the data read from the JSON strings and returned.
 
 
 \subsection{Initial Testing}\label{soft/comms/initest}
-This implementation was set up and initially tested between a laptop and a 
+This implementation was set up and initially tested between a laptop and a
 Raspberry Pi by remotely connecting to the RPi. When this succeeded in sending
 multiple messages between each device, a further RPi was remotely connected to and
-an attempt was made to send messages between RPis. Again this was successful, 
+an attempt was made to send messages between RPis. Again this was successful,
 demonstrating the basic functionality of the communication system.
 
 During more extensive testing, an important issue with the previous
@@ -375,7 +375,7 @@ of the existing code was implemented.
 \subsection{Multi-Threaded Implementation}\label{soft/comms/mtimpl}
 
 This was implemented by defining two classes, namely: \verb|ThreadedTCPServer| and
-\verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in 
+\verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in
 SocketServer documentation~\cite{socketServerDocs}.
 
 \begin{lstlisting}
@@ -419,9 +419,9 @@ thread is being created for each request, node crashes from interruptions no lon
 \subsection{Multi-Threaded Testing}\label{soft/comms/mttest}
 In order to test this version it was important to first ensure that the
 previously successful tests remained successful. Therefore,
-the same initial tests were applied to this implementation and were 
+the same initial tests were applied to this implementation and were
 successful as expected. In order to test whether the new implementation was
-thread-safe, a number of tests were executed. 
+thread-safe, a number of tests were executed.
 
 The first test involved creating a loop that would send 100 messages from robot
 A to robot B. When this succeeded without any node crashes, the test was repeated
@@ -450,7 +450,7 @@ motor. By tuning the gain terms $K_p$, $K_i$ and $K_d$ for the system in
 question, a target velocity can quickly be approached without overshooting.
 
 \subsection{Design}\label{soft/PID/design}
-The PID control node from the ROS \verb|differential_drive| package was 
+The PID control node from the ROS \verb|differential_drive| package was
 used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
 which sets the target velocity of a wheel and a \verb|/wheel| topic which provides
 the actual current speed of the wheel as determined by the encoders, and publishes
@@ -595,15 +595,15 @@ class Motor:
 These values resulted in far less aggressive motion in the movement of the
 robot. Despite this, velocity spikes still occurred, and following a
 consultation with Dr Gordon Dobie (c.f.\ Section~\ref{pm/consultations}) a
-rate control implementation was used. 
+rate control implementation was used.
 
-Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of 
+Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of
 the equation and uses the current velocity as the base rate as opposed to 0~
-\cite{koditschek1987quadratic}. This allows the controller to maintain the speed 
-more smoothly and fewer spikes in motor current are required for the required 
-drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb 
-more slowly from start-up and recover from dips in speed more slowly. This is 
-mitigated, however, by using the current speed as the base and therefore, a high 
+\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
+more smoothly and fewer spikes in motor current are required for the required
+drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb
+more slowly from start-up and recover from dips in speed more slowly. This is
+mitigated, however, by using the current speed as the base and therefore, a high
 gain is not required to increase the speed to the required level.
 
 Implementing this involved modifying the source
@@ -672,30 +672,29 @@ perform dead reckoning, and this can be fused with the wheel odometry to
 improve the accuracy of the system.
 
 For other nodes to use the IMU data, the readings had to be converted into
-a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
-\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3
-element vector for the rotational speed; a 3 element vector for the linear
-acceleration; and covariance matrices for each of these measurements. The
-code imu\_node uses to create an IMU messages is shown in Code Listing~
-\ref{lst:imu_message}
+a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~\cite[std\_msgs/Header.msg]{ROSDocs};
+a quaternion representing the orientation; a 3-element vector for
+the rotational speed; a 3-element vector for the linear
+acceleration; and covariance matrices for each of these measurements.
+Listing~\ref{lst:imu_message} shows the the portion of \verb|imu_node.py| used to create IMU messages.
 
 
-\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
+\begin{lstlisting}[caption={\texttt{\_publish\_data()} in \texttt{imu\_node.py}},label={lst:imu_message} , language=python]
 def _publish_data(self):
-        ...
-        msg = Imu()
-        msg.header.frame_id = self.frame_id
-        msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0]  # indicate orientation unknown
-        msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
-        msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
-        ...
+    # ...
+    msg = Imu()
+    msg.header.frame_id = self.frame_id
+    # Indicate orientation unknown:
+    msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
+    msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
+    # ...
 \end{lstlisting}
 
 There are a couple of points to notice in this excerpt. Firstly, the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
-using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the
+using a 6-DOF IMU~\cite[sensor\_msgs/Imu.msg]{ROSDocs}. Secondly, the published values for the
 x and y axes are negative the measured value. This is because, as
 discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
 \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced
@@ -705,12 +704,12 @@ frame, this was thought to be a simpler solution. Because of this, the
 frame in the header is set to \verb|base_link|.
 
 The ROS spin functionality was used for the IMU, so
-\verb|_publish_data| is run at a set
+\verb|_publish_data()| is run at a set
 frequency. This frequency, along with the topic the
 IMU is published to, is set in the launch file, as
-shown in Code Listing~\ref{lst:imu_launch}
+shown in Listing~\ref{lst:imu_launch}.
 
-\begin{lstlisting}[caption={\texttt{\_publish\_data} in \texttt{imu\_node}}, label={lst:imu_message}, style=xml]
+\begin{lstlisting}[caption={IMU node in ROS launch file}, label={lst:imu_launch}, style=xml]
 <node name="imu" pkg="crues_sensors" type="imu_node.py">
     <remap from="~rate" to="imu/rate" />
 </node>

@@ -3,9 +3,9 @@
     <include file="$(find crues_control)/launch/robot.launch" />
 
     <node name="roomba" pkg="crues_control" type="roomba_control.py" required="true">
-        <param name="turn_vel" type="double" value="2" />
+        <param name="turn_vel" type="double" value="1" />
         <param name="fwd_vel" type="double" value="0.2" />
-        <param name="obstacle_range" type="double" value="0.08" />
+        <param name="obstacle_range" type="double" value="0.05" />
         <remap from="~rate" to="encoder/rate" />
     </node>
 

@@ -1,33 +1,33 @@
 robots:
   [
     {
-      name: "blinky"
-      ip: "192.168.1.2"
-      hsv_min: [170, 110, 60]
-      hsv_max: [10, 255, 255]
+      name: "blinky",
+      ip: "192.168.1.2",
+      hsv_min: [170, 110, 60],
+      hsv_max: [10, 255, 255],
       rgb: [0, 0, 255]
-    }
+    },
     {
-      name: "inky"
-      ip: "192.168.1.3"
-      hsv_min: [105, 80, 30]
-      hsv_max: [145, 255, 255]
+      name: "inky",
+      ip: "192.168.1.3",
+      hsv_min: [105, 80, 30],
+      hsv_max: [145, 255, 255],
       rgb: [255, 0, 0]
-    }
+    },
     {
-      name: "clyde"
-      ip: "192.168.1.4"
-      hsv_min: [15, 100, 80]
-      hsv_max: [30, 255, 255]
+      name: "clyde",
+      ip: "192.168.1.4",
+      hsv_min: [15, 100, 80],
+      hsv_max: [30, 255, 255],
       rgb: [0, 255, 255]
     }
   ]
 goals:
   [
     {
-      name: "goal"
-      hsv_min: [40, 140, 95]
-      hsv_max: [70, 255, 255]
+      name: "goal",
+      hsv_min: [40, 140, 95],
+      hsv_max: [70, 255, 255],
       rgb: [0, 255, 0]
     }
   ]
