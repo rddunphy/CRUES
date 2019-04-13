@@ -7,31 +7,33 @@ their effectiveness in solving mazes co-operatively.  A series of benchmark
 results have been provided in Section~\ref{systest/results} to evaluate 
 these by. It is worth noting that A* is likely to be the best path planning 
 algorithm once the maze has been fully or mostly explored. In order to 
-explore, a number of different algorithms could be used. Starting with a 
-frontier-based algorithm, using periodic scans to improve the SLAM map, this 
-could be built upon using a depth first approach to avoid doubling back. 
-Robot behaviour on goal discovery would also have to be , explicitly: whether 
+explore, a number of different algorithms could be used. Using periodic scans
+to improve the SLAM map, a frontier-based algorithm could be built upon, using a 
+depth first approach, to avoid doubling back. 
+Robot behaviour on goal discovery would also have to be, explicitly: whether 
 one goal being discovered was an end state --- meaning the robot could return 
-to its starting point --- or whether more potential goals should be searched 
-for.
+to its starting point --- or whether to continue searching for more goals.
   
 Various improvements could also be made to the SLAM (see Section~
-\ref{soft/SLAM}) and Odometry (see Section~\ref{soft/odometry}).  The 
-exploration through testing of other libraries and methods of improving this 
-system when using ultrasonic sensors and limited feedback methods, could take 
-place and may provide improvements to the mapping capabilities of the robot. 
-Two such libraries are: SLAMOT (SLAM with Object Tracking) which could be 
-used to resolve the issue of robots existing in each other's maps as moving 
-objects would be tracked and remain unmapped; and AMCL for localisation, 
-which compensates for the drift in time between the odometry and reference 
-frames.   
+\ref{soft/SLAM}) and Odometry (see Section~\ref{soft/odometry}).  
+The exploration of other libraries to make improvements to the mapping 
+capabilites of the robot, when using ultrasonic sensors and limited feedback 
+methods, could be explored through testing their performances as part of
+further work.Two such libraries are: SLAMOT (SLAM with Object Tracking) which 
+could be used to resolve the issue of robots existing in each other's maps as 
+moving objects would be tracked and remain unmapped; and AMCL for
+localisation, which compensates for the drift in time between the odometry and 
+reference frames.   
 
 The second optional objective, functionality for map sharing and SLAM loop 
-closure 
-across robots, could also be implemented. This would allow robots which have covered 
-different paths to communicate their knowledge of the maps and improve search 
-efficiency. It would also allow both robots to improve the accuracy of their existing 
-map by combining it with that of the other robot. 
+closure across robots, could also be implemented. This would allow robots which 
+have covered different paths to communicate their knowledge of the maps and 
+improve search efficiency. It would also allow both robots to improve the 
+accuracy of their existing map by combining it with that of the other robot.
+In order to implement loop closure, references points would need to be added
+to the maze environment. These landmarks provide the robots a stationary point 
+from which other measurements can be made relative to, increasing the accuracy 
+of the maps created.
 
 Subsequent to these, more robots could be added to the system in order to 
 stress test the scalability of the 
