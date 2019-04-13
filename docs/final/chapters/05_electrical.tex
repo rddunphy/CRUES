@@ -340,8 +340,16 @@ def get_speeds(self):
 Initial work was performed with the IMU and an Arduino microcontroller
 before the RPis were acquired. The IMU was connected up and various
 movements were recorded. Python code was then written to interpret and
-visualise the data as a moving frame. 
-\todo{This seems short?}
+visualise the data as a moving frame. A frame from the output test video is shown in Figure \ref{fig:imu_py_test}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{imupyfig.png}
+	\caption{IMU Visualisation Test Frame}\label{fig:imu_py_test}
+
+\end{figure}
+
+Various tests were performed using this method testing both the gyroscope and the accelerometer by moving and rotating the IMU. The tests showed reasonable results indicating that the IMU was functioning correctly and that the data was being interpreted correctly. Exact measurements of accuracy could not be obtained, however, without a test system for controlling the acceleration and rotations precisely. 
 
 \section{PCB}\label{elec/pcb}
 As precise and consistent placement of components was required to ensure
