@@ -22,7 +22,7 @@ In robotic systems, this architecture is highly beneficial as each of the sensor
 and actuator systems can run independently publishing their data for feedback,
 using event driven implicit invocation through data oriented programming. This
 reduces the risk of system crashes as module crashes are isolated, improving
-robustness. 
+robustness.
 
 A true implementation of the event driven implicit invocation style would have all
 actions being taken only in the callback responses, with modules being inactive
@@ -34,18 +34,19 @@ module to have a polling loop in which it handles its heavier functionality, wit
 callbacks only setting up the data necessary for this loop.
 
 \section{ROS}\label{soft/ROS}
-In order to implement this architecture, and following extensive research(see
-Section~\ref{litreview/ROS}, the Robot Operating System (ROS) library was
-selected as a framework. The ROS library makes it simple to design and implement
-individual modules within a system and uses a central control node named
-``roscore'' to manage publish and subscribe ``topics'' between modules.
+In order to implement this architecture, and following extensive research
+(c.f.\ Section~\ref{litreview/ROS}), the Robot Operating System (ROS) was
+selected as a platform. The ROS framework makes it simple to design and implement
+individual modules as nodes, and uses a central \verb|roscore| control
+node to manage interactions between nodes, which communicate by publishing and
+subscribing to topics.
 
 \subsection{Design}\label{soft/ROS/design}
 Following the decision to use ROS to implement our chosen architecture, a modular
-approach was adopted for the design of each of the components within the system~
-\ref{electrical}. Hence, a system block diagram was developed to visualise data flow
-within the system. The block diagram in Figure~
-\ref{BlockDiagram} demonstrates the modularisation of the system and also the
+approach was adopted for the design of each of the components within the system.
+Hence, a system block diagram was developed to visualise data flow
+within the system. The block diagram in Figure~\ref{BlockDiagram}
+demonstrates the modularisation of the system and also the
 expectation that the AI module at the top of the system will be completely
 independent from the other components of the system.
 
@@ -56,10 +57,9 @@ independent from the other components of the system.
 
 \end{figure}
 
-By making the control module
-an API, AI algorithms can be interchanged easily for testing. The modular
-approach also means sensor and actuator modules can be plugged in and out as
-desired and could easily be changed if needed at any point in the project.
+This modular approach means that sensor and actuator modules can be plugged in
+and out as desired and could easily be changed if needed at any point in the
+project.
 
 Each module can be programmed in a different language before being converted to a
 ROS node, which publishes and subscribes, using the appropriate methods for that
@@ -256,19 +256,15 @@ for listening for incoming messages. As these would be separate nodes,
 these would work independently of each other and so would allow for the
 robot to send and receive messages simultaneously.
 
-\subsection{Implementation}\label{soft/comms/impl}
-Look-up table
-First copy of send/receive that caused multi-message issues
-The new implementation with the thread-safe code
-
-To implement these requirements a $comms.py$ file was created which contain
-the function definitions and address lookup table that the ROS server and
-client nodes would use to communicate. Firstly a python dictionary of the
-robot's IP addresses as well as our laptop for testing purposes was created.
-A $lookupIP(name)$ function and a $lookupname(ip)$ function were created for
-readability and maintainability. Secondly, a function were needed that could
-create the JSON message ($tojsn()$) and one that could extract the data from
-the message ($fromjson()$).
+\subsection{Initial Implementation}\label{soft/comms/iniimpl}
+To implement these requirements a \verb|comms.py| file was created which contained
+the function definitions and address lookup table that the ``server'' and
+``client'' nodes would use to communicate. Firstly, a python dictionary of the
+robot's IP addresses and a laptop's IP address for testing purposes was created.
+A \verb|lookupIP(name)| function and a \verb|lookupname(ip)| function were created for
+modularity and maintainability. Secondly, functions were required that could
+create the JSON message (\verb|tojson()|) and extract the data from
+the message (\verb|fromjson()|).
 
 \begin{lstlisting}
 def tojson(host_ip, hostname, data):
@@ -291,16 +287,20 @@ def fromjson(packet):
     except IndexError:
         return -2
 \end{lstlisting}
+
 The header created includes the IP and name of both the sender and the
-receiver as well as the type of python object the data is. The header along
-with the data to be sent is converted to JSON and returned as a string. When  converting from JSON it checks that it was the intended recipient of the
-message, returning $-1$ to indicate it was not, before returning the data
-object located at index 1 (header is index 0). These are the four helper
-methods used by the send and listen methods.
+receiver as well as the type of Python object the data is. The header
+and the data to be sent are converted to JSON and returned as a single
+string. When  converting from JSON, the receiver checks that it was the
+intended recipient of the message, returning $-1$ if it was not, before
+returning the data object located at index 1 (header is index 0). These
+are the four helper methods used by the \verb|send()| and \verb|listen()|
+methods.
 
 In order to physically send and receive the data the Python Socket library
-is used. This interface's $sockett()$ function returns a socket object whose
-methods implement the Unix socket system calls.
+is used~\cite{socketServerDocs}. This interface's \verb|socket()| function
+returns a Socket object whose methods implement the Unix socket system calls.
+
 \begin{lstlisting}
 # data is python object to send
 def send(hostname, data):
@@ -312,10 +312,11 @@ def send(hostname, data):
         s.sendall(message) # Sends string (of JSON)
         s.close()
 \end{lstlisting}
-The send function looks up the IP of the destination and gets the JSON object
-of the message. It then attempts to connect using the $connect_ex()$ which
-returns 0 if successful. If so then it can use the socket methods to send the
-data and then close the connection.
+
+The \verb|send()| function looks up the IP of the destination and gets the JSON
+object of the message. It then attempts to connect using the \verb|connect_ex()|
+which returns 0 if successful. If so, it can then use the Socket methods to send
+the data and then close the connection.
 
 \begin{lstlisting}
 def listen():
@@ -334,23 +335,25 @@ def listen():
     message = fromjson(packets)
     return message
 \end{lstlisting}
-When listening for incoming messages, the created socket object must bind to
-an IP address and port number. The address of 0.0.0.0 results in it listening
-to any incoming messages. The $listen()$ function starts the node listening
-whilst setting the number of queued connections allowed. In this case it is
-set to 2 but can be increased when scaling the system to use many more agents.
-Once the socket  accepts a connection, we can continually store the packets
-until no more data is received. After which the connection can be closed and
+
+When listening for incoming messages, the created Socket object must bind to
+an IP address and port number. The address 0.0.0.0 allows the node to listen
+to any incoming messages. The \verb|listen()| function starts the node listening
+whilst setting the number of queued connections allowed (set to 2 here but can
+be increased when scaling the system to use more agents). Once the socket
+accepts a connection, packets received can continually be stored
+until no more data is received, after which the connection can be closed and
 the data read from the JSON strings and returned.
 
-This implementation was set up and initially tested between a laptop and a Pi
-by remotely connecting to the Pi. When this succeeded in sending multiple
-messages between them, we remotely connected to another Pi and attempted to
-have them send messages back and forth to each other. Again this was successful
-and so this demonstrated the basic functionality of the communication system was
-working.
 
-When undertaking more extensive testing, an important issue with the previous
+\subsection{Initial Testing}\label{soft/comms/initest}
+This implementation was set up and initially tested between a laptop and a
+Raspberry Pi by remotely connecting to the RPi. When this succeeded in sending
+multiple messages between each device, a further RPi was remotely connected to and
+an attempt was made to send messages between RPis. Again this was successful,
+demonstrating the basic functionality of the communication system.
+
+During more extensive testing, an important issue with the previous
 code was found. When nodes were sending messages to each other simultaneously
 at least one of the nodes would fail. For example, if robot A sends a message to
 robot B but before the message has finished sending, robot B sends a message to
@@ -358,18 +361,23 @@ robot A then the receiver of robot B crashes and robot A never receives the mess
 If robot B were to send to a third robot, C, then robot B's receiver would still
 fail as would one of either robot B or C.
 
-As a result of this bug, the implementation would have to be changed to handle
+As a result of this bug, the implementation had to be changed to handle
 multiple connections properly. Various potential solutions were discussed,
-such as using multiple ports so as not to kill the socket connection when
-attempting to connect again or to use a multi-connection selector as part of
+such as using multiple ports --- so as not to kill the socket connection when
+attempting to connect again --- or to use a multi-connection selector as part of
 the server to handle multiple requests \cite{multiconnectionServer}.
 Alternatively, if the server can always be listening for incoming messages by
-utilising multiple threads then there would be no downtime of the system and
-thus each message would be successfully sent. As a result, we choose to
-design a thread-safe version of the existing code base.
+utilising multiple threads then there would be no system downtime and
+thus, each message would be successfully sent. As a result, a multi-threaded version
+of the existing code was implemented.
 
-This was implemented by defining ThreadedTCPServer and ThreadedTCPRequestHandler
-classes to be used by the listener as shown in SocketServer documentation~\cite{socketServerDocs}.
+
+\subsection{Multi-Threaded Implementation}\label{soft/comms/mtimpl}
+
+This was implemented by defining two classes, namely: \verb|ThreadedTCPServer| and
+\verb|ThreadedTCPRequestHandler|, to be used by the listener as shown in
+SocketServer documentation~\cite{socketServerDocs}.
+
 \begin{lstlisting}
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
     def messageHandler(self, x):
@@ -383,10 +391,12 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 \end{lstlisting}
-The $listen()$ function is changed to take in a handler parameter. This is
-passed a function which is used instead of the messageHandler function in
-the ThreadedTCPRequetHandler before it is used to create a ThreadedTCPServer
+
+The \verb|listen()| function was changed to take in a handler parameter. This was
+passed a function which is used instead of the \verb|messageHandler()| function in
+the \verb|ThreadedTCPRequetHandler| before it is used to create a \verb|ThreadedTCPServer|
 object as shown.
+
 \begin{lstlisting}
 def listen(handler):
     ThreadedTCPRequestHandler.messageHandler = handler
@@ -401,36 +411,35 @@ def listen(handler):
     server_thread.start()
     return server
 \end{lstlisting}
-The handler object passed is a function that will solely publish the
-message contents so the relevant subscribers can use the data received
-from the other agent. As a new thread is being created for each request
-there should be no node crashes from having the process interrupted as
-it will be happening on a different thread.
-\todo{Is testing for just the final designed testing - cause this goes impl - testing  impl - testing and not sure how we want to handle that. All writing is here just where the heading goes?}
 
-\subsection{Testing}\label{soft/comms/test}
+The handler object passed is a function that will publish the message contents so
+relevant subscribers can use the data received from the other robot. As a new
+thread is being created for each request, node crashes from interruptions no longer occur.
 
+\subsection{Multi-Threaded Testing}\label{soft/comms/mttest}
 In order to test this version it was important to first ensure that the
-working functionality from the previous version still worked. Therefore
-the same initial tests were applied to this implementation which passed
-as expected. In order to test whether this was thread-safe, a number of
-tests were executed. The first test involved creating a loop that would
-send 100 messages from robot A to robot B. When this succeeded without any
-node crashes, the test was repeat but with robot B sending messages to robot A
-simultaneously. This previously would have crashed the nodes but with the
-server's listening on separate threads for each request, this was handled
-successfully. This test was repeated with robot B sending messages to robot C
-instead of robot B. This too was successful with the messages being received
-without any being lost. The test was repeated but the limit on the number of
-messages being send was removed, and so the messages would, in theory,
-continue to create new threads to listen to the incoming messages. This
-worked initially, but due to there being no delay in between sending messages,
-thousands of threads were being created quickly. This resulted in the node
-crashing as the thread limit had been reached, however, this happened after
-over 50 thousand messages in quick succession (due to no delay). As a result,
-this was determined to be the upper limit of this system, that with this set
-up would never be close to reached and so it was determined that the system
-was sufficiently thread-safe to be used.
+previously successful tests remained successful. Therefore,
+the same initial tests were applied to this implementation and were
+successful as expected. In order to test whether the new implementation was
+thread-safe, a number of tests were executed.
+
+The first test involved creating a loop that would send 100 messages from robot
+A to robot B. When this succeeded without any node crashes, the test was repeated
+but with robot B sending messages to robot A at the same time. This test would
+have previously crashed each of the robot's nodes but with each new connection
+request handled in a different thread, the test was successful. The test was then
+repeated once more with robot B sending messages to robot C instead of robot A;
+again resulting in a successful test with no messages lost.
+
+Finally, a stress test was carried out. The previous test was executed again with
+the limit on the number of messages being sent removed, and so the node would,
+in theory, continue to create new threads to listen to the incoming messages.
+Initially, this worked, however, due to there being no delay between sent messages,
+thousands of threads were being created rapidly. This resulted in the node
+crashing as the thread limit had been reached, however, this happened after over
+50,000 messages. As a result, this was determined to be the upper limit of the system,
+which is excessive for both this project's and any reasonable purposes, hence, it was
+determined that the system was sufficiently thread-safe to be used.
 
 \section{PID Controller}\label{soft/PID}
 A PID controller was used for each wheel in order to ensure a constant output
@@ -441,7 +450,8 @@ motor. By tuning the gain terms $K_p$, $K_i$ and $K_d$ for the system in
 question, a target velocity can quickly be approached without overshooting.
 
 \subsection{Design}\label{soft/PID/design}
-The PID control node from the ROS \verb|differential_drive| package was used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
+The PID control node from the ROS \verb|differential_drive| package was
+used~\cite{diffdrivelib}. The node subscribes to a \verb|/wheel_vtarget| topic
 which sets the target velocity of a wheel and a \verb|/wheel| topic which provides
 the actual current speed of the wheel as determined by the encoders, and publishes
 a command value to \verb|/motor_cmd|, which is subscribed to by the corresponding
@@ -538,36 +548,72 @@ increased until the system oscillated with a constant amplitude.
 $K_p$ was then halved and $K_i$
 introduced to increase the rate of change in the system. $K_d$
 could then be slowly increased to minimise the overshoot in the system.
-Following one iteration of this process the velocity scaling was reduced
-and the process repeated. The results are shown in Table~\ref{manual_pid_tuning}.
+
+Additional improvements were achieved by scaling the output of the PID loop
+in the drive node. As the PWM values used by \verb|RPi.GPIO| are in the range
+$[0; 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
+(with a typical range of $[0; 0.5]$), high gain values are required to ensure
+the output is on the correct order of magnitude. A scale factor and an offset
+were therefore introduced in the motor drive node as shown in
+Listing~\ref{lst:pid_scaling} in order to map inputs from an arbitrary
+input range to the range $[-100; 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
+for \verb|~range_max| resulted in the lower gain values shown in
+Table~\ref{manual_pid_tuning}, and appeared to result in a slight reduction in
+overshoot.
+
+\begin{lstlisting}[caption={Output scale factor in drive node}, label={lst:pid_scaling}]
+class Motor:
+    def __init__(self):
+        # ...
+        self.range_min = rospy.get_param('~range_min', -1.0)
+        self.range_max = rospy.get_param('~range_max', 1.0)
+        self.scale_factor = 200.0 / (self.range_max - self.range_min)
+        self.offset = (self.range_min + self.range_max) / 2
+        # ...
+
+    def _tick(self):
+        # ...
+        pwm_val = (self.cmd - self.offset) * self.scale_factor
+        # ...
+\end{lstlisting}
 
 \begin{table}[!ht]\centering
-\caption{Manual PID
+\caption{Manual PID tuning results
 \label{manual_pid_tuning}}
     \begin{tabular}{cccc}
         \toprule
         \thead{Method} & \thead{$K_p$} & \thead{$K_i$} & \thead{$K_d$}\\
         \midrule
-        Before Velocity Scaling & 102.5 & 2.5 & 0.88\\
-        After Velocity Scaling & 0.2775 & 0.0075 & 0.007\\
+        Before PID scaling & 102.5 & 2.5 & 0.88\\
+        After PID scaling & 0.2775 & 0.0075 & 0.007\\
         \bottomrule
     \end{tabular}
 \end{table}
-
-\todo{Paragraph about output scaling required}
 
 \subsection{Rate control}
 
 These values resulted in far less aggressive motion in the movement of the
 robot. Despite this, velocity spikes still occurred, and following a
 consultation with Dr Gordon Dobie (c.f.\ Section~\ref{pm/consultations}) a
-rate control implementation was used. This involved modifying the source
+rate control implementation was used.
+
+Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of
+the equation and uses the current velocity as the base rate as opposed to 0~
+\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
+more smoothly and fewer spikes in motor current are required for the required
+drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb
+more slowly from start-up and recover from dips in speed more slowly. This is
+mitigated, however, by using the current speed as the base and therefore, a high
+gain is not required to increase the speed to the required level.
+
+Implementing this involved modifying the source
 code for the \verb|differential_drive| package to add an adjustment term to the
 previous output value. This eliminated the need for steady-state correction,
 allowing $K_i$ to be set to $0$. Tuning the remaining values gave a proportional
 gain $K_p = 0.176$ and a differential gain $K_d = 0.008$. This was tested and
 resulted in significantly less aggressive motion of the robot and a increased
 accuracy in output velocities.
+
 
 
 \section{Odometry Sensor Fusion}\label{soft/odometry}
@@ -626,30 +672,29 @@ perform dead reckoning, and this can be fused with the wheel odometry to
 improve the accuracy of the system.
 
 For other nodes to use the IMU data, the readings had to be converted into
-a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~
-\cite[std\_msgs/Header.msg]{ROSDocs}; a quaternion representing the orientation; a 3
-element vector for the rotational speed; a 3 element vector for the linear
-acceleration; and covariance matrices for each of these measurements. The
-code imu\_node uses to create an IMU messages is shown in Code Listing~
-\ref{lst:imu_message}
+a ROS IMU message~\cite[sensor\_msgs/Imu.msg]{ROSDocs} consisting of: a ROS header message~\cite[std\_msgs/Header.msg]{ROSDocs};
+a quaternion representing the orientation; a 3-element vector for
+the rotational speed; a 3-element vector for the linear
+acceleration; and covariance matrices for each of these measurements.
+Listing~\ref{lst:imu_message} shows the the portion of \verb|imu_node.py| used to create IMU messages.
 
 
-\begin{lstlisting}[caption={\_publish\_data in imu\_node},label={lst:imu_message} , language=python]
+\begin{lstlisting}[caption={\texttt{\_publish\_data()} in \texttt{imu\_node.py}},label={lst:imu_message} , language=python]
 def _publish_data(self):
-        ...
-        msg = Imu()
-        msg.header.frame_id = self.frame_id
-        msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0]  # indicate orientation unknown
-        msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
-        msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
-        ...
+    # ...
+    msg = Imu()
+    msg.header.frame_id = self.frame_id
+    # Indicate orientation unknown:
+    msg.orientation_covariance = [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    msg.linear_acceleration = Vector3(acc[0], acc[1], acc[2])
+    msg.angular_velocity = Vector3(gyro[0], gyro[1], gyro[2])
+    # ...
 \end{lstlisting}
 
 There are a couple of points to notice in this excerpt. Firstly, the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
-using a 6dof IMU~\cite{ROSIMUMsg}. Secondly, the published values for the
+using a 6-DOF IMU~\cite[sensor\_msgs/Imu.msg]{ROSDocs}. Secondly, the published values for the
 x and y axes are negative the measured value. This is because, as
 discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
 \ang{180} relative to the robot frame (i.e. the x axis in the IMU faced
@@ -659,12 +704,12 @@ frame, this was thought to be a simpler solution. Because of this, the
 frame in the header is set to \verb|base_link|.
 
 The ROS spin functionality was used for the IMU, so
-\verb|_publish_data| is run at a set
+\verb|_publish_data()| is run at a set
 frequency. This frequency, along with the topic the
 IMU is published to, is set in the launch file, as
-shown in Code Listing~\ref{lst:imu_launch}
+shown in Listing~\ref{lst:imu_launch}.
 
-\begin{lstlisting}[caption={\texttt{\_publish\_data} in \texttt{imu\_node}}, label={lst:imu_message}, style=xml]
+\begin{lstlisting}[caption={IMU node in ROS launch file}, label={lst:imu_launch}, style=xml]
 <node name="imu" pkg="crues_sensors" type="imu_node.py">
     <remap from="~rate" to="imu/rate" />
 </node>
@@ -763,11 +808,11 @@ control_config: [true, false, false, false, false, true]
 
 
 \section{Computer Vision}\label{soft/cv}
-Computer vision is a very cheap and effective way of gaining a high level
-understanding of the environment. In this system, it was used to allow the agents to
-identify other robots and objectives in the maze. Detecting the other
+Computer vision is a cheap and effective way of gaining a high level
+understanding of the environment (see Section~\ref{litreview/cv}). In this system, it was used to allow the robots to
+identify other robots and objectives in the maze. Detecting other
 robots was an essential component to allow communication between robots,
-prevent agents mistakenly mapping other agents,and to recognise when
+prevent robots mistakenly mapping other robots, and to recognise when
 ultrasonic interference would occur.
 
 \subsection{Design}\label{soft/cv/design}
@@ -776,27 +821,26 @@ The first detection system considered was a CNN, as discussed in Section
 the advantage of
 being able to classify instances of objects that it has not
 seen before. This would be essential if the target objects of
-the robot was not consistent, for instance if it had to find
-people in the search space. This was, however, not essential
+the robot were not consistent, for instance if it had to find
+people in the search space. This was, however, not required
 in the scope of this project. The major downside to this
 system would be the time to implement. To construct a CNN for
 this application would require the collection of a large data
 set of images of the robots and goals, as well as the time
 consuming process of tuning the CNN.
 
-Feature Based Object detection was also considered. As described in
+Feature Based object detection was also considered. As described in
 Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be
 taken of the object and therefore takes far less time to
 implement than the CNN solution. However, the accuracy and
-consistency are largely dependant on the number of features
+consistency are largely dependent on the number of features
 detected, and the algorithm's complexity grows relatively
 quickly. The basic brute force algorithm involves comparing
 every key point in the object image to every key point in the
-frame image, which results in an O($n^2$) complexity (although
-this can be streamlined, for instance if it becomes impossible
+frame image, which results in O($n^2$) complexity. This can be streamlined, for instance, if it becomes impossible
 for the distance to be low enough for a pair to be the best
 match part way through the distance calculation, it does not
-need to be finished)~\cite{opencv_library}. The calculations for deciding the best
+need to be finished~\cite{opencv_library}. The calculations for deciding the best
 outline of the object also become more complicated, as there
 will be a lower true positive to false positive ratio as the
 best matches (which are found first) are more likely to be
@@ -812,7 +856,7 @@ focus of the project.
 This works by first converting the images from RGB to Hue-Saturation-Value (HSV) colour space,
 simplifying the colour detection as the hue of the pixel is determined by a single value
 instead of the ratio of three values. A colour can then be identified by a range of H values
-and then a minimum S and V values, which is far more intuitive than checking if it falls into a
+and then minimum S and V values, which is far more intuitive than checking if it falls into a
 range of ratios between R, G and B values.
 
 \subsection{Implementation}\label{soft/cv/impl}
@@ -820,11 +864,11 @@ The \verb|vision_node| works using a ROS spin setup, with a \verb|spin()| functi
 called at a set frequency until ROS closes.
 
 A \verb|RobotDetector| object is declared which has the range of HSV values for each robot
-and the goal, and has a video capture object. It contains a \verb|search()| function which
+and the goal, and also has a video capture object. It contains a \verb|search()| function which
 takes a frame as a parameter and returns various details about each robot's presence in the
 frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
 values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
-the pixel in range and and black for out of range. This is shown in Code Listing
+the pixel is in range and and black when out of range. This is shown in Code Listing
 \ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
@@ -867,8 +911,8 @@ for c in contours:
 \end{lstlisting}
 
 These parameters are then returned to the \verb|_tick()| function which was called by
-\verb|spin()|. This then renders debug info to the frame if it's performing a test, or
-publishes the detected robot info via a ROS message consisting of a comma separated list of
+\verb|spin()|. This then renders debug information to the frame if it's performing a test, or
+publishes the detected robot information via a ROS message consisting of a comma separated list of
 objects detected in the last frame.
 
 \subsection{Testing}\label{soft/cv/test}
@@ -888,7 +932,7 @@ for i, name in enumerate(names):
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
 \end{lstlisting}
 
-An example of this running is shown in Figure \ref{fig:cv_screenshot}
+An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
 \begin{figure}[!ht]
 	\centering
@@ -902,14 +946,16 @@ test both the integration with the RPi and with ROS. Various detectable objects 
 and out of the frame and changes in the output were observed. This initially failed as the RPi
 camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function
 does not support. When running on the RPi, this was replaced with imutil's VideoStream package.
-After this the test performed as expected, consistently identifying which objects were in
+Following this small change, the test performed as expected, consistently identifying which objects were in
 frame.
 
-Functionality was then added to record the feed as to see how the computer vision responded as
-the robot was traversing the maze, however there were issues with frame rate as it was too
-computationally intensive for the RPi to perform the recording as well as all the other
-computation.
+Functionality was then added to record the feed to observe how the computer vision responded as
+the robot was traversing the maze, however issues were encountered with frame rate, namely: the functionality being too
+computationally intensive for the RPi in addition to all other computation.
+\todo{Is this definitely finished Matt? Maybe a sentence, "this functionality was therefore removed in release builds of the code"}
 
+
+\todo{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
 \section{AI \& Control Modules}\label{soft/ai}
 
 \subsection{Design}\label{soft/ai/design}
