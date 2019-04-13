@@ -18,17 +18,15 @@ effectively than a more complex individual robot, introducing distribution
 and redundancy into the system which can be highly advantageous over single 
 agent systems~\cite{dudek96}. This redundancy can be mission critical in 
 scenarios where a hazardous environment poses risks to individual robots. 
-Therfore the loss of any single robot is not fatal to the mission as all
-the robots are homogenous and can can complete the task individually.
+Therefore the loss of any single robot is not fatal to the completion  of the task as all
+the robots are homogeneous and can complete the task individually.
 
 Previous research into co-operative robotics has focused on UAVs~\cite{khan18},
 non-autonomous agents~\cite{jimenez18}, or made use of extensive
 communication, such as by using the cloud~\cite{wensing2018cooperative}.
 This study will use restricted non-telemetric communication (i.e. local 
 communication between neighbouring robots rather than communication over a 
-central server). Co-operating effectively under this limitation poses
-additional challenges, which need to be overcome to allow
-collaborative robotic exploration of environments such as caves. This
+central server). This
 application area was inspired in part by a recent incident necessitating cave 
 exploration and rescue in Thailand~\cite{bbcthailand}.
 
@@ -50,9 +48,9 @@ event of the robot failure given the potentially dangerous environments.
 \begin{itemize}
 \item{Design a simple differential drive robot capable of exploring and perceiving its environment---Major Objective}
     \item{Construct two robots using this design---Major Objective}
-    \item{Develop a Simultaneous Localisation and Mapping (SLAM) algorithm to allow the robots to explore an area---Major Objective}
+    \item{Implement a Simultaneous Localisation and Mapping (SLAM) algorithm to allow the robots to explore an area---Major Objective}
     \item{Develop a system to allow the robots to interact and communicate with each other---Major Objective}
-    \item{Develop algorithms to search a maze which can be dynamically parallelised over any number of agents---Major Objective}
+    \item{Implement algorithms to search a maze which can be dynamically parallelised over any number of agents---Major Objective}
     \item{Develop a test environment and evaluate the robots’ performance---Major Objective}
     \item{Add additional robot(s) and evaluate scalability of approach---Optional Objective}
     \item{Improve SLAM by adding loop closure between robots---Optional Objective}
