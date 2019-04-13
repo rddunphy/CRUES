@@ -1,8 +1,7 @@
 % !TEX root = ../report.tex
 
 \chapter{Evaulation}\label{eval}
-Based on the original objectives of the project (see Section~\ref{intro/
-objectives}), the project can be deemed as somewhat of a success. 5 out of 6 of 
+Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed as somewhat of a success. 5 out of 6 of 
 the original ``Major'' objectives have been completed, as well as 1 of 2 of 
 the ``Optional'' objectives. In addition to this, it is believed that with a 
 small number of additional weeks, the two remaining ``Major'' objectives could 
@@ -23,11 +22,10 @@ issues feature and protected merging used to ensure all members of the team were
 working on a task and completion of tasks could be monitored by the project 
 manager. 
 
-\todo{remove if we have no results}
 A series of benchmark results have also been obtained and can be used by future 
 iterations of the project to measure success. The 
 objectives which have been completed were also iterated upon multiple times to 
-complete for each of the robots and hence the design has 
+complete for each of the robots, and hence the design has 
 been improved by using an iterative design process. 
 
 \section{Mechanical}\label{eval/mech} 
@@ -39,7 +37,7 @@ designs to be iterated upon throughout the project. The first robot was carefull
 designed to ensure each component mechanically integrated well. This was further 
 iterated upon and improved between robots, leading to a final construction which was 
 consistent and reliable. Given not all objectives were met at the end of the project 
---- and the electrical and software aspects were to be the focus ---, the decision taken in the 
+--- and the electrical and software aspects were to be the focus --- the decision taken in the 
 early stages to purchase a pre-built chassis as opposed to create a bespoke chassis 
 was justified, due to the time saved. This would have added unnecessary complication 
 in the beginning of the project which could have caused future 
@@ -62,8 +60,6 @@ in testing to balance the degradation, or different motors would have
 been used with a bespoke chassis, as finding motors to fit the pre-
 existing chassis would not have been a suitable solution. 
 
-\todo{shitty motors, increased diff between robots, made PID tuning harder, in future try different motors}
-
 Aside from the robots, the other main mechanical component was the modular maze 
 testing environment. Although constructed by the mechanical workshop, a great deal of 
 effort was put into the design and subsequent iterations to obtain the best outcome 
@@ -71,22 +67,16 @@ possible. The modular maze is a reusable ``SLAM playground'' and is a major
 successful outcome of the project. Although not particularly transportable, the maze 
 is robust and durable and intended to last --- and be used --- for future projects.
 
-In addition, although not used in the final maze design a great deal was learned from 
+In addition, although not used in the final design, a great deal was learned from 
 using CAD to create designs of pegs which were intended for use in the maze. A number 
-of designs were created, which were not only improved in terms of the specification 
-requested by the mechanical workshop, but also in terms of the use of the CAD 
-software. It was also worth noting that the CAD designed pegs were not unusable 
-because of a design flaw, but due to limitations in the printing/construction process. 
+of iterations of the design were created, which were  improved  both due to the feedback from the mechanical workshop as the specification changed and as the proficiency of using the CAD software increased. It was also worth noting that the CAD designed pegs were not flawed
+because of the design, but due to limitations in the printing/construction process and as a result were unusable. 
 The mechanical portion of the project can therefore overall be deemed a success as 
 the individual components were made to a high standard of design and construction. 
 
 \section{Electrical}\label{eval/elec}
-Each of the sensors and actuators of the robot have been researched fully and a 
-parts list created for ease of replication. The parts chosen meet the 
-specification and carry out the task required to specification. 
-Each of the modules of the robot --- sensors and actuators --- has a fully 
-tested and integrable ROS node associated with it. The sensors and actuators are 
-also fully connected as part of the mechanical design through the PCB. 
+The electrical components of the project were completed to a high standard, 
+however some unforeseen complications, caused the completion of these to be delayed.
 
 The pre-built power distribution board chosen had several advantages over a 
 custom built solution. Firstly, it was very easily integrated with the Polulu 
@@ -97,7 +87,7 @@ build system would have required the design of a second.
 
 The range sensors used proved to be largely successful, with some caveats. 
 During the unit testing phase, the sensors performed well, giving consistent 
-readings accurate to within our required uncertainty. During the SLAM testing, 
+readings that were accurate to within our required uncertainty. During the SLAM testing, 
 they mostly measured accurate results, however, their limitations started to 
 become apparent. As the distance increased, the widening cone of detection caused some 
 erroneous data to be measured. This is assumed to be the cause of the corners 
@@ -108,12 +98,11 @@ ultrasonic sensor are sometimes inexact. This could be improved with the use of
 a dedicated timing circuit. Finally, as there were several range sensors on each 
 robot, taking one measurement sweep took a relatively long time. This is 
 especially the case when multiple robots are synchronising their sweeps to avoid 
-interference. This would have been mitigated if we had used an infra-red sensor. 
+interference. This would have been mitigated if we had used an infrared sensor. 
 This would cost more, but it could be possible to mount the sensor on a servo 
 motor, and move it through \ang{180} sweeps as to not require more than one. 
 This would also remove the timing issue, as they generally return an analogue 
-voltage instead of a pulse time. Initially, this design concept was discounted 
-to due the additional mechanical complexities of mounting the components and 
+voltage instead of a pulse time. Initially, this design concept was discounted  due to the additional mechanical complexities of mounting the components and 
 cost, however without the time and budget restrictions, this solution would 
 likely improve the system's performance. 
 
@@ -123,12 +112,12 @@ returned reasonable results in testing, and the visualisation produced using
 IMU data integrated with ROS shows promise. However, as the EKF is not 
 functioning correctly, the sensor-fused results have not been obtained to 
 measure their accuracy. 
-\todo{This sounds strange and a bit confusing?? Remove?}
+\todo{Now EKF kind of works can we change this}
 
 Having multiple robots allowed an 
 iterative design process to be carried out, significantly improving the outcome 
 of the PCB. Connections and vias were altered following the first design to be 
-more easily integrable with the mechanical layout. 
+more easily integrable with the mechanical layout.
 
 Time and care was take to ensure the electrical design of the PCB and any other 
 connections between parts on the robot --- such as the ribbon cable connection 
@@ -153,18 +142,17 @@ be found within the department. This was not the case as 40-pin ribbon cable and
 connectors are used predominantly for Raspberry Pis, making them more expensive 
 and therefore, not a common order for the department. Hence, these parts had to be ordered in and resulted in the task blocking 
 others longer than expected as these were required for system testing. Towards the end of the project, a Raspberry Pi was 
-shorted --- cause unknown, despite investigations --- and ceased to function, 
-meaning time was lost to finding issues that were caused by the Raspberry Pi not 
-being functional.    
+shorted --- the cause is unknown, despite investigations and testing --- and ceased to function, 
+meaning time was lost to finding the cause of this issue.    
  
 \section{Software}\label{eval/soft}
 The software architecture was well designed and thought-out making use of the 
-libraries and tools available. By using the ROS library, the architecture was predominantly handled
-and did not need to be managed further. Using the ROS library also provided 
+libraries and tools available. By using the ROS framework, the architecture was predominantly handled
+and did not need to be managed further. The ROS library also provided 
 access to other tools and libraries such as ``differential-drive'', ``robot-
-localization'' and ``g-mapping''. It was thought that these libraries would be ``plug 
-and play'' with the modules created as part of the Electrical sections. Despite  
-designing and implementing the Electrical modules to integrate with these libraries, 
+localization'' and ``gmapping''. It was thought that these libraries would be ``plug 
+and play'' with the modules created as part of the electrical sections. Despite  
+designing and implementing the electrical modules to integrate with these libraries, 
 problems were still encountered with integration. 
 
 The libraries were far more complex than first thought and were also not designed for 
@@ -172,8 +160,7 @@ the configuration of sensors used in this project. Additional modules had to be
 created as ``adapters'' with additional parameters between the libraries and the 
 originally created modules. Each of the libraries used therefore also had to be fully 
 understood, at a source code level, in order to construct the ``adapters'' and alter 
-the original modules. This took longer than expected, however did result in more in 
-depth knowledge of each of the component parts of the software. As the libraries were 
+the original modules. This took longer than expected, however did result in more in-depth knowledge of each of the component parts of the software. As the libraries were 
 designed for a variety of other sensors, mainly LIDAR instead of ultrasound, the 
 results obtained were not of as high quality as expected and this impacted the time 
 taken to tune parameters to achieve the best possible outcome. Although this was 
