@@ -1,37 +1,38 @@
 % !TEX root = ../report.tex
 
 \chapter{Software}\label{software}
-The software architecture was centred on the event driven implicit implication
-architectural style~\cite{garlan1993introduction}. This pattern is
-also known as the ``Hollywood'' design pattern due to its definition of ``Don't
-call us, we'll call you''. With regards to software architecture, this means
+The software architecture was centred on the event-driven implicit implication
+architectural style~\cite{garlan1993introduction}. With regards to software architecture, this means
 modules are signalled to start by other modules and this is propagated through
-the system with ``events'' triggering other ``events'' within the system.
+the system with events cascading to trigger other actions within the system.
 
 To implement this architecture, each part of the system can be defined as its own
 module with a function which triggers its invocation and a function which can
-broadcast events if required. A methodology for implementation of this system is
-the publish/subscribe model. Modules may ``publish'' data into the network under a
-``topic'', which triggers all modules which have ``subscribed'' to that topic to
-take some responding action. Using this method, in the context of this project,
-means the software has strong support for reuse --- as new sensors or libraries can
-be plugged in and subscribe to the appropriate topics --- and loose coupling
-throughout the system means that maintenance and testing of each module can take place independently.
+broadcast events if required. One possible implementation of this system uses
+the publish--subscribe model. Nodes may publish data on communication channels
+referred to as topics, which triggers all nodes which have subscribed to the
+topic to take some responding action. This pattern has the advantage that
+the resulting software has strong support for reuse---as new architecture
+components can be dynamically added at runtime by subscribing to the appropriate
+topics---and loose coupling between modules means that maintenance and testing
+of each module can take place independently, and significant changes to the
+system can be made without the need for major architectural modifications.
 
-In robotic systems, this architecture is highly beneficial as each of the sensor
-and actuator systems can run independently, publishing their data for feedback,
-using event driven implicit invocation through data-oriented programming. This
-reduces the risk of system crashes as module crashes are isolated, improving
+In robotic systems, this data-oriented approach is highly beneficial as each of
+the sensor
+and actuator systems can run independently without requiring knowledge of
+implementation details of other parts of the system. This
+reduces the risk of system crashes, as module crashes are isolated, increasing
 robustness.
 
-A true implementation of the event driven implicit invocation style would have all
+A true implementation of the event-driven implicit invocation style would have all
 actions being taken only in the callback responses, with modules being inactive
 the rest of the time. However, in a dynamic environment such as a robot with many
 topics being published many times per second, it is inefficient and unsafe to have
-large amounts of code in the callback functions, as these functions could be
-interrupted by themselves. It is therefore necessary for each individual
-module to have a polling loop in which it handles its heavier functionality, with
-callbacks only setting up the data necessary for this loop.
+large amounts of code in the callback functions, which block other operations from
+taking place. It is therefore often beneficial for nodes to have a polling loop
+in which they handle computationally expensive functionality, with
+callbacks only setting up the data required by this loop.
 
 \section{ROS}\label{soft/ROS}
 In order to implement this architecture, and following extensive research
