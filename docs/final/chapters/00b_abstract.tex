@@ -1,28 +1,36 @@
 % !TEX root = ../report.tex
 
 \begin{abstract}
-\noindent 
-Several co-operating agents can coordinate to solve many tasks faster than a single agent.
-However, most existing multi-agent systems involve centralised control and telemetric
-communication. This project aimed to develop co-operative robots which effectively map and 
-search an area using non-telemetric communication and distributed control. This will allow 
-the robotic systems to perform even in environments which hinder telemetry, such as
-caves or tunnels. Each agent was to be able to solve this problem 
-individually; however, after the introduction of multiple robots to the area,
-they should be able to distribute the task to solve it quicker. The robots will
-be tested in a custom-made modular testing maze environment, in which a target
-is to be located, and their performance evaluated both individually and
-co-operatively. The robots use incremental encoders and an inertial measurement
-unit are used to track the robot's position and orientation as it moves through its environment.
-Computer vision is used in conjunction with ultrasonic sensors to perceive the environment,
-identify other robots and produce a map of the area. Communication is conducted over 
-ad-hoc Wi-Fi, which is artificially restricted to require line-of-sight between robots, so
-as to simulate situations where global communication is not possible. The report presents a
-detailed analysis of these electrical, software and mechanical design solutions as well as
-an extensive discussion of the project management approach and practices employed used to
-properly coordinate the project team and minimise potential risk. The rigorous testing process
-of each subsystem and higher level system testing is also described. Unforeseen setbacks and
-technical difficulties delayed the completion of some latter objectives which has resulted in
-the AI module not being fully integrated. The system was, however, implemented to a high standard,
-and its modularity would allow it could easily be continued in the future.
+\noindent
+Co-operative mobile robotics is a growing field, as multiple autonomous
+agents can coordinate to solve many tasks faster than a single robot.
+However, most existing multi-agent systems rely on centralised control and
+telemetric communication. This is a drawback in environments such as caves
+or tunnels, where such techniques are restricted due to conditions which
+limit the range of radio communication.
+
+This project aimed to develop co-operative robots which map and search an
+area and locate a goal using non-telemetric communication and distributed
+control, allowing the system to perform in environments with restricted
+telemetry. In order to simulate these conditions, communication over Wi-Fi
+was artificially restricted to require line-of-sight. Each agent is able to
+solve the problem individually; however, the introduction of additional
+robots to the area should allow them to solve it faster by distributing the
+task.
+
+Three differential wheeled robots were constructed, with incremental encoders
+and inertial measurement units used to track their odometry as
+they traverse their environment. Computer vision is used together with an
+array of ultrasonic sensors to allow the robots to detect objects, identify
+other robots, and produce a map of their surroundings. The robots were
+tested in a custom-made modular testing environment, and their performance
+was evaluated both individually and co-operatively.
+
+This report presents a detailed analysis of the electrical, mechanical,
+and software design challenges as well as their solutions. Unforeseen setbacks
+and technical difficulties delayed the completion of some of the more advanced
+objectives, which resulted in the AI module not being fully integrated.
+The system was, however, implemented to a high standard, and its modularity
+and flexibility will allow future work to be built on the achievements of
+this project.
 \end{abstract}
