@@ -271,12 +271,12 @@ not connected to the RPi in this design as it was not yet required.
 An \verb|i2c_object| class that used the ``smbus'' package was created to
 simplify the communication over the \isc{} buses. These
 were initialised with an \isc{} bus and an address, and
-contained various methods for reading and writing to the \isc{} device, 
-such as \verb|read_word()|, shown in Code Listing \ref{lst:i2c}.
+contained various methods for reading and writing to the \isc{} device,
+such as \verb|read_word()|, shown in Code Listing~\ref{lst:i2c}.
 
-\begin{lstlisting}[caption={I2C read_word() Function},label={lst:i2c} , language=python]
+\begin{lstlisting}[caption={I2C \texttt{read\_word()} function}, label={lst:i2c}]
 def read_word(self, reg):
-    """ read a word from the i2c_object at the register addresses reg and reg+1"""
+    """Read a word from the i2c_object at the register addresses reg and reg+1"""
     h = self.bus.read_byte_data(self.address, reg)
     l = self.bus.read_byte_data(self.address, reg + 1)
     value = (h << 8) + l
@@ -288,7 +288,7 @@ and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
-\begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
+\begin{lstlisting}[caption={IMU Initialisation Function}, label={lst:imu_init}]
 def __init__(self, address, rate, channel=1):
     self.address = address
     self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
@@ -401,7 +401,7 @@ pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
-Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise 
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise
 via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
 
 \begin{table}[!ht]\centering
