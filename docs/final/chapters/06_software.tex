@@ -827,6 +827,24 @@ and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
 The IMU provides values for the yaw velocity and acceleration in the $X$ and
 $Y$ directions.
 
+\todo{Talk about graphics}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.3\textwidth]{graphs/bad_ekf}
+	\caption{EKF output for square path before fixing parameters}\label{fig:bad_ekf}
+\end{figure}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.3\textwidth]{graphs/ekf}
+	\caption{EKF output for square path after fixing parameters}\label{fig:ekf}
+\end{figure}
+
+
+
 \begin{lstlisting}[caption={EKF YAML file}, label={lst:ekf_yaml}, style=yaml]
 frequency: 50  # Frequency at which odometry is published in Hz
 two_d_mode: true  # Ignore movement in three dimensions
@@ -1008,7 +1026,6 @@ An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 	\centering
 	\includegraphics[width=1\textwidth]{ComputerVisionScreenshot.png}
 	\caption{Computer Vision PC Test}\label{fig:cv_screenshot}
-
 \end{figure}
 
 The system was then tested on the RPi by monitoring the ROS topic \verb|robots_detected| to
