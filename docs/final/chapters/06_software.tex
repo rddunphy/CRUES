@@ -899,6 +899,34 @@ The scan data is more complex, as the package is intended for use with a LIDAR u
 
 \subsection{Tuning}\label{soft/SLAM/tuning}
 
+
+
+
+\begin{figure}[!ht]
+\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{graphs/rectangle_map}
+		\caption{With optimised parameters}
+		\label{fig:gmapping_output/rect}
+	\end{subfigure}
+
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{graphs/stripy_rect_map}
+    \caption{Before optimising parameters}
+    \label{fig:gmapping_output/stripy}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{graphs/obstacle_map}
+    \caption{Obstacle at right end of map}
+    \label{fig:gmapping_output/obstacle}
+  \end{subfigure}
+  \caption{GMapping output}\label{fig:gmapping_output}
+\end{figure}
+
+
+
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
 understanding of the environment (see Section~\ref{litreview/cv}). In this system, it was used to allow the robots to
