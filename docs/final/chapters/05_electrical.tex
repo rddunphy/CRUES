@@ -267,15 +267,20 @@ allows the address to be changed through a data pin from 0x68 to 0x69.
 This would most likely be used if the framework developed was being used
 on another, more complicated system requiring several IMUs. This pin was
 not connected to the RPi in this design as it was not yet required.
-\todo{code description}
 
 An \verb|i2c_object| class that used the ``smbus'' package was created to
 simplify the communication over the \isc{} buses. These
 were initialised with an \isc{} bus and an address, and
-contained various methods for reading and writing to the \isc{} device.
+contained various methods for reading and writing to the \isc{} device, such as \verb|read_word()|, shown in Code Listing \ref{lst:i2c}.
 
-\todo{what code is interesting}
-
+\begin{lstlisting}[caption={I2C read_word() Function},label={lst:i2c} , language=python]
+def read_word(self, reg):
+    """ read a word from the i2c_object at the register addresses reg and reg+1"""
+    h = self.bus.read_byte_data(self.address, reg)
+    l = self.bus.read_byte_data(self.address, reg + 1)
+    value = (h << 8) + l
+    return value
+\end{lstlisting}
 An \verb|IMU| class was then created to read the data from the IMU which
 and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
