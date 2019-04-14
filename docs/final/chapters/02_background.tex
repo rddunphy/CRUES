@@ -6,7 +6,7 @@
 A robot is ``a machine capable of carrying out a complex series of actions 
 automatically''~\cite{robotdef}. 
 Robotics is the ``branch of technology which deals with the design, construction, 
-operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical, 
+operation, and application''~\cite{roboticsdef} of robots. Robotics combines several fields from mechanical, 
 electrical and software engineering within a single system to achieve its goals. By 
 combining the three major disciplines of artificial intelligence, operations 
 research, and control theory, a resultant intelligent control system is created~
@@ -18,16 +18,16 @@ definition, which generalises co-operative behaviour in robotics, describes it
 as ``joint collaborative behaviour that is directed toward some goal in which 
 there is a common interest or reward''~\cite{barnes1991behaviour}. This 
 description fits the objectives of this study more appropriately than the 
-specific term swarm robotics,  which has a number of additional requirements, 
+specific term swarm robotics, which has a number of additional requirements, 
 including that problem solving should be distributed across the swarm~
 \cite{sahin04}. This definition does not apply to this project, as the robots 
-designed here are capable of operating autonomously and will be able to solve 
+designed here can operate autonomously and will be able to solve 
 certain tasks individually. In this case, collaboration is used to deliver a 
 performance improvement. For this reason, the more general term of co-operative 
 robotics will be used throughout. The aim is to reduce the time taken or 
-increase performance  of the system over a single-robot system~
+increase performance of the system over a single-robot system~
 \cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
-distributed system across a number of homogeneous agents, agent redundancy is 
+distributed system across several homogeneous agents, agent redundancy is 
 introduced which can improve the completion rate of tasks, especially in 
 potentially volatile environments~\cite{beckers1994local, parker95}.
 Co-operative robotics goes beyond the idea of collaborative robotics in 
@@ -46,7 +46,7 @@ human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
 to co-ordinate to complete tasks that one could not on its own, such as push a
 larger object. Their system. however, requires a global view of the area so to 
 co-ordinate their efforts. However, even since these findings, the progress
-in the field has accelarated. An excellent example is Sebastien de Rivas' work at
+in the field has accelerated. An excellent example is Sebastien de Rivas' work at
 Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
 team have spent the last eight developing very lightweight co-operating robots.
 Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
@@ -63,7 +63,7 @@ connect the fixed parts of the robot together by joints, allowing motion between
 these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually 
 by motors, imparts forces on the robot which allow it to move and perform a 
 variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators'' 
-is influenced by a number of sensors which provide the system with information 
+is influenced by several sensors which provide the system with information 
 about its environment. These sensors can also influence the movement of the 
 actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
 
@@ -75,7 +75,7 @@ including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and
 binocular computer vision. Each of these sensors use unique methods to determine 
 the distance from the robot to another object in its environment. Ultrasound 
 sensors use high frequency sound waves which reflect from surfaces and return 
-to the sensor. The time taken to return and the speed of sound is used to 
+to the sensor. The time taken to return, and the speed of sound is used to 
 calculate the distance to the object. Infra-red sensors work in a similar 
 fashion but with invisible light instead of sound. 
 
@@ -90,7 +90,7 @@ Internal sensors can either be related to the actuators or fixed parts of the
 robot. Those sensors which are connected to the fixed parts of the robot provide 
 feedback about the entire robot and its local environment. The Inertial 
 Measurement Unit (IMU) provides feedback regarding the acceleration and angular 
-velocity with relation to 6 different axis (x, y, z in both linear and angular 
+velocity with relation to 6 different axes (x, y, z in both linear and angular 
 planes) or Degrees of Freedom (DOF). This can be combined with information from 
 other sensors in order to reduce the overall error in determining the robot's 
 location with relation to its starting position.  
@@ -117,11 +117,11 @@ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d
 \end{equation}
 
 If $K_d$ and $K_i$ were both 0, and only the P term was active, the output 
-would change to reduce the error in the system. For example with a
+would change to reduce the error in the system. For example, with a
 temperature controller, if the temperature was too low the heater would
 turn on, with the difference between the actual temperature and the required 
 temperature used to adjust how high it was set. In many systems, this simple 
-implementation is adequate, however it has several limitations. 
+implementation is adequate; however it has several limitations. 
 
 Consider for instance the temperature controller example where heat is being
 lost in the system is equal to the P constant times the error. This would
@@ -130,12 +130,12 @@ the I term can be increased. This will increase the longer an error is
 present, and preventing stable state errors. 
 
 Again, PI controllers are a common control mechanism, however they often have 
-a problem with overshoot due to system inertia. Again considering the 
+a problem with overshoot due to system inertia. Again, considering the 
 temperature controller, this is where the heater is set to increase the 
 temperature, and the desired temperature is reached. The heater turns off, but 
 is still hotter than the rest of the system, causing the system to get too hot. 
 This is especially damaging in systems where the control in one direction 
-is passive, e.g. the system can actively heat up, but has to wait for heat loss 
+is passive, e.g. the system can actively heat up, but must wait for heat loss 
 to cool down. This problem can be mitigated by increasing the D component. 
 This will push the state towards the desired state when the error is increasing 
 (e.g. during over-shoot), and pushes the current state away from the desired 
@@ -150,10 +150,8 @@ of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found.
 These values can then be used to calculate $K_i$ and $K_d$ which results in a 
 tuned system. However, many different formulae and definitions of the critical 
 gain of $K_p$ exist in literature. This leads to the conclusion that the 
-Ziegler-Nichols method is mathematically imperfect and this will have to be 
+Ziegler-Nichols method is mathematically imperfect, and this will have to be 
 explored experimentally during the project.
-
-
 
 \section{SLAM}\label{litreview/slam}
 A key challenge in mobile robotics is for the robot to know its own position in the
