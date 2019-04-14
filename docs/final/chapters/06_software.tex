@@ -896,6 +896,12 @@ The \verb|gmapping| package takes in a \verb|LaserScan| message, as well as odom
 The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different methods of active range finding are similar enough, however, that a rudimentary laser scan message could be created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of each sensor will allow it to find the walls of a corner earlier than the point.
 
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{diagrams/amcl_localization}
+	\caption{AMCL transform diagram~\cite{macenski_amcl}}\label{fig:amcl}
+\end{figure}
+
 
 \subsection{Tuning}\label{soft/SLAM/tuning}
 
