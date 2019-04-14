@@ -20,7 +20,7 @@ throughout the system means that maintenance and testing of each module can take
 
 In robotic systems, this architecture is highly beneficial as each of the sensor
 and actuator systems can run independently, publishing their data for feedback,
-using event driven implicit invocation through data oriented programming. This
+using event driven implicit invocation through data-oriented programming. This
 reduces the risk of system crashes as module crashes are isolated, improving
 robustness.
 
@@ -29,7 +29,7 @@ actions being taken only in the callback responses, with modules being inactive
 the rest of the time. However, in a dynamic environment such as a robot with many
 topics being published many times per second, it is inefficient and unsafe to have
 large amounts of code in the callback functions, as these functions could be
-interrupted by themselves. With this in mind, it is necessary for each individual
+interrupted by themselves. It is therefore necessary for each individual
 module to have a polling loop in which it handles its heavier functionality, with
 callbacks only setting up the data necessary for this loop.
 
@@ -284,7 +284,7 @@ a unique identifier to allow sending messages to specific robots
 rather than broadcasting all messages to all robots.
 
 \subsection{Design}\label{soft/comms/design}
-In order to implement these requirements the first decision was the
+In order to implement these requirements,	 the first decision was the
 method the robots were going to use to communicate. A few options
 for this were considered such as Bluetooth and WiFi. After
 researching and considering these options, the decision was taken
@@ -360,7 +360,7 @@ def fromjson(packet):
 The header created includes the IP and name of both the sender and the
 receiver as well as the type of Python object which the data is. The header
 and the data to be sent are converted to JSON and returned as a single
-string. When  converting from JSON, the receiver checks that it was the
+string. When converting from JSON, the receiver checks that it was the
 intended recipient of the message, returning $-1$ if it was not, before
 returning the data object located at index 1 (header is index 0). These
 are the four helper methods used by the \verb|send()| and \verb|listen()|
@@ -488,7 +488,7 @@ thread is being created for each request, node crashes from interruptions no lon
 In order to test this version, it was important to first ensure that the
 previously successful tests remained successful. Therefore,
 the same initial tests were applied to this implementation and were
-successful as expected. In order to test whether the new implementation was
+successful as expected. To test whether the new implementation was
 thread-safe, a number of tests were executed.
 
 The first test involved creating a loop that would send 100 messages from robot
@@ -510,7 +510,7 @@ which is excessive for both this project's, and any reasonable purposes, hence, 
 determined that the system was sufficiently thread-safe to be used.
 
 \section{PID Controller}\label{soft/PID}
-A PID controller was used for each wheel in order to ensure a constant output
+A PID controller was used for each wheel to ensure a constant output
 velocity at the target specified by the control node. The PID controller is
 a feedback loop designed to eliminate errors in the actuator systems, ensuring
 that the motors correct for any outside forces such as friction that act on the
@@ -563,7 +563,7 @@ computation.
 
 In addition to the PID node, the library has a \verb|wheel-loopback|
 simulator node, which simulates the movement of wheels. This node was used in
-order to evalutate PID tuning methodologies ahead of the slower process of tuning
+order to evaluate PID tuning methodologies ahead of the slower process of tuning
 the actual values on the physical robot. The various methods discussed in Section~\ref{litreview/robotics/pid} were attempted and outcomes recorded.
 
 \subsection{Ziegler-Nichols}\label{soft/PID/zn}
@@ -959,7 +959,7 @@ Feature Based object detection was also considered. As described in
 Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be
 taken of the object and therefore takes far less time to
 implement than the CNN solution. However, the accuracy and
-consistency are largely dependant on the number of features
+consistency are largely dependent on the number of features
 detected, and the algorithm's complexity grows relatively
 quickly. The basic brute force algorithm involves comparing
 every key point in the object image to every key point in the
@@ -1076,6 +1076,8 @@ Functionality was then added to record the feed to observe how the computer visi
 the robot was traversing the maze, however issues were encountered with frame rate, namely: 
 the functionality being too computationally intensive for the RPi in addition to all other 
 computation. This is therefore only used in debugging, and not usually active.
+
+\todo[inline]{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
 
 \section{AI \& Control Modules}\label{soft/ai}
 
