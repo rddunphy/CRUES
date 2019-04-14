@@ -12,12 +12,11 @@ the motors. The board integrates with the chassis easily
 and regulates the voltage provided by the 6 AA batteries, using an
 MP4223H switching buck converter~\cite{mpbuck}, to \SI{5}{\volt} or
 \SI{3.3}{\volt} at a maximum of \SI{2.5}{\ampere}. This can be used
-to power the microcontroller and peripherals used by the robot, with the 
+to power the microcontroller and peripherals used by the robot, with the
 motors being supplied with the reverse protected voltage before regulation.
 
 The board was also configurable if required, allowing the supply to be
-divided into \SI{4.8/6}{\volt} and \SI{2.4/3}{\volt} supplies dependent on
-the voltage of the batteries used. There are also a number of further jumper
+divided into nominal \SI{6}{\volt} and \SI{3}{\volt} supplies. There are also a number of further jumper
 connections on the board which can be cut for further voltage customisation.
 
 The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse
@@ -32,13 +31,13 @@ be driven separately.
 The power board also provides a power button and switch to control the
 power supply. A separate board with only power distribution was
 available, however, for the additional small cost, integration of
-motor drivers was deemed to be a cost effective addition given our 
+motor drivers was deemed to be a cost effective addition given our
 space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
-onto the boards as the robots were assembled. Once soldered, the power 
+onto the boards as the robots were assembled. Once soldered, the power
 distribution board and motor driver board were continuity tested and
-subsequently continually monitored to ensure correct functionality.  
+subsequently continually monitored to ensure correct functionality.
 
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
@@ -56,35 +55,35 @@ and visible light respectively.
 Of these three, LIDAR is generally considered to be the most effective
 as it is the most accurate and has a \ang{360} field of view. However,
 it is both too expensive and too heavy for the applications of this project, especially
-considering scalability requirements. 
+considering scalability requirements.
 
-IR transceivers are far more affordable but have a limited cone of 
-vision per sensor as light deviates very little through air and the 
-maximum range of these sensors is approximately \SI{0.5}{\m}~\cite{InfraredDatasheet}. 
-Ultrasonic transceivers have a wider cone of 
-detection and also a large range~\cite{HCSR04datasheet}. In addition to 
-this, they are also cheaper than both IR and LIDAR systems. 
+IR transceivers are far more affordable but have a limited cone of
+vision per sensor as light deviates very little through air and the
+maximum range of these sensors is approximately \SI{0.5}{\m}~\cite{InfraredDatasheet}.
+Ultrasonic transceivers have a wider cone of
+detection and also a large range~\cite{HCSR04datasheet}. In addition to
+this, they are also cheaper than both IR and LIDAR systems.
 
 Ultrasonic transceivers work by emitting sound at a particular frequency
-and measuring the time until the reflected wave returns to the sensor. 
-Multiple ultrasonic sensors of the same design have a significant chance to interfere with each other, 
-however, IR also has this limitation 
-while also being more susceptible to external interference. A possible solution 
-was to make a budget LIDAR unit using a single IR sensor and a 
-servo motor mounted on top of the robot. This was, however, dismissed as 
-the two PWM pins of the Raspberry Pi would be assigned to each of the 
-motors respectively. This solution would also require a budget and 
-software implementation commitment prior to testing which was not deemed 
-worth the potential added risk to the project.   
+and measuring the time until the reflected wave returns to the sensor.
+Multiple ultrasonic sensors of the same design have a significant chance to interfere with each other,
+however, IR also has this limitation
+while also being more susceptible to external interference. A possible solution
+was to make a budget LIDAR unit using a single IR sensor and a
+servo motor mounted on top of the robot. This was, however, dismissed as
+the two PWM pins of the Raspberry Pi would be assigned to each of the
+motors respectively. This solution would also require a budget and
+software implementation commitment prior to testing which was not deemed
+worth the potential added risk to the project.
 
-Hence ultrasonic sensors were chosen and the ultrasonic sensor used was 
-the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and 
-ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its 
-range at $<$~\SI{30}{\mm}, however this is mitigated by the placement of 
-the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown in Figure~\ref{UltraSoundSensorDiagram}. 
+Hence ultrasonic sensors were chosen and the ultrasonic sensor used was
+the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and
+ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its
+range at $<$~\SI{30}{\mm}, however this is mitigated by the placement of
+the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown in Figure~\ref{UltraSoundSensorDiagram}.
 
-The sensor is also widely used and available within the 
-department, mitigating any risks surrounding delivery lead times. 
+The sensor is also widely used and available within the
+department, mitigating any risks surrounding delivery lead times.
 
 \begin{figure}[!ht]
 	\centering
@@ -94,15 +93,15 @@ department, mitigating any risks surrounding delivery lead times.
 \end{figure}
 
 \subsection{Implementation}\label{elec/range/impl}
-The hardware required for the ultrasonic sensors chosen is relatively straightforward. 
-They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are 
-connected to standard GPIO pins on the RPi. The echo pin has to be connected through 
-a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The 
-trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above 
+The hardware required for the ultrasonic sensors chosen is relatively straightforward.
+They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are
+connected to standard GPIO pins on the RPi. The echo pin has to be connected through
+a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The
+trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above
 the threshold voltage.
 
-The distances are measured by a class named \verb|USScan|. This has a 
-\verb|get_scan()| function which iterates through each ultrasonic sensor and takes a reading, 
+The distances are measured by a class named \verb|USScan|. This has a
+\verb|get_scan()| function which iterates through each ultrasonic sensor and takes a reading,
 as shown below in Listing~\ref{lst:get_scan}.
 
 \begin{lstlisting}[caption={get\_scan() Function in USScan},label={lst:get_scan} , language=python]
@@ -237,8 +236,8 @@ counts per revolution.
 \section{IMU}\label{elec/imu}
 The IMU consists of a three axis accelerometer and a three axis gyroscope
 which can be used to measure both the linear acceleration and rotational
-velocity of the robot. This can be integrated to obtain velocity and integrated again 
-to obtain displacement in order to track the robot's position over time, again by performing dead reckoning. It is worth noting 
+velocity of the robot. This can be integrated to obtain velocity and integrated again
+to obtain displacement in order to track the robot's position over time, again by performing dead reckoning. It is worth noting
 that the additional calculation here adds to the probability of error within the measurement. However, the
 system can then perform sensor fusion on this data and the encoder
 readings to get far more accurate results than is possible with either system
@@ -268,15 +267,20 @@ allows the address to be changed through a data pin from 0x68 to 0x69.
 This would most likely be used if the framework developed was being used
 on another, more complicated system requiring several IMUs. This pin was
 not connected to the RPi in this design as it was not yet required.
-\todo{code description}
 
 An \verb|i2c_object| class that used the ``smbus'' package was created to
 simplify the communication over the \isc{} buses. These
 were initialised with an \isc{} bus and an address, and
-contained various methods for reading and writing to the \isc{} device.
+contained various methods for reading and writing to the \isc{} device, such as \verb|read_word()|, shown in Code Listing \ref{lst:i2c}.
 
-\todo{what code is interesting}
-
+\begin{lstlisting}[caption={I2C read_word() Function},label={lst:i2c} , language=python]
+def read_word(self, reg):
+    """ read a word from the i2c_object at the register addresses reg and reg+1"""
+    h = self.bus.read_byte_data(self.address, reg)
+    l = self.bus.read_byte_data(self.address, reg + 1)
+    value = (h << 8) + l
+    return value
+\end{lstlisting}
 An \verb|IMU| class was then created to read the data from the IMU which
 and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
@@ -353,7 +357,7 @@ Various tests were performed using this method testing both the gyroscope and th
 accelerometer by moving and rotating the IMU. The tests showed reasonable results
 indicating that the IMU was functioning properly and that the data was being interpreted
 correctly. Exact measurements of accuracy could not be obtained, however, without a test
-system for precisely controlling the acceleration and rotations. 
+system for precisely controlling the acceleration and rotations.
 
 \section{PCB}\label{elec/pcb}
 As precise and consistent placement of components was required to ensure
@@ -387,18 +391,16 @@ with the following physical design constraints:
   \item Motor drive connectors also at fixed position relative to centre
 \end{itemize}
 
-When designing the PCB in 
+When designing the PCB in
 the first iteration, an attempt was made to use pins closest to the positions
-of the components on the robot to achieve the neatest possible design, and minimise 
-crossing wires and vias. The IMU pins had to be connected to the two \isc{} 
-pins of the Raspberry Pi and, similarly, the motor PWM pins were 
+of the components on the robot to achieve the neatest possible design, and minimise
+crossing wires and vias. The IMU pins had to be connected to the two \isc{}
+pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
 Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise 
-via and path crossing. This can be seen in Table~\ref{table:pin_assignments}. 
-
-
+via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
