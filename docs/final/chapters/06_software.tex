@@ -44,48 +44,58 @@ subscribing to topics.
 \subsection{Design}\label{soft/ROS/design}
 Following the decision to use ROS to implement our chosen architecture, a modular
 approach was adopted for the design of each of the components within the system.
-Hence, a system block diagram was developed to visualise data flow
-within the system. The block diagram in Figure~\ref{BlockDiagram}
-demonstrates the modularisation of the system and also the
-expectation that the AI module at the top of the system will be completely
-independent from the other components of the system.
+Figure~\ref{fig:software_block_diagram} shows a system-level block diagram visualising the
+primary channels of data flow between modules. This structure allows a
+data-driven approach to module development, making individual modules easily
+interchangeable due to the high level of decoupling. Sensors, actuators and
+control nodes can therefore easily be changed at a later date without requiring
+major changes to the overall software structure.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{diagrams/software_diagram.png}
-	\caption{Software Block Diagram}\label{BlockDiagram}
-
+	\caption{High-level software block diagram}\label{fig:software_block_diagram}
 \end{figure}
 
-This modular approach means that sensor and actuator modules can be plugged in
-and out as desired and could easily be changed if needed at any point in the
-project.
+ROS provides two client libraries, \verb|rospy| and \verb|roscpp|, which allow
+programming nodes in Python and C++, respectively. Although the majority of
+the system will be programmed in Python, the choice of programming languages
+means that timing or processing sensitive operations can be written in C or C++
+as required.
 
-Each module can be programmed in a different language before being converted to a
-ROS node, which publishes and subscribes, using the appropriate methods for that
-language. Although the majority of the system will be programmed in Python,
-allowing different programming languages means that timing or processing
-sensitive operations can be programmed in C or C++ as required. Once converted to
-a ROS node, each module can then be started individually using a ROS launch file.
-Launch files are used by ROS to create and start a number of nodes within a
-system with any number of parameters. Again, due to the modular approach and use
-of ROS, launch files allow various configurations of modules to be tested easily.
+Individual nodes can be started from the command line using the \verb|rosrun|
+tool, or can be included in ROS launch files, which allow multiple nodes to
+be run simultaneously with any number of parameters. Launch files, which are
+written in a ROS-specific XML format, enable the
+creation of multiple configurations of nodes with different parameters,
+allowing different system setups to be tested easily. Launch files can be run
+using the \verb|roslaunch package_name file.launch| command.
 
-In order for ROS launch files to function, the directory structure within the
-``catkin''~\cite{catkin} workspace must be configured correctly. ``Catkin is the
-CMake based build system that is used to build packages in ROS''~\cite{gitcatkin}
-and requires a strict directory structure in order to build each of the
-individual modules within the project. Packages within ROS allow code to be
-maintained and compartmentalised, and by using packages throughout existing
-packages can be added easily.
-
+ROS nodes are created by scripts within ROS packages, which are located in a
+Catkin workspace. Catkin, a CMake-based build system used to build ROS
+packages~\cite{gitcatkin}, requires a strict directory structure, with each
+package containing \verb|launch|, \verb|script| and \verb|msg| directories
+containing launch files, node scripts, and message type definitions,
+respectively.
 
 \subsection{Implementation}\label{soft/ROS/impl}
-In order to enable rapid development of the system, the ROS packages were
-primarily written in Python, with the \verb|rospy| library used to
-interface with ROS functionality.
+In order to enable rapid development of the system, ROS packages were
+primarily written in Python. Four packages specific to the project were
+created:
 
-Each of the individual modules discussed in Section~\ref{electrical} was
+\begin{itemize}
+	\item \verb|crues_sensors| for hardware interfaces with sensors and nodes used
+	for processing sensor data and camera imagery
+	\item \verb|crues_actuators| for hardware interfaces with actuators
+	\item \verb|crues_comms| for nodes handling communication between robots
+	\item \verb|crues_control| for control nodes and AI modules, as well as
+	system-level launch and configuration files
+\end{itemize}
+
+In addition, a number of third-party packages were installed to aid with
+sensor fusion, mapping, and other specific tasks.
+
+Each of the individual modules shown in \ref{fig:software_block_diagram} was
 implemented as a ROS node, generally encapsulated in a single Python
 script. In order to adhere to best practices and ensure consistency across
 the code base, each node was represented as class, with an
@@ -96,10 +106,11 @@ recurring work, such as polling sensors for data, this method uses a
 events on subscribed topics simply call \verb|rospy.spin()|, which
 prevents the script from exiting until a ROS shutdown signal is received.
 
-The \verb|rospy.Publisher| class is used to publish messages of a pre-determined type to a topic with a given name. Similarly,
+The \verb|rospy.Publisher| class is used to publish messages of a
+pre-determined type to a topic with a given name. Similarly,
 \verb|rospy.Subscriber| is used by nodes wishing to listen for messages on
 a specific topic. The constructor of this class specifies a callback
-function, which takes the message as a parameter. By loading parameterised
+function, which receives the message as an argument. By loading parameterised
 values at startup, the code maintains flexibility, as different values can
 be used in launch files for different applications.
 
@@ -109,68 +120,129 @@ the launch file, and in this case defaults to \SI{10}{\Hz}. The data is
 set by a callback method, which is called by a subscriber to another
 topic. In general, callback methods were kept very short in order to
 prevent blocking of the subscriber's thread, with any processor-intensive
-work executed in the main loop.
+work executed in the main loop. In this case, the node simply publishes the
+data received on the subscribed topic unaltered.
 
 \begin{lstlisting}[caption={Example ROS node}, label={lst:ros_node}]
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import Int16
+from std_msgs.msg import String
 
 
-class Node:
+class Echo:
     def __init__(self):
         rospy.init_node('node_name')
+        self.data = ""
+        rospy.Subscriber('input_topic', String, self._callback)
+        self.pub = rospy.Publisher('echo_topic', String, queue_size=10)
         self.rate = rospy.Rate(rospy.get_param("~rate", 10))
-        rospy.Subscriber('topic1', Int16, self._callback)
-        self.pub = rospy.Publisher('topic2', Int16, queue_size=10)
-        self.data = 0
 
     def spin(self):
-        try:
-            while not rospy.is_shutdown():
-                self.pub.publish(self.data)
-                self.rate.sleep()
-        finally:
-            self._cleanup()
+        while not rospy.is_shutdown():
+            self.pub.publish(self.data)
+            self.rate.sleep()
 
     def _callback(self, msg):
         self.data = msg.data
 
-    def _cleanup(self):
-        # Perform cleanup operations such as saving data to files
-        # or clearing GPIO pin configuration
-        pass
-
 
 if __name__ == '__main__':
     try:
-        node = Node()
+        node = Echo()
         node.spin()
     except rospy.ROSInterruptException:
         pass
 \end{lstlisting}
 
+\subsection{Software versions}
+Various third-party software packages were used throughout this project.
+Below are details and rationale for the choices of software used
+widely throughout the system; additional packages used for specific modules
+are detailed in the following sections that deal with the respective modules.
 
-\subsubsection{Python version}
+\subsubsection{Operating system}
+The Raspberry Pi 3 B+ allows the installation of a number of Linux-based
+operating systems, of which Raspbian, a derivative of Debian, is the
+recommended default operating system. Initially Raspbian Stretch was chosen;
+however, problems were experienced with slow performance and heavy CPU usage.
+Research suggested that, while ROS officially supports Debian-based
+systems, performance is significantly optimised in ROS distributions for
+Ubuntu. For this reason, it was decided to switch to Lubuntu 16.04, a light-weight
+distribution based on Ubuntu with the LXDE desktop environment\todo{ref}.
+In order to minimise overhead, the desktop environment was disabled. The
+operating system was installed from an image produced by Ubiquity
+Robotics\todo{ref https://downloads.ubiquityrobotics.com/pi.html}, which is
+bundled with various robotics tools, including an installation of ROS
+Kinetic.
+
+\subsubsection{ROS}
+The selected ROS distribution, ROS Kinetic Kame, was released in 2016. The
+decision to use this version over more recent releases such as the 2018
+Melodic Morenia release was informed by the wide availability of packages
+for the former distribution, some of which are yet to be released on more
+recent platforms.\todo{ref}
+
+\subsubsection{Python}
 This project currently uses Python 2.7, which will no longer be supported
 after January 2020~\cite{python2-eol}. The reason for this choice was the
-lack of official support for Python 3.x in ROS Kinetic. While it is
-possible to use Python 3 with ROS, various issues may arise resulting from
-incompatibility~\cite{medium-ros-python3}. In the interest of stability,
+lack of official support for Python 3.x in ROS Kinetic. While in principle
+it is possible to use Python 3 with ROS, various compatibility issues may
+arise~\cite{medium-ros-python3}. In the interest of stability,
 it was decided to use the older version. Migration to ROS 2, which is
 currently under heavy development but will have native support for Python
 3, is recommended in future~\cite{ros2}.
 
-\subsection{Testing}\label{soft/ROS/test}
-In addition to each of the nodes being tested independently in a similar
-manner to how each of them were tested in isolation throughout
-Section~\ref{electrical}, the nodes were tested in a number of different
-configurations.
-\todo{David maybe needs to write this}
+\subsubsection{RPi.GPIO}
+For hardware interactions with the Raspberry Pi's GPIO pins, RPi.GPIO and
+WiringPi were considered. RPi.GPIO was selected as it is widely adopted in
+the Raspberry Pi community, and is used as the basis for a number of other
+GPIO libraries, such as GPIO Zero. \todo{ref https://pypi.org/project/RPi.GPIO/}
+Over the course of the project, various difficulties were encountered with
+the library, including problems with the edge-detection implementation which
+resulted in frequent ultrasonic sensor timeouts, and the lack of a hardware
+PWM interface. Migration to WiringPi, which does not suffer from these problems
+is suggested in future.
 
-Each of the topics can be tracked from the main graph of nodes in the ROS
-runtime using the command $rqt graph$. This produces the following output,
-\todo{put rqt graph of nodes and topics in here and discuss}.
+
+\subsection{Testing}\label{soft/ROS/test}
+ROS provides a number of packages for testing and debugging systems. These
+include \verb|rviz|, which generates spacial visualisations of data published
+on specific topics, \verb|rqt_plot|, which allows real-time graphing of
+numerical data, and \verb|rqt_graph|, which displays ROS computation graphs
+illustrating interactions between nodes. Each of these packages were used
+extensively in testing both individual nodes and system architectures.
+Figure~\ref{fig:rqt_graph} shows the computation graph of the overall system,
+generated by \verb|rqt_grpah|, with nodes represented by ellipses and topics
+shown as rectangles.
+
+In addition to these tools, which were mainly employed on code running on the
+Raspberry Pis, a suite of unit tests was written to prevent regressions. In
+order to allow these tests to run on desktop PCs before deploying to the
+Raspberry Pi, the Python \verb|unittest.mock| mocking framework was used to
+replace ROS functionality that would otherwise require a ROS master node to
+be running. In addition, a mock version of RPi.GPIO was written in order to
+allow simulation of hardware interactions in tests. This took the form of a
+\verb|GPIO_MOCK| Python module, with functions and classes mirroring those in
+RPi.GPIO. Listing~\ref{lst:gpio_import} shows how to ensure that the correct
+library is imported depending on the platform the code is running on. This
+takes advantage of the fact that RPi.GPIO only runs on Raspberry Pis and cannot
+be installed on desktop computers.
+
+\begin{lstlisting}[caption={Import statement for RPi.GPIO library}, label={lst:gpio_import}]
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from crues_tools import GPIO_MOCK as GPIO
+\end{lstlisting}
+
+\begin{landscape} % Rotates the image on the page
+\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90} % Rotates the page in the PDF output
+\begin{figure}[!p]\centering
+    \includegraphics[width=1\linewidth]{graphs/rqt_graph}
+    \caption{ROS computation diagram showing interactions of nodes and topics for overals system}\label{fig:rqt_graph}
+\end{figure}
+\end{landscape}
+\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 0}
 
 
 \subsection{Deployment}\label{soft/ROS/deploy}
@@ -215,7 +287,7 @@ rather than broadcasting all messages to all robots.
 In order to implement these requirements the first decision was the
 method the robots were going to use to communicate. A few options
 for this were considered such as Bluetooth and WiFi. After
-researching and considering these options, the decision was taken 
+researching and considering these options, the decision was taken
 to use a Wireless Ad-hoc Network (WANET).
 
 WANET is a wireless network where the nodes can be located anywhere
@@ -540,7 +612,7 @@ Due to the problems outlined above, the library simulation was used to
 find a usable tuning method. A more practical solution was
 found~\cite{practicalPID}, which approached the problem without calculating
 values. Using the simulation and output graphs obtained from the ROS
-\verb|rqt_graph| package to determine correct behaviour, $K_p$ was
+\verb|rqt_plot| package to determine correct behaviour, $K_p$ was
 increased until the system oscillated with a constant amplitude.
 $K_p$ was then halved and $K_i$
 introduced to increase the rate of change in the system. $K_d$
