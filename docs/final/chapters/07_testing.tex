@@ -15,7 +15,7 @@ SLAM maps built when using these configurations.
 The modular maze environment was designed with the aim of being able to system
 test on as many maze configurations as possible. By creating a modular
 environment, the maze was also reusable in future iterations of the project, or
-similar projects which required a secure area to test autonomous vehicles.
+similar projects which required a secure area to test small autonomous vehicles.
 \subsection{Design}\label{test/maze/design}
 With these broad specifications in mind, a list of requirements for the maze
 environment was created (see Table~\ref{maze_reqs}).
@@ -67,18 +67,17 @@ suppliers was smaller than the requested measurements of \SI{1280 x 1690 x 18}
 {\mm}. Two resolutions were proposed by the mechanical workshop: reduce
 the width of each cell, or remove a column of holes from the maze. Following
 team consultation, it was decided that reducing the size of each cell would
-result in more flexibility in the end product, as even if the robot couldn't
-make a full turn in a single cell, 3 columns of two cell wide paths could still
+result in more flexibility in the end product, as 3 columns of two cell wide paths could still
 be created. It is also worth noting that the reduced cell width of \SI{195}{\mm}
 still met the requirement of the cell width being larger than the diameter of
 the robot.
 
 Secondly, the materials used for the walls and pegs would not be wood as this
 would involve many man hours to create the slits in the dowel and
-manually cut the walls to size. To streamline the process, it was
-suggested that the walls be made of acrylic --- to allow
-them to be laser cut --- and the pegs be 3D printed --- allowing mass printing
-once a design had been finalised. It was agreed that this was a good idea and
+manually cut the walls to size. In order to streamline the process, it was
+suggested by the mechanical workshop, that the walls be made of acrylic, allowing
+them to be laser cut, and the pegs be 3D printed, allowing mass printing
+once a design had been finalised. It was agreed amongst the group that this was a good idea and
 in order for the pegs to be 3D printed they had to be made using CAD modelling
 software. None of the group had experience using this software, hence
 a steep learning curve was involved in carrying out this task.
@@ -104,7 +103,7 @@ originally thought \SI{3}{\mm} and so the slits would have to be widened to
 \SI{4}{\mm} to allow for this. The model was altered to account for this change and delivered to the mechanical workshop to be 3D printed.
 
 Unfortunately, once printed it was discovered that the design resulted in a peg
-that was unstable and often broke at the base. The mechanical workshop
+that was too fragile and often broke at the base. The mechanical workshop
 attempted to resolve this issue by increasing the density of the printing,
 however this was unsuccessful. Eventually, the mechanical workshop concluded
 that ordering a pre-slitted rod of aluminium and attaching metal pegs to the
@@ -147,25 +146,19 @@ The testing strategy designed for system testing was to develop a number of
 increasingly difficult mazes and test the capability of the robot to find a goal
 in each of these mazes. Additional robots will then be added to each of these
 configurations and the time recorded for quantitative testing of the project.
-Throughout the tests, qualitative results and conclusions will also be drawn to
-determine if the robots are co-operating effectively when searching the various
-maze configurations.
 
 A number of maze configurations were drawn up to be used as the default test
 cases for the robots. These configurations are shown in Figure~\ref{fig:maze_configs}. It is worth noting that these configurations were created before the
 cell width of the maze was reduced and therefore, maze configurations with 1
 cell width paths are significantly more difficult to traverse than previously
-thought. This will be taken into consideration when testing and adjusted
-accordingly if required.
+thought.
 
 
 \section{Results}\label{systest/results}
 Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/impl} and ~\ref{soft/PID} respectively, 
 minimal system testing took place. The system tests which did take place were 
-without SLAM/with poor SLAM and therefore could have no AI module as this is 
-dependent on knowing the world state (having a map built). Despite this, the 
-system --- as it was at the end of the project --- was tested on the maze configurations shown in Figure~\ref{fig:maze_configs}
-and the results are shown in Table~\ref{results}. 
+without the SLAM/AI integration, so the AI had to make decisions without knowledge of the derived map. Despite this, the 
+system was tested on the maze configurations shown in Figure~\ref{fig:maze_configs} with one agent, and then again with two. These results are shown in Table~\ref{results}. 
 
 \begin{figure}[!ht]
   \centering
@@ -219,14 +212,11 @@ and the results are shown in Table~\ref{results}.
 
 The results shown are not indicative of the project had it been completed in its 
 entirety, however these results give benchmark scores for the shown maze 
-configurations with what is essentially a random AI module. In practice 
-the robot's performance is slightly worse than this as there is also no 
-effective mapping, 
-and so a random AI could perform better. This is because in this case, choices 
-regarding paths would still be being made and paths would not be being repeated 
-which can be the case in these results. The results do broadly show, however, 
+configurations with what is a very basic AI module. A major drawback of the lack of SLAM/AI
+integration is that the same path can be searched multiple times, which resulted in a few
+instance with unusually slow results. The results do broadly show, however, 
 that multiple agents perform better than a single agent in terms of speed of 
-the goal. In these cases, this is a simple case of ``many hands make light 
+the search. In these cases, this is a simple case of ``many hands make light 
 work'' rather than anything intelligent that the robots are doing. 
 Nevertheless, the results demonstrate the successful outcomes of the project 
 and vindicate the time taken to research the field of co-operative robotics. 
