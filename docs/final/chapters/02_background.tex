@@ -5,7 +5,7 @@
 \section{Co-operative Robotics}\label{litreview/robotics}
 A robot is ``a machine capable of carrying out a complex series of actions 
 automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction, 
-operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical, 
+operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical,
 electrical and software engineering within a single system to achieve its goals. By 
 combining the three major disciplines of artificial intelligence, operations 
 research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be 
@@ -26,7 +26,7 @@ robotics will be used throughout.
 The aim of co-operative robotics is to reduce the time taken or 
 increase performance  of the system over a single-robot system~
 \cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
-distributed system across a number of homogeneous agents, agent redundancy is 
+distributed system across several homogeneous agents, agent redundancy is 
 introduced which can improve the completion rate of tasks, especially in 
 potentially volatile environments~\cite{beckers1994local, parker95}.
 Co-operative robotics goes beyond the idea of collaborative robotics in 
@@ -45,7 +45,7 @@ human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
 to co-ordinate to complete tasks that one could not on its own, such as push a
 larger object. Their system, however, requires a global view of the area to 
 co-ordinate their efforts. However, even since these findings, the progress
-in the field has accelarated. An excellent example is Sebastien de Rivas' work at
+in the field has accelerated. An excellent example is Sebastien de Rivas' work at
 Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
 team have spent the last eight years developing very lightweight co-operating robots.
 Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
@@ -60,7 +60,7 @@ connect the fixed parts of the robot together by joints, allowing motion between
 these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually 
 by motors, imparts forces on the robot which allow it to move and perform a 
 variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators'' 
-is influenced by a number of sensors which provide the system with information 
+is influenced by several sensors which provide the system with information 
 about its environment. These sensors can also influence the movement of the 
 actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
 
@@ -85,7 +85,7 @@ Internal sensors can either be related to the actuators or fixed parts of the
 robot. Those sensors which are connected to the fixed parts of the robot provide 
 feedback about the entire robot and its local environment. The Inertial 
 Measurement Unit (IMU) provides feedback regarding the acceleration and angular 
-velocity with relation to 6 different axis (x, y, z in both linear and angular 
+velocity with relation to 6 different axes (x, y, z in both linear and angular 
 planes) or Degrees of Freedom (DOF). This can be combined with information from 
 other sensors in order to reduce the overall error in determining the robot's 
 location with relation to its starting position.  
@@ -112,7 +112,7 @@ O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d
 \end{equation}
 
 If $K_d$ and $K_i$ were both 0, and only the P term was active, the output 
-would change to reduce the error in the system. For example with a
+would change to reduce the error in the system. For example, with a
 temperature controller, if the temperature was too low the heater would
 turn on, with the difference between the actual temperature and the required 
 temperature used to adjust how high it was set. In many systems, this simple 
@@ -130,7 +130,7 @@ temperature controller, this is where the heater is set to increase the
 temperature, and the desired temperature is reached. The heater turns off, but 
 is still hotter than the rest of the system, causing the system to get too hot. 
 This is especially damaging in systems where the control in one direction 
-is passive, e.g. the system can actively heat up, but has to wait for heat loss 
+is passive, e.g. the system can actively heat up, but must wait for heat loss 
 to cool down. This problem can be mitigated by increasing the D component. 
 This will push the state towards the desired state when the error is increasing 
 (e.g. during over-shoot), and pushes the current state away from the desired 
@@ -143,10 +143,8 @@ of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found.
 These values can then be used to calculate $K_i$ and $K_d$ which results in a 
 tuned system. However, many different formulae and definitions of the critical 
 gain of $K_p$ exist in literature. This leads to the conclusion that the 
-Ziegler-Nichols method is mathematically imperfect and this will have to be 
+Ziegler-Nichols method is mathematically imperfect, and this will have to be 
 explored experimentally during the project.
-
-
 
 \section{SLAM}\label{litreview/slam}
 A key challenge in mobile robotics is for the robot to know its own position in the
@@ -180,7 +178,7 @@ problem which attempts to map the entire path.
 
 The state of the system is known as $x_k$ which is a function that uses the previous 
 state to determine the next state. As this can not be perfectly accurate, there will 
-be uncertainty in the readings that must be taken into account. As a result, $x_k$,
+be uncertainty in the readings that must be considered. As a result, $x_k$,
 which is known as the motion model, is defined as
 \begin{equation}
 x_{k} = f(x_{k-1}, q_{k-1})\,,
@@ -190,7 +188,7 @@ also be represented by the probability distribution
 \begin{equation}
 x_{k} \sim p(x_{k} | x_{k-1})\,.
 \end{equation}
-Both of these imply that the state is stochastic and depends on the previous
+Both equations imply that the state is stochastic and depends on the previous
 state. The probability distribution emphasises that the current state is
 drawn from a distribution of possible states based on the previous state. Given that a perfect sensor is not possible, the current state will also have noise
 in the reading. This is known as the measurement model and can be defined as
@@ -224,7 +222,7 @@ that estimates the state of a dynamic system from a series of noisy measurements
 This uses the premise of the predict and update equations as joint probability
 distributions. Given variables defined on a probability space, the joint
 probability distribution gives the probability that each of the variables falls in any
-particular range or set. It uses these techniques to estimates a state vector containing
+range or set. It uses these techniques to estimates a state vector containing
 both the location of landmarks in the map and the robot pose~\cite{huang2007convergence}.
 
 
@@ -266,7 +264,7 @@ image of the target object and in the camera frame~\cite{lowe2004distinctive}. T
 several key point detection algorithms --- SIFT, BRISK and ORB, 
 to name a few --- each of which has its own way of describing 
 patterns in the pixels and selecting which will be rarer and 
-therefore more useful when identifying objects. Each also has 
+therefore, more useful when identifying objects. Each also has 
 a method of quantifying the similarity of two matches called a 
 distance metric. The algorithm then looks for features in both 
 the frame and the object image which score low in the distance 
@@ -294,12 +292,12 @@ that are data structures of typed fields which can include arbitrarily nested
 structures and arrays~\cite{crick2017rosbridge}.
 
 
-Nodes can using two distinct ROS frameworks, services and topics. 
+Nodes can use two distinct ROS frameworks, services and topics. 
 Services are synchronous and perform like function
 calls in traditional programming languages, where only one node in the 
 system can provide a service of a specific name. Alternatively, topics are
 asynchronous streams of objects published by a node. Other nodes can 
-subscribe by creating  handler function when a new data object is available.
+subscribe by creating a handler function when a new data object is available.
 Multiple nodes can concurrently publish and/or subscribe to the same topic and
 a single node may publish and/or subscribe to multiple topics.
 
@@ -322,7 +320,7 @@ written in C++ and does not support other languages \cite{aboutYARP}.
 The YARP model of communication is transport-neutral, meaning the details 
 of the underlying networks and protocols in use are decoupled from the 
 data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
-As a result it does not have the same extensive range of libraries available 
+As a result, it does not have the same extensive range of libraries available 
 which implement commonly required functionality for a robotic system.
 
 \section{AI}\label{litreview/maze}
@@ -334,7 +332,7 @@ algorithms and optimisation algorithms can be thought of as highly similar, and 
 a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}. 
 
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
-The exploration of an unknown environment is a well researched problem in 
+The exploration of an unknown environment is a well-researched problem in 
 robotics. Robot exploration is particularly important for 
 environments that are difficult or dangerous for humans. There are many
 algorithms that can be used for exploration such as Wall Follower, 
@@ -367,9 +365,9 @@ relatively straightforward. The right-hand rule algorithm is shown in Algorithm~
 \end{algorithmic}
 \end{algorithm}
 
-These steps ensure a wall is maintained on the right hand side of the robot at 
+These steps ensure a wall is kept on the right hand side of the robot at 
 all times. The left-rule is simply the opposite where the robot turns left 
-if at all possible to keep the wall on the robot's left. Therefore,
+if possible to keep the wall on the robot's left. Therefore,
 this algorithm is inherently inefficient as it exhaustively searches the
 maze. In many cases, one of these algorithms would be significantly quicker
 than the other but which cannot be determined without prior knowledge of 
@@ -405,7 +403,7 @@ algorithm to avoid traps such as loops which simple wall followers can be caught
 
 The Trémaux maze-solving algorithm requires the robot to record its 
 path and mark the routes it has taken throughout its navigation routine. Any 
-given path  can be unmarked, marked once or marked twice. If a path is marked 
+given path can be unmarked, marked once or marked twice. If a path is marked 
 twice that indicates the robot has travelled down it in both directions. The 
 robot will not travel down any path marked twice for a third time, therefore 
 treating them as dead-ends. Paths without markings are prioritised, before 
@@ -413,7 +411,7 @@ choosing those marked once in search of further unmarked paths. If a
 solution is found then the path that is marked only once is the route 
 from the goal back to the start point. Otherwise if no solution is found,
 all paths in the maze will be marked twice \cite{even2011graph}.
-Importantly, this will likely not find the shortest path but it will be 
+Importantly, this will likely not find the shortest path, but it will be 
 guaranteed to find one if it exists.
 
 \subsection{Path Finding}\label{litreview/maze/path}
@@ -422,13 +420,13 @@ through a graph such as Dijkstra's algorithm and A* search. In the
 context of our agents, path finding is likely to be used once 
 the goal has been found to return the robot back to its starting 
 position. In the case of an unweighted graph (a graph where all edges are 
-equivalent to search), one of the simplest algorithm 
+equivalent to search), one of the simplest algorithms 
 is breadth-first search. This explores all neighbours at the same depth 
 before moving onto nodes at the next depth level. This would be guaranteed 
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
 where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}
 Breadth-first search searches the oldest discovered node first meaning 
-a large number of backtracks to reach the oldest discovered node. As 
+many backtracks are needed to reach the oldest discovered node. As 
 backtracking in physical space is expensive, this results in a very 
 costly search for a single-agent. As more agents are added, the cost of this 
 decreases as less backtracking would take place. 
@@ -485,5 +483,5 @@ the lowest value of f, where f is the sum of g and h, where g is the
 distance to the current node plus the known distance to that adjacent 
 node and h is the heuristic value from that node to the goal. The heuristic 
 value can be found exactly as the first step of the algorithm though 
-this is very time consuming so approximate heuristics are used such 
+this is very time consuming, so approximate heuristics are used such 
 as the Manhattan distance, Diagonal distance and the Euclidean distance. 
