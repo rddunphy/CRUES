@@ -168,10 +168,11 @@ however, problems were experienced with slow performance and heavy CPU usage.
 Research suggested that, while ROS officially supports Debian-based
 systems, performance is significantly optimised in ROS distributions for
 Ubuntu. For this reason, it was decided to switch to Lubuntu 16.04, a light-weight
-distribution based on Ubuntu with the LXDE desktop environment\todo{ref}.
+distribution based on Ubuntu with the LXDE desktop environment.
 In order to minimise overhead, the desktop environment was disabled. The
 operating system was installed from an image produced by Ubiquity
-Robotics\todo{ref https://downloads.ubiquityrobotics.com/pi.html}, which is
+Robotics (available for download from
+\url{https://downloads.ubiquityrobotics.com/pi.html}), which is
 bundled with various robotics tools, including an installation of ROS
 Kinetic.
 
@@ -180,7 +181,7 @@ The selected ROS distribution, ROS Kinetic Kame, was released in 2016. The
 decision to use this version over more recent releases such as the 2018
 Melodic Morenia release was informed by the wide availability of packages
 for the former distribution, some of which are yet to be released on more
-recent platforms.\todo{ref}
+recent platforms.
 
 \subsubsection{Python}
 This project currently uses Python 2.7, which will no longer be supported
@@ -196,8 +197,7 @@ currently under heavy development but will have native support for Python
 For hardware interactions with the Raspberry Pi's GPIO pins, RPi.GPIO and
 WiringPi were considered. RPi.GPIO was selected as it is widely adopted in
 the Raspberry Pi community, and is used as the basis for a number of other
-GPIO libraries, such as GPIO Zero. \todo{ref https://pypi.org/project/RPi.GPIO/}
-Over the course of the project, various difficulties were encountered with
+GPIO libraries, such as GPIO Zero. Over the course of the project, various difficulties were encountered with
 the library, including problems with the edge-detection implementation which
 resulted in frequent ultrasonic sensor timeouts, and the lack of a hardware
 PWM interface. Migration to WiringPi, which does not suffer from these problems
