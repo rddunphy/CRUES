@@ -1,0 +1,4 @@
+rpl
+tmux
+ros-kinetic-gmapping
+ros-kinetic-robot-localization
