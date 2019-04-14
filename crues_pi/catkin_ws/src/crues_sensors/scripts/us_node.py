@@ -5,7 +5,7 @@ import math
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    from crues import GPIO_MOCK as GPIO
+    from crues_tools import GPIO_MOCK as GPIO
 
 import rospy
 from std_msgs.msg import Float32

@@ -1,0 +1,51 @@
+# This is a placeholder file used as a default for testing. Any changes must
+# also be made to each individual robot's config file in the crues_pi/config
+# directory. This file is overwritten by the appropriate config file when
+# packages are deployed using deploy.sh.
+
+hostname: "host"
+pins:
+  sda: 3
+  scl: 5
+  mld: 11
+  uce: 12
+  ms:  13
+  mrd: 15
+  uct: 16
+  ure: 18
+  urt: 22
+  ela: 23
+  era: 24
+  erb: 26
+  elb: 19
+  lg:  31
+  lr:  29
+  mlp: 32
+  mrp: 33
+  ult: 35
+  ule: 37
+ticks_meter: 6530
+base_width: 0.141
+encoder:
+  rate: 20
+ultrasonic:
+  rate: 6.5
+  pulse_offset: 0
+  angle: deg(30)
+  time: 0.05
+  range_max: 4.0
+  left:
+    offset: 0.02
+    response: 1.0
+  centre:
+    offset: 0.0188731
+    response: 0.9987
+  right:
+    offset: 0.02
+    response: 1.0
+imu:
+  rate: 20
+pid:
+  Kp: 0.176
+  Ki: 0
+  Kd: 0.008

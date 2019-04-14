@@ -1,3 +1,7 @@
+# Catkin files
+crues_pi/catkin_ws/build/
+crues_pi/catkin_ws/devel/
+
 # Rosbag files
 rosbag/
 *.bag

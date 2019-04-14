@@ -45,11 +45,11 @@ else
         sshpass -p ${PWD} ssh crues@${IP} "echo ${PWD} | sudo -p '' -S date -s '${DATE}'"
         NUM=0
         echo "Deploying to ${NAME} (crues@${IP})..."
-        NUM=$(($NUM + $(sshpass -p ${PWD} rsync -rupzi requirements.txt crues@${IP}:~/ | wc -l)))
-        NUM=$(($NUM + $(sshpass -p ${PWD} rsync -rupzi ros_pkgs/ crues@${IP}:~/catkin_ws/src/ | wc -l)))
+        NUM=$(($NUM + $(sshpass -p ${PWD} rsync -rupzi install/ crues@${IP}:~/ | wc -l)))
+        NUM=$(($NUM + $(sshpass -p ${PWD} rsync -rupzi catkin_ws/src/ crues@${IP}:~/catkin_ws/src/ | wc -l)))
         sshpass -p ${PWD} scp config/${NAME}.yaml crues@${IP}:~/catkin_ws/src/crues_control/config/params.yaml
         echo "Updated ${NUM} files on ${NAME}."
-        echo "Fetching Rosbag files..."
+        echo "Fetching output files..."
         sshpass -p ${PWD} ssh crues@${IP} "mkdir -p ~/rosbag/"
         mkdir -p rosbag/${NAME}/
         NUM=$(sshpass -p ${PWD} rsync -rupzi -r crues@${IP}:~/rosbag/ rosbag/${NAME}/ | wc -l)

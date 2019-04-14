@@ -23,7 +23,7 @@ def node():
     finally:
         timestamp = time.ctime(time.time()).replace(" ", "_").replace(":", "_")
         wheel_str = "left" if left else "right"
-        with open("/home/crues/pid_dump_%s_%s.txt" % (wheel_str, timestamp), 'w') as f:
+        with open("/home/crues_tools/pid_dump_%s_%s.txt" % (wheel_str, timestamp), 'w') as f:
             f.write("\n".join([str(o) for o in out]))
 
 

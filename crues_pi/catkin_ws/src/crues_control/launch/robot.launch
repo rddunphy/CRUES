@@ -1,6 +1,6 @@
 <launch>
 
-<!--    <param name="robot_description" textfile="$(find crues_control)/config/crues.urdf" />-->
+<!--    <param name="robot_description" textfile="$(find crues_control)/config/crues_tools.urdf" />-->
     <rosparam command="load" file="$(find crues_control)/config/params.yaml" />
     <rosparam command="load" file="$(find crues_control)/config/robots.yaml" />
 
@@ -98,7 +98,7 @@
 <!--    </node>-->
 
     <!-- DATA RECORDING -->
-<!--    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/odom /tf /odometry/wheel /odometry/filtered" />-->
-<!--    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues/rosbag/maps /tf /odometry/wheel /map /odometry/filtered" />-->
+<!--    <node name="rosbag_odom" pkg="rosbag" type="record" args="record -o /home/crues_tools/rosbag/odom /tf /odometry/wheel /odometry/filtered" />-->
+<!--    <node name="rosbag_slam" pkg="rosbag" type="record" args="record -o /home/crues_tools/rosbag/maps /tf /odometry/wheel /map /odometry/filtered" />-->
 
 </launch>

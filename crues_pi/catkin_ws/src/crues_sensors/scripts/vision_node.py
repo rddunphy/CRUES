@@ -10,7 +10,7 @@ try:
     import rospy
     pi = True
 except ImportError:
-    import crues.GPIO_MOCK as GPIO
+    import crues_tools.GPIO_MOCK as GPIO
     pi = False
 
 
@@ -32,7 +32,7 @@ class RobotDetector:
             if self.recording:
                 # Define the codec and create VideoWriter object
                 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-                self.recorder = cv2.VideoWriter('/home/crues/rosbag/output.avi', fourcc, self.frame_rate, (640, 480))
+                self.recorder = cv2.VideoWriter('/home/crues_tools/rosbag/output.avi', fourcc, self.frame_rate, (640, 480))
         else:
             self.cap = cv2.VideoCapture(1)
 
