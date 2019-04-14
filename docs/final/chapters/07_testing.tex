@@ -83,7 +83,7 @@ software. None of the group had particular experience using this software, hence
 a steep learning curve was involved in carrying out this task.
 
 A peg matching the original specifications was modelled, however upon delivery
-to the mechanical workshop, the group were informed that this design had to be 
+to the mechanical workshop, the group were informed that this design had to be
 changed to allow the walls to be cut as rectangles only --- with no wings. A new
 peg design was created which had slits at each \SI{90}{\degree} interval,
 running the length of the peg. This allowed the wall to be dropped in without
@@ -155,10 +155,10 @@ thought.
 
 
 \section{Results}\label{systest/results}
-Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/impl} and ~\ref{soft/PID} respectively, 
-minimal system testing took place. The system tests which did take place were 
-without the SLAM/AI integration, so the AI had to make decisions without knowledge of the derived map. Despite this, the 
-system was tested on the maze configurations shown in Figure~\ref{fig:maze_configs} with one agent, and then again with two. These results are shown in Table~\ref{results}. 
+Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/tuning} and~\ref{soft/PID} respectively,
+minimal system testing took place. The system tests which did take place were
+without the SLAM/AI integration, so the AI had to make decisions without knowledge of the derived map. Despite this, the
+system was tested on the maze configurations shown in Figure~\ref{fig:maze_configs} with one agent, and then again with two. These results are shown in Table~\ref{results}.
 
 \begin{figure}[!ht]
   \centering
@@ -210,15 +210,15 @@ system was tested on the maze configurations shown in Figure~\ref{fig:maze_confi
     \end{tabular}
 \end{table}
 
-The results shown are not indicative of the project had it been completed in its 
-entirety, however these results give benchmark scores for the shown maze 
-configurations with what is a very basic AI module. A major drawback of the lack of SLAM/AI integration is that the same path can be searched multiple times, which resulted in a few instance with unusually slow results. The results do broadly show, however, 
-that multiple agents perform better than a single agent in terms of speed of 
-the search. In these cases, this is a simple case of ``many hands make light 
-work'' rather than anything intelligent that the robots are doing. 
-Nevertheless, the results demonstrate the successful outcomes of the project 
-and vindicate the time taken to research the field of co-operative robotics. 
+The results shown are not indicative of the project had it been completed in its
+entirety, however these results give benchmark scores for the shown maze
+configurations with what is a very basic AI module. A major drawback of the lack of SLAM/AI integration is that the same path can be searched multiple times, which resulted in a few instance with unusually slow results. The results do broadly show, however,
+that multiple agents perform better than a single agent in terms of speed of
+the search. In these cases, this is a simple case of ``many hands make light
+work'' rather than anything intelligent that the robots are doing.
+Nevertheless, the results demonstrate the successful outcomes of the project
+and vindicate the time taken to research the field of co-operative robotics.
 Work detailed in further work (Section~
-\ref{furtherwork}) can use the results shown here as benchmark results and 
-measure the success of SLAM and AI implementations against these results to 
-evaluate progress being made. 
+\ref{furtherwork}) can use the results shown here as benchmark results and
+measure the success of SLAM and AI implementations against these results to
+evaluate progress being made.

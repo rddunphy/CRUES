@@ -387,7 +387,16 @@ object of the message. It then attempts to connect using the \verb|connect_ex()|
 which returns 0 if successful. If so, it can then use the Socket methods to send
 the data and then close the connection.
 
-\begin{lstlisting}[caption={listen() Function}, label={lst:comms_=listen}]
+When listening for incoming messages, the created Socket object must bind to
+an IP address and port number. The address \verb|0.0.0.0| allows the node to listen
+to any incoming messages. Listing~\ref{lst:comms_listen} shows the \verb|listen()| function which starts the node listening
+whilst setting the number of queued connections allowed (set here to 2 but can
+be increased when scaling the system to use more agents). Once the socket
+accepts a connection, packets received can continually be stored
+until no more data is received, after which the connection can be closed and
+the data read from the JSON strings and returned.
+
+\begin{lstlisting}[caption={\texttt{listen()} function}, label={lst:comms_listen}]
 def listen():
     PORT = 8001 # Arbitrary non-privileged port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -404,16 +413,6 @@ def listen():
     message = fromjson(packets)
     return message
 \end{lstlisting}
-
-When listening for incoming messages, the created Socket object must bind to
-an IP address and port number. The address 0.0.0.0 allows the node to listen
-to any incoming messages. Listing~\ref{lst:comms_listen} shows the \verb|listen()| function which starts the node listening
-whilst setting the number of queued connections allowed (set here to 2 but can
-be increased when scaling the system to use more agents). Once the socket
-accepts a connection, packets received can continually be stored
-until no more data is received, after which the connection can be closed and
-the data read from the JSON strings and returned.
-
 
 \subsection{Initial Testing}\label{soft/comms/initest}
 This implementation was set up and initially tested between a laptop and a
@@ -1039,10 +1038,10 @@ frame.
 Functionality was then added to record the feed to observe how the computer vision responded as
 the robot was traversing the maze, however issues were encountered with frame rate, namely: the functionality being too
 computationally intensive for the RPi in addition to all other computation.
-\todo{Is this definitely finished Matt? Maybe a sentence, "this functionality was therefore removed in release builds of the code"}
+\todo[inline]{Is this definitely finished Matt? Maybe a sentence, "this functionality was therefore removed in release builds of the code"}
 
 
-\todo{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
+\todo[inline]{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
 \section{AI \& Control Modules}\label{soft/ai}
 
 \subsection{Design}\label{soft/ai/design}
