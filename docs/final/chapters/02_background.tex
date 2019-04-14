@@ -116,7 +116,7 @@ would change to reduce the error in the system. For example, with a
 temperature controller, if the temperature was too low the heater would
 turn on, with the difference between the actual temperature and the required 
 temperature used to adjust how high it was set. In many systems, this simple 
-implementation is adequate; however it has several limitations. 
+implementation is adequate, however it has several limitations. 
 
 Consider for instance the temperature controller example where heat is being
 lost in the system is equal to the P constant times the error. This would
@@ -320,7 +320,7 @@ written in C++ and does not support other languages \cite{aboutYARP}.
 The YARP model of communication is transport-neutral, meaning the details 
 of the underlying networks and protocols in use are decoupled from the 
 data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
-As a result, it does not have the same extensive a range of libraries available 
+As a result, it does not have the same extensive range of libraries available 
 which implement commonly required functionality for a robotic system.
 
 \section{AI}\label{litreview/maze}
@@ -365,10 +365,10 @@ relatively straightforward. The right-hand rule algorithm is shown in Algorithm~
 \end{algorithmic}
 \end{algorithm}
 
-These steps ensure to keep a wall on the right hand side of the robot at 
-all times. The left-rule is just the opposite where the robot turns left 
-if possible to keep the wall on the robots' left. Therefore,
-this algorithm is inherently inefficiently as it exhaustively searches the
+These steps ensure a wall is kept on the right hand side of the robot at 
+all times. The left-rule is simply the opposite where the robot turns left 
+if possible to keep the wall on the robot's left. Therefore,
+this algorithm is inherently inefficient as it exhaustively searches the
 maze. In many cases, one of these algorithms would be significantly quicker
 than the other but which cannot be determined without prior knowledge of 
 the maze.
