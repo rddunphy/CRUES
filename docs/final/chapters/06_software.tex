@@ -830,16 +830,19 @@ $Y$ directions.
 
 
 \begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.3\textwidth]{graphs/bad_ekf}
-	\caption{EKF output for square path before fixing parameters}\label{fig:bad_ekf}
-\end{figure}
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.3\textwidth]{graphs/ekf}
-	\caption{EKF output for square path after fixing parameters}\label{fig:ekf}
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{graphs/bad_ekf}
+    \caption{Before optimising parameters}
+    \label{fig:ekf_output/bad}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{graphs/ekf}
+    \caption{After optimising parameters}
+    \label{fig:ekf_output/good}
+  \end{subfigure}
+  \caption[Odometry output]{Odometry output (wheel odometry in red, filtered odometry in white)}\label{fig:ekf_output}
 \end{figure}
 
 
