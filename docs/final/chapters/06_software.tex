@@ -821,10 +821,11 @@ specifies topics and configurations for each of the input sources. The
 \verb|source_config| parameter for each source (i.e.\ wheel odometry and IMU data)
 specifies which of the filter's 15 states the source updates. In the case of
 odometry, the differential drive restrictions outlined in
-Section~\ref{soft/odometry/wheel} mean that only the velocity in the $X$ direction
+Section~\ref{soft/odometry/wheel} mean that only the velocity in the $X$
+direction relative to the robot's \verb|base_link| frame
 and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
 The IMU provides values for the yaw velocity and acceleration in the $X$ and
-$Y$ directions. \todo{discuss this, not technically true}
+$Y$ directions.
 
 \begin{lstlisting}[caption={EKF YAML file}, label={lst:ekf_yaml}, style=yaml]
 frequency: 50  # Frequency at which odometry is published in Hz
