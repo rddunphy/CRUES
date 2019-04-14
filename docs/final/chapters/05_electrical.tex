@@ -159,7 +159,7 @@ microcontroller to allow the distance readings to be found quickly
 and the accuracy of the sensors measured. The readings from this were
 found to be approximately accurate (to within a half a \si{\cm},
 as measured with a tape measure), although rigorous testing was not
-performed as the accuracy would be dependant on the temperature due
+performed as the accuracy would be dependent on the temperature due
 to changes in air pressure, and there was no way of accurately controlling this.
 
 The testing was then repeated using the RPi setup to test the
@@ -212,11 +212,11 @@ def _callback_a(self, _):
 \subsection{Testing}\label{elec/encoder/test}
 The encoders were first tested to ensure correct functionality using a test circuit and connecting the encoder outputs to an
 oscilloscope. All the encoders were shown to function correctly
-outputting square waves in both channels.Channel A led channel B
-when the motor was moving forwards and B led A when going backwards.
+outputting square waves in both channels. Channel A led channel B
+when the motor was moving forwards, and channel B led channel A when going backwards.
 
 An example of the encoder output measured is shown in Figure~\ref{EncoderGraph} below. This shows the two square waves produced by the
-two encoder, outputs a quarter wavelength out of phase.
+two encoders outputs a quarter wavelength out of phase.
 
 \begin{figure}[!ht]
 	\centering
@@ -248,7 +248,7 @@ The IMU selected was the MPU-6050~\cite{MPU6050Datasheet}. It was the most accur
 similar budget with regards to noise, cross axis sensitivity and non
 linearity. Offset tolerance was also considered but this was less of a
 consideration as this can be compensated for as long as the offset is not
-so extreame as to limit the range. It was configured to operate in its
+so extreme as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 
 The IMU was placed as close to the centre of the axis of the robot
@@ -399,10 +399,8 @@ pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
-Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise 
 via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
-
-
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
