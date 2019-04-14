@@ -852,11 +852,6 @@ frequency: 50  # Frequency at which odometry is published in Hz
 two_d_mode: true  # Ignore movement in three dimensions
 publish_tf: true
 
-map_frame: map
-odom_frame: odom
-base_link_frame: base_link
-world_frame: odom
-
 odom0: odometry/wheel  # Topic on which wheel odometry is published
 # Which values are provided by wheel odometry
 # [x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az]
@@ -1001,19 +996,18 @@ crosses the zero point (as zero is adjacent to 255 in the hue value).
 \begin{lstlisting}[caption={get\_colour\_mask in RobotDetector},label={lst:get_colour_mask} , language=python]
 
 def get_colour_mask(self, frame, lower_hsv_bound, higher_hsv_bound):
-        hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-        if (lower_hsv_bound[0] > higher_hsv_bound[0]):
-            mask1 = cv2.inRange(hsv_frame, np.array([0, lower_hsv_bound[1], lower_hsv_bound[2]]),
-                                np.array(higher_hsv_bound))
-            mask2 = cv2.inRange(hsv_frame, np.array(lower_hsv_bound),
-                                np.array([179, higher_hsv_bound[1], higher_hsv_bound[2]]))
-            mask = mask1 | mask2
-        else:
-            lower = np.array(lower_hsv_bound)
-            upper = np.array(higher_hsv_bound)
-            mask = cv2.inRange(hsv_frame, lower, upper)
-
+    if (lower_hsv_bound[0] > higher_hsv_bound[0]):
+        mask1 = cv2.inRange(hsv_frame, np.array([0, lower_hsv_bound[1], lower_hsv_bound[2]]),
+                            np.array(higher_hsv_bound))
+        mask2 = cv2.inRange(hsv_frame, np.array(lower_hsv_bound),
+                            np.array([179, higher_hsv_bound[1], higher_hsv_bound[2]]))
+        mask = mask1 | mask2
+    else:
+        lower = np.array(lower_hsv_bound)
+        upper = np.array(higher_hsv_bound)
+        mask = cv2.inRange(hsv_frame, lower, upper)
 \end{lstlisting}
 
 The function then uses erosion and dilation functions provided by opencv to reduce noise in the
@@ -1024,15 +1018,13 @@ the object and the centre point and outline of the contour is found. If no conto
 than a fixed size (measured in pixels) the object is assumed to not be in the image frame, and
 the corresponding \verb|obj_found| variable is set to false. This process is shown in Listing~\ref{lst:cv_search_loop}.
 
-\begin{lstlisting}[caption={Contour Iteration in search()},label={lst:cv_search_loop} , language=python]
-...
+\begin{lstlisting}[caption={Contour teration in \texttt{search()}}, label={lst:cv_search_loop}]
 for c in contours:
     if cv2.contourArea(c) > max((300, maxsize)):
         maxsize = cv2.contourArea(c)
         cx, cy = self.get_centre_point(c)
         outline = self.get_outline(c)
         obj_found = True
-...
 \end{lstlisting}
 
 These parameters are then returned to the \verb|_tick()| function which was called by
@@ -1045,7 +1037,7 @@ Initial testing of the \verb|vision_node| was performed on a PC with a USB webca
 testing was performed by using the position information to render labelled rectangles to a real
 time stream highlighting the position of the objects. The code for this is shown in Listing~\ref{lst:draw_rectangles}.
 
-\begin{lstlisting}[caption={asd},label={lst:draw_rectangles} , language=python]
+\begin{lstlisting}[caption={asd}, label={lst:draw_rectangles}]
 for i, name in enumerate(names):
     if found[i]:
         #cv2.drawContours(frame, [outline], -1, (0, 255, 0), 2)
@@ -1053,8 +1045,10 @@ for i, name in enumerate(names):
         x, y, w, h = cv2.boundingRect(outlines[i])
         cv2.rectangle(frame, (x, y), (x + w, y + h), highlight_colours[i], 2)
         cv2.putText(frame, name, (x - 20, y - 20),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
 \end{lstlisting}
+
+\todo{caption??}
 
 An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
@@ -1069,17 +1063,16 @@ test both the integration with the RPi and with ROS. Various detectable objects 
 and out of the frame and changes in the output were observed. This initially failed as the RPi
 camera was connected using a CSI port, not a USB port, which OpenCV's VideoCapture function
 does not support. When running on the RPi, this was replaced with imutil's VideoStream package.
-Following this small change, the test performed as expected, consistently identifying which 
+Following this small change, the test performed as expected, consistently identifying which
 objects were in frame.
 
 Functionality was then added to record the feed to observe how the computer vision responded as
-the robot was traversing the maze, however issues were encountered with frame rate, namely: 
-the functionality being too computationally intensive for the RPi in addition to all other 
+the robot was traversing the maze, however issues were encountered with frame rate, namely:
+the functionality being too computationally intensive for the RPi in addition to all other
 computation. This is therefore only used in debugging, and not usually active.
 
-\todo[inline]{Do we need this? Obviously implementation and testing don't exist do we want to write design?}
+\section{Control Modules}\label{soft/ai}
 
-\section{AI \& Control Modules}\label{soft/ai}
 
 \subsection{Design}\label{soft/ai/design}
 
