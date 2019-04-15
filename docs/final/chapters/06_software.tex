@@ -96,7 +96,7 @@ created:
 In addition, a number of third-party packages were installed to aid with
 sensor fusion, mapping, and other specific tasks.
 
-Each of the individual modules shown in \ref{fig:software_block_diagram} was
+Each of the individual modules shown in \ref{fig:software_block_diagram} were
 implemented as a ROS node, generally encapsulated in a single Python
 script. In order to adhere to best practices and ensure consistency across
 the code base, each node was represented as class, with an
@@ -240,7 +240,7 @@ except ImportError:
 \global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90} % Rotates the page in the PDF output
 \begin{figure}[!p]\centering
     \includegraphics[width=1\linewidth]{graphs/rqt_graph}
-    \caption{ROS computation diagram showing interactions of nodes and topics for overals system}\label{fig:rqt_graph}
+    \caption{ROS computation diagram showing interactions of nodes and topics for overall system}\label{fig:rqt_graph}
 \end{figure}
 \end{landscape}
 \global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 0}
@@ -358,14 +358,12 @@ def fromjson(packet):
         return -2
 \end{lstlisting}
 
-The header created includes the IP and name of both the sender and the
+The header created includes the IP address and name of both the sender and the
 receiver as well as the type of Python object which the data is. The header
 and the data to be sent are converted to JSON and returned as a single
 string. When converting from JSON, the receiver checks that it was the
 intended recipient of the message, returning $-1$ if it was not, before
-returning the data object located at index 1 (header is index 0). These
-are the four helper methods used by the \verb|send()| and \verb|listen()|
-methods.
+returning the data object located at index 1 (header is index 0). 
 
 In order to physically send and receive the data the Python Socket library
 is used~\cite{socketServerDocs}. This interface's \verb|socket()| function
@@ -383,7 +381,7 @@ def send(hostname, data):
         s.close()
 \end{lstlisting}
 
-Listing~\ref{lst:comms_send} shows the \verb|send()| function, which looks up the IP of the destination and gets the JSON
+Listing~\ref{lst:comms_send} shows the \verb|send()| function, which looks up the IP address of the destination and gets the JSON
 object of the message. It then attempts to connect using the \verb|connect_ex()|
 which returns 0 if successful. If so, it can then use the Socket methods to send
 the data and then close the connection.
@@ -620,12 +618,12 @@ could then be slowly increased to minimise the overshoot in the system.
 
 Additional improvements were achieved by scaling the output of the PID loop
 in the drive node. As the PWM values used by \verb|RPi.GPIO| are in the range
-$[0; 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
-(with a typical range of $[0; 0.5]$), high gain values are required to ensure
+$[0, 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
+(with a typical range of $[0, 0.5]$), high gain values are required to ensure
 the output is on the correct order of magnitude. A scale factor and an offset
 were therefore introduced in the motor drive node as shown in
 Listing~\ref{lst:pid_scaling} in order to map inputs from an arbitrary
-input range to the range $[-100; 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
+input range to the range $[-100, 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
 for \verb|~range_max| resulted in the lower gain values shown in
 Table~\ref{manual_pid_tuning}, and appeared to result in a slight reduction in
 overshoot.
@@ -668,7 +666,7 @@ rate control implementation was used.
 
 Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of
 the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
-more smoothly and fewer spikes in motor current are required for the required
+more smoothly and fewer spikes in motor current are needed for the required
 drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb
 more slowly from start-up and recover from dips in speed more slowly. This is
 mitigated, however, by using the current speed as the base and therefore, a high
@@ -679,7 +677,7 @@ code for the \verb|differential_drive| package to add an adjustment term to the
 previous output value. This eliminated the need for steady-state correction,
 allowing $K_i$ to be set to $0$. Tuning the remaining values gave a proportional
 gain $K_p = 0.176$ and a differential gain $K_d = 0.008$. This was tested and
-resulted in significantly less aggressive motion of the robot and a increased
+resulted in significantly less aggressive motion of the robot and an increased
 accuracy in output velocities.
 
 
@@ -777,7 +775,7 @@ frame in the header is set to \verb|base_link|.
 The ROS spin functionality was used for the IMU, so
 \verb|_publish_data()| is run at a set
 frequency. This frequency, along with the topic the
-IMU is published to, is set in the launch file, as
+IMU data is published to, is set in the launch file, as
 shown in Listing~\ref{lst:imu_launch}.
 
 \begin{lstlisting}[caption={IMU node in ROS launch file}, label={lst:imu_launch}, style=xml]
@@ -790,7 +788,7 @@ shown in Listing~\ref{lst:imu_launch}.
 
 To test the IMU integration with ROS, the ROS IMU visualisation software was used.
 The robot was then rotated in each axis, and the output visualised.
-Figure \ref{fig:imu_test} shows the IMU RVIZ visualisation along side the
+Figure \ref{fig:imu_test} shows the IMU RVIZ visualisation alongside the
 corresponding position of the robot. Note that this only a small selection
 of the test data, but all results appeared to accurately reflect the
 movements performed.
@@ -889,7 +887,7 @@ control_config: [true, false, false, false, false, true]
 
 As discussed in Section~\ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively 
 researched and challenging topic. As a result of this, there are many existing implementations of a wide
-variety of SLAM algorithms. The most commonly used package for this when working within the ROS framework
+variety of SLAM algorithms. The most commonly used package for this within the ROS framework
 is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework,
 simply taking and producing standard ROS message types. It also provides a very rich suite of settings which
 can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety
@@ -941,7 +939,7 @@ for the distance between the sensor and the edge of the robot, but which was sti
 Another problem encountered was with the scan matching feature. As a result of expecting to work on a high fidelity
 LIDAR scan, the mapping algorithm treats almost any scan which looks familiar as a potential loop closure, and revised
 large parts of the map based on assuming the two positions are the same. This assumption does not work nearly as well
-when considering a system which has reads only three ranges per scan, as a location which results in three similar
+when considering a system which reads only three ranges per scan, as a location which results in three similar
 scan results is much less likely to be the same as one with hundreds. As a result of this scan matching, the robot's
 position in the map tended to wildly jump around as the map progressed to places it had already been, which made for
 very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for
@@ -1052,8 +1050,8 @@ and the goal, and also has a video capture object. It contains a \verb|search()|
 takes a frame as a parameter and returns various details about each robot's presence in the
 frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
 values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
-the pixel is in range and and black when out of range. This is shown inListing
-\ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
+the pixel is in range and and black when out of range. This is shown in Listing~\ref{lst:get_colour_mask}.
+This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
 \begin{lstlisting}[caption={get\_colour\_mask in RobotDetector},label={lst:get_colour_mask} , language=python]
