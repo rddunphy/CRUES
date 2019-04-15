@@ -760,17 +760,10 @@ def _publish_data(self):
     # ...
 \end{lstlisting}
 
-There are a couple of points to notice in this excerpt. Firstly, the
+It is important to notice that the
 covariance matrix for the orientation is set to a $-1$ followed by 0's.
 This indicates that values for the orientation are unknown as we are only
-using a 6-DOF IMU~\cite[sensor\_msgs/Imu.msg]{ROSDocs}. Secondly, the published values for the
-x and y axes are negative the measured value. This is because, as
-discussed in Section~\ref{elec/pcb}, the IMU had to be mounted at
-\ang{180} relative to the robot frame (i.e. the x axis in the IMU faced
-towards the back of the robot). While this would be possible to correct by
-declaring a transform frame describing the IMU frame relative to the base
-frame, this was thought to be a simpler solution. Because of this, the
-frame in the header is set to \verb|base_link|.
+using a 6-DOF IMU~\cite[sensor\_msgs/Imu.msg]{ROSDocs}. 
 
 The ROS spin functionality was used for the IMU, so
 \verb|_publish_data()| is run at a set
