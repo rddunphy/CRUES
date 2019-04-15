@@ -96,7 +96,7 @@ created:
 In addition, a number of third-party packages were installed to aid with
 sensor fusion, mapping, and other specific tasks.
 
-Each of the individual modules shown in \ref{fig:software_block_diagram} was
+Each of the individual modules shown in \ref{fig:software_block_diagram} were
 implemented as a ROS node, generally encapsulated in a single Python
 script. In order to adhere to best practices and ensure consistency across
 the code base, each node was represented as class, with an
@@ -240,7 +240,7 @@ except ImportError:
 \global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90} % Rotates the page in the PDF output
 \begin{figure}[!p]\centering
     \includegraphics[width=1\linewidth]{graphs/rqt_graph}
-    \caption{ROS computation diagram showing interactions of nodes and topics for overals system}\label{fig:rqt_graph}
+    \caption{ROS computation diagram showing interactions of nodes and topics for overall system}\label{fig:rqt_graph}
 \end{figure}
 \end{landscape}
 \global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 0}
@@ -357,14 +357,12 @@ def fromjson(packet):
         return -2
 \end{lstlisting}
 
-The header created includes the IP and name of both the sender and the
+The header created includes the IP address and name of both the sender and the
 receiver as well as the type of Python object which the data is. The header
 and the data to be sent are converted to JSON and returned as a single
 string. When converting from JSON, the receiver checks that it was the
 intended recipient of the message, returning $-1$ if it was not, before
-returning the data object located at index 1 (header is index 0). These
-are the four helper methods used by the \verb|send()| and \verb|listen()|
-methods.
+returning the data object located at index 1 (header is index 0). 
 
 In order to physically send and receive the data the Python Socket library
 is used~\cite{socketServerDocs}. This interface's \verb|socket()| function
@@ -382,7 +380,7 @@ def send(hostname, data):
         s.close()
 \end{lstlisting}
 
-Listing~\ref{lst:comms_send} shows the \verb|send()| function, which looks up the IP of the destination and gets the JSON
+Listing~\ref{lst:comms_send} shows the \verb|send()| function, which looks up the IP address of the destination and gets the JSON
 object of the message. It then attempts to connect using the \verb|connect_ex()|
 which returns 0 if successful. If so, it can then use the Socket methods to send
 the data and then close the connection.
@@ -580,7 +578,7 @@ of tuning rules was used to calculate values for the gains. The results of this
 process are shown in Table~\ref{zn_pid_tuning}.
 
 \begin{table}[!ht]\centering
-\caption{Ziegler-Nichols PID Tuning
+\caption{Ziegler-Nichols PID tuning
 \label{zn_pid_tuning}}
     \begin{tabular}{cccccc}
         \toprule
@@ -619,12 +617,12 @@ could then be slowly increased to minimise the overshoot in the system.
 
 Additional improvements were achieved by scaling the output of the PID loop
 in the drive node. As the PWM values used by \verb|RPi.GPIO| are in the range
-$[0; 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
-(with a typical range of $[0; 0.5]$), high gain values are required to ensure
+$[0, 100]$ and the velocities published to \verb|/wheel| are in \si{\metre\per\second}
+(with a typical range of $[0, 0.5]$), high gain values are required to ensure
 the output is on the correct order of magnitude. A scale factor and an offset
 were therefore introduced in the motor drive node as shown in
 Listing~\ref{lst:pid_scaling} in order to map inputs from an arbitrary
-input range to the range $[-100; 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
+input range to the range $[-100, 100]$. Using $-0.5$ for \verb|~range_min| and $0.5$
 for \verb|~range_max| resulted in the lower gain values shown in
 Table~\ref{manual_pid_tuning}, and appeared to result in a slight reduction in
 overshoot.
@@ -667,7 +665,7 @@ rate control implementation was used.
 
 Opposed to traditional PID, Rate Control employs only the $K_p$ and $K_d$ portions of
 the equation and uses the current velocity as the base rate as opposed to 0~\cite{koditschek1987quadratic}. This allows the controller to maintain the speed
-more smoothly and fewer spikes in motor current are required for the required
+more smoothly and fewer spikes in motor current are needed for the required
 drive~\cite{kawamura1988local}. By removing the $K_i$ term, the speed will climb
 more slowly from start-up and recover from dips in speed more slowly. This is
 mitigated, however, by using the current speed as the base and therefore, a high
@@ -678,7 +676,7 @@ code for the \verb|differential_drive| package to add an adjustment term to the
 previous output value. This eliminated the need for steady-state correction,
 allowing $K_i$ to be set to $0$. Tuning the remaining values gave a proportional
 gain $K_p = 0.176$ and a differential gain $K_d = 0.008$. This was tested and
-resulted in significantly less aggressive motion of the robot and a increased
+resulted in significantly less aggressive motion of the robot and an increased
 accuracy in output velocities.
 
 
@@ -776,7 +774,7 @@ frame in the header is set to \verb|base_link|.
 The ROS spin functionality was used for the IMU, so
 \verb|_publish_data()| is run at a set
 frequency. This frequency, along with the topic the
-IMU is published to, is set in the launch file, as
+IMU data is published to, is set in the launch file, as
 shown in Listing~\ref{lst:imu_launch}.
 
 \begin{lstlisting}[caption={IMU node in ROS launch file}, label={lst:imu_launch}, style=xml]
@@ -789,7 +787,7 @@ shown in Listing~\ref{lst:imu_launch}.
 
 To test the IMU integration with ROS, the ROS IMU visualisation software was used.
 The robot was then rotated in each axis, and the output visualised.
-Figure \ref{fig:imu_test} shows the IMU RVIZ visualisation along side the
+Figure \ref{fig:imu_test} shows the IMU RVIZ visualisation alongside the
 corresponding position of the robot. Note that this only a small selection
 of the test data, but all results appeared to accurately reflect the
 movements performed.
@@ -797,7 +795,7 @@ movements performed.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{IMUtest.png}
-	\caption{IMU RVIZ Test}\label{fig:imu_test}
+	\caption{IMU RVIZ test}\label{fig:imu_test}
 \end{figure}
 
 \subsection{EKF}\label{soft/odometry/ekf}
@@ -886,28 +884,67 @@ control_config: [true, false, false, false, false, true]
 
 \section{SLAM}\label{soft/SLAM}
 
-As discussed in Section~\ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively researched and challenging topic. As a result of this, there are many existing implementations of a wide variety of SLAM algorithms. The most commonly used package for this when working within the ROS framework is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework, simply taking and producing standard ROS message types. It also provides a very rich suite of settings which can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety of settings available in particular, is the somewhat poor documentation it provides, which necessitated a great deal of experimentation to achieve reasonable results, which will be discussed going forward.
+As discussed in Section~\ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively
+researched and challenging topic. As a result of this, there are many existing implementations of a wide
+variety of SLAM algorithms. The most commonly used package for this within the ROS framework
+is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework,
+simply taking and producing standard ROS message types. It also provides a very rich suite of settings which
+can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety
+of settings available in particular, is the somewhat poor documentation it provides, which necessitated a
+great deal of experimentation to achieve reasonable results, which will be discussed going forward.
 
 \subsection{Package Overview}\label{soft/SLAM/package}
 
-The \verb|gmapping| package takes in a \verb|LaserScan| message, as well as odometry data in the form of a transformation frame (\verb|tf|). The odometry data is already produced by the sensor fusion module, so the input parameter of \verb|gmapping| simply needs to be bound the same topic as the output of the EKF.
+The \verb|gmapping| package takes in a \verb|LaserScan| message, as well as odometry data in the form of a
+transformation frame (\verb|tf|). The odometry data is already produced by the sensor fusion module, so the
+input parameter of \verb|gmapping| simply needs to be bound the same topic as the output of the EKF.
 
-The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different methods of active range finding are similar enough, however, that a rudimentary laser scan message could be created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of each sensor will allow it to find the walls of a corner earlier than the point.
+The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different
+methods of active range finding are similar enough, however, that a rudimentary laser scan message could be
+created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a
+LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of
+each sensor will allow it to find the walls of a corner earlier than the point.
 
+The \verb|gampping| package, while providing some localisation via feature detection, and utilising the odometry
+in creation of the map, does not actually perform true localisation. Another package, \verb|AMCL|, performs a
+second iteration particle filtering algorithm on the map already processed by the mapping package, as well as
+the scan data and odometry, and makes probabilistic approximations of the robot's location in the map. This is
+mainly used to compensate for odometry drift, as mentioned in Section~\ref{soft/odometry/wheel}. A block diagram
+indicating this relationship can be found in Figure~\ref{fig:amcl}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{diagrams/amcl_localization}
 	\caption{AMCL transform diagram~\cite{macenski_amcl}}\label{fig:amcl}
 \end{figure}
 
+Unfortunately, as particle filtering is an extremely taxing operation, it proved too taxing to run both
+\verb|gmapping| and \verb|AMCL| at once on the RPi. Indeed, running only the mapping package proved problematic,
+as certain configurations caused the entirety of the RPi's memory to be used, and led to some other ros packages
+crashing as a result of being refused memory allocation. As a result of this, two parameters, ``particle'' and
+``delta'' which respectively govern the number of steps in the filter and granularity of the generated map both
+had to be reduced. Both of these will reduce the accuracy of the final output, but this appears to be an unavoidable problem.
 
 \subsection{Tuning}\label{soft/SLAM/tuning}
 
+The initial attempts at running \verb|gmapping| presented a number of problems immediately. For one, the map
+generated was at entirely the wrong scale compared to the odometry data, which created a very chaotic and meaningless
+map. When displayed alongside the odometry using RViz, the cause of the issue became obvious, that the two values were
+on different scales. This proved to be a result of a misconfguration, with the odometry returning data in metres and
+the ultrasonics in millimetres. After fixing this, the map and odometry were on the same scale, but the map was still
+a formless shape, which turned out to be the result of an offset value in the ultrasonic code, intended to account
+for the distance between the sensor and the edge of the robot, but which was still on a scale of metres.
 
+Another problem encountered was with the scan matching feature. As a result of expecting to work on a high fidelity
+LIDAR scan, the mapping algorithm treats almost any scan which looks familiar as a potential loop closure, and revised
+large parts of the map based on assuming the two positions are the same. This assumption does not work nearly as well
+when considering a system which reads only three ranges per scan, as a location which results in three similar
+scan results is much less likely to be the same as one with hundreds. As a result of this scan matching, the robot's
+position in the map tended to wildly jump around as the map progressed to places it had already been, which made for
+very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for
+values to be matching to 50 instead of the default 0.
 
-
-\begin{figure}[!ht]
+\begin{figure}[!htb]
 \centering
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{graphs/rectangle_map}
@@ -930,7 +967,27 @@ The scan data is more complex, as the package is intended for use with a LIDAR u
   \caption{GMapping output}\label{fig:gmapping_output}
 \end{figure}
 
+Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
+on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
+slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
 
+
+
+This new map was far more accurate, with a correct scale and rough shape, but seemed to be missing many measurements
+and not updating the map often. This was due again to the assumption of the use of LIDAR, which produces far too
+much data to process exhaustively, so the mapping algorithm by default only updates the map with the last scan result
+when the robot has moved 1 unit or rotated by 0.5 radians. This explains the 12 clear branches the map has formed,
+as the map is only being updated 12 times. It is possible by a normally disabled parameter, \verb|temporalUpdate|,
+to force the map to be updated at regular time. When this was set to the same rate as the ultrasonic scans were
+being generated, the map shown in Figure~\ref{fig:gmapping_output/rect} was generated.
+
+This output is clearly far better, and cursory examination showed the scale to be correct and accurate to within
+\SI{1}{cm}. The rounded edges are to be expected, as the ultrasonics have a wide field of view, and therefore
+reach the walls of corners before the points.
+
+This experiment was repeated on another simple configuration, this time with a
+large square to the right of the centre. This produced the map shown in
+Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat less clean around the obstacle, but the obstacle is still clearly present.
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
@@ -993,8 +1050,8 @@ and the goal, and also has a video capture object. It contains a \verb|search()|
 takes a frame as a parameter and returns various details about each robot's presence in the
 frame. \verb|search()| first calls \verb|get_colour_mask()| for each range of colour
 values. This converts the image to HSV, then makes a frame, \verb|mask|, which is white where
-the pixel is in range and and black when out of range. This is shown inListing
-\ref{lst:get_colour_mask}. This also shows the handling of cases where the range of colours
+the pixel is in range and and black when out of range. This is shown in Listing~\ref{lst:get_colour_mask}.
+This also shows the handling of cases where the range of colours
 crosses the zero point (as zero is adjacent to 255 in the hue value).
 
 \begin{lstlisting}[caption={get\_colour\_mask in RobotDetector},label={lst:get_colour_mask} , language=python]
@@ -1054,12 +1111,13 @@ for i, name in enumerate(names):
 
 \todo{caption??}
 
+\noindent
 An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{ComputerVisionScreenshot.png}
-	\caption{Computer Vision PC Test}\label{fig:cv_screenshot}
+	\caption{Computer vision PC test}\label{fig:cv_screenshot}
 \end{figure}
 
 The system was then tested on the RPi by monitoring the ROS topic \verb|robots_detected| to
@@ -1077,7 +1135,13 @@ computation. This is therefore only used in debugging, and not usually active.
 
 \section{Control Modules}\label{soft/control}
 
-\todo[inline]{Path planning libraries}
+High-level control of the robots is handled in control modules in the
+\verb|crues_control| package. The final control node was envisioned to perform
+path planning and exploration based on the map acquired from GMapping, with an
+implementation of the algorithms described in Section~\ref{litreview/maze} used
+to direct the robot towards unexplored areas of the map. This was to be done
+using the \verb|base_local_planner| and \verb|global_planner| packages.
+Unfortunately, due to time constraints, this objective was not completed.
 
 Separate launch files were created for subsystems which rely on multiple nodes,
 such as the communications system, so that they can be included in system launch
@@ -1104,10 +1168,112 @@ a basic controller.
 \end{lstlisting}
 
 
-\subsection{Roomba controller}\label{soft/control/roomba}
+\subsection{Roomba Controller}\label{soft/control/roomba}
 
-\todo[inline]{Two variations of Roomba. Present results here?}
+A simple control node, referred to as the ``Roomba'' controller due to its
+similarity in behaviour to the eponymous robotic vacuum cleaner, was developed
+in order to demonstrate the functionality of the robot and serve as a
+benchmark for comparison with more advanced controllers. This controller
+navigates by driving straight forward whenever there is no object blocking
+its path, and turning on the spot whenever it is unable to continue. This
+results in the robot exploring the maze randomly until the goal is detected by
+the computer vision node, at which point the robot indicates successful
+completion of the maze by rapidly turning back and forth on the spot and
+flashing its green LED. This controller is launched by \verb|roomba.launch|
+in the \verb|crues_control| package.
 
-\subsection{Debugging controllers}\label{soft/control/debug}
+Several adjustments were made to improve the performance of the controller.
+The target velocity for driving forward and rotational velocity for turns are
+parameterised in the launch file, allowing slower velocities to be specified
+for maze configurations with narrow passages, where faster velocities are
+more prone to result in collisions. Collisions were also avoided by ramping
+the velocity linearly in proportion to the distance from an object at distances
+of less than \SI{15}{\cm}. This causes the robot to slow down and approach
+obstacles more accurately, instead of attempting to decelerate instantaneously
+and overshooting.
 
-\todo[inline]{Path controller, null controller, PID tuning controller}
+Finally, the turning direction was determined based on the range values from
+the outer ultrasonic sensors. By turning away from the sensor with the lower
+range (i.e. turning to the right when an obstacle is detected on the left and
+vice versa), the amount of time spent turning can be reduced. This had the
+unintended side effect of causing the robot to get stuck
+in corners, turning first one way then the other. To solve this problem, the
+turning direction was stored as a field and maintained until the robot was clear
+of the obstacle. The turning angle is chosen randomly from the range \ang{30}
+to \ang{60}. If this is insufficient to clear the obstacle, the process is
+repeated. Randomising the angle has the advantage of preventing the robot from
+becoming trapped in a repeating pattern. The results of running this system in
+various maze configurations are presented in Section~\ref{systest/results}.
+
+A variant of this controller was created where instead of turning by a random
+angle, the robot continues straight as soon as it is parallel to the obstacle
+it is avoiding. By adjusting the algorithm so that the agent then
+maintains a constant distance from the sensor pointing towards the wall, a
+simple wall following algorithm can be implemented, allowing the maze to be
+searched more systematically (c.f.\ Section~\ref{litreview/maze/exploration}).
+Without using mapping data, however, it is impossible to avoid getting caught
+in a loop when the maze walls do not form a simply connected graph.
+
+
+\subsection{Debugging Controllers}\label{soft/control/debug}
+
+In addition to the Roomba control node, several simple controllers were created
+for test and debugging purposes. The simplest of these is the Null controller
+(\verb|crues_control/null.launch|), which constantly outputs a velocity of 0.
+This was used primarily for debugging ROS configurations in cases where
+physical movement of the robot was not required.
+
+Another controller created for a specific use case is the PID tuning controller
+(\verb|crues_control/pid_tuner.launch|), which launches only those nodes
+required for tuning the PID on a single wheel (i.e. the corresponding encoder,
+motor, and PID nodes). This was used to minimise overhead while employing the
+practical tuning methods described in Section~\ref{soft/PID}.
+
+Finally, a Path control node was created (launched by
+\verb|crues_control/path.launch|), which instructs the robot to follow a
+predetermined path. Paths can be entered at runtime by
+publishing distances and angles to the \verb|fwd_cmd| and \verb|turn_cmd|
+topics, respectively, or can be loaded from text files. The text files take
+the form of line separated instructions, where each instruction contains a
+command and a value. Table~\ref{tab:path_commands} shows the
+available commands and permissible values.
+Listing~\ref{lst:square_path} shows an example (\verb|square.txt|), which
+follows a \SI{0.4}{\metre} square, with the robot starting and ending in the
+same pose. This controller was used in order to guarantee consistent test
+cases for integration tests, ensuring that results from multiple runs are
+comparable. Several paths were used during the testing and development of
+various subsystems, such as odometry and SLAM. The example shown below was
+used during configuration of the EKF, as shown in Figure~\ref{fig:ekf_output}.
+
+
+\begin{table}[!ht]\centering
+\caption{Available commands for the Path control node
+\label{tab:path_commands}}
+    \begin{tabular}{ccc}
+        \toprule
+        \thead{Command} & \thead{Description} & \thead{Argument}\\
+        \midrule
+        \verb|fwd_vel| & Set forward velocity & Velocity in \si{\metre\per\second} (float)\\
+        \verb|turn_vel| & Set turn velocity & Velocity in \si{\radian\per\second} (float)\\
+        \verb|fwd| & Move forward by the specified distance & Distance in \si{\metre} (float)\\
+        \verb|turn| & Turn by the specified angle & Angle in \si{\radian} (float)\\
+        \verb|wait| & Wait for the specified duration & Duration in \si{\second} (float)\\
+        \verb|exit| & Exit after the specified duration & Duration in \si{\second} (float)\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[caption={Path file for following a \SI{0.4}{\metre} square}, label={lst:square_path}]
+fwd_vel 0.15
+turn_vel 1
+fwd 0.4
+turn 90
+fwd 0.4
+turn 90
+fwd 0.4
+turn 90
+fwd 0.4
+turn 90
+\end{lstlisting}
+\end{minipage}

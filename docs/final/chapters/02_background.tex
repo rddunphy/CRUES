@@ -3,38 +3,37 @@
 \chapter{Background}\label{litreview}
 
 \section{Co-operative Robotics}\label{litreview/robotics}
-A robot is ``a machine capable of carrying out a complex series of actions
-automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction,
-operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical,
-electrical and software engineering within a single system to achieve its goals. By
-combining the three major disciplines of artificial intelligence, operations
-research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be
+Robotics is the branch of technology which deals with the design, construction, 
+operation, and application of machines capable of carrying out a complex series of 
+actions automatically~\cite{robotdef, roboticsdef}. Robotics 
+combines a number of fields from mechanical,
+electrical and software engineering within a single system to achieve its goals. By 
+combining the three major disciplines of artificial intelligence, operations 
+research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be 
 used for a wide range of robotic applications.
 
 Co-operative robotics has varied definitions across different papers. One such
-definition, which generalises co-operative behaviour in robotics, describes it
-as ``joint collaborative behaviour that is directed toward some goal in which
-there is a common interest or reward''~\cite{barnes1991behaviour}. This
-description fits the objectives of this study more appropriately than the
-specific term ``swarm robotics'',  which has a number of additional requirements,
-including that problem solving should be distributed across the swarm~\cite{sahin04}. This definition does not apply to this project, as the robots
-designed herein are capable of operating autonomously and will be able to solve
-certain tasks individually. In this case, collaboration is used to deliver a
-performance improvement. For this reason, the more general term of co-operative
-robotics will be used throughout.
+definition, which generalises co-operative behaviour in robotics, describes it 
+as ``joint collaborative behaviour that is directed toward some goal in which 
+there is a common interest or reward''~\cite{barnes1991behaviour}. This 
+description fits the objectives of this study more appropriately than the 
+specific term ``swarm robotics'',  which has a number of additional requirements, 
+including that problem solving should be distributed across the swarm~\cite{sahin04}. This definition does not apply to this project, as the robots 
+described herein are capable of operating autonomously and will be able to solve 
+certain tasks individually. In this case, collaboration is used to deliver a 
+performance improvement. For this reason, the more general term of co-operative 
+robotics will be used throughout. 
 
-The aim of co-operative robotics is to reduce the time taken or
-increase performance  of the system over a single-robot system~
-\cite{premvuti1990consideration}. Additionally, by creating a decentralised and
-distributed system across several homogeneous agents, agent redundancy is
-introduced which can improve the completion rate of tasks, especially in
+The aim of co-operative robotics is to  develop multi-robot systems which have improved performance over single-robot systems~\cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
+distributed system across several homogeneous agents, agent redundancy is 
+introduced which can improve the completion rate of tasks, especially in 
 potentially volatile environments~\cite{beckers1994local, parker95}.
 Co-operative robotics goes beyond the idea of collaborative robotics in
 requiring an additional aspect of intelligence in the communication and
 coordination of the individual agents~\cite{cao1995cooperative}.
 
-Co-operative robotics is an area of active research, and is growing in popularity --- as the
-capabilities of the technology increases --- as it can be used in a wide-variety of
+Co-operative robotics is an area of active research, and is growing in popularity---as the
+capabilities of the technology increases---as it can be used in a wide-variety of
 situations. In 2011, co-operative robotics was used as part of the
 response to the Great Eastern Japan Earthquake. A team from Kyoto University
 used co-operating, remotely operated, underwater vehicles to search for submerged
@@ -44,7 +43,8 @@ Dr Nithin Mathews' research in 2012 provided a communication system without
 human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
 to co-ordinate to complete tasks that one could not on its own, such as push a
 larger object. Their system, however, requires a global view of the area to
-co-ordinate their efforts. However, even since these findings, the progress
+co-ordinate their efforts. However, since these findings, the progress
+
 in the field has accelerated. An excellent example is Sebastien de Rivas' work at
 Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
 team have spent the last eight years developing very lightweight co-operating robots.
@@ -52,50 +52,46 @@ Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
 four-legged micro-robots have eight degrees of freedom, and are being developed with
 the aim of reducing their size so they can inspect the internal workings of an engine.
 
-\section{Robotic Control} \label{litreview/robotics/control}
-As the robots in this study are homogeneous and should be able to complete
-tasks individually, control is limited to the control of a single robot in the
-complete system. Robotic mechanisms form the control system for a robot and
-connect the fixed parts of the robot together by joints, allowing motion between
-these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually
-by motors, imparts forces on the robot which allow it to move and perform a
-variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators''
-is influenced by several sensors which provide the system with information
-about its environment. These sensors can also influence the movement of the
-actuators through feedback from previous movement instructions~\cite{lynch2017modern}.
+\section{Robotic Control} \label{litreview/robotics/control}  
+As the robots in this study are homogeneous and should be able to complete 
+tasks individually, control is limited to the control of a single robot in the 
+complete system. Robotic mechanisms form the control system for a robot and 
+connect the fixed parts of the robot together by joints, allowing motion between 
+these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually 
+by motors, imparts forces on the robot which allow it to move and perform a 
+variety of tasks~\cite{lynch2017modern}. The movement of these actuators 
+is influenced by several sensors which provide the system with information 
+about its environment. These sensors can also influence the movement of the 
+actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
 
-Sensors can take many forms and provide information about internal and external
-environmental factors of the robot. External sensors provide information which
-the robot would otherwise find significantly more difficult to discover, one
-such example being range sensing. This can take a number of different forms
-including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and
-binocular computer vision. Each of these sensors use unique methods to determine
-the distance from the robot to another object in its environment. Ultrasound
-sensors use high frequency sound waves which reflect from surfaces and return
-to the sensor. The time taken to return and the speed of sound is used to
-calculate the distance to the object. Infrared sensors work in a similar
-fashion but with invisible light instead of sound.
+Robots generally have both exteroceptive and proprioceptive sensors. Exteroceptive sensors provide information describing the robot's environment, such as a range sensor. These can take a number of different forms 
+including ultrasound, infrared, Light Detection And Ranging (LIDAR) and 
+stereo computer vision. Each of these sensors use unique methods to determine 
+the distance from the robot to another object in its environment. Ultrasound 
+sensors use high frequency sound waves which reflect from surfaces and return 
+to the sensor. The time taken to return and the speed of sound is used to 
+calculate the distance to the object. Infrared sensors work in a similar 
+fashion but with invisible light instead of sound. 
 
-LIDAR is a more advanced use of invisible light to more accurately detect
-distance using more powerful and precise beams of light than in the infrared
-case~\cite{lidar}. Binocular vision allows depth perception to take place
-similar to that allowed by human vision~\cite{read2005early} by perspective-based cues~\cite{pfautz2002depth}.
+LIDAR is a more advanced use of invisible light to more accurately detect 
+distance using more powerful and precise beams of light than in the infrared 
+case~\cite{lidar}. Binocular vision allows depth perception to take place 
+similar to that allowed by human vision by perspective-based cues~\cite{read2005early, pfautz2002depth}. 
 
-Internal sensors can either be related to the actuators or fixed parts of the
-robot. Those sensors which are connected to the fixed parts of the robot provide
-feedback about the entire robot and its local environment. The Inertial
-Measurement Unit (IMU) provides feedback regarding the acceleration and angular
-velocity with relation to 6 different axes (x, y, z in both linear and angular
-planes) or Degrees of Freedom (DOF). This can be combined with information from
-other sensors in order to reduce the overall error in determining the robot's
-location with relation to its starting position.
+Proprioceptive sensors can either be related to the actuators or fixed parts of the 
+robot. One such sensor is the encoder which is connected to the wheels and provides 
+only feedback information about this actuator. These sensors are connected 
+directly to the shaft of the motors and provide the control system with the 
+actual distance moved by the motors. This allows adjustments to be made and each 
+of the wheels to be maintained at a constant speed when utilised by the 
+Proportional-Integral-Derivative(PID) controller of a robot. 
 
-One such sensor is the encoder which is connected to the wheels and provides
-only feedback information about this actuator. These sensors are connected
-directly to the shaft of the motors and provide the control system with the
-actual distance moved by the motors. This allows adjustments to be made and each
-of the wheels to be maintained at a constant speed when utilised by the
-Proportional-Integral-Derivative(PID) controller of a robot.
+
+The Inertial Measurement Unit (IMU) is another example. It provides feedback regarding the acceleration and angular 
+velocity with relation to 6 different axes (x, y, z in both linear and angular 
+planes) or Degrees of Freedom (DOF). This can be combined with information from 
+other sensors in order to reduce the overall error in determining the robot's 
+location relative to its starting position.  
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
 As mentioned above, PID controllers are a very common solution to problems where the error of the
@@ -143,7 +139,7 @@ where steady oscillation occurs. The frequency of oscillation, $T_u$, is then fo
 these values can then be used to calculate $K_i$ and $K_d$ which results in a
 tuned system. However, many different formulae and definitions of the critical
 gain of $K_p$ exist in literature. This leads to the conclusion that the
-Ziegler-Nichols method is mathematically imperfect, and this will have to be
+Ziegler-Nichols method is imperfect, and this will have to be
 explored experimentally during the project.
 
 \section{SLAM}\label{litreview/slam}
@@ -229,11 +225,11 @@ both the location of landmarks in the map and the robot pose~\cite{huang2007conv
 \section{Computer Vision}\label{litreview/cv}
 Computer vision is the analysis of digital image or video frames to allow a computer
 system to gain a high-level understanding of the 3D environment contained within
-the image\cite{CVBallard}. A common application for computer vision is the identification and classification
+the image~\cite{CVBallard}. A common application for computer vision is the identification and classification
 of objects. Identification generally involves the recognition of features of the
 object and the comparison of these features and their relative positions to a
 known model of the object. Classification usually involves machine learning
-algorithms to build up a definition of the object based on its visible properties\cite{CVpaoletti2018new}.
+algorithms to build up a definition of the object based on its visible properties~\cite{CVpaoletti2018new}.
 
 Computer vision can also be used to triangulate the position of objects in the
 field of view by measuring the discrepancy in the object's position in the two camera
@@ -242,6 +238,7 @@ frames given a translation matrix relating the two cameras.
 Computer vision can be well integrated with SLAM providing a means of both the measure
 of distance and the identification of distinctive
 features in the environment to allow loop closure\cite{CVho2006loop}.
+
 \subsection{Object Detection}\label{litreview/cv/objDet}
 \subsubsection{CNN}\label{litreview/cv/objDet/CNN}
 A common method for object detection is to use a Convolutional
@@ -261,9 +258,9 @@ neural network which can then classify the image.
 Another approach to object detection is feature based. This
 involves the identification and comparison of key points in an
 image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are
-several key point detection algorithms --- SIFT, BRISK and ORB,
-to name a few --- each of which has its own way of describing
-patterns in the pixels and selecting which will be rarer and,
+several key point detection algorithms---SIFT, BRISK and ORB,
+to name a few---each of which has its own way of describing
+patterns in the pixels and selecting which will be rarer and
 therefore, more useful when identifying objects. Each also has
 a method of quantifying the similarity of two matches called a
 distance metric. The algorithm then looks for features in both
@@ -325,8 +322,7 @@ which implement commonly required functionality for a robotic system.
 
 \section{AI}\label{litreview/maze}
 Artificial intelligence is another component of intelligent robotic control and is the
-development of computer systems able to perform tasks normally requiring human intelligence~
-\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a
+development of computer systems able to perform tasks normally requiring human intelligence~\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a
 common branch of artificial intelligence, into which much research has been undertaken. Search
 algorithms and optimisation algorithms can be thought of as highly similar, and in the case of
 a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}.
@@ -380,7 +376,7 @@ the maze, the robot would continually turn right or left (depending on
 algorithm) around that rectangle, never finding the exit. Pledge solves this
 by keeping a count of the number of turns made (if not right-angled turns,
 then the angle of turn is used instead) as well as the initial direction of
-travel. \cite{klein2011pledge}
+travel~\cite{klein2011pledge}.
 
 \begin{algorithm}
 \caption{Pledge's Algorithm}
@@ -417,21 +413,21 @@ guaranteed to find one if it exists.
 \subsection{Path Finding}\label{litreview/maze/path}
 There are many algorithms that can be used to find the shortest path
 through a graph such as Dijkstra's algorithm and A* search. In the
-context of our agents, path finding is likely to be used once
+context of this project, path finding is likely to be used once
 the goal has been found to return the robot back to its starting
 position. In the case of an unweighted graph (a graph where all edges are
 equivalent to search), one of the simplest algorithms
 is breadth-first search. This explores all neighbours at the same depth
 before moving onto nodes at the next depth level. This would be guaranteed
 to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$
-where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}
+where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}.
 Breadth-first search searches the oldest discovered node first meaning
 many backtracks are needed to reach the oldest discovered node. As
 backtracking in physical space is expensive, this results in a very
 costly search for a single-agent. As more agents are added, the cost of this
 decreases as less backtracking would take place.
 
-In the case where the edges have a weighting, which in our case would be the
+In the case where the edges have a weighting, which in this case would be the
 distance to next junction, Dijkstra's algorithm is one
 of the most commonly used methods for finding the length of shortest path between a specified pair of nodes in the graph. The steps for Dijkstra's algorithm are outlined in Algorithm \ref{alg:Djikstra}.
 
@@ -479,9 +475,9 @@ Developed initially as an extension of Dijkstra's algorithm, A* is a
 path-finding algorithm that typically achieves better performance by
 use of a heuristic. At each node, A* chooses the node which it believes
 can be used in the shortest path. It does so by choosing the node with
-the lowest value of f, where f is the sum of g and h, where g is the
+the lowest value of $f$, where $f$ is the sum of $g$ and $h$, $g$ being the
 distance to the current node plus the known distance to that adjacent
-node and h is the heuristic value from that node to the goal. The heuristic
+node, and $h$ the heuristic value from that node to the goal. The heuristic
 value can be found exactly as the first step of the algorithm though
 this is very time consuming, so approximate heuristics are used such
 as the Manhattan distance, Diagonal distance and the Euclidean distance.
