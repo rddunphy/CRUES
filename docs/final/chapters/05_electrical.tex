@@ -3,65 +3,65 @@
 \chapter{Electrical And Mechanical}\label{electrical}
 
 \section{Chassis}\label{mech/chassis}
-The mechanical design of each robot is central to its 
+The mechanical design of each robot is central to its
 functionality with several of the sensors
-reliant on the accuracy of the mechanical construction. As 
-multiple robots are being built, 
-their mechanical similarity is important to guarantee the 
-sensors and software function consistently across each robot. 
-Given this consideration, Printed Circuit Boards (PCBs) are used in 
-the final iteration of the design---with strip board being used for 
-prototyping---as this will provide additional robustness and 
+reliant on the accuracy of the mechanical construction. As
+multiple robots are being built,
+their mechanical similarity is important to guarantee the
+sensors and software function consistently across each robot.
+Given this consideration, Printed Circuit Boards (PCBs) are used in
+the final iteration of the design---with strip board being used for
+prototyping---as this will provide additional robustness and
 guaranteed repeatability between robots.
 
-The chassis used for the robots was the pre-built ``hobbyist'' 
-chassis from Pololu~\cite{pololuchassis}. These chassis were 
-chosen as they ensured manufacturing consistency and allowed 
-for scalability, due to their availability, both of which were 
-essential design considerations. The chassis were accompanied by 
-a number of fitted parts which were also used such as motors, 
-encoders and a power distribution and motor drive board. Using these pre-built 
-solutions reduced the number of parts which had to be created 
+The chassis used for the robots was the pre-built ``hobbyist''
+chassis from Pololu~\cite{pololuchassis}. These chassis were
+chosen as they ensured manufacturing consistency and allowed
+for scalability, due to their availability, both of which were
+essential design considerations. The chassis were accompanied by
+a number of fitted parts which were also used such as motors,
+encoders and a power distribution and motor drive board. Using these pre-built
+solutions reduced the number of parts which had to be created
 and fitted, simplifying the construction process.
-The chassis had numerous mounting holes, which again eased 
-construction, as holes did not need to be drilled in the chassis 
-to mount the PCB and other components. A variety of chassis 
-colours were also used to simplify the robot recognition which 
-was required and will be discussed later in Section~\ref{soft/cv}. 
+The chassis had numerous mounting holes, which again eased
+construction, as holes did not need to be drilled in the chassis
+to mount the PCB and other components. A variety of chassis
+colours were also used to simplify the robot recognition which
+was required and will be discussed later in Section~\ref{soft/cv}.
 
-During integration testing, issues were encountered with some of the motors, 
-as it was noticed that they 
-were leaking oil or grease from their plastic casing. This 
-resulted in the gears making more noise than they did previously 
-and resulted in motor failure when the motors were run for a 
-prolonged period of time without more grease. This was 
-investigated through the manufacturer, however, unfortunately no 
-reply has been forthcoming. The risk of motor failure was 
-reduced by applying a more appropriate grease at the 
-recommendation of S. Cartwright, the lab technician.  
+During integration testing, issues were encountered with some of the motors,
+as it was noticed that they
+were leaking oil or grease from their plastic casing. This
+resulted in the gears making more noise than they did previously
+and resulted in motor failure when the motors were run for a
+prolonged period of time without more grease. This was
+investigated through the manufacturer, however, unfortunately no
+reply has been forthcoming. The risk of motor failure was
+reduced by applying a more appropriate grease at the
+recommendation of S. Cartwright, the lab technician.
 
-To robustly connect each of the components to the 
-chassis, plastic spacers were used. To obtain the required size 
-of 23mm between the chassis and PCB 
-and between the PCB and the RPi, spacers of 8mm and 15mm 
-were attached using an M3 screw. For the M3 screw to also 
-be used to connect the relevant parts, the standard mounting holes 
-on the RPi had to be widened slightly. The M3 screws were 
-then used to attach the chassis to the PCB and the PCB to the 
-RPi. The 23mm size was determined using the standard 
-header size which would be between both sets of components in 
-addition to allowing for a small gap between the header and the 
-component above. This additional space allowed for airflow which 
-aided in component cooling. 
+To robustly connect each of the components to the
+chassis, plastic spacers were used. To obtain the required size
+of 23mm between the chassis and PCB
+and between the PCB and the RPi, spacers of 8mm and 15mm
+were attached using an M3 screw. For the M3 screw to also
+be used to connect the relevant parts, the standard mounting holes
+on the RPi had to be widened slightly. The M3 screws were
+then used to attach the chassis to the PCB and the PCB to the
+RPi. The 23mm size was determined using the standard
+header size which would be between both sets of components in
+addition to allowing for a small gap between the header and the
+component above. This additional space allowed for airflow which
+aided in component cooling.
 
-The spacers also allow components to be placed above each other 
-and above the centre of the robot. Maintaining the centre of 
-gravity close to the centre of the robot, and therefore reducing 
-interference of centripetal forces around the centre of the robot, 
-is vital for the accuracy of the IMU (see Section~\ref{elec/imu/impl}). By using 
-the spacers to maintain a centre of gravity above the centre of the 
-robot, the general balance of the robot was also aided and the drive 
-control of the robot was made simpler.  
+The spacers also allow components to be placed above each other
+and above the centre of the robot. Maintaining the centre of
+gravity close to the centre of the robot, and therefore reducing
+interference of centripetal forces around the centre of the robot,
+is vital for the accuracy of the IMU (see Section~\ref{elec/imu/impl}). By using
+the spacers to maintain a centre of gravity above the centre of the
+robot, the general balance of the robot was also aided and the drive
+control of the robot was made simpler.
 
 \subsection{Drive System}\label{mech/chassis/drive}
 
@@ -69,14 +69,14 @@ The drive system for the robots will be a differential drive system (DDR).
 This drives each wheel independently using independent actuators and the
 wheels are not connected by a single axle~\cite[p.~146]{braunl_embedded_2013}.
 When using a two wheeled robot, DDR allows the
-robot to rotate on the spot around its central axis when the wheels 
-are driven in opposite directions. This provides a high level of 
-mobility which will aid in the sensing and mapping capabilities of 
-the robot. This also allows the corridors of the maze to be narrower 
-than otherwise, allowing more complex mazes to be formed. The 
-chassis chosen is accompanied by a motor and encoder for each wheel 
-which can be used to obtain data for wheel odometry. 
-  
+robot to rotate on the spot around its central axis when the wheels
+are driven in opposite directions. This provides a high level of
+mobility which will aid in the sensing and mapping capabilities of
+the robot. This also allows the corridors of the maze to be narrower
+than otherwise, allowing more complex mazes to be formed. The
+chassis chosen is accompanied by a motor and encoder for each wheel
+which can be used to obtain data for wheel odometry.
+
 
 \section{Power Distribution and Motor Drive}\label{elec/poweranddrive}
 The Pololu Power Distribution and Motor Drive board~\cite{pololupower}
@@ -141,63 +141,98 @@ this, they are also cheaper than both IR and LIDAR systems.
 
 Ultrasonic transceivers work by emitting sound at a particular frequency
 and measuring the time until the reflected wave returns to the sensor.
-Multiple ultrasonic sensors of the same design have a significant chance to interfere with each other,
-however, IR also has this limitation
-while also being more susceptible to external interference. A possible solution
-was to make a budget LIDAR unit using a single IR sensor and a
-servo motor mounted on top of the robot. This was, however, dismissed as
-the two PWM pins of the RPi would be assigned to each of the
-motors respectively. This solution would also require a budget and
-software implementation commitment prior to testing which was not deemed
-worth the potential added risk to the project.
+Multiple ultrasonic sensors of the same design have a significant chance to
+interfere with each other; however, IR also has this limitation, while also being
+more susceptible to external interference from ambient light. A possible
+solution was to make a budget LIDAR unit using a single IR sensor and a
+servo motor mounted on top of the robot. This solution would also require
+a budget and software implementation commitment prior to testing which was
+not deemed worth the potential added risk to the project. Another consideration
+was that the minimum range of widely available IR sensors is around \SI{10}{\cm},
+which would result in a deadband area around the robot in which objects cannot
+be detected.
 
-Hence ultrasonic sensors were chosen and the ultrasonic sensor used was
-the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and
-ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its
-range at $<$~\SI{30}{\mm}, however mitigation of this is discussed in Section~\ref{mech/sensors}. 
-
-The sensor is also widely used and available within the
-department, mitigating any risks surrounding delivery lead times.
+For these reasons, ultrasonic sensors were chosen over IR, with the HC-SR04
+selected as a suitable model~\cite{HCSR04datasheet}. This sensor has a range
+of \SI{2}{\cm} to \SI{4}{\m}, and ranging accuracy of up to \SI{3}{\mm}.
+Due to the deadband in the immediate proximity of sensors, careful consideration
+had to be given to their placement on the robot (c.f.\ Section~\ref{mech/sensors}).
+The sensor is widely used and was available within the department, mitigating
+the risk of prolonged delivery lead times.
 
 \subsection{Implementation}\label{elec/range/impl}
 The hardware required for the ultrasonic sensors chosen is relatively straightforward.
 They are each connected to a \SI{5}{\volt} supply and ground, and the other two pins are
-connected to standard GPIO pins on the RPi. The echo pin has to be connected through
-a voltage divider as the RPi is only rated at \SI{3.3}{\volt} compared to the sensor's \SI{5}{\volt}. The
-trig pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} was found to be above
-the threshold voltage.
+connected to standard GPIO pins on the RPi. The ECHO pin has to be connected through
+a voltage divider, as the RPi is only rated at \SI{3.3}{\volt}, while the ECHO pin outputs \SI{5}{\volt}. The
+TRIG pin can be connected directly to the RPi, however, as \SI{3.3}{\volt} is above
+the pin's threshold voltage. The sensor operates by emitting a burst of ultrasound
+when the TRIG pin receives a \SI{10}{\micro\second} pulse. The ECHO pin then outputs
+a high signal equal in duration to the flight time of the ultrasound.
 
-The distances are measured by a class named \verb|USScan|. This has a
-\verb|get_scan()| function which iterates through each ultrasonic sensor and takes a reading,
-as shown below in Listing~\ref{lst:get_scan}.
+Ranges are measured by the \verb|Ultrasonic| class in
+\verb|crues_sensors/us_node.py|. The range is calculated by the \verb|get_range()|
+method shown in Listing~\ref{lst:get_scan}. The \verb|start_time| and
+\verb|stop_time| fields are updated asynchronously by a callback method tied to
+rising and falling edges on the ECHO pin. The range is then calculated by the
+equation $ 2d = tv_s$, where $v_s$ is the speed of sound. \verb|response| and \verb|offset| are
+used to correct the measured range based on values obtained from testing, such
+that the returned value represents the distance from the edge of the robot rather
+than the distance from the sensor itself.
 
-\begin{lstlisting}[caption={get\_scan() Function in USScan},label={lst:get_scan} , language=python]
-def get_scan():
-    """Get scan of ranges from all ultrasonic sensors.
-    :return: (USScan) Scan of ranges
-    :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
-    """
-    start = time.time()
-    rl = get_range(LEFT)
-    time_remaining = start + scan_increment - time.time()
-    if time_remaining > 0:
-        time.sleep(time_remaining)
-    rc = get_range(CENTRE)
-    time_remaining = start + 2 * scan_increment - time.time()
-    if time_remaining > 0:
-        time.sleep(time_remaining)
-    rr = get_range(RIGHT)
-    return USScan([rl, rc, rr])
+\begin{lstlisting}[caption={Ultrasonic code for getting range from a sensor},label={lst:get_scan} , language=python]
+class Ultrasonic:
+    # ...
+
+    def get_range(self):
+        """Get range from ultrasonic sensor in metres.
+
+        :return: (float) Approx. range in metres
+        :except: (UltrasonicTimeout) If module timed out waiting for GPIO input change
+        """
+        self.start_time = -1
+        self.stop_time = -1
+        GPIO.output(self.trig_pin, GPIO.HIGH)
+        time.sleep(self.pulse_duration)
+        GPIO.output(self.trig_pin, GPIO.LOW)
+        time.sleep(self.sensor_timeout)
+        if self.start_time < 0 or self.stop_time < 0:
+            raise UltrasonicTimeout(self.name, self.sensor_timeout, self.start_time < 0)
+        duration = self.stop_time - self.start_time
+        distance = duration * SPEED_OF_SOUND * 0.5
+        return self.response * distance - self.offset
 \end{lstlisting}
 
-This method allows the various readings to be taken without interfering with
-each other, as the second ultrasonic pulse isn't emitted until the first is received.
+Interference between sensors was a major concern, as sensors can return incorrect
+ranges if they detect ultrasound from by other sources. Several options were
+considered for mitigating this problem. Using different frequency ranges for each
+sensor was one possible solution; however, this was not possible with the chosen
+components, which lack the hardware necessary to modulate the frequency. The
+more common solution is sensor synchronisation, with sensors taking it in turn to
+record a range. Synchronising the sensors on a single robot is a trivial task,
+which was completed by implementing an \verb|UltrasonicScanner| class, which polls
+each sensor in turn, waiting for measurement cycle of \SI{50}{\milli\second}
+recommended by the manufacturer. This results in an overall cycle of
+\SI{150}{\milli\second} for the sensor array, corresponding a maximum polling
+frequency of around \SI{6.5}{\hertz}.
 
-As Listing~\ref{lst:get_scan} shows, \verb|get_range()| is used by
-\verb|get_scan()| to find the distance measured by each sensor.
-This simply triggers the sensor and times how long until the echo
-pin turns high. The range is then calculated by the equation
-$ 2d = tv_s$, where $v_s$ is the speed of sound.
+Synchronisation of sensors between robots is a significantly harder problem, as
+doing so relies on a global clock between RPis. As the RPi does not have an
+onboard real time clock (RTC), the time is reset each time the robots are started.
+This problem was solved by synchronising the RPis clocks on startup using NTP
+(Network Time Protocol). As the RPi's communicate using WANET, they are not able
+to connect to the internet in order to communicate with an NTP server; for this
+reason it was necessary to set up a laptop as an NTP server.
+
+With a shared global time standard, synchronisation becomes less problematic.
+Each robot has a unique \verb|pulse_offset| parameter, which specifies the offset
+from each second of the clock. This necessitates that the ultrasonic pulse rate
+is an integer multiple of \si{\hertz}. The practical pulse rate for three
+co-operative robots is therefore \SI{2}{\hertz}. This has implications for mapping,
+as the resolution of the map depends on the frequency of measurements, as well as
+for reaction time, placing a limit on the maximum velocity the robots can safely
+move at.
+
 
 \subsection{Testing}\label{elec/range/test}
 The sensors were initially tested using a signal generator and an
@@ -223,8 +258,8 @@ square wave on the trig pin, produced by the signal generator.
 A circuit was then created to read the values using an Arduino
 microcontroller to allow the distance readings to be found quickly
 and the accuracy of the sensors measured. The readings from this were
-found to be approximately accurate (to within a half a \si{\cm},
-as measured with a tape measure), although rigorous testing was not
+found to be approximately accurate (to within \SI{0.5}{\cm}),
+although rigorous testing was not
 performed as the accuracy would be dependent on the temperature due
 to changes in air pressure, and there was no way of accurately controlling this.
 
@@ -452,18 +487,18 @@ system for precisely controlling the acceleration and rotations.
 
 \section{Sensor Placement}\label{mech/sensors}
 The range sensors chosen were ultrasound sensors as these fit the
-scalability and accuracy requirements of the range sensing. 
-Mechanically these had to be mounted in a consistent manner on each 
-robot to ensure that software results could be replicated between 
-robots with minimal deviation from the standard code. The ultrasonic 
+scalability and accuracy requirements of the range sensing.
+Mechanically these had to be mounted in a consistent manner on each
+robot to ensure that software results could be replicated between
+robots with minimal deviation from the standard code. The ultrasonic
 sensors chosen were HC-SR04~\cite{HCSR04datasheet}.
 
-As can be seen from the datasheet, the sensors have a cone of 
-detection of \ang{30}. This was the main consideration when designing 
-the layout of the sensors at the front of the robot. Due to space 
-restrictions on the front of robot, three sensors were used for an 
+As can be seen from the datasheet, the sensors have a cone of
+detection of \ang{30}. This was the main consideration when designing
+the layout of the sensors at the front of the robot. Due to space
+restrictions on the front of robot, three sensors were used for an
 overall cone of detection of approximately \ang{90}. Mitigation of the dead-band was also considered resulting in the placement of
-the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown in Figure~\ref{UltraSoundSensorDiagram}. 
+the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown in Figure~\ref{UltraSoundSensorDiagram}.
 
 \begin{figure}[!ht]
 	\centering
@@ -471,17 +506,17 @@ the sensor $\approx{\SI{30}{\mm}}$ from the edge of the robot chassis as shown i
 	\caption{Ultrasound sensor layout}\label{UltraSoundSensorDiagram}
 
 \end{figure}
- 
-The PCB could be designed with these measurements 
-in mind and headers used to ensure the design 
-was modular and sensors could be swapped out if needed. 
 
-The IMU had to be placed in the centre/as 
-close to the centre of the robot as possible. This was to ensure the 
-IMU was as close to the centre rotation of the robot as possible, to 
-obtain the most accurate readings possible. By placing the IMU correctly 
-on the robot the need for regular calibration of the measurements is 
-reduced. This heavily influenced the design of the PCB. 
+The PCB could be designed with these measurements
+in mind and headers used to ensure the design
+was modular and sensors could be swapped out if needed.
+
+The IMU had to be placed in the centre/as
+close to the centre of the robot as possible. This was to ensure the
+IMU was as close to the centre rotation of the robot as possible, to
+obtain the most accurate readings possible. By placing the IMU correctly
+on the robot the need for regular calibration of the measurements is
+reduced. This heavily influenced the design of the PCB.
 
 
 \section{PCB}\label{elec/pcb}
