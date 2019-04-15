@@ -915,7 +915,7 @@ the scan data and odometry, and makes probabilistic approximations of the robot'
 mainly used to compensate for odometry drift, as mentioned in Section~\ref{soft/odometry/wheel}. A block diagram
 indicating this relationship can be found in Figure~\ref{fig:amcl}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{diagrams/amcl_localization}
 	\caption{AMCL transform diagram~\cite{macenski_amcl}}\label{fig:amcl}
@@ -951,7 +951,7 @@ Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gma
 on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
 slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \centering
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{graphs/rectangle_map}
@@ -987,9 +987,7 @@ This output is clearly far better, and cursory examination showed the scale to b
 reach the walls of corners before the points.
 
 This experiment was repeated on another simple configuration, this time with a large square to the right of the
-centre. This produced the map shown in Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat
-
-less clean around the obstacle, but the obstacle is still clearly present. 
+centre. This produced the map shown in Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat less clean around the obstacle, but the obstacle is still clearly present. 
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
@@ -1113,6 +1111,7 @@ for i, name in enumerate(names):
 
 \todo{caption??}
 
+\noindent
 An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
 \begin{figure}[!ht]
