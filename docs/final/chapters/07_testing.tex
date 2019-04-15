@@ -188,37 +188,32 @@ system was tested on the maze configurations shown in Figure~\ref{fig:maze_confi
   \caption{Example Maze Configurations}\label{fig:maze_configs}
 \end{figure}
 
-\todo{table goes off the page?}
-
 \begin{table}[!ht]\centering
 \caption{Results
 \label{results}}
     \begin{tabular}{cccccc}
         \toprule
-        \thead{Maze \\Configuration} & \thead{Number of \\
-        Agents} & \thead{Run 1[\si{\second}]} & \thead{Run 2[\si{\second}]} & \thead{Run 3[\si{\second}]} & \thead{Avg. Time \\ Taken[\si{\second}]}\\
+        \thead{Maze \\configuration} & \thead{Avg. runtime with \\
+        one agent [\si{\second}]} & \thead{Avg. runtime with \\
+        two agents [\si{\second}]}\\
         \midrule
-        1 & 1 & 109.0 & 41.4 & 23.0 & 57.8\\
-        1 & 2 & 20.4 & 37.9 & 9.7 & 22.7\\
-        2 & 1 & 34.6 & 71.0 & 150.0 & 85.2\\
-        2 & 2 & 79.0 & 137.0 & 29.7 & 81.9\\
-        3 & 1 & 51.1 & 110.0 & N/A & 80.6\\
-        3 & 2 & 60.3 & 82.0 & N/A & 71.2\\
-        4 & 1 & 180.4 & 88.0 & N/A & 134.2\\
-        4 & 2 & 138.3 & N/A & N/A & 138.3\\
+        1 & 57.8 & 22.7\\
+        2 & 85.2 & 81.9\\
+        3 & 80.6 & 71.2\\
+        4 & 134.2 & 118.3\\
         \bottomrule
     \end{tabular}
 \end{table}
 
-The results shown are not indicative of the project had it been completed in its 
-entirety, however these results give benchmark scores for the shown maze 
+The results shown are not indicative of the project had it been completed in its
+entirety, however these results give benchmark scores for the shown maze
 configurations with what is a very basic AI module. A major drawback of the lack of SLAM/AI
 integration is that the same path can be searched multiple times, which resulted in a few
-instance with unusually slow results. The results do broadly show, however, 
-that multiple agents perform better than a single agent in terms of speed of 
-the search. In these cases, this is a simple case of ``many hands make light 
-work'' rather than anything intelligent that the robots are doing. 
-Nevertheless, the results demonstrate the successful outcomes of the project 
+instance with unusually slow results. The results do broadly show, however,
+that multiple agents perform better than a single agent in terms of speed of
+the search. In these cases, this is a simple case of ``many hands make light
+work'' rather than anything intelligent that the robots are doing.
+Nevertheless, the results demonstrate the successful outcomes of the project
 and vindicate the time taken to research the field of co-operative robotics.
 Work detailed in further work (Section~\ref{furtherwork}) can use the
 results shown here as benchmark results and
