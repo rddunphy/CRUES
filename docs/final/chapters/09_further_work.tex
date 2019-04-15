@@ -13,13 +13,13 @@ Robot behaviour on goal discovery would also have to be, explicitly: whether
 one goal being discovered was an end state --- meaning the robot could return 
 to its starting point --- or whether to continue searching for more goals.
   
-Various improvements could also be made to the SLAM (see Section~
-\ref{soft/SLAM}) and Odometry (see Section~\ref{soft/odometry}).  
+Various improvements could also be made to the SLAM (c.f. Section~
+\ref{soft/SLAM}) and Odometry (c.f. Section~\ref{soft/odometry}).  
 The exploration of other libraries to make improvements to the mapping 
 capabilities of the robot, when using ultrasonic sensors and limited feedback 
 methods, could be explored through testing their performances as part of
 further work. Two such libraries are: SLAMOT (SLAM with Object Tracking) which 
-could be used to resolve the issue of robots existing in each other's maps as 
+could be used to resolve the issue of robots existing in each other's maps, as 
 moving objects would be tracked and remain unmapped; and AMCL for
 localisation, which compensates for the drift in time between the odometry and 
 reference frames.   
@@ -37,7 +37,7 @@ of the maps created.
 Subsequent to these, more robots could be added to the system in order to 
 stress test the scalability of the project and its components. In areas such as
 the ultrasonic range finders which are likely to produce bottlenecks in the system
-with more agents, alternative or improved options should be explored, for example
+with more agents, alternative or improved options should be explored. For example,
 devising a method for synchronising ultrasonic pulses to prevent interference or
 utilising more complex and expensive range finders such as LIDAR. 
 
