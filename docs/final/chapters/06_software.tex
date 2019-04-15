@@ -895,6 +895,7 @@ The \verb|gmapping| package takes in a \verb|LaserScan| message, as well as odom
 
 The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different methods of active range finding are similar enough, however, that a rudimentary laser scan message could be created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of each sensor will allow it to find the walls of a corner earlier than the point.
 
+The \verb|gampping| package, while providing some localisation via feature detection, and utilising the odometry in creation of the map, it does not actually perform true localisation. Another package, \verb|AMCL|, performs a second iteration particle filtering algorithm on the map already processed by the mapping package, as well as the scan data and odometry, and makes probabilistic approximations of the robot's location in the map. This is mainly used to compensate for odometry drift, as mentioned in Section~\ref{soft/odometry/wheel}. A block diagram indicating this relationship can be found in Figure~\ref{fig:amcl}.
 
 \begin{figure}[!ht]
 	\centering
@@ -902,11 +903,15 @@ The scan data is more complex, as the package is intended for use with a LIDAR u
 	\caption{AMCL transform diagram~\cite{macenski_amcl}}\label{fig:amcl}
 \end{figure}
 
+Unfortunately, as particle filtering is an extremely taxing operation, it proved too taxing to run both \verb|gmapping| and \verb|AMCL| at once on the RPi. Indeed, running only the mapping package proved problematic, as certain configurations caused the entirety of the RPi's memory to be used, and led to some other ros packages crashing as a result of being refused memory allocation. As a result of this, two parameters, ``particle'' and ``delta'' which respectively govern the number of steps in the filter and granularity of the generated map both had to be reduced. Both of these will reduce the accuracy of the final output, but this appears to be an unavoidable problem.
 
 \subsection{Tuning}\label{soft/SLAM/tuning}
 
+The initial attempts at running \verb|gmapping| presented a number of problems immediately. For one, the map generated was at entirely the wrong scale compared to the odometry data, which created a very chaotic and meaningless map. When displayed alongside the odometry using RViz, the cause of the issue became obvious, that the two values were on different scales. This proved to be a result of a misconfguration, with the odometry returning data in metres and the ultrasonics in millimetres. After fixing this, the map and odometry were on the same scale, but the map was still a formless shape, which turned out to be the result of an offset value in the ultrasonic code, intended to account for the distance between the sensor and the edge of the robot, but which was still on a scale of metres. 
 
+Another problem encountered was with the scan matching feature. As a result of expecting to work on a high fidelity LIDAR scan, the mapping algorithm treats almost any scan which looks familiar as a potential loop closure, and revised large parts of the map based on assuming the two positions are the same. This assumption does not work nearly as well when considering a system which has reads only three ranges per scan, as a location which results in three similar scan results is much less likely to be the same as one with hundreds. As a result of this scan matching, the robot's position in the map tended to wildly jump around as the map progressed to places it had already been, which made for very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for values to be matching to 50 instead of the default 0.
 
+Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
 
 \begin{figure}[!ht]
 \centering
@@ -931,7 +936,11 @@ The scan data is more complex, as the package is intended for use with a LIDAR u
   \caption{GMapping output}\label{fig:gmapping_output}
 \end{figure}
 
+This new map was far more accurate, with a correct scale and rough shape, but seemed to be missing many measurements and not updating the map often. This was due again to the assumption of the use of LIDAR, which produces far too much data to process exhaustively, so the mapping algorithm by default only updates the map with the last scan result when the robot has moved 1 unit or rotated by 0.5 radians. This explains the 12 clear branches the map has formed, as the map is only being updated 12 times. It is possible by a normally disabled parameter, \verb|temporalUpdate|, to force the map to be updated at regular time. When this was set to the same rate as the ultrasonic scans were being generated, the map shown in Figure~\ref{fig:gmapping_output/rect} was generated.
 
+This output is clearly far better, and cursory examination showed the scale to be correct and accurate to within \SI{1}{cm}. The rounded edges are to be expected, as the ultrasonics have a wide field of view, and therefore reach the walls of corners before the points.
+
+This experiment was repeated on another simple configuration, this time with a large square to the right of the centre. This produced the map shown in Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat less clean around the obstacle, but the obstacle is still clearly present. 
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
