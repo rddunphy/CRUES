@@ -15,9 +15,9 @@ prototyping---as this will provide additional robustness and
 guaranteed repeatability between robots.
 
 The chassis used for the robots was the pre-built ``hobbyist'' 
-chassis from Pololu~\cite{pololuchassis}. These chassis were 
-chosen as they ensured manufacturing consistency and allowed 
-for scalability, due to their availability, both of which were 
+chassis from Pololu~\cite{pololuchassis}. This chassis was 
+chosen as it ensured manufacturing consistency between robots and allowed 
+for scalability, due to its availability, both of which were 
 essential design considerations. The chassis were accompanied by 
 a number of fitted parts which were also used such as motors, 
 encoders and a power distribution and motor drive board. Using these pre-built 
@@ -65,7 +65,7 @@ control of the robot was made simpler.
 
 \subsection{Drive System}\label{mech/chassis/drive}
 
-The drive system for the robots will be a differential drive system (DDR).
+The drive system used for the robots is a differential drive system (DDR).
 This drives each wheel independently using independent actuators and the
 wheels are not connected by a single axle~\cite[p.~146]{braunl_embedded_2013}.
 When using a two wheeled robot, DDR allows the
@@ -98,8 +98,7 @@ connections on the board which can be cut for further voltage customisation.
 The DRV8838 Motor Driver takes two inputs for each motor for direction and Pulse
 Width Modulation (PWM), which allows the motor speed to be controlled. The
 driver also has a sleep input which can be used to coast the motors if
-required. Each of the motors' respective sleep inputs
-and are connected by default and therefore should not be driven at the same time,
+required. Each of the motors' respective sleep inputs are connected by default and therefore should not be driven at the same time,
 as this could result in a short circuit within the motor driver, however the
 jumper connection between these can be cut to allow the sleep inputs to
 be driven separately.
@@ -112,7 +111,8 @@ space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
 onto the boards as the robots were assembled. Once soldered, the power
-distribution and motor driver board was continuity tested and continually monitored to ensure correct functionality.
+distribution and motor driver board was continuity tested and monitored 
+throughout testing to ensure correct functionality.
 
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
@@ -152,11 +152,9 @@ software implementation commitment prior to testing which was not deemed
 worth the potential added risk to the project.
 
 Hence ultrasonic sensors were chosen and the ultrasonic sensor used was
-the HC-SR04~\cite{HCSR04datasheet}, as previously mentioned in Section~\ref{mech/sensors}. This sensor has a range of up to \SI{4}{\m} and
+the HC-SR04~\cite{HCSR04datasheet}. This sensor has a range of up to \SI{4}{\m} and
 ranging accuracy of up to \SI{3}{\mm}. A small dead-band exists in its
-range at $<$~\SI{30}{\mm}, however mitigation of this is discussed in Section~\ref{mech/sensors}. 
-
-The sensor is also widely used and available within the
+range at $<$~\SI{30}{\mm}, however mitigation of this is discussed in Section~\ref{mech/sensors}. The sensor is also widely used and available within the
 department, mitigating any risks surrounding delivery lead times.
 
 \subsection{Implementation}\label{elec/range/impl}
@@ -228,24 +226,24 @@ as measured with a tape measure), although rigorous testing was not
 performed as the accuracy would be dependent on the temperature due
 to changes in air pressure, and there was no way of accurately controlling this.
 
-Once the sensor was implemented on the RPi, an experiment was devised to test
-its level of accuracy. The robot was placed at fixed distances from the wall
-and at each point 100 readings were recorded. The average response of this
-experiment across the 1m range can be seen in Figure~\ref{fig:usline}.
-
-\begin{figure}[!ht]
+\begin{figure}[!hb]
 	\centering
 	\includegraphics[width=0.7\textwidth]{graphs/ultrasonic_response_1m_with_line_of_best_fit}
 	\caption{Average ultrasound response}\label{fig:usline}
 \end{figure}
 
-It can be seen then that the response of the sensor is fairly reasonable producing a linear response with an offset of approximately \SI{18}{\milli\meter}. The values begin to deviate at greater distances, but the robot is unlikely to make measurements over significant distances. Indeed, in normal operation, considering the wide field of view of each sensor, it is very unlikely that no obstructions will be registered at the extremes of range, and it is unlikely that these values will be as useful as the shorter range ones.
+Once the sensor was implemented on the RPi, an experiment was devised to test
+its level of accuracy. The robot was placed at fixed distances from the wall
+and at each point 100 readings were recorded. The average response of this
+experiment across the 1m range can be seen in Figure~\ref{fig:usline}.
 
-\begin{figure}[!ht]
+\begin{figure}[!hbt]
 	\centering
 	\includegraphics[width=0.7\textwidth]{graphs/ZoomedDistance}
 	\caption{Ultrasound response variance}\label{fig:usboxplots}
 \end{figure}
+
+It can be seen then that the response of the sensor is fairly reasonable producing a linear response with an offset of approximately \SI{18}{\milli\meter}. The values begin to deviate at greater distances, but the robot is unlikely to make measurements over significant distances. Indeed, in normal operation, considering the wide field of view of each sensor, it is very unlikely that no obstructions will be registered at the extremes of range, and it is unlikely that these values will be as useful as the shorter range ones.
 
 In addition to plotting the average response, Figure~\ref{fig:usboxplots}
 shows box plots at a subset of each point of measurement, the rest being
@@ -323,7 +321,7 @@ however did verify that the system was approximately outputting 1440
 counts per revolution.
 
 \section{IMU}\label{elec/imu}
-The IMU consists of a three axis accelerometer and a three axis gyroscope
+The IMU consists of a three-axis accelerometer and a three-axis gyroscope
 which can be used to measure both the linear acceleration and rotational
 velocity of the robot. This can be integrated to obtain velocity and integrated again
 to obtain displacement in order to track the robot's position over time, again by performing dead reckoning. It is worth noting
@@ -334,8 +332,8 @@ independently.
 
 \subsection{Design}\label{elec/imu/design}
 The IMU selected was the MPU-6050~\cite{MPU6050Datasheet}. It was the most accurate sensor of a
-similar budget with regards to noise, cross axis sensitivity and non
-linearity. Offset tolerance was also considered but this was less of a
+similar budget with regards to noise, cross axis sensitivity and nonlinearity. 
+Offset tolerance was also considered but this was less of a
 concern as this can be compensated for, as long as the offset is not
 so extreme as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
@@ -373,7 +371,7 @@ def read_word(self, reg):
 \end{lstlisting}
 
 An \verb|IMU| class was then created to read the data from the IMU which
-and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
+has an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
@@ -433,13 +431,13 @@ def get_speeds(self):
 
 \subsection{Testing}\label{elec/imu/test}
 Initial work was performed with the IMU and an Arduino microcontroller
-before the RPis were acquired. The IMU was connected up and various
+before the RPis were acquired. The IMU was connected and various
 movements were recorded. Python code was then written to interpret and
 visualise the data as a moving frame. A frame from the output test video is shown in Figure \ref{fig:imu_py_test}.
 
-\begin{figure}[!ht]
+\begin{figure}[!hbt]
 	\centering
-	\includegraphics[width=1\textwidth]{imupyfig.png}
+	\includegraphics[scale = 0.8]{imupyfig.png}
 	\caption{IMU visualisation test frame}\label{fig:imu_py_test}
 
 \end{figure}
@@ -508,12 +506,12 @@ with the following physical design constraints:
 
 \begin{itemize}
   \item Central ultrasonic sensor at the centre of the robot in the x axis
-  \item Other ultrasonic sensors symmetrical about the y axis
+  \item Other ultrasonic sensors symmetrical about the x axis
   \item IMU chip in centre of x and y axes
   \item Mounting holes for RPi and for mounting PCB to chassis
   \item Power connectors at fixed position relative to centre to ensure it
   connects to header on power distribution board
-  \item Motor drive connectors also at fixed position relative to centre
+  \item Motor drive connectors at fixed position relative to centre
 \end{itemize}
 
 When designing the PCB in
