@@ -267,21 +267,28 @@ allows the address to be changed through a data pin from 0x68 to 0x69.
 This would most likely be used if the framework developed was being used
 on another, more complicated system requiring several IMUs. This pin was
 not connected to the RPi in this design as it was not yet required.
-\todo{code description}
 
 An \verb|i2c_object| class that used the ``smbus'' package was created to
 simplify the communication over the \isc{} buses. These
 were initialised with an \isc{} bus and an address, and
-contained various methods for reading and writing to the \isc{} device.
+contained various methods for reading and writing to the \isc{} device,
+such as \verb|read_word()|, shown in Code Listing~\ref{lst:i2c}.
 
-\todo{what code is interesting}
+\begin{lstlisting}[caption={I2C \texttt{read\_word()} function}, label={lst:i2c}]
+def read_word(self, reg):
+    """Read a word from the i2c_object at the register addresses reg and reg+1"""
+    h = self.bus.read_byte_data(self.address, reg)
+    l = self.bus.read_byte_data(self.address, reg + 1)
+    value = (h << 8) + l
+    return value
+\end{lstlisting}
 
 An \verb|IMU| class was then created to read the data from the IMU which
 and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
-\begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
+\begin{lstlisting}[caption={IMU Initialisation Function}, label={lst:imu_init}]
 def __init__(self, address, rate, channel=1):
     self.address = address
     self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
@@ -312,12 +319,12 @@ shown in Listing~\ref{lst:read_funcs}.
 \begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
     def _read_gyro(self):
         x_rot_v = self.IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
-		...
+		    # ...
         return (x_rot_v, y_rot_v, z_rot_v)
 
     def _read_accel(self):
         x_a = self.IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
-		...
+		    # ...
         return (x_a, y_a, z_a)
 \end{lstlisting}
 
@@ -328,7 +335,7 @@ acceleration multiplied by the IMU rate, as shown in~\ref{lst:imu_integration}.
 \begin{lstlisting}[caption={Integrating Linear Acceleration},label={lst:imu_integration} , language=python]
 
 def get_speeds(self):
-		...
+		    # ...
         accel_vect = self._read_accel()
         speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
         return speed_vect, gyro_speeds
@@ -394,7 +401,11 @@ pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
+<<<<<<< HEAD
 Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise
+=======
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise
+>>>>>>> origin/master
 via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
 
 \begin{table}[!ht]\centering
@@ -429,7 +440,7 @@ via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
     \end{tabular}
 \end{table}
 
-With these constraints the following PCB design shown in Figure \ref{PCB_Design} was created.
+With these constraints the following PCB design shown in Figure~\ref{PCB_Design} was created.
 
 \begin{figure}[!ht]
 	\centering

@@ -1,46 +1,55 @@
 % !TEX root = ../report.tex
 
 \chapter{Conclusion}\label{conclusion}
-This project aimed to investigate co-operative robotics within 
-communication restricted environments by constructing several robots 
-which used scalable methods to map and explore their surroundings and find 
-a goal. The project required the mechanical construction and 
-electrical design of the robot as well as the development of sensor and 
-control software.  Research into these topics provided knowledge which 
-allowed 
-design decisions to be taken for each of the main aspects of the project. 
-Agile methodologies were employed to manage the team over the course of 
-the project and were proven successful with 5 out of 6 major objectives 
-completed. Influenced by the design decisions, a pre-built chassis was 
-used as the basis for a mechanically functional robot using odometry, 
-exteroceptive sensors and actuators to explore its environment. 
+This project aimed to investigate co-operative robotics within environments
+with restricted communication by constructing several robots
+which used scalable methods to map and explore their surroundings and find
+a goal. The project required the mechanical construction and
+electrical design of three robots, as well as the development of sensor and
+control software.  Research into these topics provided knowledge which allowed
+design decisions to be taken for each of the main aspects of the project.
+Aspects of agile methodology were employed to manage the team over the course of
+the project and were proven successful with five of the six major objectives
+completed. Influenced by the design decisions, a pre-built chassis was
+used as the basis for a mechanically functional robot using odometry,
+exteroceptive sensors, and actuators to explore its environment. These sensors
+included ultrasonic sensors, an IMU, encoders and a basic
+camera, each of which were mounted on the robot via a bespoke PCB. The PCB
+design was iterated upon throughout the project to achieve a final design
+which connected each of the components in a mechanically and
+electrically sound manner.
 
+For the components to function together, a software
+architecture based on data-oriented software design principles was
+created. This architecture centred on the Robot Operating System (ROS)
+library which uses the publish--subscribe pattern to allow modules in the
+system to communicate while minimising coupling. Software modules based on
+ROS node design principles were written for each sensor and actuator, as well
+as for control structures. Each of these modules was rigorously tested, both
+in isolation and as part of the overall system.
 
-Influenced by the design decisions, a pre-built chassis was 
-used as the basis for a mechanically functional robot using odometry, 
-exteroceptive sensors and actuators to explore its environment. These sensors included ultrasonic sensors, an IMU, encoders and a basic 
-camera each of which were mounted on the robot via a bespoke PCB. The PCB 
-design was iterated upon throughout the project to achieve a final design 
-which connected each of the components in a mechanically and 
-electrically sound manner. 
+A flexible communication system was developed that allows robots to communicate
+directly to a variety of ROS topics, allowing dynamic creation of topics as required.
+This will allow communication to occur simultaneously at several control levels,
+from global path planning to sensor synchronisation.
 
-For each of the components to function together, a software 
-architecture based on data-oriented software design principles was 
-created. This architecture centred on the Robot Operating System (ROS) 
-library which uses a ``publish-subscribe'' model to allow modules in the 
-system to communicate while minimising coupling. For each of the aforementioned components of the 
-system, a software module was written based on ROS node design principles. 
-Each of these modules was independently tested extensively. 
+To allow the robot to explore, ROS libraries for differential drive kinematics,
+sensor fusion, and SLAM were used.
+Introducing each of these libraries added complexity to the project, and
+issues were encountered throughout integration. Technical challenges were
+encountered with mechanical components, power supply, and the synchronisation of
+active sensors between robots. Although a number of these
+issues were overcome, the delays in completing these objectives meant that
+the final objective---the development of co-operative AI control modules---could
+not be completed. As a consequence, system testing results obtained using the
+custom-designed testing environment can only be seen as benchmark results which
+provide a baseline for future work.
 
-To allow the robot to explore, ROS libraries for differential drive, 
-sensor-fusion and Simultaneous Localisation and Mapping (SLAM) were used. 
-Introducing each of these libraries added complexity to the project and 
-issues were encountered throughout integration. Although a number of these 
-issues were overcome, the delay in completing these objectives meant that 
-the final objective --- the development of an AI control module --- could not 
-be completed. 
-
-As a consequence, system testing results obtained using the custom designed testing environment can only be analysed as 
-benchmark results which provide a baseline for future work going forward. 
-Despite this, overall the project had a myriad of successful outcomes and 
-valuable lessons learned.      
+Significant thought has been given to solutions to the outstanding problems, with
+a clear path outlined for future development of the project. Substantial progress
+was made in constructing a flexible platform for addressing the remaining
+challenges. In particular, significant work was accomplished on communication
+protocols, sensor fusion, localisation and mapping.
+A combination of the configurable testing environment, the robust mechanical
+construction of the robot, and the modular software architecture allows for rapid
+development of additional control systems.

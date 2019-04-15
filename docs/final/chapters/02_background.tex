@@ -3,35 +3,35 @@
 \chapter{Background}\label{litreview}
 
 \section{Co-operative Robotics}\label{litreview/robotics}
-A robot is ``a machine capable of carrying out a complex series of actions 
-automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction, 
+A robot is ``a machine capable of carrying out a complex series of actions
+automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction,
 operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical,
-electrical and software engineering within a single system to achieve its goals. By 
-combining the three major disciplines of artificial intelligence, operations 
-research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be 
+electrical and software engineering within a single system to achieve its goals. By
+combining the three major disciplines of artificial intelligence, operations
+research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be
 used for a wide range of robotic applications.
 
 Co-operative robotics has varied definitions across different papers. One such
-definition, which generalises co-operative behaviour in robotics, describes it 
-as ``joint collaborative behaviour that is directed toward some goal in which 
-there is a common interest or reward''~\cite{barnes1991behaviour}. This 
-description fits the objectives of this study more appropriately than the 
-specific term ``swarm robotics'',  which has a number of additional requirements, 
-including that problem solving should be distributed across the swarm~\cite{sahin04}. This definition does not apply to this project, as the robots 
-designed herein are capable of operating autonomously and will be able to solve 
-certain tasks individually. In this case, collaboration is used to deliver a 
-performance improvement. For this reason, the more general term of co-operative 
-robotics will be used throughout. 
+definition, which generalises co-operative behaviour in robotics, describes it
+as ``joint collaborative behaviour that is directed toward some goal in which
+there is a common interest or reward''~\cite{barnes1991behaviour}. This
+description fits the objectives of this study more appropriately than the
+specific term ``swarm robotics'',  which has a number of additional requirements,
+including that problem solving should be distributed across the swarm~\cite{sahin04}. This definition does not apply to this project, as the robots
+designed herein are capable of operating autonomously and will be able to solve
+certain tasks individually. In this case, collaboration is used to deliver a
+performance improvement. For this reason, the more general term of co-operative
+robotics will be used throughout.
 
-The aim of co-operative robotics is to reduce the time taken or 
+The aim of co-operative robotics is to reduce the time taken or
 increase performance  of the system over a single-robot system~
-\cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
-distributed system across several homogeneous agents, agent redundancy is 
-introduced which can improve the completion rate of tasks, especially in 
+\cite{premvuti1990consideration}. Additionally, by creating a decentralised and
+distributed system across several homogeneous agents, agent redundancy is
+introduced which can improve the completion rate of tasks, especially in
 potentially volatile environments~\cite{beckers1994local, parker95}.
-Co-operative robotics goes beyond the idea of collaborative robotics in 
-requiring an additional aspect of intelligence in the communication and 
-coordination of the individual agents~\cite{cao1995cooperative}. 
+Co-operative robotics goes beyond the idea of collaborative robotics in
+requiring an additional aspect of intelligence in the communication and
+coordination of the individual agents~\cite{cao1995cooperative}.
 
 Co-operative robotics is an area of active research, and is growing in popularity --- as the
 capabilities of the technology increases --- as it can be used in a wide-variety of
@@ -43,7 +43,7 @@ Although co-operative, their systems still required a level of human control.
 Dr Nithin Mathews' research in 2012 provided a communication system without
 human interaction~\cite{mathews2012spatially}. This allowed many smaller robots
 to co-ordinate to complete tasks that one could not on its own, such as push a
-larger object. Their system, however, requires a global view of the area to 
+larger object. Their system, however, requires a global view of the area to
 co-ordinate their efforts. However, even since these findings, the progress
 in the field has accelerated. An excellent example is Sebastien de Rivas' work at
 Harvard University~\cite{rollsroyceSWARM}. In partnership with Rolls Royce, his
@@ -52,58 +52,58 @@ Currently, weighing \SI{1.5}{\g} and measuring \SI{4.5}{\cm} in length, the
 four-legged micro-robots have eight degrees of freedom, and are being developed with
 the aim of reducing their size so they can inspect the internal workings of an engine.
 
-\section{Robotic Control} \label{litreview/robotics/control}  
-As the robots in this study are homogeneous and should be able to complete 
-tasks individually, control is limited to the control of a single robot in the 
-complete system. Robotic mechanisms form the control system for a robot and 
-connect the fixed parts of the robot together by joints, allowing motion between 
-these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually 
-by motors, imparts forces on the robot which allow it to move and perform a 
-variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators'' 
-is influenced by several sensors which provide the system with information 
-about its environment. These sensors can also influence the movement of the 
-actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
+\section{Robotic Control} \label{litreview/robotics/control}
+As the robots in this study are homogeneous and should be able to complete
+tasks individually, control is limited to the control of a single robot in the
+complete system. Robotic mechanisms form the control system for a robot and
+connect the fixed parts of the robot together by joints, allowing motion between
+these fixed parts~\cite{lynch2017modern}. Actuation of the joints, usually
+by motors, imparts forces on the robot which allow it to move and perform a
+variety of tasks~\cite{lynch2017modern}. The movement of these ``actuators''
+is influenced by several sensors which provide the system with information
+about its environment. These sensors can also influence the movement of the
+actuators through feedback from previous movement instructions~\cite{lynch2017modern}.
 
-Sensors can take many forms and provide information about internal and external 
-environmental factors of the robot. External sensors provide information which 
-the robot would otherwise find significantly more difficult to discover, one 
-such example being range sensing. This can take a number of different forms 
-including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and 
-binocular computer vision. Each of these sensors use unique methods to determine 
-the distance from the robot to another object in its environment. Ultrasound 
-sensors use high frequency sound waves which reflect from surfaces and return 
-to the sensor. The time taken to return and the speed of sound is used to 
-calculate the distance to the object. Infrared sensors work in a similar 
-fashion but with invisible light instead of sound. 
+Sensors can take many forms and provide information about internal and external
+environmental factors of the robot. External sensors provide information which
+the robot would otherwise find significantly more difficult to discover, one
+such example being range sensing. This can take a number of different forms
+including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and
+binocular computer vision. Each of these sensors use unique methods to determine
+the distance from the robot to another object in its environment. Ultrasound
+sensors use high frequency sound waves which reflect from surfaces and return
+to the sensor. The time taken to return and the speed of sound is used to
+calculate the distance to the object. Infrared sensors work in a similar
+fashion but with invisible light instead of sound.
 
-LIDAR is a more advanced use of invisible light to more accurately detect 
-distance using more powerful and precise beams of light than in the infrared 
-case~\cite{lidar}. Binocular vision allows depth perception to take place 
-similar to that allowed by human vision~\cite{read2005early} by perspective-based cues~\cite{pfautz2002depth}. 
+LIDAR is a more advanced use of invisible light to more accurately detect
+distance using more powerful and precise beams of light than in the infrared
+case~\cite{lidar}. Binocular vision allows depth perception to take place
+similar to that allowed by human vision~\cite{read2005early} by perspective-based cues~\cite{pfautz2002depth}.
 
-Internal sensors can either be related to the actuators or fixed parts of the 
-robot. Those sensors which are connected to the fixed parts of the robot provide 
-feedback about the entire robot and its local environment. The Inertial 
-Measurement Unit (IMU) provides feedback regarding the acceleration and angular 
-velocity with relation to 6 different axes (x, y, z in both linear and angular 
-planes) or Degrees of Freedom (DOF). This can be combined with information from 
-other sensors in order to reduce the overall error in determining the robot's 
-location with relation to its starting position.  
+Internal sensors can either be related to the actuators or fixed parts of the
+robot. Those sensors which are connected to the fixed parts of the robot provide
+feedback about the entire robot and its local environment. The Inertial
+Measurement Unit (IMU) provides feedback regarding the acceleration and angular
+velocity with relation to 6 different axes (x, y, z in both linear and angular
+planes) or Degrees of Freedom (DOF). This can be combined with information from
+other sensors in order to reduce the overall error in determining the robot's
+location with relation to its starting position.
 
-One such sensor is the encoder which is connected to the wheels and provides 
-only feedback information about this actuator. These sensors are connected 
-directly to the shaft of the motors and provide the control system with the 
-actual distance moved by the motors. This allows adjustments to be made and each 
-of the wheels to be maintained at a constant speed when utilised by the 
-Proportional-Integral-Derivative(PID) controller of a robot.  
+One such sensor is the encoder which is connected to the wheels and provides
+only feedback information about this actuator. These sensors are connected
+directly to the shaft of the motors and provide the control system with the
+actual distance moved by the motors. This allows adjustments to be made and each
+of the wheels to be maintained at a constant speed when utilised by the
+Proportional-Integral-Derivative(PID) controller of a robot.
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
-As mentioned above, PID controllers are a very common solution to problems where the error of the 
-system (the difference between the current state and the desired state) can be 
-measured. Proportional-Integral-Derivative refers to the 
-function of the error with which the output is calculated. The output of the 
-system is the summation of a term which is proportional to the error, a term 
-which is related to the error integrated over time, and a term which is 
+As mentioned above, PID controllers are a very common solution to problems where the error of the
+system (the difference between the current state and the desired state) can be
+measured. Proportional-Integral-Derivative refers to the
+function of the error with which the output is calculated. The output of the
+system is the summation of a term which is proportional to the error, a term
+which is related to the error integrated over time, and a term which is
 proportional to the rate of change of the error~\cite{aastrom2006advanced}. This is shown by Equation \ref{eqn:pid}.
 
 \begin{equation}
@@ -111,44 +111,44 @@ proportional to the rate of change of the error~\cite{aastrom2006advanced}. This
 O(t) = k_{p}e(t) + k_i\int_{0}^{t}e(t)dt + k_d \frac{\mathrm{d} e(t) }{\mathrm{d} t}
 \end{equation}
 
-If $K_d$ and $K_i$ were both 0, and only the P term was active, the output 
+If $K_d$ and $K_i$ were both 0, and only the P term was active, the output
 would change to reduce the error in the system. For example, with a
 temperature controller, if the temperature was too low the heater would
-turn on, with the difference between the actual temperature and the required 
-temperature used to adjust how high it was set. In many systems, this simple 
-implementation is adequate, however it has several limitations. 
+turn on, with the difference between the actual temperature and the required
+temperature used to adjust how high it was set. In many systems, this simple
+implementation is adequate, however it has several limitations.
 
 Consider for instance the temperature controller example where heat is being
 lost in the system is equal to the P constant times the error. This would
 result in a stable state with a potentially large error. To prevent this,
 the I term can be increased. This will increase the longer an error is
-present, thus preventing stable state errors. 
+present, thus preventing stable state errors.
 
-Again, PI controllers are a common control mechanism, however they often have 
-a problem with overshoot due to system inertia. Once more considering the 
-temperature controller, this is where the heater is set to increase the 
-temperature, and the desired temperature is reached. The heater turns off, but 
-is still hotter than the rest of the system, causing the system to get too hot. 
-This is especially damaging in systems where the control in one direction 
-is passive, e.g. the system can actively heat up, but must wait for heat loss 
-to cool down. This problem can be mitigated by increasing the D component. 
-This will push the state towards the desired state when the error is increasing 
-(e.g. during over-shoot), and pushes the current state away from the desired 
-state as the error is reducing as to minimise overshoot before it 
+Again, PI controllers are a common control mechanism, however they often have
+a problem with overshoot due to system inertia. Once more considering the
+temperature controller, this is where the heater is set to increase the
+temperature, and the desired temperature is reached. The heater turns off, but
+is still hotter than the rest of the system, causing the system to get too hot.
+This is especially damaging in systems where the control in one direction
+is passive, e.g. the system can actively heat up, but must wait for heat loss
+to cool down. This problem can be mitigated by increasing the D component.
+This will push the state towards the desired state when the error is increasing
+(e.g. during over-shoot), and pushes the current state away from the desired
+state as the error is reducing as to minimise overshoot before it
 occurs. This does, however, reduce the response speed of the system~\cite{chen2007linear}.
 
-One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from before autonomous 
-robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain 
-of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found. 
-These values can then be used to calculate $K_i$ and $K_d$ which results in a 
-tuned system. However, many different formulae and definitions of the critical 
-gain of $K_p$ exist in literature. This leads to the conclusion that the 
-Ziegler-Nichols method is mathematically imperfect, and this will have to be 
+One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from before autonomous
+robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain
+of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found.
+These values can then be used to calculate $K_i$ and $K_d$ which results in a
+tuned system. However, many different formulae and definitions of the critical
+gain of $K_p$ exist in literature. This leads to the conclusion that the
+Ziegler-Nichols method is mathematically imperfect, and this will have to be
 explored experimentally during the project.
 
 \section{SLAM}\label{litreview/slam}
 A key challenge in mobile robotics is for the robot to know its own position in the
-environment whilst still being able to build a map of its surroundings. 
+environment whilst still being able to build a map of its surroundings.
 This is especially true in the absence of external referencing systems
 such as GPS to aid in knowing its relative position. This is known as the Simultaneous Localisation And Mapping (SLAM)
 problem and has been one of the most extensively researched topics in mobile
@@ -158,26 +158,26 @@ and any errors in the current measurement, the uncertainties compound
 over time. To rectify this, a map with distinctive landmarks can reduce its
 localisation error by revisiting these known areas. This is known as loop closure.
 
-SLAM implementations rely on sensor fusion algorithms as part of their implementation. 
+SLAM implementations rely on sensor fusion algorithms as part of their implementation.
 These take in readings from an array of sensors and calculate an estimated state change
-based on the probability of error for each sensor. This effectively allows errors between 
-multiple sensors to be cancelled out, resulting in more reliable estimates. A standard 
-approach is to use sensor fusion to combine odometry readings from wheel encoders with 
-acceleration information obtained from an inertial measurement unit (IMU) to correct for 
+based on the probability of error for each sensor. This effectively allows errors between
+multiple sensors to be cancelled out, resulting in more reliable estimates. A standard
+approach is to use sensor fusion to combine odometry readings from wheel encoders with
+acceleration information obtained from an inertial measurement unit (IMU) to correct for
 errors caused by wheels slipping and sensor imperfections.
 
 There are a large variety of solutions to suit various system requirements, these
-can be categorized as either filtering and smoothing. Filtering creates a state estimation 
+can be categorized as either filtering and smoothing. Filtering creates a state estimation
 using the current robot position and the map. The estimate is augmented and improved
 by using the new measurements as they become available. Some popular
 approaches to filtering are techniques such as Kalman filters, particle filters
 and information filters. Smoothing techniques involve a full estimate of the trajectory of
-the robot from all available measurements. These typically use least-square error 
-minimisation techniques and are used to address the problem known as the full SLAM 
+the robot from all available measurements. These typically use least-square error
+minimisation techniques and are used to address the problem known as the full SLAM
 problem which attempts to map the entire path.
 
-The state of the system is known as $x_k$ which is a function that uses the previous 
-state to determine the next state. As this can not be perfectly accurate, there will 
+The state of the system is known as $x_k$ which is a function that uses the previous
+state to determine the next state. As this can not be perfectly accurate, there will
 be uncertainty in the readings that must be considered. As a result, $x_k$,
 which is known as the motion model, is defined as
 \begin{equation}
@@ -244,111 +244,111 @@ of distance (if the CV system is bi-ocular) and the identification of distinctiv
 features in the environment to allow loop closure\cite{CVho2006loop}.
 \subsection{Object Detection}\label{litreview/cv/objDet}
 \subsubsection{CNN}\label{litreview/cv/objDet/CNN}
-A common method for object detection is to use a Convolutional 
-Neural Network (CNN)~\cite{schmidhuber2015deep}. This is a deep learning method that 
-considers the relative position of pixels in the image. It 
-works by scanning a Locally Receptive Field (LRF) across the 
-image, and searching this small group of pixels for patterns 
-at each position as it moves. This results in a set of 
-matrices of outputs, which can then be scanned again. With 
-each iteration, the complexity of pattern which can be detected 
-increases. The output of these convolutional layers is then 
-pooled (combined to reduce size), and used as the input to a 
+A common method for object detection is to use a Convolutional
+Neural Network (CNN)~\cite{schmidhuber2015deep}. This is a deep learning method that
+considers the relative position of pixels in the image. It
+works by scanning a Locally Receptive Field (LRF) across the
+image, and searching this small group of pixels for patterns
+at each position as it moves. This results in a set of
+matrices of outputs, which can then be scanned again. With
+each iteration, the complexity of pattern which can be detected
+increases. The output of these convolutional layers is then
+pooled (combined to reduce size), and used as the input to a
 neural network which can then classify the image.
 
 
 \subsubsection{Feature Based}\label{litreview/cv/objDet/fb}
-Another approach to object detection is feature based. This 
-involves the identification and comparison of key points in an 
-image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are 
-several key point detection algorithms --- SIFT, BRISK and ORB, 
-to name a few --- each of which has its own way of describing 
-patterns in the pixels and selecting which will be rarer and 
-therefore, more useful when identifying objects. Each also has 
-a method of quantifying the similarity of two matches called a 
-distance metric. The algorithm then looks for features in both 
-the frame and the object image which score low in the distance 
-metric (indicating similarity), filters the matches to remove 
-false positives, and then uses the relative positions of the 
-matches to estimate an outline of the object in the image 
-frame. 
+Another approach to object detection is feature based. This
+involves the identification and comparison of key points in an
+image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are
+several key point detection algorithms --- SIFT, BRISK and ORB,
+to name a few --- each of which has its own way of describing
+patterns in the pixels and selecting which will be rarer and
+therefore, more useful when identifying objects. Each also has
+a method of quantifying the similarity of two matches called a
+distance metric. The algorithm then looks for features in both
+the frame and the object image which score low in the distance
+metric (indicating similarity), filters the matches to remove
+false positives, and then uses the relative positions of the
+matches to estimate an outline of the object in the image
+frame.
 
 \section{ROS}\label{litreview/ROS}
 The Robot Operating System (ROS) is a framework for developing robot
-software designed to allow flexible software design. It is a collection of tools, 
-libraries and conventions that aim to simplify creating complex and robust robotic systems across a variety of platforms~\cite{aboutROS}. 
+software designed to allow flexible software design. It is a collection of tools,
+libraries and conventions that aim to simplify creating complex and robust robotic systems across a variety of platforms~\cite{aboutROS}.
 It was designed with the objective of being as modular and distributed
 as possible. This modularity allows the user to be able to use as much or
 as little of ROS as they desire, where their own implementation can be
 easily fit into the system~\cite{rosForMe}.
 
-ROS uses a peer-to-peer networking topology to allow communication 
-throughout the system. These systems consist of a number of processes  
-that perform the system's computation called nodes which can  
-run across multiple machines. The peer-to-peer topology requires 
-a lookup mechanism to allow processes to find other process' addresses at 
-runtime so they can communicate. Nodes communicate by passing messages 
-that are data structures of typed fields which can include arbitrarily nested 
+ROS uses a peer-to-peer networking topology to allow communication
+throughout the system. These systems consist of a number of processes
+that perform the system's computation called nodes which can
+run across multiple machines. The peer-to-peer topology requires
+a lookup mechanism to allow processes to find other process' addresses at
+runtime so they can communicate. Nodes communicate by passing messages
+that are data structures of typed fields which can include arbitrarily nested
 structures and arrays~\cite{crick2017rosbridge}.
 
 
-Nodes can use two distinct ROS frameworks, services and topics. 
+Nodes can use two distinct ROS frameworks, services and topics.
 Services are synchronous and perform like function
-calls in traditional programming languages, where only one node in the 
+calls in traditional programming languages, where only one node in the
 system can provide a service of a specific name. Alternatively, topics are
-asynchronous streams of objects published by a node. Other nodes can 
+asynchronous streams of objects published by a node. Other nodes can
 subscribe by creating a handler function when a new data object is available.
 Multiple nodes can concurrently publish and/or subscribe to the same topic and
 a single node may publish and/or subscribe to multiple topics.
 
-ROS was also designed to be language-neutral and supports languages 
-such as C++, Python and Octave. To support this cross-language 
-development, ROS uses a simple, language-neutral Interface Definition 
-Language (IDL) to describe the messages sent between modules 
-\cite{quigley2009ros}. Code generators for each language then generate 
-native implementations which are serialised and de-serialised by ROS 
-as messages are sent and received. This results in a language-neutral 
-message processing scheme where languages can be used as the programmer 
-prefers based on the requirements of that given module. 
+ROS was also designed to be language-neutral and supports languages
+such as C++, Python and Octave. To support this cross-language
+development, ROS uses a simple, language-neutral Interface Definition
+Language (IDL) to describe the messages sent between modules
+\cite{quigley2009ros}. Code generators for each language then generate
+native implementations which are serialised and de-serialised by ROS
+as messages are sent and received. This results in a language-neutral
+message processing scheme where languages can be used as the programmer
+prefers based on the requirements of that given module.
 
-There are other alternatives to ROS, such as Yet Another Robot Platform 
-(YARP). YARP was designed to attempt to make robot software more stable 
-and long-lasting without compromising flexibility to change the sensors, 
-processors and actuators. It also communicates using a peer-to-peer 
-topology with an extensible family of connection types however, YARP is 
+There are other alternatives to ROS, such as Yet Another Robot Platform
+(YARP). YARP was designed to attempt to make robot software more stable
+and long-lasting without compromising flexibility to change the sensors,
+processors and actuators. It also communicates using a peer-to-peer
+topology with an extensible family of connection types however, YARP is
 written in C++ and does not support other languages \cite{aboutYARP}.
-The YARP model of communication is transport-neutral, meaning the details 
-of the underlying networks and protocols in use are decoupled from the 
+The YARP model of communication is transport-neutral, meaning the details
+of the underlying networks and protocols in use are decoupled from the
 data flow \cite{exactlyIsYARP}. Compared to ROS, YARP is less widely used.
-As a result, it does not have the same extensive range of libraries available 
+As a result, it does not have the same extensive range of libraries available
 which implement commonly required functionality for a robotic system.
 
 \section{AI}\label{litreview/maze}
-Artificial intelligence is another component of intelligent robotic control and is the 
+Artificial intelligence is another component of intelligent robotic control and is the
 development of computer systems able to perform tasks normally requiring human intelligence~
-\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a 
-common branch of artificial intelligence, into which much research has been undertaken. Search 
-algorithms and optimisation algorithms can be thought of as highly similar, and in the case of 
-a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}. 
+\cite{russell2016artificial}. Searching problems, and the algorithms which solve them, are a
+common branch of artificial intelligence, into which much research has been undertaken. Search
+algorithms and optimisation algorithms can be thought of as highly similar, and in the case of
+a weighted tree search, which maze exploration can be modelled as, either can be used to solve the problem~\cite{kanal2012search}.
 
 \subsection{Maze Exploration}\label{litreview/maze/exploration}
-The exploration of an unknown environment is a well-researched problem in 
-robotics. Robot exploration is particularly important for 
+The exploration of an unknown environment is a well-researched problem in
+robotics. Robot exploration is particularly important for
 environments that are difficult or dangerous for humans. There are many
-algorithms that can be used for exploration such as Wall Follower, 
+algorithms that can be used for exploration such as Wall Follower,
 Trémaux's and Pledge.
 
-One of the simplest exploration algorithms is the Wall Follower algorithm, 
-also known as the right-hand rule, when prioritising turning right, or 
-left-hand rule, when prioritising turning left. If the maze is simply 
-connected, that is there are no loops in the maze, then the Wall Follower 
-algorithm is guaranteed to reach a goal/exit if one exists. Otherwise, the 
-algorithm will return to the starting point having traversed every corridor at 
-least once~\cite{wallFollowerArcBotics}. The steps of the algorithm are 
-relatively straightforward. The right-hand rule algorithm is shown in Algorithm~\ref{alg:wf}. 
+One of the simplest exploration algorithms is the Wall Follower algorithm,
+also known as the right-hand rule, when prioritising turning right, or
+left-hand rule, when prioritising turning left. If the maze is simply
+connected, that is there are no loops in the maze, then the Wall Follower
+algorithm is guaranteed to reach a goal/exit if one exists. Otherwise, the
+algorithm will return to the starting point having traversed every corridor at
+least once~\cite{wallFollowerArcBotics}. The steps of the algorithm are
+relatively straightforward. The right-hand rule algorithm is shown in Algorithm~\ref{alg:wf}.
 
-\begin{algorithm}\label{alg:wf}
-\caption{Wall Follower Algorithm}
+\begin{algorithm}
+\caption{Wall Follower Algorithm}\label{alg:wf}
 \begin{algorithmic}
 \REPEAT
 \IF{robot can turn right}
@@ -358,24 +358,24 @@ relatively straightforward. The right-hand rule algorithm is shown in Algorithm~
 \ELSIF{robot can turn left}
   \STATE turn left
 \ELSE
-  \STATE dead end reached, turn 
+  \STATE dead end reached, turn
 \ENDIF
 \UNTIL{goal is reached}
 
 \end{algorithmic}
 \end{algorithm}
 
-These steps ensure a wall is kept on the right hand side of the robot at 
-all times. The left-rule is simply the opposite where the robot turns left 
+These steps ensure a wall is kept on the right hand side of the robot at
+all times. The left-rule is simply the opposite where the robot turns left
 if possible to keep the wall on the robot's left. Therefore,
 this algorithm is inherently inefficient as it exhaustively searches the
 maze. In many cases, one of these algorithms would be significantly quicker
-than the other but which cannot be determined without prior knowledge of 
+than the other but which cannot be determined without prior knowledge of
 the maze.
 
 An alternative to the Wall Follower algorithm is Pledge's algorithm. This
-aims to solve the problem where Wall Follower could be stuck in a loop. An 
-example of which is: if walls form to create a rectangle in the centre of 
+aims to solve the problem where Wall Follower could be stuck in a loop. An
+example of which is: if walls form to create a rectangle in the centre of
 the maze, the robot would continually turn right or left (depending on
 algorithm) around that rectangle, never finding the exit. Pledge solves this
 by keeping a count of the number of turns made (if not right-angled turns,
@@ -398,41 +398,41 @@ travel. \cite{klein2011pledge}
 \end{algorithmic}
 \end{algorithm}
 
-Using the initial direction and counting the turns made, allows the 
+Using the initial direction and counting the turns made, allows the
 algorithm to avoid traps such as loops which simple wall followers can be caught in, such as an approximate ``G'' or ``6'' shape.
 
-The Trémaux maze-solving algorithm requires the robot to record its 
-path and mark the routes it has taken throughout its navigation routine. Any 
-given path can be unmarked, marked once or marked twice. If a path is marked 
-twice that indicates the robot has travelled down it in both directions. The 
-robot will not travel down any path marked twice for a third time, therefore 
-treating them as dead-ends. Paths without markings are prioritised, before 
-choosing those marked once in search of further unmarked paths. If a 
-solution is found then the path that is marked only once is the route 
+The Trémaux maze-solving algorithm requires the robot to record its
+path and mark the routes it has taken throughout its navigation routine. Any
+given path can be unmarked, marked once or marked twice. If a path is marked
+twice that indicates the robot has travelled down it in both directions. The
+robot will not travel down any path marked twice for a third time, therefore
+treating them as dead-ends. Paths without markings are prioritised, before
+choosing those marked once in search of further unmarked paths. If a
+solution is found then the path that is marked only once is the route
 from the goal back to the start point. Otherwise if no solution is found,
 all paths in the maze will be marked twice \cite{even2011graph}.
-Importantly, this will likely not find the shortest path, but it will be 
+Importantly, this will likely not find the shortest path, but it will be
 guaranteed to find one if it exists.
 
 \subsection{Path Finding}\label{litreview/maze/path}
-There are many algorithms that can be used to find the shortest path 
-through a graph such as Dijkstra's algorithm and A* search. In the 
-context of our agents, path finding is likely to be used once 
-the goal has been found to return the robot back to its starting 
-position. In the case of an unweighted graph (a graph where all edges are 
-equivalent to search), one of the simplest algorithms 
-is breadth-first search. This explores all neighbours at the same depth 
-before moving onto nodes at the next depth level. This would be guaranteed 
-to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$ 
+There are many algorithms that can be used to find the shortest path
+through a graph such as Dijkstra's algorithm and A* search. In the
+context of our agents, path finding is likely to be used once
+the goal has been found to return the robot back to its starting
+position. In the case of an unweighted graph (a graph where all edges are
+equivalent to search), one of the simplest algorithms
+is breadth-first search. This explores all neighbours at the same depth
+before moving onto nodes at the next depth level. This would be guaranteed
+to find a path with the shortest number of edges and is $\mathcal{O}(|V| + |E|)$
 where $|V|$ is the number of vertices and $|E|$ is the number of edges~\cite{cormen2009introduction}
-Breadth-first search searches the oldest discovered node first meaning 
-many backtracks are needed to reach the oldest discovered node. As 
-backtracking in physical space is expensive, this results in a very 
-costly search for a single-agent. As more agents are added, the cost of this 
-decreases as less backtracking would take place. 
+Breadth-first search searches the oldest discovered node first meaning
+many backtracks are needed to reach the oldest discovered node. As
+backtracking in physical space is expensive, this results in a very
+costly search for a single-agent. As more agents are added, the cost of this
+decreases as less backtracking would take place.
 
-In the case where the edges have a weighting, which in our case would be the 
-distance to next junction, Dijkstra's algorithm is one 
+In the case where the edges have a weighting, which in our case would be the
+distance to next junction, Dijkstra's algorithm is one
 of the most commonly used methods for finding the length of shortest path between a specified pair of nodes in the graph. The steps for Dijkstra's algorithm are outlined in Algorithm \ref{alg:Djikstra}.
 
 \begin{algorithm}
@@ -457,31 +457,31 @@ of the most commonly used methods for finding the length of shortest path betwee
   \IF{distance[next] = $\infty$}
     \RETURN null
   \ENDIF
-  
+
   \STATE{visited[next] $\gets$ True}
   \FORALL{v $\in$ successors(next) : visited[v] = False}
     \IF{distance[next] + weight(edge(next, v)) < distance[v]}
       \STATE{distance[v] = distance[next] + weight(edge(next, v))}
     \ENDIF
   \ENDFOR
-  
+
 \UNTIL{return condition reached}
 \end{algorithmic}
 \end{algorithm}
 
-This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$ 
-\cite{xu2007improved}. An improvement to this original algorithm using a 
+This version of Dijkstra's algorithm runs in $\mathcal{O}(|V|^{2})$
+\cite{xu2007improved}. An improvement to this original algorithm using a
 min-priority queue implemented using a heap, runs in $\mathcal{O}
 (|E| + |V|log |V|)$ and was first proposed in~\cite{fredman1987fibonacci}.
 
 
-Developed initially as an extension of Dijkstra's algorithm, A* is a 
-path-finding algorithm that typically achieves better performance by 
-use of a heuristic. At each node, A* chooses the node which it believes 
-can be used in the shortest path. It does so by choosing the node with 
-the lowest value of f, where f is the sum of g and h, where g is the 
-distance to the current node plus the known distance to that adjacent 
-node and h is the heuristic value from that node to the goal. The heuristic 
-value can be found exactly as the first step of the algorithm though 
-this is very time consuming, so approximate heuristics are used such 
-as the Manhattan distance, Diagonal distance and the Euclidean distance. 
+Developed initially as an extension of Dijkstra's algorithm, A* is a
+path-finding algorithm that typically achieves better performance by
+use of a heuristic. At each node, A* chooses the node which it believes
+can be used in the shortest path. It does so by choosing the node with
+the lowest value of f, where f is the sum of g and h, where g is the
+distance to the current node plus the known distance to that adjacent
+node and h is the heuristic value from that node to the goal. The heuristic
+value can be found exactly as the first step of the algorithm though
+this is very time consuming, so approximate heuristics are used such
+as the Manhattan distance, Diagonal distance and the Euclidean distance.
