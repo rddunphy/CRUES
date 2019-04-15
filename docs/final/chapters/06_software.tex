@@ -362,7 +362,7 @@ receiver as well as the type of Python object which the data is. The header
 and the data to be sent are converted to JSON and returned as a single
 string. When converting from JSON, the receiver checks that it was the
 intended recipient of the message, returning $-1$ if it was not, before
-returning the data object located at index 1 (header is index 0). 
+returning the data object located at index 1 (header is index 0).
 
 In order to physically send and receive the data the Python Socket library
 is used~\cite{socketServerDocs}. This interface's \verb|socket()| function
@@ -800,10 +800,10 @@ movements performed.
 
 \subsection{EKF}\label{soft/odometry/ekf}
 
-The ROS \verb|robot_localization| package~\cite{RosRobotLocalization} was used
-to fuse the sensor data. This package contains implementations of
+The ROS \verb|robot_localization| package was used to fuse the sensor
+data~\cite{RosRobotLocalization}. This package contains implementations of
 an EKF and a UKF (Unscented Kalman Filter). The latter has the advantage of higher
-accuracy, particularly for highly non-linear transformations at the expense of
+accuracy, particularly for highly non-linear transformations, at the expense of
 greater computational complexity~\cite{wan_unscented_2000}. In order to limit
 computational overhead, the EKF implementation (\verb|ekf_localization_node|) was
 chosen for use with this project. Listings~\ref{lst:ekf_launch} shows how an EKF
@@ -828,8 +828,13 @@ and the yaw velocity (rotational velocity around the $Z$ axis) can be updated.
 The IMU provides values for the yaw velocity and acceleration in the $X$ and
 $Y$ directions.
 
-\todo{Talk about graphics}
-
+Several parameters had to be tuned in order to improve the behaviour of the
+filter. In particular, the acceleration and deceleration limits
+(Listing~\ref{lst:ekf_yaml} ll. 27--28) had to be significantly increased
+from the default values, as small, light-weight robots are capable of much more
+abrupt changes in velocity. Figure~\ref{ekf_output/bad} shows the path
+calculated by the EKF prior to this change, with obvious improvements shown
+in Figure~\ref{ekf_output/good}.
 
 \begin{figure}[!ht]
   \centering
@@ -876,6 +881,10 @@ stamped_control: false
 control_timeout: 0.2
 # Which velocities are being controlled [vx, vy, vz, vroll, vpitch, vyaw]
 control_config: [true, false, false, false, false, true]
+acceleration_limits: [13, 0.0, 0.0, 0.0, 0.0, 34]
+deceleration_limits: [13, 0.0, 0.0, 0.0, 0.0, 45]
+acceleration_gains: [0.8, 0.0, 0.0, 0.0, 0.0, 0.9]
+deceleration_gains: [1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
 \end{lstlisting}
 
 
@@ -905,7 +914,7 @@ created simply by combining the three ultrasonic readings into a (admittedly fai
 LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of
 each sensor will allow it to find the walls of a corner earlier than the point.
 
-The \verb|gampping| package, while providing some localisation via feature detection, and utilising the odometry
+The \verb|gmapping| package, while providing some localisation via feature detection, and utilising the odometry
 in creation of the map, does not actually perform true localisation. Another package, \verb|AMCL|, performs a
 second iteration particle filtering algorithm on the map already processed by the mapping package, as well as
 the scan data and odometry, and makes probabilistic approximations of the robot's location in the map. This is
