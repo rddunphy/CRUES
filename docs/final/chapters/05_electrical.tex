@@ -159,7 +159,7 @@ microcontroller to allow the distance readings to be found quickly
 and the accuracy of the sensors measured. The readings from this were
 found to be approximately accurate (to within a half a \si{\cm},
 as measured with a tape measure), although rigorous testing was not
-performed as the accuracy would be dependant on the temperature due
+performed as the accuracy would be dependent on the temperature due
 to changes in air pressure, and there was no way of accurately controlling this.
 
 The testing was then repeated using the RPi setup to test the
@@ -212,11 +212,11 @@ def _callback_a(self, _):
 \subsection{Testing}\label{elec/encoder/test}
 The encoders were first tested to ensure correct functionality using a test circuit and connecting the encoder outputs to an
 oscilloscope. All the encoders were shown to function correctly
-outputting square waves in both channels.Channel A led channel B
-when the motor was moving forwards and B led A when going backwards.
+outputting square waves in both channels. Channel A led channel B
+when the motor was moving forwards, and channel B led channel A when going backwards.
 
 An example of the encoder output measured is shown in Figure~\ref{EncoderGraph} below. This shows the two square waves produced by the
-two encoder, outputs a quarter wavelength out of phase.
+two encoders outputs a quarter wavelength out of phase.
 
 \begin{figure}[!ht]
 	\centering
@@ -248,7 +248,7 @@ The IMU selected was the MPU-6050~\cite{MPU6050Datasheet}. It was the most accur
 similar budget with regards to noise, cross axis sensitivity and non
 linearity. Offset tolerance was also considered but this was less of a
 consideration as this can be compensated for as long as the offset is not
-so extreame as to limit the range. It was configured to operate in its
+so extreme as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 
 The IMU was placed as close to the centre of the axis of the robot
@@ -271,22 +271,24 @@ not connected to the RPi in this design as it was not yet required.
 An \verb|i2c_object| class that used the ``smbus'' package was created to
 simplify the communication over the \isc{} buses. These
 were initialised with an \isc{} bus and an address, and
-contained various methods for reading and writing to the \isc{} device, such as \verb|read_word()|, shown in Code Listing \ref{lst:i2c}.
+contained various methods for reading and writing to the \isc{} device,
+such as \verb|read_word()|, shown in Code Listing~\ref{lst:i2c}.
 
-\begin{lstlisting}[caption={I2C read_word() Function},label={lst:i2c} , language=python]
+\begin{lstlisting}[caption={I2C \texttt{read\_word()} function}, label={lst:i2c}]
 def read_word(self, reg):
-    """ read a word from the i2c_object at the register addresses reg and reg+1"""
+    """Read a word from the i2c_object at the register addresses reg and reg+1"""
     h = self.bus.read_byte_data(self.address, reg)
     l = self.bus.read_byte_data(self.address, reg + 1)
     value = (h << 8) + l
     return value
 \end{lstlisting}
+
 An \verb|IMU| class was then created to read the data from the IMU which
 and an \verb|i2c_object| instance. Listing~\ref{lst:imu_init} shows
 the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
-\begin{lstlisting}[caption={IMU Initialisation Function},label={lst:imu_init} , language=python]
+\begin{lstlisting}[caption={IMU Initialisation Function}, label={lst:imu_init}]
 def __init__(self, address, rate, channel=1):
     self.address = address
     self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
@@ -317,12 +319,12 @@ shown in Listing~\ref{lst:read_funcs}.
 \begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
     def _read_gyro(self):
         x_rot_v = self.IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
-		...
+		    # ...
         return (x_rot_v, y_rot_v, z_rot_v)
 
     def _read_accel(self):
         x_a = self.IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
-		...
+		    # ...
         return (x_a, y_a, z_a)
 \end{lstlisting}
 
@@ -333,7 +335,7 @@ acceleration multiplied by the IMU rate, as shown in~\ref{lst:imu_integration}.
 \begin{lstlisting}[caption={Integrating Linear Acceleration},label={lst:imu_integration} , language=python]
 
 def get_speeds(self):
-		...
+		    # ...
         accel_vect = self._read_accel()
         speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
         return speed_vect, gyro_speeds
@@ -399,10 +401,8 @@ pins of the Raspberry Pi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
-Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB in order to minimise
+Some minor changes were made in the connection of the generic GPIO pins in versions 2 and 3 of the PCB to minimise
 via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
-
-
 
 \begin{table}[!ht]\centering
 \caption{Pin assignments for iterations of the PCB design
@@ -436,7 +436,7 @@ via and path crossing. This can be seen in Table~\ref{table:pin_assignments}.
     \end{tabular}
 \end{table}
 
-With these constraints the following PCB design shown in Figure \ref{PCB_Design} was created.
+With these constraints the following PCB design shown in Figure~\ref{PCB_Design} was created.
 
 \begin{figure}[!ht]
 	\centering
