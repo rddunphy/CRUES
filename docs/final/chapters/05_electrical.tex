@@ -6,7 +6,7 @@
 The Pololu Power Distribution and Motor Drive board~\cite{pololupower}
 was selected for power distribution across
 the robot. This board is the main accompanying part for the Romi
-chassis chosen, and in addition to power distribution also provides
+chassis chosen and, in addition to power distribution, also provides
 two Texas Instruments DRV8838~\cite{texasdrivers} motor drivers to control
 the motors. The board integrates with the chassis easily
 and regulates the voltage provided by the 6 AA batteries, using an
@@ -36,8 +36,7 @@ space and time limitations.
 
 The boards were soldered to the battery contacts and headers soldered
 onto the boards as the robots were assembled. Once soldered, the power
-distribution board and motor driver board were continuity tested and
-subsequently continually monitored to ensure correct functionality.
+distribution and motor driver board was continuity tested and continually monitored to ensure correct functionality.
 
 \section{Range Sensors}\label{elec/range}
 For the robot to localise itself, it needs to be able to measure the
@@ -130,8 +129,7 @@ As Listing~\ref{lst:get_scan} shows, \verb|get_range()| is used by
 \verb|get_scan()| to find the distance measured by each sensor.
 This simply triggers the sensor and times how long until the echo
 pin turns high. The range is then calculated by the equation
-$ 2d = tv_s$ where $v_s$ is the speed of sound. It is then converted
-to \si{\mm}.
+$ 2d = tv_s$ where $v_s$ is the speed of sound.
 
 \subsection{Testing}\label{elec/range/test}
 The sensors were initially tested using a signal generator and an
@@ -171,8 +169,8 @@ independently. This gives the system more control over its path
 as well as allowing it to perform dead reckoning --- meaning an approximate position can be maintained over time --- through wheel odometry.
 
 \subsection{Design}\label{elec/encoder/design}
-The motors selected had both incremental and absolute custom designed
-encoders, but as only the wheel speed is needed and not the position,
+The motors selected had both incremental and absolute
+encoders available which were suitable, but as only the wheel speed is needed and not the position,
 the incremental rotary encoders were used. These were hall effect
 encoders, which measure the changing magnetic field of magnets which
 are attached to the motor shaft. It has two 6 pole magnets
@@ -187,7 +185,7 @@ represents the speed and the leading wave indicates direction.
 \subsection{Implementation}\label{elec/encoder/impl}
 
 The encoder data was read into the RPi by an encoder class written in
-Python. This worked by connecting call back methods to both the A and B
+Python. This worked by connecting callback methods to both the A and B
 channel pins. This initialisation is shown in Listing~\ref{lst:enc_event_detect}
 
 \begin{lstlisting}[caption={encoder callback set-up},label={lst:enc_event_detect} , language=python]
@@ -247,7 +245,7 @@ independently.
 The IMU selected was the MPU-6050~\cite{MPU6050Datasheet}. It was the most accurate sensor of a
 similar budget with regards to noise, cross axis sensitivity and non
 linearity. Offset tolerance was also considered but this was less of a
-consideration as this can be compensated for as long as the offset is not
+concern as this can be compensated for, as long as the offset is not
 so extreme as to limit the range. It was configured to operate in its
 smallest range of values ($\pm\ang{250}s^{-1}$ and $\pm2g$~\cite{MPU6050Datasheet}).
 

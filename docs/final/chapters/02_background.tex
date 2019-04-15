@@ -115,11 +115,11 @@ If $K_d$ and $K_i$ were both 0, and only the P term was active, the output
 would change to reduce the error in the system. For example, with a
 temperature controller, if the temperature was too low the heater would
 turn on, with the difference between the actual temperature and the required
-temperature used to adjust how high it was set. In many systems, this simple
+temperature used to adjust how high the heater was set. In many systems, this simple
 implementation is adequate, however it has several limitations.
 
 Consider for instance the temperature controller example where heat is being
-lost in the system is equal to the P constant times the error. This would
+lost in the system is equal to $k_{p}e(t)$. This would
 result in a stable state with a potentially large error. To prevent this,
 the I term can be increased. This will increase the longer an error is
 present, thus preventing stable state errors.
@@ -138,9 +138,9 @@ state as the error is reducing as to minimise overshoot before it
 occurs. This does, however, reduce the response speed of the system~\cite{chen2007linear}.
 
 One method of tuning a PID controller is the Ziegler-Nichols method~\cite{ziegler1942optimum}. This principle originates from before autonomous
-robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain
-of $K_p$, $K_u$, from which the frequency of oscillation, $T_u$ can be found.
-These values can then be used to calculate $K_i$ and $K_d$ which results in a
+robotic control and has been adapted for this application~\cite{aastrom2004revisiting}. The method experimentally finds the critical gain, $K_u$, which is a value of $K_p$
+where steady oscillation occurs. The frequency of oscillation, $T_u$, is then found and
+these values can then be used to calculate $K_i$ and $K_d$ which results in a
 tuned system. However, many different formulae and definitions of the critical
 gain of $K_p$ exist in literature. This leads to the conclusion that the
 Ziegler-Nichols method is mathematically imperfect, and this will have to be
@@ -160,8 +160,7 @@ localisation error by revisiting these known areas. This is known as loop closur
 
 SLAM implementations rely on sensor fusion algorithms as part of their implementation.
 These take in readings from an array of sensors and calculate an estimated state change
-based on the probability of error for each sensor. This effectively allows errors between
-multiple sensors to be cancelled out, resulting in more reliable estimates. A standard
+based on the probability of error for each sensor. This mitigates errors, resulting in more reliable estimates than possible with either one sensor. A standard
 approach is to use sensor fusion to combine odometry readings from wheel encoders with
 acceleration information obtained from an inertial measurement unit (IMU) to correct for
 errors caused by wheels slipping and sensor imperfections.
@@ -222,7 +221,7 @@ that estimates the state of a dynamic system from a series of noisy measurements
 This uses the premise of the predict and update equations as joint probability
 distributions. Given variables defined on a probability space, the joint
 probability distribution gives the probability that each of the variables falls in any
-range or set. It uses these techniques to estimates a state vector containing
+range or set. It uses these techniques to estimate a state vector containing
 both the location of landmarks in the map and the robot pose~\cite{huang2007convergence}.
 
 
@@ -240,7 +239,7 @@ field of view by measuring the discrepancy in the object's position in the two c
 frames given a translation matrix relating the two cameras.
 
 Computer vision can be well integrated with SLAM providing a means of both the measure
-of distance (if the CV system is bi-ocular) and the identification of distinctive
+of distance and the identification of distinctive
 features in the environment to allow loop closure\cite{CVho2006loop}.
 \subsection{Object Detection}\label{litreview/cv/objDet}
 \subsubsection{CNN}\label{litreview/cv/objDet/CNN}
@@ -263,7 +262,7 @@ involves the identification and comparison of key points in an
 image of the target object and in the camera frame~\cite{lowe2004distinctive}. There are
 several key point detection algorithms --- SIFT, BRISK and ORB,
 to name a few --- each of which has its own way of describing
-patterns in the pixels and selecting which will be rarer and
+patterns in the pixels and selecting which will be rarer and,
 therefore, more useful when identifying objects. Each also has
 a method of quantifying the similarity of two matches called a
 distance metric. The algorithm then looks for features in both
@@ -315,7 +314,7 @@ There are other alternatives to ROS, such as Yet Another Robot Platform
 (YARP). YARP was designed to attempt to make robot software more stable
 and long-lasting without compromising flexibility to change the sensors,
 processors and actuators. It also communicates using a peer-to-peer
-topology with an extensible family of connection types however, YARP is
+topology with an extensible family of connection types. However, YARP is
 written in C++ and does not support other languages \cite{aboutYARP}.
 The YARP model of communication is transport-neutral, meaning the details
 of the underlying networks and protocols in use are decoupled from the
