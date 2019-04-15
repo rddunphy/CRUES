@@ -729,9 +729,6 @@ The equations derived here are shown in Equations~\ref{eq:dotx} to~\ref{eq:dotth
 \dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
 \end{align}
 
-\todo[inline]{This section needs to focus more on the differential\_drive package,
-the various nodes it contains, inputs/outputs, etc. Formulas should
-probably go in Background, as we did not implement these ourselves.}
 
 \subsection{IMU}\label{soft/odometry/imu}
 
@@ -1107,7 +1104,7 @@ Initial testing of the \verb|vision_node| was performed on a PC with a USB webca
 testing was performed by using the position information to render labelled rectangles to a real
 time stream highlighting the position of the objects. The code for this is shown in Listing~\ref{lst:draw_rectangles}.
 
-\begin{lstlisting}[caption={asd}, label={lst:draw_rectangles}]
+\begin{lstlisting}[caption={Object highlighting code}, label={lst:draw_rectangles}]
 for i, name in enumerate(names):
     if found[i]:
         #cv2.drawContours(frame, [outline], -1, (0, 255, 0), 2)
@@ -1118,7 +1115,6 @@ for i, name in enumerate(names):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, highlight_colours[i], 2)
 \end{lstlisting}
 
-\todo{caption??}
 
 \noindent
 An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
