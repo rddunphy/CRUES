@@ -61,8 +61,8 @@ major changes to the overall software structure.
 ROS provides two client libraries, \verb|rospy| and \verb|roscpp|, which allow
 programming nodes in Python and C++, respectively. Although the majority of
 the system will be programmed in Python, the choice of programming languages
-means that timing or processing sensitive operations can be written in C or C++
-as required.
+means that timing- or processing-sensitive operations can be written in a
+lower-level programming language as required.
 
 Individual nodes can be started from the command line using the \verb|rosrun|
 tool, or can be included in ROS launch files, which allow multiple nodes to
@@ -684,16 +684,9 @@ accuracy in output velocities.
 
 
 
-\section{Odometry Sensor Fusion}\label{soft/odometry}
+\section{Odometry and Sensor Fusion}\label{soft/odometry}
 
 \subsection{Wheel Odometry}\label{soft/odometry/wheel}
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
-	\caption{The variables used to calculate wheel odometry}
-	\label{fig:diff_drive_diagram}
-\end{figure}
 
 Wheel Odometry is derived in two parts. Firstly, as discussed in Section~\ref{soft/PID}, the velocity of each wheel is derived from the output of the
 encoders. Then, with only these values and the distance between the wheels
@@ -703,9 +696,16 @@ time, an estimate of global displacement can be attained. However, due to the la
 of reliability in the encoder data, this estimate is very likely to drift over
 time.
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{diagrams/DiffDrive}
+	\caption{The variables used to calculate wheel odometry}
+	\label{fig:diff_drive_diagram}
+\end{figure}
+
 Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
 wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
-and rotation from the origin. These values are reflected in figure \ref{fig:diff_drive_diagram}.
+and rotation from the origin. These values are reflected in Figure \ref{fig:diff_drive_diagram}.
 
 The ideal differential drive system has only two ``states'' of movement, either
 moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
@@ -723,7 +723,7 @@ robot). Like in the previous case, the velocity used in the calculation is to be
 in the case where $u_l = u_r$, so the value
 used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation.
 
-The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dottheta}.
+The equations derived here are shown in Equations~\ref{eq:dotx} to~\ref{eq:dottheta}.
 
 
 \begin{align}
@@ -731,6 +731,10 @@ The equations derived here are shown in equations \ref{eq:dotx} to \ref{eq:dotth
 \dot{y} & = \frac{(u_l + u_r)}{2} \sin(\theta) \label{eq:doty} \\
 \dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
 \end{align}
+
+\todo[inline]{This section needs to focus more on the differential\_drive package,
+the various nodes it contains, inputs/outputs, etc. Formulas should
+probably go in Background, as we did not implement these ourselves.}
 
 \subsection{IMU}\label{soft/odometry/imu}
 
@@ -883,7 +887,7 @@ control_config: [true, false, false, false, false, true]
 
 \section{SLAM}\label{soft/SLAM}
 
-As discussed in section \ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively researched and challenging topic. As a result of this, there are many existing implementations of a wide variety of SLAM algorithms. The most commonly used package for this when working within the ROS framework is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework, simply taking and producing standard ROS message types. It also provides a very rich suite of settings which can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety of settings available in particular, is the somewhat poor documentation it provides, which necessitated a great deal of experimentation to achieve reasonable results, which will be discussed going forward.
+As discussed in Section~\ref{litreview/slam}, Simultaneous Localisation and Mapping (SLAM) is an extensively researched and challenging topic. As a result of this, there are many existing implementations of a wide variety of SLAM algorithms. The most commonly used package for this when working within the ROS framework is \verb|gmapping|, an implementation of a particle filter, which is very well supported by the framework, simply taking and producing standard ROS message types. It also provides a very rich suite of settings which can be used to modify the functionality of the algorithm. The drawback of the package, and the wide variety of settings available in particular, is the somewhat poor documentation it provides, which necessitated a great deal of experimentation to achieve reasonable results, which will be discussed going forward.
 
 \subsection{Package Overview}\label{soft/SLAM/package}
 
@@ -951,7 +955,7 @@ this application would require the collection of a large data
 set of images of the robots and goals, as well as the time
 consuming process of tuning the CNN.
 
-Feature Based object detection was also considered. As described in
+Feature-based object detection was also considered. As described in
 Section \ref{litreview/cv/objDet/fb}, this only requires a picture to be
 taken of the object and therefore takes far less time to
 implement than the CNN solution. However, the accuracy and
@@ -959,7 +963,7 @@ consistency are largely dependent on the number of features
 detected, and the algorithm's complexity grows relatively
 quickly. The basic brute force algorithm involves comparing
 every key point in the object image to every key point in the
-frame image, which results in O($n^2$) complexity. This can be streamlined, for instance, if it becomes impossible
+frame image, which results in $\mathcal{O}(n^2)$ complexity. This can be streamlined, for instance, if it becomes impossible
 for the distance to be low enough for a pair to be the best
 match part way through the distance calculation, it does not
 need to be finished~\cite{opencv_library}. The calculations for deciding the best
