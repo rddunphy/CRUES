@@ -947,11 +947,7 @@ position in the map tended to wildly jump around as the map progressed to places
 very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for
 values to be matching to 50 instead of the default 0.
 
-Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
-on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
-slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
-
-\begin{figure}[H]
+\begin{figure}[!htb]
 \centering
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{graphs/rectangle_map}
@@ -973,6 +969,12 @@ slowly on the spot several times. This configuration was chosen to make the resu
   \end{subfigure}
   \caption{GMapping output}\label{fig:gmapping_output}
 \end{figure}
+
+Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
+on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
+slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
+
+
 
 This new map was far more accurate, with a correct scale and rough shape, but seemed to be missing many measurements
 and not updating the map often. This was due again to the assumption of the use of LIDAR, which produces far too
