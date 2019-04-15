@@ -2,8 +2,13 @@
     "files": [
         "chapters/01_introduction",
         "chapters/02_background",
-        "chapters/04_project_management",
-        "chapters/03_design",
-        "chapters/05_conclusion"
+	"chapters/03_project_management",
+	"chapters/04_mechanical",
+	"chapters/05_electrical",
+	"chapters/06_software",
+	"chapters/07_testing",
+	"chapters/08_evaluation",
+	"chapters/09_further_work",
+	"chapters/10_conclusion"
     ]
 }
