@@ -1076,11 +1076,39 @@ the robot was traversing the maze, however issues were encountered with frame ra
 the functionality being too computationally intensive for the RPi in addition to all other
 computation. This is therefore only used in debugging, and not usually active.
 
-\section{Control Modules}\label{soft/ai}
+\section{Control Modules}\label{soft/control}
+
+\todo[inline]{Path planning libraries}
+
+Separate launch files were created for subsystems which rely on multiple nodes,
+such as the communications system, so that they can be included in system launch
+files along with any required parameters in a single line. The main launch file
+used by every system-level launch is \verb|crues_control/robot.launch|, which
+sets up all sensors and actuators, as well as nodes required for drive control,
+sensor fusion, and SLAM. Launching a robot with a specific control node
+merely requires creating a launch node which includes \verb|robot.launch| as
+well as a single entry corresponding to the desired control node.
+Listing~\ref{lst:control_launch_example} shows an example of a launch file for
+a basic controller.
+
+\begin{lstlisting}[caption={Launch file for null controller}, label={lst:control_launch_example}, style=xml]
+<launch>
+    <!--Empty controller used for debugging purposes.-->
+    <include file="$(find crues_control)/launch/robot.launch" />
+    <node name="null_controller" pkg="crues_control" type="roomba_control.py">
+        <param name="turn_vel" type="double" value="0" />
+        <param name="fwd_vel" type="double" value="0" />
+        <param name="obstacle_range" type="double" value="0" />
+        <remap from="~rate" to="encoder/rate" />
+    </node>
+</launch>
+\end{lstlisting}
 
 
-\subsection{Design}\label{soft/ai/design}
+\subsection{Roomba controller}\label{soft/control/roomba}
 
-\subsection{Implementation}\label{soft/ai/impl}
+\todo[inline]{Two variations of Roomba. Present results here?}
 
-\subsection{Testing}\label{soft/ai/test}
+\subsection{Debugging controllers}\label{soft/control/debug}
+
+\todo[inline]{Path controller, null controller, PID tuning controller}
