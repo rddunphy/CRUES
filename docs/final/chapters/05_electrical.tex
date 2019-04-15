@@ -162,13 +162,36 @@ as measured with a tape measure), although rigorous testing was not
 performed as the accuracy would be dependent on the temperature due
 to changes in air pressure, and there was no way of accurately controlling this.
 
-The testing was then repeated using the RPi setup to test the
-software, with similar results obtained.
+Once the sensor was implemented on the RPi, an experiment was devised to test
+its level of accuracy. The robot was placed at fixed distances from the wall
+and at each point 100 readings were recorded. The average response of this
+experiment across the 1m range can be seen in Figure~\ref{fig:usline}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{graphs/ultrasonic_response_1m_with_line_of_best_fit}
+	\caption{Average ultrasound response}\label{fig:usline}
+\end{figure}
+
+It can be seen then that the response of the sensor is fairly reasonable producing a linear response with an offset of approximately \SI{18}{\milli\meter}. The values begin to deviate at greater distances, but the robot is unlikely to make measurements over significant distances. Indeed, in normal operation, considering the wide field of view of each sensor, it is very unlikely that no obstructions will be registered at the extremes of range, and it is unlikely that these values will be as useful as the shorter range ones.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{graphs/ZoomedDistance}
+	\caption{Ultrasound response variance}\label{fig:usboxplots}
+\end{figure}
+
+In addition to plotting the average response, Figure~\ref{fig:usboxplots}
+shows box plots at a subset of each point of measurement, the rest being
+omitted for readability. It can be seen that the response is fairly
+consistent at each data point, so a low variance can be safely assumed on
+these sensors.
 
 \section{Encoders}\label{elec/encoder}
 Wheel encoders are required to measure the speed of each wheel
 independently. This gives the system more control over its path
-as well as allowing it to perform dead reckoning --- meaning an approximate position can be maintained over time --- through wheel odometry.
+as well as allowing it to perform dead reckoning --- meaning an
+approximate position can be maintained over time --- through wheel odometry.
 
 \subsection{Design}\label{elec/encoder/design}
 The motors selected had both incremental and absolute custom designed
