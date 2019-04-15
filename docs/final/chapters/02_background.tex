@@ -138,9 +138,7 @@ robotic control and has been adapted for this application~\cite{aastrom2004revis
 where steady oscillation occurs. The frequency of oscillation, $T_u$, is then found and
 these values can then be used to calculate $K_i$ and $K_d$ which results in a
 tuned system. However, many different formulae and definitions of the critical
-gain of $K_p$ exist in literature. This leads to the conclusion that the
-Ziegler-Nichols method is imperfect, and this will have to be
-explored experimentally during the project.
+gain of $K_p$ exist in literature. This leads to the conclusion that significant experimental effort will still need to be invested in the process of tuning the PID.
 
 \section{SLAM}\label{litreview/slam}
 A key challenge in mobile robotics is for the robot to know its own position in the
@@ -154,7 +152,7 @@ and any errors in the current measurement, the uncertainties compound
 over time. To rectify this, a map with distinctive landmarks can reduce its
 localisation error by revisiting these known areas. This is known as loop closure.
 
-SLAM implementations rely on sensor fusion algorithms as part of their implementation.
+SLAM generally rely on sensor fusion algorithms as part of their implementation.
 These take in readings from an array of sensors and calculate an estimated state change
 based on the probability of error for each sensor. This mitigates errors, resulting in
 more reliable estimates than is possible with either one sensor. A standard

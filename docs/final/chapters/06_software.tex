@@ -908,7 +908,7 @@ input parameter of \verb|gmapping| simply needs to be bound the same topic as th
 
 The scan data is more complex, as the package is intended for use with a LIDAR unit. The outputs of different
 methods of active range finding are similar enough, however, that a rudimentary laser scan message could be
-created simply by combining the three ultrasonic readings into a (admittedly fairly poor) approximation of a
+created simply by combining the three ultrasonic readings into a approximation of a
 LIDAR output. This will likely result in features in the map taking on rounded edges, as the wide range of
 each sensor will allow it to find the walls of a corner earlier than the point.
 
@@ -951,6 +951,11 @@ position in the map tended to wildly jump around as the map progressed to places
 very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for
 values to be matching to 50 instead of the default 0.
 
+Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
+on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
+slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
+
+
 \begin{figure}[!htb]
 \centering
 	\begin{subfigure}[b]{0.5\textwidth}
@@ -974,11 +979,6 @@ values to be matching to 50 instead of the default 0.
   \caption{GMapping output}\label{fig:gmapping_output}
 \end{figure}
 
-Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
-on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
-slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
-
-
 
 This new map was far more accurate, with a correct scale and rough shape, but seemed to be missing many measurements
 and not updating the map often. This was due again to the assumption of the use of LIDAR, which produces far too
@@ -990,7 +990,7 @@ being generated, the map shown in Figure~\ref{fig:gmapping_output/rect} was gene
 
 This output is clearly far better, and cursory examination showed the scale to be correct and accurate to within
 \SI{1}{cm}. The rounded edges are to be expected, as the ultrasonics have a wide field of view, and therefore
-reach the walls of corners before the points.
+reach the walls near the corners before the corner points.
 
 This experiment was repeated on another simple configuration, this time with a
 large square to the right of the centre. This produced the map shown in
@@ -1143,7 +1143,7 @@ computation. This is therefore only used in debugging, and not usually active.
 
 High-level control of the robots is handled in control modules in the
 \verb|crues_control| package. The final control node was envisioned to perform
-path planning and exploration based on the map acquired from GMapping, with an
+path planning and exploration based on the map acquired from \verb|gmapping|, with an
 implementation of the algorithms described in Section~\ref{litreview/maze} used
 to direct the robot towards unexplored areas of the map. This was to be done
 using the \verb|base_local_planner| and \verb|global_planner| packages.
