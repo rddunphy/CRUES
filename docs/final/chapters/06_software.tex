@@ -8,8 +8,8 @@ the system with events cascading to trigger other actions within the system.
 
 To implement this architecture, each part of the system can be defined as its own
 module with a function which triggers its invocation and a function which can
-broadcast events if required. One possible implementation of this system uses
-the publish--subscribe model. Nodes may publish data on communication channels
+broadcast events if required. One way to implement this architecture is to use
+the publish--subscribe design pattern. In this model, nodes may publish data on communication channels
 referred to as topics, which triggers all nodes which have subscribed to the
 topic to take some responding action. This pattern has the advantage that
 the resulting software has strong support for reuse, as new architecture
@@ -274,9 +274,8 @@ regardless of the data types, depth or complexity of the objects.
 Each robot should also be able to simultaneously listen for
 incoming messages whilst sending messages to a different robot.
 With the aim of allowing scalability, the communication system
-should be able to handle robots listening to multiple robots at the
-same time, whilst also being connected to send messages to different
-robots.
+should be able to handle robots listening to multiple clients at the
+same time as sending messages.
 
 The communication system also requires a network or communication
 technology to allow all of the robots in the system to be able to
