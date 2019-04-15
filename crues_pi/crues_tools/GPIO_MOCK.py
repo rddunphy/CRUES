@@ -43,7 +43,7 @@ def add_event_detect(pin, edge, callback=None):
     elif edge == FALLING:
         edge_str = "falling edge"
     if callback is not None:
-        print("Registering %s for %s on pin %d" % callback.__name__, edge_str, pin)
+        print("Registering %s for %s on pin %d" % (callback.__name__, edge_str, pin))
 
 
 def input(pin):

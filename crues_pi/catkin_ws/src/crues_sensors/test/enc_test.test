@@ -1,0 +1,7 @@
+<launch>
+  <node name="encoder" pkg="crues_sensors" type="enc_node.py">
+    <param name="pin_a" value="1" />
+    <param name="pin_b" value="2" />
+  </node>
+  <test test-name="test_string_params" pkg="crues_sensors" type="enc_test.py" />
+</launch>
