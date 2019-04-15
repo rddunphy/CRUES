@@ -12,11 +12,11 @@ broadcast events if required. One possible implementation of this system uses
 the publish--subscribe model. Nodes may publish data on communication channels
 referred to as topics, which triggers all nodes which have subscribed to the
 topic to take some responding action. This pattern has the advantage that
-the resulting software has strong support for reuse---as new architecture
+the resulting software has strong support for reuse, as new architecture
 components can be dynamically added at runtime by subscribing to the appropriate
-topics---and loose coupling between modules means that maintenance and testing
-of each module can take place independently, and significant changes to the
-system can be made without the need for major architectural modifications.
+topics. Loose coupling between modules means that maintenance and testing
+of each module can take place independently and significant changes to the
+system can also be made without the need for major architectural modifications.
 
 In robotic systems, this data-oriented approach is highly beneficial as each of
 the sensor
