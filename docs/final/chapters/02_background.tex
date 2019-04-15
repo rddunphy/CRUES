@@ -3,9 +3,10 @@
 \chapter{Background}\label{litreview}
 
 \section{Co-operative Robotics}\label{litreview/robotics}
-A robot is ``a machine capable of carrying out a complex series of actions 
-automatically''~\cite{robotdef} and robotics is the ``branch of technology which deals with the design, construction, 
-operation, and application''~\cite{roboticsdef} of robots. Robotics combines a number of fields from mechanical,
+Robotics is the branch of technology which deals with the design, construction, 
+operation, and application of machines capable of carrying out a complex series of 
+actions automatically n~\cite{robotdef}~\cite{roboticsdef}. Robotics 
+combines a number of fields from mechanical,
 electrical and software engineering within a single system to achieve its goals. By 
 combining the three major disciplines of artificial intelligence, operations 
 research, and control theory, a resultant intelligent control system is created~\cite{saridis1983intelligent} which can be 
@@ -23,8 +24,7 @@ certain tasks individually. In this case, collaboration is used to deliver a
 performance improvement. For this reason, the more general term of co-operative 
 robotics will be used throughout. 
 
-The aim of co-operative robotics is to reduce the time taken or 
-increase performance  of the system over a single-robot system~
+The aim of co-operative robotics is to  develop multi-robot systems which have improved performance over a single-robot systems~
 \cite{premvuti1990consideration}. Additionally, by creating a decentralised and 
 distributed system across several homogeneous agents, agent redundancy is 
 introduced which can improve the completion rate of tasks, especially in 
@@ -64,12 +64,9 @@ is influenced by several sensors which provide the system with information
 about its environment. These sensors can also influence the movement of the 
 actuators through feedback from previous movement instructions~\cite{lynch2017modern}.    
 
-Sensors can take many forms and provide information about internal and external 
-environmental factors of the robot. External sensors provide information which 
-the robot would otherwise find significantly more difficult to discover, one 
-such example being range sensing. This can take a number of different forms 
+Robots generally have both exteroceptive and proprioceptive sensors. Exteroceptive sensors provide information describing the robot's environment, such as a range sensor. These can take a number of different forms 
 including ultrasound, infra-red, Light Detection And Ranging (LIDAR) and 
-binocular computer vision. Each of these sensors use unique methods to determine 
+stereo computer vision. Each of these sensors use unique methods to determine 
 the distance from the robot to another object in its environment. Ultrasound 
 sensors use high frequency sound waves which reflect from surfaces and return 
 to the sensor. The time taken to return and the speed of sound is used to 
@@ -81,21 +78,21 @@ distance using more powerful and precise beams of light than in the infrared
 case~\cite{lidar}. Binocular vision allows depth perception to take place 
 similar to that allowed by human vision~\cite{read2005early} by perspective-based cues~\cite{pfautz2002depth}. 
 
-Internal sensors can either be related to the actuators or fixed parts of the 
-robot. Those sensors which are connected to the fixed parts of the robot provide 
-feedback about the entire robot and its local environment. The Inertial 
-Measurement Unit (IMU) provides feedback regarding the acceleration and angular 
-velocity with relation to 6 different axes (x, y, z in both linear and angular 
-planes) or Degrees of Freedom (DOF). This can be combined with information from 
-other sensors in order to reduce the overall error in determining the robot's 
-location with relation to its starting position.  
-
-One such sensor is the encoder which is connected to the wheels and provides 
+Proprioceptive sensors can either be related to the actuators or fixed parts of the 
+robot.One such sensor is the encoder which is connected to the wheels and provides 
 only feedback information about this actuator. These sensors are connected 
 directly to the shaft of the motors and provide the control system with the 
 actual distance moved by the motors. This allows adjustments to be made and each 
 of the wheels to be maintained at a constant speed when utilised by the 
-Proportional-Integral-Derivative(PID) controller of a robot.  
+Proportional-Integral-Derivative(PID) controller of a robot. 
+
+
+The Inertial Measurement Unit (IMU) is another example. It provides feedback regarding the acceleration and angular 
+velocity with relation to 6 different axes (x, y, z in both linear and angular 
+planes) or Degrees of Freedom (DOF). This can be combined with information from 
+other sensors in order to reduce the overall error in determining the robot's 
+location with relation to its starting position.  
+ 
 
 \subsection{PID Controller}\label{litreview/robotics/pid}
 As mentioned above, PID controllers are a very common solution to problems where the error of the 
