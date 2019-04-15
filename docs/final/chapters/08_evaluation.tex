@@ -1,11 +1,11 @@
 % !TEX root = ../report.tex
 
 \chapter{Evaluation}\label{eval}
-Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed as somewhat of a success. 5 out of 6 of
-the original ``Major'' objectives have been completed, as well as 1 of 2 of
+Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed as somewhat of a success. Five out of six of
+the original ``Major'' objectives have been completed, as well as one of two of
 the ``Optional'' objectives. In addition to this, it is believed that with a
 small number of additional weeks, the remaining ``Major'' objective could
-be completed. Given the project aimed to combine 3 engineering
+be completed. Given the project aimed to combine three engineering
 disciplines and tackle complex problems simultaneously, a strong
 effort has been made.
 As detailed in various previous sections of the report, small setbacks in
@@ -26,7 +26,7 @@ A series of benchmark results have also been obtained and can be used by future
 iterations of the project to measure success. The
 objectives which have been completed were also iterated upon multiple times to
 complete for each of the robots, and hence the design has
-been improved by using an iterative design process.
+been improved by using an iterative design process, as recommended in feedback from interim report and presentation reviewers.
 
 \section{Mechanical}\label{eval/mech}
 Mechanical aspects of the project have been completed to a
@@ -36,8 +36,7 @@ decision to complete these tasks first with a higher priority and allow time for
 designs to be iterated upon throughout the project. The first robot was carefully
 designed to ensure each component mechanically integrated well. This was further
 iterated upon and improved between robots, leading to a final construction which was
-consistent and reliable. Given not all objectives were met at the end of the project
---- and the electrical and software aspects were to be the focus --- the decision taken in the
+consistent and reliable. Given not all objectives were met at the end of the project---and the electrical and software aspects were to be the focus---the decision taken in the
 early stages to purchase a pre-built chassis as opposed to create a bespoke chassis
 was justified, due to the time saved. This would have added unnecessary complication
 in the beginning of the project which could have caused future
@@ -65,7 +64,7 @@ testing environment. Although constructed by the mechanical workshop, a great de
 effort was put into the design and subsequent iterations to obtain the best outcome
 possible. The modular maze is a reusable ``SLAM playground'' and is a major
 successful outcome of the project. Although not particularly transportable, the maze
-is robust and durable and intended to last --- and be used --- for future projects.
+is robust and durable and intended to last---and be used---for future projects.
 
 In addition, although not used in the final design, a great deal was learned from
 using CAD to create designs of pegs which were intended for use in the maze. A number
@@ -117,8 +116,8 @@ of the PCB. Connections and vias were altered following the first design to be
 more easily integrable with the mechanical layout.
 
 Time and care was taken to ensure the electrical design of the PCB and any other
-connections between parts on the robot --- such as the ribbon cable connection
-between the PCB and the RPi --- were robust and correct. This resulted
+connections between parts on the robot---such as the ribbon cable connection
+between the PCB and the RPi---were robust and correct. This resulted
 in a robot which is both electrically and mechanically sound and replicable
 easily with time and parts. The robots which possess prototype parts, used in
 interim stages of the iterative design process, remain functional and usable.
@@ -139,7 +138,7 @@ be found within the department. This was not the case as 40-pin ribbon cable and
 connectors are used predominantly for Raspberry Pis, making them more expensive
 and therefore, not a common order for the department. Hence, these parts had to be ordered in and resulted in the task blocking
 others longer than expected as these were required for system testing. Towards the end of the project, an RPi was
-shorted --- the cause is unknown, despite investigations and testing --- and ceased to function,
+shorted---the cause is unknown, despite investigations and testing---and ceased to function,
 meaning time was lost to finding the cause of this issue.
 
 \section{Software}\label{eval/soft}
@@ -165,4 +164,9 @@ somewhat achieved for SLAM, this left no time in the project to convert the SLAM
 to a world state which could then be used by an implemented AI to solve the maze
 intelligently.
 
-Furthermore, the combination of packages and demanding software made it very difficult to run all the code at once on the RPi. The ROS framework together with demanding functions like SLAM and Sensor Fusion proved to be too much for the limited memory and processing power, which made testing fully integrated systems extremely challenging.
+Furthermore, the combination of packages and demanding software 
+made it very difficult to run all the code at once on the RPi. The 
+ROS framework together with demanding functions like SLAM and 
+Sensor Fusion proved to be too much for the limited memory and 
+processing power, which made testing fully integrated systems 
+extremely challenging.
