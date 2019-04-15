@@ -704,8 +704,9 @@ Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
 wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
 and rotation from the origin. These values are reflected in Figure~\ref{fig:diff_drive_diagram}.
 
-The ideal differential drive system has only two ``states'' of movement, either
-moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
+This makes derivation of
+equations for the odometry fairly simple when considering two ``states'' of movement:
+moving in a straight line as a result of $u_l$ being equal to $u_r$; and rotating on
 the spot as a result of $u_l$ being the inverse of $u_r$. This makes derivation of
 equations for the odometry fairly simple.
 
@@ -716,7 +717,7 @@ Splitting the velocities across the axes with the cosine and sine of $\theta$ ac
 
 Likewise, in the case of rotation, the linear velocities should be $0$. When the
 robot rotates at some rate, say $\phi$, around its centre, the wheel must move at $u_r = 0.5 L \phi$ ($u_l = -u_r$ as the axis of rotation is the centre of the
-robot). Like in the previous case, the velocity used in the calculation is to be 0
+robot). Like in the previous case, the velocity used in the calculation1 is to be 0
 in the case where $u_l = u_r$, so the value
 used is $0.5 (u_r - u_l)$, which is $0$ when the velocities are the same, and $u_r$ when they are opposite, preserving the direction of rotation.
 
