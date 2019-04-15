@@ -119,7 +119,7 @@ temperature used to adjust how high the heater was set. In many systems, this si
 implementation is adequate, however it has several limitations.
 
 Consider for instance the temperature controller example where heat is being
-lost in the system is equal to $k_{p}e(t)$. This would
+lost in the system is equal to $K_{p}e(t)$. This would
 result in a stable state with a potentially large error. To prevent this,
 the I term can be increased. This will increase the longer an error is
 present, thus preventing stable state errors.
@@ -160,7 +160,8 @@ localisation error by revisiting these known areas. This is known as loop closur
 
 SLAM implementations rely on sensor fusion algorithms as part of their implementation.
 These take in readings from an array of sensors and calculate an estimated state change
-based on the probability of error for each sensor. This mitigates errors, resulting in more reliable estimates than possible with either one sensor. A standard
+based on the probability of error for each sensor. This mitigates errors, resulting in
+more reliable estimates than is possible with either one sensor. A standard
 approach is to use sensor fusion to combine odometry readings from wheel encoders with
 acceleration information obtained from an inertial measurement unit (IMU) to correct for
 errors caused by wheels slipping and sensor imperfections.
