@@ -71,7 +71,7 @@ however, IR also has this limitation
 while also being more susceptible to external interference. A possible solution
 was to make a budget LIDAR unit using a single IR sensor and a
 servo motor mounted on top of the robot. This was, however, dismissed as
-the two PWM pins of the Raspberry Pi would be assigned to each of the
+the two PWM pins of the RPi would be assigned to each of the
 motors respectively. This solution would also require a budget and
 software implementation commitment prior to testing which was not deemed
 worth the potential added risk to the project.
@@ -397,7 +397,7 @@ When designing the PCB in
 the first iteration, an attempt was made to use pins closest to the positions
 of the components on the robot to achieve the neatest possible design, and minimise
 crossing wires and vias. The IMU pins had to be connected to the two \isc{}
-pins of the Raspberry Pi and, similarly, the motor PWM pins were
+pins of the RPi and, similarly, the motor PWM pins were
 connected to the two hardware PWM pins of the RPi. The remaining pin choices
 were made arbitrarily as generic GPIO pins could be used for a variety of purposes.
 
