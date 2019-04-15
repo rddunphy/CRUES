@@ -23,7 +23,7 @@ mechanical design aspects would be costly and time consuming. Hence, it was
 decided to adopt Agile concepts where possible. The project was broken into high
 level ``projects'' on GitHub. Within each ``project'', a broad range of high-level
 issues were created which team members were able to assign themselves to. These could 
-be viewed on the issues board on Github, along with their current status. If
+be viewed on the issues board on GitHub, along with their current status. If
 issues remained unassigned from the previous group meeting, the PM was tasked with
 assigning at the next. Individual team members assigned to an issue also had the
 responsibility of creating additional dependent issues or linking issues together
@@ -39,8 +39,7 @@ approached in a highly iterative manner, again in line with Agile methodologies.
 The high level software architecture however remained broadly intact for the
 entirety of the project, as too many other issues relied on this.
 
-Regular meetings were held with the project supervisor to report progress, with no
-more than three weeks between meetings.
+Regular meetings were held with the project supervisor to report progress.
 
 \subsection{Consultations}\label{pm/consultations}
 Throughout the project several members of academic staff
@@ -50,7 +49,7 @@ Staff from the EEE, CIS and DMEM departments were
 consulted at various stages in the project, bringing together
 each of the individual components of the robot.
 
-From the DMEM department, Dr Mark Post (now at York University)
+From the DMEM department, Dr Mark Post (now at University of York)
 was consulted in the planning stages of the project. With a
 background in robotic vehicles and SLAM, Dr Post was consulted
 with a view to obtaining as much knowledge as possible
@@ -77,7 +76,7 @@ Dr Gordon Dobie, EEE Department, was consulted towards the end
 of the project regarding the tuning of the PID controller.
 Members of the group met with Dr Dobie and explained the PID tuning
 processes undertook to that point. He explained that although
-PID was conceptually useful, a simpler PD rate control system (see Section~\ref{soft/PID/rate}) would be more appropriate
+PID was conceptually useful, a simpler PD rate control system (c.f. Section~\ref{soft/PID/rate}) would be more appropriate
 in this particular case. Following the in-depth investigations made
 into PID controllers, the group was fairly confident, following some
 basic guidance provided by Dr Dobie, on implementing the
@@ -88,7 +87,7 @@ Rogers was consulted regarding the tuning of the PID controller.
 He suggested providing a frame of reference to correct
 the PID controller and maintain a straight line with regards to
 its reference frame. While the group waited on the meeting with
-Dr Dobie, a specialist in PID control, Dr Rogers advice was
+Dr Dobie, a specialist in robotic control, Dr Rogers' advice was
 followed and SLAM was progressed in the interim.
 
 \subsection{Mechanical Workshop}\label{pm/mechshop}
@@ -100,18 +99,15 @@ possible outcome. More information can be found in Section~\ref{test/maze}.
 
 \section{Timeline}\label{pm/timeline}
 The Gantt chart shown here in Figure~\ref{figure:gantt} was created
-using the objectives and their respective sub-objectives (Section~\ref{introduction/objectives}). The timescales were determined
+using the objectives (Section~\ref{introduction/objectives}) and their respective sub-objectives. The timescales were determined
 approximately using knowledge obtained from research and
 consultations, with additional time added to account for possible
-technical risks. In line with the agile methodology adopted, the tasks
+technical risks. In line with the Agile methodology adopted, the tasks
 were given appropriate time and a small margin for error within the
 Gantt chart. For example, assembly of remaining robots was
 allocated a longer time than expected as this involved lead times
 for components and spanned the period of time when the labs
 were closed and construction work was not possible.
-
-Figure~\ref{figure:gantt} shows a Gantt chart of the project timeline.
-
 
 \begin{landscape} % Rotates the image on the page
 \global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90} % Rotates the page in the PDF output
@@ -133,6 +129,8 @@ leaking grease, standard AA batteries being drained at an
 excessive rate and one RPi being shorted and killed
 during the testing phase. Several technical slippages occurred in the Gantt
 chart in the latter stages namely: PID tuning (see Section~\ref{soft/PID}) and SLAM, which was eventually spilt into 2 parts (see Sections~\ref{soft/odometry} \&~\ref{soft/SLAM}).
+
+In hindsight, a revised Gantt chart could have been created in the mid-stages of the project, possibly following feedback from the presentation to reflect changes in timelines and also the approach taken given presentation feedback. 
 
 \section{Risk Evaluation}\label{pm/riskeval}
 A risk evaluation took place at the beginning of the project and
