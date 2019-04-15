@@ -581,7 +581,7 @@ of tuning rules was used to calculate values for the gains. The results of this
 process are shown in Table~\ref{zn_pid_tuning}.
 
 \begin{table}[!ht]\centering
-\caption{Ziegler-Nichols PID Tuning
+\caption{Ziegler-Nichols PID tuning
 \label{zn_pid_tuning}}
     \begin{tabular}{cccccc}
         \toprule
@@ -798,7 +798,7 @@ movements performed.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{IMUtest.png}
-	\caption{IMU RVIZ Test}\label{fig:imu_test}
+	\caption{IMU RVIZ test}\label{fig:imu_test}
 \end{figure}
 
 \subsection{EKF}\label{soft/odometry/ekf}
@@ -915,7 +915,7 @@ the scan data and odometry, and makes probabilistic approximations of the robot'
 mainly used to compensate for odometry drift, as mentioned in Section~\ref{soft/odometry/wheel}. A block diagram
 indicating this relationship can be found in Figure~\ref{fig:amcl}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{diagrams/amcl_localization}
 	\caption{AMCL transform diagram~\cite{macenski_amcl}}\label{fig:amcl}
@@ -947,11 +947,7 @@ position in the map tended to wildly jump around as the map progressed to places
 very poor results, mapping a small arc repeatedly. This was discouraged by setting the minimum heuristic required for
 values to be matching to 50 instead of the default 0.
 
-Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
-on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
-slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
-
-\begin{figure}[!ht]
+\begin{figure}[!htb]
 \centering
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{graphs/rectangle_map}
@@ -974,6 +970,12 @@ slowly on the spot several times. This configuration was chosen to make the resu
   \caption{GMapping output}\label{fig:gmapping_output}
 \end{figure}
 
+Fixing all of this led to the generation of the map shown in Figure~\ref{fig:gmapping_output/stripy} when performed
+on the largest rectangle that could be created in the maze. The robot was placed in the centre and made to rotate
+slowly on the spot several times. This configuration was chosen to make the results easy to interpret.
+
+
+
 This new map was far more accurate, with a correct scale and rough shape, but seemed to be missing many measurements
 and not updating the map often. This was due again to the assumption of the use of LIDAR, which produces far too
 much data to process exhaustively, so the mapping algorithm by default only updates the map with the last scan result
@@ -986,10 +988,9 @@ This output is clearly far better, and cursory examination showed the scale to b
 \SI{1}{cm}. The rounded edges are to be expected, as the ultrasonics have a wide field of view, and therefore
 reach the walls of corners before the points.
 
-This experiment was repeated on another simple configuration, this time with a large square to the right of the
-centre. This produced the map shown in Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat
-
-less clean around the obstacle, but the obstacle is still clearly present.
+This experiment was repeated on another simple configuration, this time with a
+large square to the right of the centre. This produced the map shown in
+Figure~\ref{fig:gmapping_output/obstacle}. This map is, as expected, somewhat less clean around the obstacle, but the obstacle is still clearly present.
 
 \section{Computer Vision}\label{soft/cv}
 Computer vision is a cheap and effective way of gaining a high level
@@ -1113,12 +1114,13 @@ for i, name in enumerate(names):
 
 \todo{caption??}
 
+\noindent
 An example of this running is shown in Figure~\ref{fig:cv_screenshot}.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{ComputerVisionScreenshot.png}
-	\caption{Computer Vision PC Test}\label{fig:cv_screenshot}
+	\caption{Computer vision PC test}\label{fig:cv_screenshot}
 \end{figure}
 
 The system was then tested on the RPi by monitoring the ROS topic \verb|robots_detected| to
@@ -1169,7 +1171,7 @@ a basic controller.
 \end{lstlisting}
 
 
-\subsection{Roomba controller}\label{soft/control/roomba}
+\subsection{Roomba Controller}\label{soft/control/roomba}
 
 A simple control node, referred to as the ``Roomba'' controller due to its
 similarity in behaviour to the eponymous robotic vacuum cleaner, was developed
@@ -1216,7 +1218,7 @@ Without using mapping data, however, it is impossible to avoid getting caught
 in a loop when the maze walls do not form a simply connected graph.
 
 
-\subsection{Debugging controllers}\label{soft/control/debug}
+\subsection{Debugging Controllers}\label{soft/control/debug}
 
 In addition to the Roomba control node, several simple controllers were created
 for test and debugging purposes. The simplest of these is the Null controller
