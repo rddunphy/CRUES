@@ -65,7 +65,7 @@ order for the maze to be created.
 Foremost, the largest single item of solid wood which could be obtained from
 suppliers was smaller than the requested measurements of \SI{1280 x 1690 x 18}
 {\mm}. Two resolutions were proposed by the mechanical workshop: reduce
-the width of each cell, or remove a column of holes from the maze. Following
+the width of each cell, or remove a column and row of holes from the maze. Following
 team consultation, it was decided that reducing the size of each cell would
 result in more flexibility in the end product, as 3 columns of two cell wide paths could still
 be created. It is also worth noting that the reduced cell width of \SI{195}{\mm}
@@ -84,9 +84,9 @@ a steep learning curve was involved in carrying out this task.
 
 A peg matching the original specifications was modelled, however upon delivery
 to the mechanical workshop, the group were informed that this design had to be
-changed to allow the walls to be cut as rectangles only --- with no wings. A new
+changed to allow the walls to be cut as rectangles only---with no wings. A new
 peg design was created which had slits at each \SI{90}{\degree} interval,
-running the length of the peg. This allowed the wall to be dropped in without
+running the length of the peg and leaving a central column intact. This allowed the wall to be dropped in without
 the need for wings. This peg design was also modelled.
 
 Upon returning to the mechanical workshop the group were once again informed
@@ -102,13 +102,13 @@ informed that the acrylic which had been ordered was slightly wider than the
 originally thought \SI{3}{\mm} and so the slits would have to be widened to
 \SI{4}{\mm} to allow for this. The model was altered to account for this change and delivered to the mechanical workshop to be 3D printed.
 
-Unfortunately, once printed it was discovered that the design resulted in a peg
+Unfortunately, once printed, it was discovered that the design resulted in a peg
 that was too fragile and often broke at the base. The mechanical workshop
 attempted to resolve this issue by increasing the density of the printing,
 however this was unsuccessful. Eventually, the mechanical workshop concluded
 that ordering a pre-slitted rod of aluminium and attaching metal pegs to the
 base to allow them to fit into the base board would be the best solution. This
-solution was successful and the maze with 53 pegs and 52 walls was
+solution was successful and the maze, with 53 pegs and 52 walls, was
 delivered in full shortly afterwards. An example configuration of the maze is shown in Figure~\ref{fig:maze_pic}.
 
 \begin{figure}[!ht]
@@ -119,7 +119,7 @@ delivered in full shortly afterwards. An example configuration of the maze is sh
 \end{figure}
 
 
-As can be seen from the table below the requirements laid out in the design
+As can be seen from Table~\ref{maze_reqs_met}, the requirements laid out in the design
 phase (see Section~\ref{test/maze/design}) were largely met with the only two
 requirements not met being of medium or low priority.
 
@@ -153,13 +153,6 @@ cell width of the maze was reduced and therefore, maze configurations with 1
 cell width paths are significantly more difficult to traverse than previously
 thought.
 
-
-\section{Results}\label{systest/results}
-Due to the issues described with SLAM and PID tuning described in Sections~\ref{soft/SLAM/tuning} and~\ref{soft/PID} respectively,
-minimal system testing took place. The system tests which did take place were
-without the SLAM/AI integration, so the AI had to make decisions without knowledge of the derived map. Despite this, the
-system was tested on the maze configurations shown in Figure~\ref{fig:maze_configs} with one agent, and then again with two. These results are shown in Table~\ref{results}.
-
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[b]{0.3\textwidth}
@@ -188,6 +181,12 @@ system was tested on the maze configurations shown in Figure~\ref{fig:maze_confi
   \caption{Example maze configurations}\label{fig:maze_configs}
 \end{figure}
 
+\section{Results}\label{systest/results}
+Due to the issues described with PID tuning and SLAM described in Sections~\ref{soft/PID} and ~\ref{soft/SLAM/tuning} respectively,
+minimal system testing took place. The system tests which did take place were
+without the SLAM/AI integration, so the AI had to make decisions without knowledge of the derived map. Despite this, the
+system was tested on the maze configurations shown in Figure~\ref{fig:maze_configs} with one agent, and then again with two. These results are shown in Table~\ref{results}.
+
 \begin{table}[!ht]\centering
 \caption{Results
 \label{results}}
@@ -207,15 +206,15 @@ system was tested on the maze configurations shown in Figure~\ref{fig:maze_confi
 
 The results shown are not indicative of the project had it been completed in its
 entirety, however these results give benchmark scores for the shown maze
-configurations with what is a very basic AI module. A major drawback of the lack of SLAM/AI
+configurations using a very basic AI module. A major drawback of the lack of SLAM/AI
 integration is that the same path can be searched multiple times, which resulted in a few
-instance with unusually slow results. The results do broadly show, however,
-that multiple agents perform better than a single agent in terms of speed of
-the search. In these cases, this is a simple case of ``many hands make light
+instances with unusually slow results. The results do broadly show, however,
+that multiple agents perform better than a single agent in terms of speed of 
+search. In these cases, this is a simple case of ``many hands make light
 work'' rather than anything intelligent that the robots are doing.
 Nevertheless, the results demonstrate the successful outcomes of the project
 and vindicate the time taken to research the field of co-operative robotics.
 Work detailed in further work (Section~\ref{furtherwork}) can use the
 results shown here as benchmark results and
-measure the success of SLAM and AI implementations against these results to
+measure the success of refined SLAM and AI implementations against these results to
 evaluate progress being made.

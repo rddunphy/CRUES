@@ -1,12 +1,12 @@
 % !TEX root = ../report.tex
 
 \chapter{Evaluation}\label{eval}
-Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed as somewhat of a success. 5 out of 6 of
-the original ``Major'' objectives have been completed, as well as 1 of 2 of
+Based on the original objectives of the project (see Section~\ref{introduction/objectives}), the project can be deemed somewhat of a success. Five out of six of
+the original ``Major'' objectives have been completed, as well as one of two of
 the ``Optional'' objectives. In addition to this, it is believed that with a
 small number of additional weeks, the remaining ``Major'' objective could
-be completed. Given the project aimed to combine 3 engineering
-disciplines and tackle complex problems simultaneously, a strong
+be completed. Given the project aimed to combine three engineering
+disciplines and tackle complex problems simultaneously while using inexpensive components, a strong
 effort has been made.
 As detailed in various previous sections of the report, small setbacks in
 various aspects of the project caused some of the latter stages of the project to be
@@ -16,8 +16,7 @@ and the issues with the EKF resulted in large delays in the SLAM implementation.
 Despite these setbacks, the management of the project was effective and the tasks were predominantly completed to schedule in the early to middle
 stages of the project. Less management of the project was required in the latter
 stages as objective related tasks became sequential, and those who weren't
-working on those tasks were assigned secondary objectives such as those
-pertaining to the trade show or the report. Git was used effectively, with the
+working on those tasks were assigned secondary objectives pertaining to other deliverables of the project. Git was used effectively, with the
 issues feature and protected merging used to ensure all members of the team were
 working on a task and completion of tasks could be monitored by the project
 manager.
@@ -26,7 +25,7 @@ A series of benchmark results have also been obtained and can be used by future
 iterations of the project to measure success. The
 objectives which have been completed were also iterated upon multiple times to
 complete for each of the robots, and hence the design has
-been improved by using an iterative design process.
+been improved by using an iterative design process, as recommended in feedback from interim report and presentation reviewers.
 
 \section{Mechanical}\label{eval/mech}
 Mechanical aspects of the project have been completed to a
@@ -36,9 +35,8 @@ decision to complete these tasks first with a higher priority and allow time for
 designs to be iterated upon throughout the project. The first robot was carefully
 designed to ensure each component mechanically integrated well. This was further
 iterated upon and improved between robots, leading to a final construction which was
-consistent and reliable. Given not all objectives were met at the end of the project
---- and the electrical and software aspects were to be the focus --- the decision taken in the
-early stages to purchase a pre-built chassis as opposed to create a bespoke chassis
+consistent and reliable. Given not all objectives were met at the end of the project---and the electrical and software aspects were to be the focus---the decision taken in the
+early stages to purchase a pre-built chassis, as opposed to create a bespoke chassis
 was justified, due to the time saved. This would have added unnecessary complication
 in the beginning of the project which could have caused future
 tasks to be delayed further.
@@ -47,8 +45,7 @@ The only issue which was encountered with the pre-built chassis was the
 accompanying motors, which were identified as the possible cause of
 issues throughout the electrical and software implementations. When used
 for a reasonable period of time, the motors began to leak grease from
-their plastic casing. This meant that the gearing system was not greased
-and resulted in gears grinding and occasionally slipping. As the
+their plastic casing as described in Section~\ref{mech/chassis}. As the
 encoders are on the motor shaft and not the drive shaft, this affected
 the feedback from the encoders. It is thought that this contributed to
 increased differences between robots at the end of the project and
@@ -62,10 +59,10 @@ chassis would not have been a suitable solution.
 
 Aside from the robots, the other main mechanical component was the modular maze
 testing environment. Although constructed by the mechanical workshop, a great deal of
-effort was put into the design and subsequent iterations to obtain the best outcome
+effort was put into the design, and subsequent iterations, to obtain the best outcome
 possible. The modular maze is a reusable ``SLAM playground'' and is a major
 successful outcome of the project. Although not particularly transportable, the maze
-is robust and durable and intended to last --- and be used --- for future projects.
+is robust and durable and intended to last---and be used---for future projects.
 
 In addition, although not used in the final design, a great deal was learned from
 using CAD to create designs of pegs which were intended for use in the maze. A number
@@ -81,7 +78,7 @@ custom built solution. Firstly, it was very easily integrated with the Polulu
 chassis. Secondly, it saved the significant amount of time it would have taken
 to build the drive circuit. Lastly, due to manufacturing restrictions on the PCB,
 there was very little remaining space on the system's main PCB, so using a custom
-build system would have required the design of a second PCB.
+built system would have required the design of a second PCB.
 
 The range sensors used proved to be largely successful, with some caveats.
 During the unit testing phase, the sensors performed well, giving consistent
@@ -90,8 +87,7 @@ they mostly measured accurate results, however, their limitations started to
 become apparent. As the distance increased, the widening cone of detection caused some
 erroneous data to be measured. This is assumed to be the cause of the corners
 appearing to be rounded in the maze in Figure~\ref{fig:gmapping_output/rect}. Another issue with using the ultrasonic sensors is that the RPi used a time
-shared OS, which meant that the readings from timing the pulse from the
-ultrasonic sensor are sometimes inexact. This could be improved with the use of
+shared OS, which meant that the readings from timing the pulse are sometimes inexact. This could be improved with the use of
 a dedicated timing circuit.
 
 Finally, as there were several range sensors on each
@@ -102,7 +98,7 @@ This would cost more, but it could be possible to mount the sensor on a servo
 motor, and move it through \ang{180} sweeps as to not require more than one.
 This would also remove the timing issue, as they generally return an analogue
 voltage instead of a pulse time. Initially, this design concept was discounted due to the additional mechanical complexities of mounting the components and
-cost, however without the time and budget restrictions, this solution would
+cost. However, without the time and the self-imposed constraint of minimising cost, this solution would
 likely improve the system's performance.
 
 While using an IMU to supplement wheel odometry is a common solution, its
@@ -117,10 +113,10 @@ of the PCB. Connections and vias were altered following the first design to be
 more easily integrable with the mechanical layout.
 
 Time and care was taken to ensure the electrical design of the PCB and any other
-connections between parts on the robot --- such as the ribbon cable connection
-between the PCB and the RPi --- were robust and correct. This resulted
-in a robot which is both electrically and mechanically sound and replicable
-easily with time and parts. The robots which possess prototype parts, used in
+connections between parts on the robot---such as the ribbon cable connection
+between the PCB and the RPi---were robust and correct. This resulted
+in a robot which is both electrically and mechanically sound and easily replicable
+with time and parts. The robots which possess prototype parts, used in
 interim stages of the iterative design process, remain functional and usable.
 This demonstrates the careful selection and design of each of the parts.
 
@@ -139,7 +135,7 @@ be found within the department. This was not the case as 40-pin ribbon cable and
 connectors are used predominantly for Raspberry Pis, making them more expensive
 and therefore, not a common order for the department. Hence, these parts had to be ordered in and resulted in the task blocking
 others longer than expected as these were required for system testing. Towards the end of the project, an RPi was
-shorted --- the cause is unknown, despite investigations and testing --- and ceased to function,
+shorted---the cause is unknown, despite investigations and testing---and ceased to function,
 meaning time was lost to finding the cause of this issue.
 
 \section{Software}\label{eval/soft}
@@ -165,4 +161,9 @@ somewhat achieved for SLAM, this left no time in the project to convert the SLAM
 to a world state which could then be used by an implemented AI to solve the maze
 intelligently.
 
-Furthermore, the combination of packages and demanding software made it very difficult to run all the code at once on the RPi. The ROS framework together with demanding functions like SLAM and Sensor Fusion proved to be too much for the limited memory and processing power, which made testing fully integrated systems extremely challenging.
+Furthermore, the combination of packages and demanding software 
+made it very difficult to run all the code at once on the RPi. The 
+ROS framework together with demanding functions like SLAM and 
+Sensor Fusion proved to be too much for the limited memory and 
+processing power, which made testing fully integrated systems 
+extremely challenging.

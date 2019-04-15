@@ -704,8 +704,9 @@ Let $u_l$, $u_r$ and $L$ be the velocities of the left and right wheels, and the
 wheel track respectively, while $(x, y)$ and $\theta$ are the current displacement
 and rotation from the origin. These values are reflected in Figure~\ref{fig:diff_drive_diagram}.
 
-The ideal differential drive system has only two ``states'' of movement, either
-moving in a straight line as a result of $u_l$ being equal to $u_r$ or rotating on
+This makes derivation of
+equations for the odometry fairly simple when considering two ``states'' of movement:
+moving in a straight line as a result of $u_l$ being equal to $u_r$; and rotating on
 the spot as a result of $u_l$ being the inverse of $u_r$. This makes derivation of
 equations for the odometry fairly simple.
 
@@ -729,6 +730,9 @@ The equations derived here are shown in Equations~\ref{eq:dotx} to~\ref{eq:dotth
 \dot{\theta} & = \frac{(u_r - u_l)}{L} \label{eq:dottheta}
 \end{align}
 
+The \verb|differential_drive| has three major components, \verb|twist_to_motors|, \verb|pid_velocity| and \verb|diff_tf|. The first takes in a ROS twist message type, a six dimensional vector of desired velocities in and about three axes ($\dot{x}$, $\dot{y}$, $\dot{z}$, $\dot{roll}$, $\dot{pitch}$ and $\dot{yaw}$). This twist message is the desired velocity of the robot. Since the differential drive system is operating in only two dimensions, the $z$, $roll$ and $pitch$ instructions are ignored. This node inverts Equations \ref{eq:dotx} to \ref{eq:dottheta} and publishes the desired $u_l$ and $u_r$ values to respective instances of \verb|pid_velocity| nodes as the topics \verb|/lwheel_target| and  \verb|/rwheel_target|, which perform PID on each wheel as discussed in Section~\ref{soft/PID}.
+
+The final node provided by the package, and the most relevant to odometry, is \verb|diff_tf|, which subscribes to the encoder data of both wheels and performs Equations \ref{eq:dotx} to \ref{eq:dottheta} to generate odometry data. This is then published both as an odometry message for the sensor fusion, and as part of the odometry transformation frame.
 
 \subsection{IMU}\label{soft/odometry/imu}
 
