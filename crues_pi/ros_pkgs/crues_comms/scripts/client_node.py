@@ -52,7 +52,7 @@ class Client:
         self._msg_queue.append(msg)
 
     def _robots_detected_callback(self, msg):
-        self._robots_in_view = [s.trim() for s in msg.robot_list.split(",")]
+        self._robots_in_view = [s.strip() for s in msg.robot_list.split(",")]
 
 
 if __name__ == '__main__':
