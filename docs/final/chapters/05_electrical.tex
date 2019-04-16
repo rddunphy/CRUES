@@ -450,7 +450,7 @@ def read_accel(self):
     return -x_a, -y_a, z_a
 \end{lstlisting}
 
-Note that the values returned are negative for the x and y axes. This is because, as will be discussed in Section~\ref{elec/pcb/design}, the IMU had to be mounted rotated \ang{180} rotated around the z axis relative to the robot frame (i.e. the x axis of the IMU faced the back of the robot}.
+Note that the values returned are negative for the x and y axes. This is because, as will be discussed in Section~\ref{elec/pcb/design}, the IMU had to be mounted rotated \ang{180} rotated around the z axis relative to the robot frame (i.e. the x axis of the IMU faced the back of the robot).
 
 The final step in reading the IMU results is to integrate the acceleration
 data as to get the linear velocities. This makes use of the \verb|speed_vect| variable declared in the IMU constructor shown in Listing~\ref{lst:imu_init}. \verb|speed_vect| is incremented by the
@@ -475,7 +475,7 @@ visualise the data as a moving frame. A frame from the output test video is show
 
 \begin{figure}[!hbt]
 	\centering
-	\includegraphics[scale = 0.8]{imupyfig.png}
+	\includegraphics[scale = 0.95]{imupyfig.png}
 	\caption{IMU visualisation test frame}\label{fig:imu_py_test}
 
 \end{figure}
@@ -526,7 +526,7 @@ homogeneity of the robots, a PCB was developed for the connection
 and mounting of the parts. The following
 describes the rationale and design decisions taken when carrying out the
 3-iteration design process for designing the PCB. The final PCB design can
-be found in the git repository (see Appendix~\ref{appendix/a}).
+be found in the git repository (c.f. Appendix~\ref{appendix/a}).
 
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:
@@ -552,7 +552,7 @@ with the following physical design constraints:
   \item Motor drive connectors at fixed position relative to centre
 \end{itemize}
 
-As the IMU had to be mounted in the middle of the robot in the x and y axes, and given the the motor drive connections to the power distribution board, the IMU had to be positioned backwards, so that the x axis faced towards the back of the robot. This can be compensated for in software, but does need to be considered.  
+As the IMU had to be mounted in the middle of the robot in the x and y axes, and given the motor drive connections to the power distribution board, the IMU had to be positioned backwards, so that the x axis faced towards the back of the robot. This can be compensated for in software, but does need to be considered.  
 
 When designing the PCB in
 the first iteration, an attempt was made to use pins closest to the positions
@@ -605,6 +605,7 @@ With these constraints the following PCB design shown in Figure~\ref{PCB_Design}
 	\caption{Final PCB design}\label{PCB_Design}
 
 \end{figure}
+\noindent
 Note that the peculiar shape is to allow room for the motors and encoders.
 
 \subsection{Testing}\label{elec/pcb/test}
