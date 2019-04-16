@@ -411,11 +411,11 @@ the constructor for the IMU class. Note that the \verb|write_byte()| call
 is essential to enable the IMU transmissions.
 
 \begin{lstlisting}[caption={IMU Initialisation Function}, label={lst:imu_init}]
-def __init__(self, address, rate, channel=1):
+def __init__(self, channel=1, address=IMU_ADDRESS):
+    ...
     self.address = address
-    self.IMU_i2c = i2c.i2c_object(self.address, channel=channel)
-    self.rate = rate
-    self.IMU_i2c.write_byte(0x6B, 0x00) # turns imu on
+    self.i2c = I2C(self.address, channel=channel)
+    self.i2c.write_byte(0x6B, 0x00)  # turns imu on
     self.speed_vect = (0.0, 0.0, 0.0)
 \end{lstlisting}
 
@@ -439,16 +439,18 @@ shown in Listing~\ref{lst:read_funcs}.
 
 
 \begin{lstlisting}[caption={Reading and Converting Raw IMU Values},label={lst:read_funcs} , language=python]
-    def _read_gyro(self):
-        x_rot_v = self.IMU_i2c.read_signed_word(0x43) * GYRO_UNITS
-		    # ...
-        return (x_rot_v, y_rot_v, z_rot_v)
+def read_gyro(self):
+    x_rot_v = self.i2c.read_signed_word(0x43) * GYRO_UNITS
+    	# ...
+    return -x_rot_v, -y_rot_v, z_rot_v
 
-    def _read_accel(self):
-        x_a = self.IMU_i2c.read_signed_word(0x3b) * ACC_UNITS
-		    # ...
-        return (x_a, y_a, z_a)
+def read_accel(self):
+    x_a = self.i2c.read_signed_word(0x3b) * ACC_UNITS
+		# ...
+    return -x_a, -y_a, z_a
 \end{lstlisting}
+
+Note that the values returned are negative for the x and y axes. This is because, as will be discussed in Section~\ref{elec/pcb/design}, the IMU had to be mounted rotated \ang{180} rotated around the z axis relative to the robot frame (i.e. the x axis of the IMU faced the back of the robot).
 
 The final step in reading the IMU results is to integrate the acceleration
 data as to get the linear velocities. This makes use of the \verb|speed_vect| variable declared in the IMU constructor shown in Listing~\ref{lst:imu_init}. \verb|speed_vect| is incremented by the
@@ -458,9 +460,10 @@ acceleration multiplied by the IMU rate, as shown in~\ref{lst:imu_integration}.
 
 def get_speeds(self):
 		    # ...
-        accel_vect = self._read_accel()
-        speed_vect = tuple([(1.0/self.rate) * accel_vect[i] + speed_vect[i] for i in range(len(accel_vect))])
-        return speed_vect, gyro_speeds
+        gyro_speeds = self.read_gyro()
+        accel_vect = self.read_accel()
+        self.speed_vect = tuple([(1.0 / self.freq) * accel_vect[i] + self.speed_vect[i] for i in range(len(accel_vect))])
+        return self.speed_vect, gyro_speeds
 \end{lstlisting}
 
 
@@ -472,7 +475,7 @@ visualise the data as a moving frame. A frame from the output test video is show
 
 \begin{figure}[!hbt]
 	\centering
-	\includegraphics[scale = 0.8]{imupyfig.png}
+	\includegraphics[scale = 0.95]{imupyfig.png}
 	\caption{IMU visualisation test frame}\label{fig:imu_py_test}
 
 \end{figure}
@@ -523,7 +526,7 @@ homogeneity of the robots, a PCB was developed for the connection
 and mounting of the parts. The following
 describes the rationale and design decisions taken when carrying out the
 3-iteration design process for designing the PCB. The final PCB design can
-be found in the git repository (see Appendix~\ref{appendix/a}).
+be found in the git repository (c.f. Appendix~\ref{appendix/a}).
 
 \subsection{Design}\label{elec/pcb/design}
 The PCB required to contain the following components:
@@ -548,6 +551,8 @@ with the following physical design constraints:
   connects to header on power distribution board
   \item Motor drive connectors at fixed position relative to centre
 \end{itemize}
+
+As the IMU had to be mounted in the middle of the robot in the x and y axes, and given the motor drive connections to the power distribution board, the IMU had to be positioned backwards, so that the x axis faced towards the back of the robot. This can be compensated for in software, but does need to be considered.  
 
 When designing the PCB in
 the first iteration, an attempt was made to use pins closest to the positions
@@ -600,6 +605,7 @@ With these constraints the following PCB design shown in Figure~\ref{PCB_Design}
 	\caption{Final PCB design}\label{PCB_Design}
 
 \end{figure}
+\noindent
 Note that the peculiar shape is to allow room for the motors and encoders.
 
 \subsection{Testing}\label{elec/pcb/test}
