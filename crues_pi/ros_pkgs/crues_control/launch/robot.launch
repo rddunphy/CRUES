@@ -34,7 +34,7 @@
     <include file="$(find crues_actuators)/launch/leds.launch" />
 
     <!-- COMMS -->
-    <include file="$(find crues_comms)/launch/comms.launch" />
+<!--    <include file="$(find crues_comms)/launch/comms.launch" />-->
 
     <!-- CONTROL -->
     <node name="diff_tf" pkg="differential_drive" type="diff_tf.py">
