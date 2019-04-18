@@ -16,12 +16,12 @@ RIGHT = 2
 class WallFollower:
     def __init__(self):
         rospy.init_node('wall_follower')
-        self.turn_vel = rospy.get_param('~turn_vel', 1)
+        self.turn_vel = rospy.get_param('~turn_vel', 1.5)
         self.fwd_vel = rospy.get_param('~fwd_vel', 0.2)
         self.obstacle_range = rospy.get_param('~obstacle_range', 0.1)
         self.min_follow_threshold = 0.1
         self.max_follow_threshold = 0.3
-        self.wall_side = random.choice([True, False])
+        self.wall_side = True  # random.choice([True, False])
         self.max_arc_time = 5
         self.rate = rospy.Rate(rospy.get_param('~rate', 50))
         self.end_arc_time = -1
@@ -42,7 +42,6 @@ class WallFollower:
 
     def spin(self):
         try:
-            time.sleep(5)
             while not rospy.is_shutdown() and not self.termination_condition():
                 self.publish_cmd()
                 self.rate.sleep()
@@ -78,7 +77,7 @@ class WallFollower:
             else:
                 self.arc_right()
         else:
-            self.wall_side = random.choice([True, False])
+            # self.wall_side = random.choice([True, False])
             self.forward()
 
     def forward(self):
@@ -101,13 +100,13 @@ class WallFollower:
 
     def arc_right(self):
         self.twist = Twist()
-        self.twist.angular.z = -0.8 * self.turn_vel
+        self.twist.angular.z = -0.6 * self.turn_vel
         self.twist.linear.x = 0.6 * self.fwd_vel
         self._publish(rled=True, gled=True)
 
     def arc_left(self):
         self.twist = Twist()
-        self.twist.angular.z = 0.8 * self.turn_vel
+        self.twist.angular.z = 0.6 * self.turn_vel
         self.twist.linear.x = 0.6 * self.fwd_vel
         self._publish(rled=True, gled=True)
 
@@ -118,7 +117,8 @@ class WallFollower:
         self.rled_pub.publish(rled)
 
     def range_callback(self, msg, s):
-        self.last_ranges[s] = msg.data
+        if msg.data > -1:
+            self.last_ranges[s] = msg.data
 
     def goal_callback(self, msg):
         self.goal_in_view = msg.data

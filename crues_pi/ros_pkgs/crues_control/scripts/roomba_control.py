@@ -37,7 +37,6 @@ class Roomba:
 
     def spin(self):
         try:
-            time.sleep(5)
             while not rospy.is_shutdown() and not self.termination_condition():
                 self.publish_cmd()
                 self.rate.sleep()
@@ -104,7 +103,8 @@ class Roomba:
         self.motor_sleep_pub.publish(False)
 
     def range_callback(self, msg, s):
-        self.last_ranges[s] = msg.data
+        if msg.data > -1:
+            self.last_ranges[s] = msg.data
 
     def goal_callback(self, msg):
         self.goal_in_view = msg.data
