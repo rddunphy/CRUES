@@ -1,6 +1,0 @@
-smbus
-RPi.GPIO
-rospy
-futures
-numpy
-opencv-python
